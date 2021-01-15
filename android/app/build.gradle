@@ -130,7 +130,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.svcorps.fashionPr"
+        applicationId "com.svcorps.fashionpr"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
