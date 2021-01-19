@@ -13,6 +13,7 @@ import Text from './common/Text'
 import CustomBottomTabBar from './common/CustomBottomTabBar'
 
 import StartScreen from './HomeScreens/StartScreen'
+import FilterScreen from './HomeScreens/FilterScreen'
 import LoginScreen from './common/LoginScreen'
 import MenuScreen from './common/MenuScreen'
 import HomeScreen from './HomeScreens/HomeScreen'
@@ -141,6 +142,7 @@ class RootScreen extends PureComponent {
     const StartStack = createStackNavigator()
     return (
       <StartStack.Navigator screenOptions={basicScreenOptions(true)}>
+        <StartStack.Screen name="FilterScreen" component={FilterScreen} options={{headerShown: true}} />
         <StartStack.Screen name="StartScreen" component={StartScreen} options={{headerShown: false}} />
         <StartStack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown: false}} />
       </StartStack.Navigator>

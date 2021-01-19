@@ -17,6 +17,7 @@ export const callOnce = callback => _.throttle(callback, DOUBLE_TAP_DELAY, {trai
 export const callOnceShort = callback => _.throttle(callback, DOUBLE_TAP_DELAY / 2, {trailing: false})
 
 const backBtnImage = require('../images/navi/back.png')
+const closeBtnImage = require('../images/navi/close.png')
 const menuBtnImage = require('../images/navi/menu.png')
 const alarmImage = require('../images/navi/alarm.png')
 const alarmNewImage = require('../images/navi/alarm_new.png')
@@ -37,17 +38,29 @@ const cBind = reactComp => {
     })
   reactComp.pushOption = screenName =>
     navigation.setOptions({
-      title: '',
+      title: screenName,
       headerStyle: {backgroundColor: mConst.white, shadowColor: 'transparent', elevation: 0},
+      headerTitleStyle: {fontSize: mUtils.wScale(21), alignSelf: 'center'},
       headerLeft: () => (
         <TouchableOpacity style={{paddingHorizontal: 12}} onPress={reactComp.pop}>
           <FastImage style={{width: 30, height: 30}} source={backBtnImage} />
         </TouchableOpacity>
       ),
-      headerRight: () => (
-        <View style={{marginRight: (mConst.wGapUnit * 3) / 5}}>
-          <Text style={{fontSize: 18, color: mConst.textBaseColor, fontWeight: 'bold'}}>{screenName}</Text>
-        </View>
+      // headerRight: () => (
+      //   <View style={{marginRight: (mConst.wGapUnit * 3) / 5}}>
+      //     <Text style={{fontSize: 18, color: mConst.textBaseColor, fontWeight: 'bold'}}>{screenName}</Text>
+      //   </View>
+      // ),
+    })
+  reactComp.modalOption = screenName =>
+    navigation.setOptions({
+      title: screenName,
+      headerStyle: {backgroundColor: mConst.pushHeaderBgColor, shadowColor: 'transparent', elevation: 0},
+      headerTitleStyle: {fontSize: mUtils.wScale(21), alignSelf: 'center'},
+      headerLeft: () => (
+        <TouchableOpacity style={{paddingHorizontal: 16}} onPress={() => reactComp.goBack()}>
+          <FastImage style={{width: 30, height: 30}} source={closeBtnImage} />
+        </TouchableOpacity>
       ),
     })
   reactComp.menuOption = () =>
