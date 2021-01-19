@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "fashionPr.app"
-               BlueprintName = "fashionPr"
-               ReferencedContainer = "container:fashionPr.xcodeproj">
+               BuildableName = "prMagnet.app"
+               BlueprintName = "prMagnet"
+               ReferencedContainer = "container:prMagnet.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "fashionPrTests.xctest"
-               BlueprintName = "fashionPrTests"
-               ReferencedContainer = "container:fashionPr.xcodeproj">
+               BuildableName = "prMagnetTests.xctest"
+               BlueprintName = "prMagnetTests"
+               ReferencedContainer = "container:prMagnet.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "fashionPr.app"
-            BlueprintName = "fashionPr"
-            ReferencedContainer = "container:fashionPr.xcodeproj">
+            BuildableName = "prMagnet.app"
+            BlueprintName = "prMagnet"
+            ReferencedContainer = "container:prMagnet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "fashionPr.app"
-            BlueprintName = "fashionPr"
-            ReferencedContainer = "container:fashionPr.xcodeproj">
+            BuildableName = "prMagnet.app"
+            BlueprintName = "prMagnet"
+            ReferencedContainer = "container:prMagnet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
@@ -83,6 +83,7 @@
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release"
+      customArchiveName = "prMagnet"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

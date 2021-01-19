@@ -130,7 +130,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.svcorps.fashionpr"
+        applicationId "com.svcorps.prmagnet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -177,12 +177,12 @@ android {
         }
         releaseStaging {
             applicationIdSuffix ".releaseStaging"
-            resValue "string", "CodePushDeploymentKey", '"eA_8G4q28_UNnAny0eNUSOxmsUu_7eS_EhmD_"'
+            resValue "string", "CodePushDeploymentKey", '"thNOx5_uTMwxPEC-T8wqTBY-hhNi98EwiVsMy"'
             signingConfig signingConfigs.releaseStaging
             matchingFallbacks = ['release']
         }
         release {
-            resValue "string", "CodePushDeploymentKey", '"bZuS-c2Bc4vRkEWJ8EryDMgWi2XUmlqORA90B"'
+            resValue "string", "CodePushDeploymentKey", '"K3z7yZl3Hd6nxT2R89rI6hW8dsgJ-AHyzd1RN"'
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"

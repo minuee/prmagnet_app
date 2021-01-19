@@ -29,7 +29,7 @@ class MenuScreen extends PureComponent {
             <FastImage style={styles.headerLeftImage} source={this.imgClose} />
           </TouchableOpacity>
           <View style={styles.headerRightWrapper}>
-            <Text style={styles.headerRightText}>FashionPR</Text>
+            <Text style={styles.headerRightText}>PRMagnet</Text>
           </View>
         </View>
         <View style={styles.menuGroupWrapper}>

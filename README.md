@@ -1,10 +1,10 @@
-## FashionPR-ReactNative
+## PRMagnet-ReactNative
 
 # React Navigation 기반
 
 # react native 프로젝트 생성
 
-> react-native init fashionPr
+> react-native init prMagnet
 
 # 라이브러리 최신화
 

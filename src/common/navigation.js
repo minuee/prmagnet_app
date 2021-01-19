@@ -55,17 +55,17 @@ const cBind = reactComp => {
   reactComp.modalOption = screenName =>
     navigation.setOptions({
       title: screenName,
-      headerStyle: {backgroundColor: mConst.pushHeaderBgColor, shadowColor: 'transparent', elevation: 0},
+      headerStyle: {backgroundColor: mConst.white, shadowColor: 'transparent', elevation: 0},
       headerTitleStyle: {fontSize: mUtils.wScale(21), alignSelf: 'center'},
       headerLeft: () => (
-        <TouchableOpacity style={{paddingHorizontal: 16}} onPress={() => reactComp.goBack()}>
+        <TouchableOpacity style={{paddingHorizontal: 12}} onPress={() => reactComp.goBack()}>
           <FastImage style={{width: 30, height: 30}} source={closeBtnImage} />
         </TouchableOpacity>
       ),
     })
   reactComp.menuOption = () =>
     navigation.setOptions({
-      title: 'FashionPR',
+      title: 'PRMagnet',
       headerStyle: {backgroundColor: mConst.white, shadowColor: 'transparent', elevation: 0},
       headerTitleStyle: {fontSize: mUtils.wScale(23), color: mConst.baseColor, alignSelf: 'center'},
       headerLeft: () => (

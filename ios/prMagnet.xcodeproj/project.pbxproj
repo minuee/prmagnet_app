@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* fashionPrTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* fashionPrTests.m */; };
+		00E356F31AD99517003FC87E /* prMagnetTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* prMagnetTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		B02B895725414CED00C725D4 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B02B895625414CED00C725D4 /* SplashScreen.storyboard */; };
-		D0936FB98FC9733CF87E065A /* libPods-fashionPr-fashionPrTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DF8E4B061B6F270251CC1DC /* libPods-fashionPr-fashionPrTests.a */; };
-		FB6991821FCE8BC1F9F9DDD7 /* libPods-fashionPr.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A0EB0CAB418F5A3752A4145 /* libPods-fashionPr.a */; };
+		D0936FB98FC9733CF87E065A /* libPods-prMagnet-prMagnetTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DF8E4B061B6F270251CC1DC /* libPods-prMagnet-prMagnetTests.a */; };
+		FB6991821FCE8BC1F9F9DDD7 /* libPods-prMagnet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A0EB0CAB418F5A3752A4145 /* libPods-prMagnet.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -22,30 +22,30 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = fashionPr;
+			remoteInfo = prMagnet;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00E356EE1AD99517003FC87E /* fashionPrTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = fashionPrTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* prMagnetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = prMagnetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* fashionPrTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = fashionPrTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* fashionPr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = fashionPr.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = fashionPr/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = fashionPr/AppDelegate.m; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = fashionPr/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = fashionPr/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = fashionPr/main.m; sourceTree = "<group>"; };
-		157A325B4E6235D22DECF051 /* Pods-fashionPr-fashionPrTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fashionPr-fashionPrTests.debug.xcconfig"; path = "Target Support Files/Pods-fashionPr-fashionPrTests/Pods-fashionPr-fashionPrTests.debug.xcconfig"; sourceTree = "<group>"; };
-		55760217D274205087F680FA /* Pods-fashionPr-fashionPrTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fashionPr-fashionPrTests.staging.xcconfig"; path = "Target Support Files/Pods-fashionPr-fashionPrTests/Pods-fashionPr-fashionPrTests.staging.xcconfig"; sourceTree = "<group>"; };
-		6DF8E4B061B6F270251CC1DC /* libPods-fashionPr-fashionPrTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-fashionPr-fashionPrTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7A0EB0CAB418F5A3752A4145 /* libPods-fashionPr.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-fashionPr.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		8B2CE2894681ADA6E51B8D9F /* Pods-fashionPr-fashionPrTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fashionPr-fashionPrTests.release.xcconfig"; path = "Target Support Files/Pods-fashionPr-fashionPrTests/Pods-fashionPr-fashionPrTests.release.xcconfig"; sourceTree = "<group>"; };
-		9B8FE91DD7FE22D9654CBA32 /* Pods-fashionPr.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fashionPr.debug.xcconfig"; path = "Target Support Files/Pods-fashionPr/Pods-fashionPr.debug.xcconfig"; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* prMagnetTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = prMagnetTests.m; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* prMagnet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = prMagnet.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = prMagnet/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = prMagnet/AppDelegate.m; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = prMagnet/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = prMagnet/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = prMagnet/main.m; sourceTree = "<group>"; };
+		157A325B4E6235D22DECF051 /* Pods-prMagnet-prMagnetTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prMagnet-prMagnetTests.debug.xcconfig"; path = "Target Support Files/Pods-prMagnet-prMagnetTests/Pods-prMagnet-prMagnetTests.debug.xcconfig"; sourceTree = "<group>"; };
+		55760217D274205087F680FA /* Pods-prMagnet-prMagnetTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prMagnet-prMagnetTests.staging.xcconfig"; path = "Target Support Files/Pods-prMagnet-prMagnetTests/Pods-prMagnet-prMagnetTests.staging.xcconfig"; sourceTree = "<group>"; };
+		6DF8E4B061B6F270251CC1DC /* libPods-prMagnet-prMagnetTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-prMagnet-prMagnetTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A0EB0CAB418F5A3752A4145 /* libPods-prMagnet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-prMagnet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B2CE2894681ADA6E51B8D9F /* Pods-prMagnet-prMagnetTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prMagnet-prMagnetTests.release.xcconfig"; path = "Target Support Files/Pods-prMagnet-prMagnetTests/Pods-prMagnet-prMagnetTests.release.xcconfig"; sourceTree = "<group>"; };
+		9B8FE91DD7FE22D9654CBA32 /* Pods-prMagnet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prMagnet.debug.xcconfig"; path = "Target Support Files/Pods-prMagnet/Pods-prMagnet.debug.xcconfig"; sourceTree = "<group>"; };
 		B02B895625414CED00C725D4 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F32A23B2CFDA55116372CDED /* Pods-fashionPr.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fashionPr.staging.xcconfig"; path = "Target Support Files/Pods-fashionPr/Pods-fashionPr.staging.xcconfig"; sourceTree = "<group>"; };
-		F551D426C5C1D39CD1124A03 /* Pods-fashionPr.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fashionPr.release.xcconfig"; path = "Target Support Files/Pods-fashionPr/Pods-fashionPr.release.xcconfig"; sourceTree = "<group>"; };
+		F32A23B2CFDA55116372CDED /* Pods-prMagnet.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prMagnet.staging.xcconfig"; path = "Target Support Files/Pods-prMagnet/Pods-prMagnet.staging.xcconfig"; sourceTree = "<group>"; };
+		F551D426C5C1D39CD1124A03 /* Pods-prMagnet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prMagnet.release.xcconfig"; path = "Target Support Files/Pods-prMagnet/Pods-prMagnet.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,7 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0936FB98FC9733CF87E065A /* libPods-fashionPr-fashionPrTests.a in Frameworks */,
+				D0936FB98FC9733CF87E065A /* libPods-prMagnet-prMagnetTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,20 +61,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FB6991821FCE8BC1F9F9DDD7 /* libPods-fashionPr.a in Frameworks */,
+				FB6991821FCE8BC1F9F9DDD7 /* libPods-prMagnet.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* fashionPrTests */ = {
+		00E356EF1AD99517003FC87E /* prMagnetTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* fashionPrTests.m */,
+				00E356F21AD99517003FC87E /* prMagnetTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = fashionPrTests;
+			path = prMagnetTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -85,7 +85,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* fashionPr */ = {
+		13B07FAE1A68108700A75B9A /* prMagnet */ = {
 			isa = PBXGroup;
 			children = (
 				B02B895625414CED00C725D4 /* SplashScreen.storyboard */,
@@ -95,15 +95,15 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = fashionPr;
+			name = prMagnet;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				7A0EB0CAB418F5A3752A4145 /* libPods-fashionPr.a */,
-				6DF8E4B061B6F270251CC1DC /* libPods-fashionPr-fashionPrTests.a */,
+				7A0EB0CAB418F5A3752A4145 /* libPods-prMagnet.a */,
+				6DF8E4B061B6F270251CC1DC /* libPods-prMagnet-prMagnetTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -111,12 +111,12 @@
 		38ECB0E833F5DB72ACCF02D2 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				9B8FE91DD7FE22D9654CBA32 /* Pods-fashionPr.debug.xcconfig */,
-				F551D426C5C1D39CD1124A03 /* Pods-fashionPr.release.xcconfig */,
-				157A325B4E6235D22DECF051 /* Pods-fashionPr-fashionPrTests.debug.xcconfig */,
-				8B2CE2894681ADA6E51B8D9F /* Pods-fashionPr-fashionPrTests.release.xcconfig */,
-				F32A23B2CFDA55116372CDED /* Pods-fashionPr.staging.xcconfig */,
-				55760217D274205087F680FA /* Pods-fashionPr-fashionPrTests.staging.xcconfig */,
+				9B8FE91DD7FE22D9654CBA32 /* Pods-prMagnet.debug.xcconfig */,
+				F551D426C5C1D39CD1124A03 /* Pods-prMagnet.release.xcconfig */,
+				157A325B4E6235D22DECF051 /* Pods-prMagnet-prMagnetTests.debug.xcconfig */,
+				8B2CE2894681ADA6E51B8D9F /* Pods-prMagnet-prMagnetTests.release.xcconfig */,
+				F32A23B2CFDA55116372CDED /* Pods-prMagnet.staging.xcconfig */,
+				55760217D274205087F680FA /* Pods-prMagnet-prMagnetTests.staging.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -131,9 +131,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* fashionPr */,
+				13B07FAE1A68108700A75B9A /* prMagnet */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* fashionPrTests */,
+				00E356EF1AD99517003FC87E /* prMagnetTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				38ECB0E833F5DB72ACCF02D2 /* Pods */,
@@ -146,8 +146,8 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* fashionPr.app */,
-				00E356EE1AD99517003FC87E /* fashionPrTests.xctest */,
+				13B07F961A680F5B00A75B9A /* prMagnet.app */,
+				00E356EE1AD99517003FC87E /* prMagnetTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -155,9 +155,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* fashionPrTests */ = {
+		00E356ED1AD99517003FC87E /* prMagnetTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "fashionPrTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "prMagnetTests" */;
 			buildPhases = (
 				17254A855BD5105AA9191057 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -170,14 +170,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = fashionPrTests;
-			productName = fashionPrTests;
-			productReference = 00E356EE1AD99517003FC87E /* fashionPrTests.xctest */;
+			name = prMagnetTests;
+			productName = prMagnetTests;
+			productReference = 00E356EE1AD99517003FC87E /* prMagnetTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* fashionPr */ = {
+		13B07F861A680F5B00A75B9A /* prMagnet */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "fashionPr" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "prMagnet" */;
 			buildPhases = (
 				E1C1782C9867ADC57E5875F2 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -191,9 +191,9 @@
 			);
 			dependencies = (
 			);
-			name = fashionPr;
-			productName = fashionPr;
-			productReference = 13B07F961A680F5B00A75B9A /* fashionPr.app */;
+			name = prMagnet;
+			productName = prMagnet;
+			productReference = 13B07F961A680F5B00A75B9A /* prMagnet.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -214,7 +214,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "fashionPr" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "prMagnet" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -227,8 +227,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* fashionPr */,
-				00E356ED1AD99517003FC87E /* fashionPrTests */,
+				13B07F861A680F5B00A75B9A /* prMagnet */,
+				00E356ED1AD99517003FC87E /* prMagnetTests */,
 			);
 		};
 /* End PBXProject section */
@@ -282,7 +282,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-fashionPr-fashionPrTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-prMagnet-prMagnetTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -295,7 +295,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-fashionPr-fashionPrTests/Pods-fashionPr-fashionPrTests-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-prMagnet-prMagnetTests/Pods-prMagnet-prMagnetTests-resources.sh",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
@@ -336,7 +336,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-fashionPr-fashionPrTests/Pods-fashionPr-fashionPrTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-prMagnet-prMagnetTests/Pods-prMagnet-prMagnetTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		2B486D6303BCC28DB1AF878D /* [CP] Copy Pods Resources */ = {
@@ -345,7 +345,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-fashionPr/Pods-fashionPr-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-prMagnet/Pods-prMagnet-resources.sh",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
@@ -386,7 +386,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-fashionPr/Pods-fashionPr-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-prMagnet/Pods-prMagnet-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E1C1782C9867ADC57E5875F2 /* [CP] Check Pods Manifest.lock */ = {
@@ -404,7 +404,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-fashionPr-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-prMagnet-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -437,7 +437,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* fashionPrTests.m in Sources */,
+				00E356F31AD99517003FC87E /* prMagnetTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -455,7 +455,7 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* fashionPr */;
+			target = 13B07F861A680F5B00A75B9A /* prMagnet */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -463,14 +463,14 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9B8FE91DD7FE22D9654CBA32 /* Pods-fashionPr.debug.xcconfig */;
+			baseConfigurationReference = 9B8FE91DD7FE22D9654CBA32 /* Pods-prMagnet.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8AZULL89P2;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = fashionPr/Info.plist;
+				INFOPLIST_FILE = prMagnet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
@@ -478,8 +478,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.svcorps.fashionPr;
-				PRODUCT_NAME = fashionPr;
+				PRODUCT_BUNDLE_IDENTIFIER = com.svcorps.prMagnet;
+				PRODUCT_NAME = prMagnet;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -488,13 +488,13 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F551D426C5C1D39CD1124A03 /* Pods-fashionPr.release.xcconfig */;
+			baseConfigurationReference = F551D426C5C1D39CD1124A03 /* Pods-prMagnet.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8AZULL89P2;
-				INFOPLIST_FILE = fashionPr/Info.plist;
+				INFOPLIST_FILE = prMagnet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
@@ -502,8 +502,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.svcorps.fashionPr;
-				PRODUCT_NAME = fashionPr;
+				PRODUCT_BUNDLE_IDENTIFIER = com.svcorps.prMagnet;
+				PRODUCT_NAME = prMagnet;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -599,7 +599,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODEPUSH_KEY = cGZdgFsnwBtsPwBji_fFgiU6Q3pJJWIYs2pXP;
+				CODEPUSH_KEY = "hoHgFsIBaFVtgrYz-T_qd7FJ8bJPZzQQBXJOt";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -654,7 +654,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODEPUSH_KEY = "En0SanLRCGJ42xL8Fct1FKbVyq_0xPANp6F8-";
+				CODEPUSH_KEY = teFzGPPxE0tfLhjBQRzz1hugzKWCHQnL54SiJ;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -683,13 +683,13 @@
 		};
 		B073CF902574EFCC00A2075A /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F32A23B2CFDA55116372CDED /* Pods-fashionPr.staging.xcconfig */;
+			baseConfigurationReference = F32A23B2CFDA55116372CDED /* Pods-prMagnet.staging.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8AZULL89P2;
-				INFOPLIST_FILE = fashionPr/Info.plist;
+				INFOPLIST_FILE = prMagnet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
@@ -697,8 +697,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.svcorps.fashionPr;
-				PRODUCT_NAME = fashionPr;
+				PRODUCT_BUNDLE_IDENTIFIER = com.svcorps.prMagnet;
+				PRODUCT_NAME = prMagnet;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -706,39 +706,39 @@
 		};
 		B073CF912574EFCC00A2075A /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 55760217D274205087F680FA /* Pods-fashionPr-fashionPrTests.staging.xcconfig */;
+			baseConfigurationReference = 55760217D274205087F680FA /* Pods-prMagnet-prMagnetTests.staging.xcconfig */;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				PRODUCT_NAME = fashionPrTests;
+				PRODUCT_NAME = prMagnetTests;
 			};
 			name = Staging;
 		};
 		B094E7792542A30200016A53 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 157A325B4E6235D22DECF051 /* Pods-fashionPr-fashionPrTests.debug.xcconfig */;
+			baseConfigurationReference = 157A325B4E6235D22DECF051 /* Pods-prMagnet-prMagnetTests.debug.xcconfig */;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				PRODUCT_NAME = fashionPrTests;
+				PRODUCT_NAME = prMagnetTests;
 			};
 			name = Debug;
 		};
 		B094E77A2542A30200016A53 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8B2CE2894681ADA6E51B8D9F /* Pods-fashionPr-fashionPrTests.release.xcconfig */;
+			baseConfigurationReference = 8B2CE2894681ADA6E51B8D9F /* Pods-prMagnet-prMagnetTests.release.xcconfig */;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				PRODUCT_NAME = fashionPrTests;
+				PRODUCT_NAME = prMagnetTests;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "fashionPrTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "prMagnetTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B094E7792542A30200016A53 /* Debug */,
@@ -748,7 +748,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "fashionPr" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "prMagnet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -758,7 +758,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "fashionPr" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "prMagnet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
