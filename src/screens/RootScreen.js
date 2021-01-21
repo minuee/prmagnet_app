@@ -142,7 +142,7 @@ class RootScreen extends PureComponent {
     const StartStack = createStackNavigator()
     return (
       <StartStack.Navigator screenOptions={basicScreenOptions(true)}>
-        <StartStack.Screen name="FilterScreen" component={FilterScreen} options={{headerShown: true}} />
+        <StartStack.Screen name="FilterScreen" component={FilterScreen} options={{headerShown: false}} />
         <StartStack.Screen name="StartScreen" component={StartScreen} options={{headerShown: false}} />
         <StartStack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown: false}} />
       </StartStack.Navigator>
