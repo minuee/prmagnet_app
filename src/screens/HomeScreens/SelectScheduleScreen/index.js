@@ -113,7 +113,7 @@ class SelectScheduleScreen extends PureComponent {
         <SafeAreaView style={styles.container}>
           {this.closeBackOption(closeBtnImage, 'Select schedule')}
           <Grid>
-            <Col>
+            <Row style={{backgroundColor: 'blue'}}>
               <CalendarList
                 onVisibleMonthsChange={months => {
                   console.log('now these months are visible', months)
@@ -127,9 +127,17 @@ class SelectScheduleScreen extends PureComponent {
                 onDayPress={this.setDay.bind(this)}
                 markingType="period"
                 markedDates={period}
+                style={styles.calder}
               />
-              {console.log(this.state)}
-            </Col>
+            </Row>
+            <Row style={styles.bottom}>
+              <TouchableOpacity style={styles.leftButton}>
+                <Text style={styles.leftText}>Reset</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.rightButton}>
+                <Text style={styles.rightText}>Confirm</Text>
+              </TouchableOpacity>
+            </Row>
           </Grid>
         </SafeAreaView>
       </>
