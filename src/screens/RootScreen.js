@@ -17,6 +17,7 @@ import FilterScreen from './HomeScreens/FilterScreen'
 import LoginScreen from './common/LoginScreen'
 import MenuScreen from './common/MenuScreen'
 import HomeScreen from './HomeScreens/HomeScreen'
+import SelectScheduleScreen from './HomeScreens/SelectScheduleScreen'
 
 // 스크린 기본 설정
 const basicScreenOptions = (headerShown = true, gestureEnabled = mConst.bIos) => ({
@@ -141,7 +142,8 @@ class RootScreen extends PureComponent {
   StartStack = () => {
     const StartStack = createStackNavigator()
     return (
-      <StartStack.Navigator screenOptions={basicScreenOptions(true)}>
+      <StartStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'SelectScheduleScreen'}>
+        <StartStack.Screen name="SelectScheduleScreen" component={SelectScheduleScreen} options={{headerShown: false}} />
         <StartStack.Screen name="FilterScreen" component={FilterScreen} options={{headerShown: false}} />
         <StartStack.Screen name="StartScreen" component={StartScreen} options={{headerShown: false}} />
         <StartStack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown: false}} />
