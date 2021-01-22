@@ -15,6 +15,9 @@ import styles from './styles'
 const genders = ['WOMEN', 'MEN', 'Unisex']
 const sections = ['Brands', 'Category', 'Availability', 'Color', 'Size', 'Sample', 'Still Life Image', 'Material']
 const closeBtnImage = require('../../../images/navi/close.png')
+const foldImage = require('../../../images/common/fold.png')
+const unfoldImage = require('../../../images/common/unfold.png')
+const selectedImage = require('../../../images/common/selected.png')
 
 class FilterScreen extends PureComponent {
   constructor(props) {
@@ -53,7 +56,7 @@ class FilterScreen extends PureComponent {
                 {_.map(sections, (item, index) => {
                   const selected = item === section
                   return (
-                    <TouchableOpacity onPress={() => this.handleSelectSection(item)}>
+                    <TouchableOpacity key={index} onPress={() => this.handleSelectSection(item)}>
                       <Row style={selected ? styles.sectionWrapperOn : styles.sectionWrapper}>
                         <Text style={selected ? styles.sectionTextOn : styles.sectionText}>{item}</Text>
                       </Row>
@@ -62,37 +65,19 @@ class FilterScreen extends PureComponent {
                 })}
               </Col>
               <Col size={65}>
+                <TouchableOpacity onPress={() => this.alert('', 'ok2')}>
+                  <Row style={styles.itemWrapper}>
+                    <Text style={styles.itemHeadText}>RTW</Text>
+                    <FastImage source={foldImage} style={styles.foldImage} />
+                  </Row>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.alert('', 'ok2')}>
+                  <Row style={styles.itemWrapper}>
+                    <Text style={styles.itemText}>ㄴ 아우터웨어</Text>
+                    <FastImage source={selectedImage} style={styles.foldImage} />
+                  </Row>
+                </TouchableOpacity>
                 {/* <TouchableOpacity onPress={() => this.alert('', 'ok2')}> */}
-                <Row
-                  style={{
-                    // width: mConst.wWidth,
-                    height: mUtils.wScale(50),
-                    alignItems: 'center',
-                    paddingHorizontal: mUtils.wScale(5),
-                    borderTopWidth: 1,
-                    borderColor: 'black',
-                    backgroundColor: 'yellow',
-                  }}
-                >
-                  <Text>Category (2)</Text>
-                </Row>
-                {/* </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.alert('', 'ok2')}> */}
-                <Row
-                  style={{
-                    // width: mConst.wWidth,
-                    height: mUtils.wScale(50),
-                    alignItems: 'center',
-                    paddingHorizontal: mUtils.wScale(5),
-                    borderTopWidth: 1,
-                    borderColor: 'black',
-                    backgroundColor: 'yellow',
-                  }}
-                >
-                  <Text>Category (2)</Text>
-                </Row>
-                {/* </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.alert('', 'ok2')}> */}
                 <Row
                   style={{
                     // width: mConst.wWidth,

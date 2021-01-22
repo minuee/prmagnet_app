@@ -52,4 +52,27 @@ export default StyleSheet.create({
     fontWeight: '500',
     color: mConst.white,
   },
+  itemWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: mUtils.wScale(50),
+    alignItems: 'center',
+    paddingLeft: mUtils.wScale(12),
+    paddingRight: mUtils.wScale(24),
+    borderTopWidth: 1,
+    borderColor: mConst.borderGray,
+  },
+  itemHeadText: {
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  itemText: {
+    fontSize: 14,
+    color: '#555555',
+  },
+  foldImage: {
+    width: mUtils.wScale(40 / 3),
+    height: mUtils.wScale(22 / 3),
+  },
 })
