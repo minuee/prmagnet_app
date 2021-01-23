@@ -14,6 +14,26 @@ import styles from './styles'
 
 const genders = ['WOMEN', 'MEN', 'Unisex']
 const sections = ['Brands', 'Category', 'Availability', 'Color', 'Size', 'Sample', 'Still Life Image', 'Material']
+const categories = [
+  ['Jewelry', '링', '브레이슬릿', '이어링', '네크리스', '워치', 'Others'],
+  ['Accessory', '벨트', '아이웨어', '넥타이', '모자', '스카프 & 장갑', '테크', '지갑', '파우치', 'Others'],
+  ['Handbag', '탑 핸들 백', '토트 백', '숄더 백', '크로스바디 백', '벨트 백 & 백팩', '미니 백', '클러치 & 포트폴리오', '러기지 & 트레블 백'],
+  ['Decor', '캔들', '체어', '월페이퍼', '스크린', '트레이', '테이블웨어', '쿠션', '담요', '머그'],
+  [
+    'Shoes',
+    '스니커즈',
+    '펌프스 & 뮬',
+    '슬리퍼',
+    '샌들',
+    '발레리나 슈즈',
+    '부츠 & 부티',
+    '슬라이트 & 통',
+    '모카신 & 로퍼',
+    '에스파드리유 & 웨지',
+    '레이스업',
+  ],
+  ['RTW', '아우터웨어', '탑 & 셔츠', '드레스', '팬츠', '스커트', '티셔츠 & 스웨트셔츠', '니트웨어', '언더웨어 & 스윔웨어', '액티브 웨어', '데님'],
+]
 const closeBtnImage = require('../../../images/navi/close.png')
 const foldImage = require('../../../images/common/fold.png')
 const unfoldImage = require('../../../images/common/unfold.png')
