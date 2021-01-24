@@ -13,7 +13,7 @@ import CategoryGroup from '../../common/CategoryGroup'
 import ColorGroup from '../../common/ColorGroup'
 import styles from './styles'
 
-const genders = ['WOMEN', 'MEN', 'Unisex']
+const genders = ['여성', '남성', '유니섹스']
 const sections = ['Brands', 'Category', 'Availability', 'Color', 'Size', 'Sample', 'Still Life Image', 'Material']
 const categories = [
   ['Jewelry', '링', '브레이슬릿', '이어링', '네크리스', '워치', 'Others'],
@@ -35,7 +35,21 @@ const categories = [
   ],
   ['RTW', '아우터웨어', '탑 & 셔츠', '드레스', '팬츠', '스커트', '티셔츠 & 스웨트셔츠', '니트웨어', '언더웨어 & 스윔웨어', '액티브 웨어', '데님'],
 ]
-const colors = ['white', 'black', 'red', 'orange', 'yellow', 'green', 'blue', 'navy', 'purple', 'netural', 'gold', 'pink', 'multi']
+const colors = [
+  ['white', '화이트'],
+  ['black', '블랙'],
+  ['red', '레드'],
+  ['orange', '오렌지'],
+  ['yellow', '옐로우'],
+  ['green', '그린'],
+  ['blue', '블루'],
+  ['navy', '네이비'],
+  ['purple', '퍼플'],
+  ['brown', '브라운'],
+  ['gold', '골드/실버'],
+  ['pink', '핑크'],
+  ['multi', '멀티컬러'],
+]
 const closeBtnImage = require('../../../images/navi/close.png')
 const foldImage = require('../../../images/common/fold.png')
 const unfoldImage = require('../../../images/common/unfold.png')

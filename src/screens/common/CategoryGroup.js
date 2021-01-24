@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
     paddingLeft: mUtils.wScale(12),
     paddingRight: mUtils.wScale(24),
     borderTopWidth: 1,
+    borderLeftWidth: StyleSheet.hairlineWidth,
     borderColor: mConst.borderGray,
   },
   itemHeadText: {

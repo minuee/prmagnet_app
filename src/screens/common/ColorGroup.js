@@ -31,13 +31,12 @@ export default class ColorGroup extends PureComponent {
     return (
       <>
         {_.map(data, (item, index) => {
-          const colorText = item.charAt(0).toUpperCase() + item.substring(1)
           return (
-            <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item)}>
+            <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item[0])}>
               <Row style={styles.itemWrapper}>
                 <View style={styles.colorWrapper}>
-                  <View style={styles.colorCircle(item)} />
-                  <Text style={styles.colorText}>{item === 'gold' ? 'Gold/Silver' : colorText}</Text>
+                  <View style={styles.colorCircle(item[0])} />
+                  <Text style={styles.colorText}>{item[1]}</Text>
                 </View>
                 {selectedItems.includes(item) && <FastImage source={selectedImage} style={styles.selectedImage} />}
               </Row>
@@ -59,6 +58,7 @@ const styles = StyleSheet.create({
     paddingLeft: mUtils.wScale(12),
     paddingRight: mUtils.wScale(24),
     borderTopWidth: 1,
+    borderLeftWidth: StyleSheet.hairlineWidth,
     borderColor: mConst.borderGray,
   },
   itemHeadText: {
@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
   },
   colorWrapper: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   colorCircle: color => ({
     width: mUtils.wScale(24),
