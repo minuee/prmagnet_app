@@ -23,12 +23,14 @@ import SelectScheduleScreen from './HomeScreens/SelectScheduleScreen'
 const basicScreenOptions = (headerShown = true, gestureEnabled = mConst.bIos) => ({
   headerShown,
   gestureEnabled,
+  headerTitleAlign: 'center',
   ...TransitionPresets.SlideFromRightIOS,
 })
 // 모달 애니메이션 설정
 const modalScreenOptions = (headerShown = false, gestureEnabled = mConst.bIos) => ({
   headerShown,
   gestureEnabled,
+  headerTitleAlign: 'center',
   ...TransitionPresets.ModalSlideFromBottomIOS,
 })
 
@@ -142,7 +144,7 @@ class RootScreen extends PureComponent {
   StartStack = () => {
     const StartStack = createStackNavigator()
     return (
-      <StartStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'SelectScheduleScreen'}>
+      <StartStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'FilterScreen'}>
         <StartStack.Screen name="SelectScheduleScreen" component={SelectScheduleScreen} options={{headerShown: false}} />
         <StartStack.Screen name="FilterScreen" component={FilterScreen} />
         <StartStack.Screen name="StartScreen" component={StartScreen} options={{headerShown: false}} />
