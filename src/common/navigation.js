@@ -40,7 +40,7 @@ const cBind = reactComp => {
     navigation.setOptions({
       title: screenName,
       headerStyle: {backgroundColor: mConst.white, shadowColor: 'transparent', elevation: 0},
-      headerTitleStyle: {fontSize: mUtils.wScale(21), alignSelf: 'center'},
+      headerTitleStyle: {fontSize: mUtils.wScale(21), alignSelf: 'center', textAlign: 'center'},
       headerLeft: () => (
         <TouchableOpacity style={{paddingHorizontal: 12}} onPress={reactComp.pop}>
           <FastImage style={{width: 30, height: 30}} source={backBtnImage} />
