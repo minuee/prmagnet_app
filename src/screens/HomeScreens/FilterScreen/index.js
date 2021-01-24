@@ -8,9 +8,9 @@ import _ from 'lodash'
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
-// import cBind, {callOnce} from '../../../common/header'
 import Text from '../../common/Text'
 import CategoryGroup from '../../common/CategoryGroup'
+import ColorGroup from '../../common/ColorGroup'
 import styles from './styles'
 
 const genders = ['WOMEN', 'MEN', 'Unisex']
@@ -35,6 +35,7 @@ const categories = [
   ],
   ['RTW', '아우터웨어', '탑 & 셔츠', '드레스', '팬츠', '스커트', '티셔츠 & 스웨트셔츠', '니트웨어', '언더웨어 & 스윔웨어', '액티브 웨어', '데님'],
 ]
+const colors = ['white', 'black', 'red', 'orange', 'yellow', 'green', 'blue', 'navy', 'purple', 'netural', 'gold', 'pink', 'multi']
 const closeBtnImage = require('../../../images/navi/close.png')
 const foldImage = require('../../../images/common/fold.png')
 const unfoldImage = require('../../../images/common/unfold.png')
@@ -87,7 +88,7 @@ class FilterScreen extends PureComponent {
                     return (
                       <TouchableOpacity key={index} onPress={() => this.handleSelectSection(item)}>
                         <Row style={selected ? styles.sectionWrapperOn : styles.sectionWrapper}>
-                          <Text style={selected ? styles.sectionTextOn : styles.sectionText}>{item}</Text>
+                          <Text style={selected ? styles.colorText : styles.sectionText}>{item}</Text>
                         </Row>
                       </TouchableOpacity>
                     )
@@ -97,6 +98,9 @@ class FilterScreen extends PureComponent {
                   {_.map(categories, (item, index) => (
                     <CategoryGroup key={index} data={item} />
                   ))}
+                  {/* {_.map(colors, (item, index) => ( */}
+                  <ColorGroup data={colors} />
+                  {/* ))} */}
                 </Col>
               </Row>
             </Grid>

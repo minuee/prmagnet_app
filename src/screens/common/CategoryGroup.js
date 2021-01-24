@@ -23,11 +23,11 @@ export default class CategoryGroup extends PureComponent {
   toggleFold = () => {
     this.setState(prevstate => ({fold: !prevstate.fold}))
   }
-  toggleSelectItem = item => {
+  toggleSelectItem = val => {
     this.setState(prevstate => {
-      const selectedItems = prevstate.selectedItems.includes(item)
-        ? prevstate.selectedItems.filter(item => item !== item)
-        : prevstate.selectedItems.concat(item)
+      const selectedItems = prevstate.selectedItems.includes(val)
+        ? prevstate.selectedItems.filter(item => item !== val)
+        : prevstate.selectedItems.concat(val)
       return {selectedItems}
     })
   }
@@ -51,7 +51,7 @@ export default class CategoryGroup extends PureComponent {
               <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item)}>
                 <Row style={styles.itemWrapper}>
                   <Text style={styles.itemText}>ㄴ {item}</Text>
-                  {selectedItems.includes(item) && <FastImage source={selectedImage} style={styles.foldImage} />}
+                  {selectedItems.includes(item) && <FastImage source={selectedImage} style={styles.selectedImage} />}
                 </Row>
               </TouchableOpacity>
             )
@@ -83,7 +83,11 @@ const styles = StyleSheet.create({
     color: '#555555',
   },
   foldImage: {
-    width: mUtils.wScale(40 / 3),
-    height: mUtils.wScale(22 / 3),
+    width: mUtils.wScale(13),
+    height: mUtils.wScale(13 / 2),
+  },
+  selectedImage: {
+    width: mUtils.wScale(13),
+    height: mUtils.wScale(13),
   },
 })
