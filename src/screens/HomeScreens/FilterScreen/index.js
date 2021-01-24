@@ -11,6 +11,7 @@ import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
 import CategoryGroup from '../../common/CategoryGroup'
 import ColorGroup from '../../common/ColorGroup'
+import MaterialGroup from '../../common/MaterialGroup'
 import styles from './styles'
 
 const genders = ['여성', '남성', '유니섹스']
@@ -50,6 +51,7 @@ const colors = [
   ['pink', '핑크'],
   ['multi', '멀티컬러'],
 ]
+const materials = ['카프스킨', '램 스킨', '코든', '스웨이드', '벨벳', '데님', '린넨', '쉬폰', '가죽', '퍼', 'Others']
 const closeBtnImage = require('../../../images/navi/close.png')
 const foldImage = require('../../../images/common/fold.png')
 const unfoldImage = require('../../../images/common/unfold.png')
@@ -65,7 +67,7 @@ class FilterScreen extends PureComponent {
     }
   }
   componentDidMount() {
-    this.pushOption('FILTER')
+    this.modalOption('FILTER')
   }
   handleSelectGender = gender => {
     this.setState({gender})
@@ -114,6 +116,7 @@ class FilterScreen extends PureComponent {
                   ))}
                   {/* {_.map(colors, (item, index) => ( */}
                   <ColorGroup data={colors} />
+                  <MaterialGroup data={materials} />
                   {/* ))} */}
                 </Col>
               </Row>
