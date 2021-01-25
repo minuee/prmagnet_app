@@ -117,6 +117,7 @@ class FilterScreen extends PureComponent {
                   {section === 'Color' && <ColorGroup data={colors} />}
                   {section === 'Material' && <MaterialGroup data={materials} />}
                   {section === 'Brands' && <BrandGroup data={brands} />}
+                  {['Availability', 'Size', 'Sample', 'Still Life Image'].includes(section) && <Text>"{section}" : 서비스 준비중입니다.</Text>}
                 </Col>
               </Row>
             </Grid>
