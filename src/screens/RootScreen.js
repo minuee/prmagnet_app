@@ -18,6 +18,8 @@ import LoginScreen from './common/LoginScreen'
 import MenuScreen from './common/MenuScreen'
 import HomeScreen from './HomeScreens/HomeScreen'
 import SelectScheduleScreen from './HomeScreens/SelectScheduleScreen'
+import ContactScreen from './HomeScreens/ContactScreen'
+import NotificationScreen from './HomeScreens/NotificationScreen'
 
 // 스크린 기본 설정
 const basicScreenOptions = (headerShown = true, gestureEnabled = mConst.bIos) => ({
@@ -144,8 +146,10 @@ class RootScreen extends PureComponent {
   StartStack = () => {
     const StartStack = createStackNavigator()
     return (
-      <StartStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'FilterScreen'}>
-        <StartStack.Screen name="SelectScheduleScreen" component={SelectScheduleScreen} options={{headerShown: false}} />
+      <StartStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'NotificationScreen'}>
+        <StartStack.Screen name="NotificationScreen" component={NotificationScreen} />
+        <StartStack.Screen name="ContactScreen" component={ContactScreen} />
+        <StartStack.Screen name="SelectScheduleScreen" component={SelectScheduleScreen} />
         <StartStack.Screen name="FilterScreen" component={FilterScreen} />
         <StartStack.Screen name="StartScreen" component={StartScreen} options={{headerShown: false}} />
         <StartStack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown: false}} />

@@ -7,7 +7,7 @@ import {CalendarList, LocaleConfig} from 'react-native-calendars'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
-import cBind, {callOnce} from '../../../common/header'
+import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
 import {Grid, Col, Row} from 'react-native-easy-grid'
 import styles from './styles'
@@ -28,6 +28,11 @@ class SelectScheduleScreen extends PureComponent {
     cBind(this)
     this.state = {start: {}, end: {}, period: {}}
   }
+
+  componentDidMount() {
+    this.modalOption('Select schedule')
+  }
+
   getDateString(timestamp) {
     const date = new Date(timestamp)
     const year = date.getFullYear()
@@ -111,7 +116,6 @@ class SelectScheduleScreen extends PureComponent {
     return (
       <>
         <SafeAreaView style={styles.container}>
-          {this.closeBackOption(closeBtnImage, 'Select schedule')}
           <Grid>
             <Row style={{backgroundColor: 'blue'}}>
               <CalendarList

@@ -24,7 +24,7 @@ export default StyleSheet.create({
     backgroundColor: mConst.borderGray,
   },
   leftText: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#070708',
   },
@@ -35,7 +35,7 @@ export default StyleSheet.create({
     backgroundColor: mConst.textBaseColor,
   },
   rightText: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 'bold',
     color: mConst.white,
   },
