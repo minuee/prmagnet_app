@@ -12,6 +12,7 @@ import Text from '../../common/Text'
 import CategoryGroup from '../../common/CategoryGroup'
 import ColorGroup from '../../common/ColorGroup'
 import MaterialGroup from '../../common/MaterialGroup'
+import BrandGroup from '../../common/BrandGroup'
 import styles from './styles'
 
 const genders = ['여성', '남성', '유니섹스']
@@ -52,6 +53,7 @@ const colors = [
   ['multi', '멀티컬러'],
 ]
 const materials = ['카프스킨', '램 스킨', '코든', '스웨이드', '벨벳', '데님', '린넨', '쉬폰', '가죽', '퍼', 'Others']
+const brands = ['A BATHING APE', 'A COLD WALL', 'A.BELL', 'A FRANCE', 'A.L.C', 'BATHING APE', 'CHANEL', 'GUCCI', 'LOUISVUITTON']
 const closeBtnImage = require('../../../images/navi/close.png')
 const foldImage = require('../../../images/common/fold.png')
 const unfoldImage = require('../../../images/common/unfold.png')
@@ -117,6 +119,7 @@ class FilterScreen extends PureComponent {
                   {/* {_.map(colors, (item, index) => ( */}
                   <ColorGroup data={colors} />
                   <MaterialGroup data={materials} />
+                  <BrandGroup data={brands} />
                   {/* ))} */}
                 </Col>
               </Row>
