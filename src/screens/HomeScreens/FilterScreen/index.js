@@ -113,14 +113,10 @@ class FilterScreen extends PureComponent {
                   })}
                 </Col>
                 <Col size={65}>
-                  {_.map(categories, (item, index) => (
-                    <CategoryGroup key={index} data={item} />
-                  ))}
-                  {/* {_.map(colors, (item, index) => ( */}
-                  <ColorGroup data={colors} />
-                  <MaterialGroup data={materials} />
-                  <BrandGroup data={brands} />
-                  {/* ))} */}
+                  {section === 'Category' && _.map(categories, (item, index) => <CategoryGroup key={index} data={item} />)}
+                  {section === 'Color' && <ColorGroup data={colors} />}
+                  {section === 'Material' && <MaterialGroup data={materials} />}
+                  {section === 'Brands' && <BrandGroup data={brands} />}
                 </Col>
               </Row>
             </Grid>
