@@ -12,11 +12,11 @@ export default StyleSheet.create({
   title: {
     width: '100%',
     paddingVertical: Platform.OS === 'ios' ? 13 : 11,
-    paddingLeft: 20,
+    paddingLeft: mUtils.wScale(20),
     borderStyle: 'solid',
     borderWidth: 0.7,
     borderColor: mConst.borderGray,
-    marginTop: 20,
+    marginTop: mUtils.wScale(20),
     fontSize: 14,
     fontWeight: 'normal',
     color: mConst.black,
@@ -24,7 +24,7 @@ export default StyleSheet.create({
   desc: {
     flex: 1,
     width: '100%',
-    paddingLeft: 20,
+    paddingLeft: mUtils.wScale(20),
     fontSize: 14,
     fontWeight: 'normal',
     color: mConst.black,

@@ -11,7 +11,7 @@ export default StyleSheet.create({
   itemBox: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 20,
+    paddingVertical: mUtils.wScale(20),
     width: '100%',
     borderStyle: 'solid',
     borderBottomWidth: 1,
@@ -30,11 +30,11 @@ export default StyleSheet.create({
     fontStyle: 'normal',
     textAlign: 'left',
     color: mConst.gray,
-    marginTop: 3.5,
+    marginTop: mUtils.wScale(3.5),
   },
   box: {
-    width: 66,
-    height: 26.75,
+    width: mUtils.wScale(66),
+    height: mUtils.wScale(26.75),
     borderStyle: 'solid',
     borderWidth: 0.7,
     borderColor: mConst.borderGray,
@@ -49,6 +49,6 @@ export default StyleSheet.create({
     color: mConst.black,
   },
   list: {
-    paddingHorizontal: 20,
+    paddingHorizontal: mUtils.wScale(20),
   },
 })

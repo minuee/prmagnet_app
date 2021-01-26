@@ -117,7 +117,7 @@ class SelectScheduleScreen extends PureComponent {
       <>
         <SafeAreaView style={styles.container}>
           <Grid>
-            <Row style={{backgroundColor: 'blue'}}>
+            <Row>
               <CalendarList
                 onVisibleMonthsChange={months => {
                   console.log('now these months are visible', months)

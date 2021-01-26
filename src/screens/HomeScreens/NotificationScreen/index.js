@@ -42,7 +42,7 @@ class NotificationScreen extends PureComponent {
       <View style={styles.itemBox}>
         <View style={styles.items}>
           <FastImage style={{width: 35, height: 35, marginRight: 12}} source={item.status ? notiSky : notiBlack} />
-          <View style={{marginTop: 3}}>
+          <View style={{marginTop: mUtils.wScale(5)}}>
             <Text style={styles.title}>{item.title}</Text>
             <Text style={styles.desc}>{item.desc}</Text>
             <Text style={styles.dt}>

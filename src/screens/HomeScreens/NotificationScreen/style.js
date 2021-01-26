@@ -12,7 +12,7 @@ export default StyleSheet.create({
   itemBox: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 20,
+    paddingVertical: mUtils.wScale(20),
     width: '100%',
     borderStyle: 'solid',
     borderBottomWidth: 1,
@@ -45,6 +45,6 @@ export default StyleSheet.create({
     marginTop: 6,
   },
   list: {
-    paddingHorizontal: 20,
+    paddingHorizontal: mUtils.wScale(20),
   },
 })
