@@ -13,4 +13,41 @@ export default StyleSheet.create({
     paddingHorizontal: mUtils.wScale(20),
     paddingVertical: mUtils.wScale(25),
   },
+  img: {
+    shadowColor: mConst.black,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
+    alignSelf: 'center',
+  },
+  title: {
+    fontSize: 12,
+    fontWeight: 'normal',
+    textAlign: 'left',
+    color: '#555555',
+  },
+  desc: {
+    fontSize: 16,
+    fontWeight: 'normal',
+    textAlign: 'left',
+    color: mConst.black,
+  },
+  box: {
+    width: '100%',
+    borderBottomColor: '#f3f3f3',
+    borderBottomWidth: 1,
+    paddingLeft: mUtils.wScale(6),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: mUtils.wScale(10),
+    marginTop: mUtils.wScale(10),
+  },
+  top: {
+    marginTop: mUtils.wScale(25),
+  },
 })
