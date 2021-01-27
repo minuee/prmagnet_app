@@ -9,7 +9,7 @@ import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
 import {Grid, Col, Row} from 'react-native-easy-grid'
-import styles from './style'
+import styles from './styles'
 
 const closeBtnImage = require('../../../images/navi/close.png')
 const notiSky = require('../../../images/navi/noti_sky.png')

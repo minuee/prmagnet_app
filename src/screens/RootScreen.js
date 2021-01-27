@@ -22,6 +22,7 @@ import ContactScreen from './HomeScreens/ContactScreen'
 import NotificationScreen from './HomeScreens/NotificationScreen'
 import MyPageScreen from './HomeScreens/MyPageScreen'
 import NotiSettingScreen from './HomeScreens/NotiSettingScreen'
+import AccountSettingScreen from './HomeScreens/AccountSettingScreen'
 
 // 스크린 기본 설정
 const basicScreenOptions = (headerShown = true, gestureEnabled = mConst.bIos) => ({
@@ -148,7 +149,8 @@ class RootScreen extends PureComponent {
   StartStack = () => {
     const StartStack = createStackNavigator()
     return (
-      <StartStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'FilterScreen'}>
+      <StartStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'AccountSettingScreen'}>
+        <StartStack.Screen name="AccountSettingScreen" component={AccountSettingScreen} />
         <StartStack.Screen name="NotiSettingScreen" component={NotiSettingScreen} />
         <StartStack.Screen name="MyPageScreen" component={MyPageScreen} />
         <StartStack.Screen name="NotificationScreen" component={NotificationScreen} />

@@ -10,7 +10,7 @@ import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
 import {Grid, Col, Row} from 'react-native-easy-grid'
-import styles from './style'
+import styles from './styles'
 import {multicastChannel} from 'redux-saga'
 
 const profileImage = require('../../../images/navi/profile_1.png')
