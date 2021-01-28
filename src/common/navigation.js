@@ -22,6 +22,11 @@ const menuBtnImage = require('../images/navi/menu.png')
 const alarmImage = require('../images/navi/alarm.png')
 const alarmNewImage = require('../images/navi/alarm_new.png')
 
+const fontCheck = font => {
+  var check_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/
+  return check_kor.test(font)
+}
+
 const cBind = reactComp => {
   const {navigation, route} = reactComp.props
   reactComp.params = _.get(route, 'params', {})
@@ -40,7 +45,7 @@ const cBind = reactComp => {
     navigation.setOptions({
       title: screenName,
       headerStyle: {backgroundColor: mConst.white, shadowColor: 'transparent', elevation: 0},
-      headerTitleStyle: {fontSize: mUtils.wScale(21), alignSelf: 'center'},
+      headerTitleStyle: {fontSize: mUtils.wScale(21), alignSelf: 'center', fontFamily: fontCheck(screenName) ? 'NotoSansKR-Medium' : 'Roboto-Bold'},
       headerLeft: () => (
         <TouchableOpacity style={{paddingHorizontal: 20}} onPress={reactComp.pop}>
           <FastImage style={{width: 10, height: 18}} source={backBtnImage} />
@@ -56,7 +61,7 @@ const cBind = reactComp => {
     navigation.setOptions({
       title: screenName,
       headerStyle: {backgroundColor: mConst.white, shadowColor: 'transparent', elevation: 0},
-      headerTitleStyle: {fontSize: mUtils.wScale(21), alignSelf: 'center'},
+      headerTitleStyle: {fontSize: mUtils.wScale(21), alignSelf: 'center', fontFamily: fontCheck(screenName) ? 'NotoSansKR-Medium' : 'Roboto-Bold'},
       headerLeft: () => (
         <TouchableOpacity style={{paddingHorizontal: 20}} onPress={() => reactComp.goBack()}>
           <FastImage style={{width: 30, height: 30}} source={closeBtnImage} />
