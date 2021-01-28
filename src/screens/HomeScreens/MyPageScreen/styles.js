@@ -57,4 +57,5 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     paddingTop: mUtils.wScale(40),
   },
+  profileImg: {width: mUtils.wScale(60), height: mUtils.wScale(60)},
 })

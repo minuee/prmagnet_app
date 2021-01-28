@@ -31,41 +31,41 @@ class AccountSettingScreen extends PureComponent {
         <SafeAreaView style={styles.container}>
           <ScrollView contentContainerStyle={styles.scroll}>
             <TouchableOpacity style={styles.img}>
-              <FastImage style={{width: 90, height: 90}} source={profileImage} />
+              <FastImage resizeMode={'contain'} style={styles.profileImg} source={profileImage} />
             </TouchableOpacity>
             <View style={styles.top}>
               <Text style={styles.title}>이름</Text>
               <TouchableOpacity style={styles.box}>
                 <Text style={styles.desc}>최서영</Text>
-                <FastImage style={{width: 7, height: 14}} source={goImage} />
+                <FastImage resizeMode={'contain'} style={styles.goImg} source={goImage} />
               </TouchableOpacity>
             </View>
             <View style={styles.top}>
               <Text style={styles.title}>직급</Text>
               <TouchableOpacity style={styles.box}>
                 <Text style={styles.desc}>인턴</Text>
-                <FastImage style={{width: 7, height: 14}} source={goImage} />
+                <FastImage resizeMode={'contain'} style={styles.goImg} source={goImage} />
               </TouchableOpacity>
             </View>
             <View style={styles.top}>
               <Text style={styles.title}>이메일</Text>
               <TouchableOpacity style={styles.box}>
                 <Text style={styles.desc}>asd123@naver.com</Text>
-                <FastImage style={{width: 7, height: 14}} source={goImage} />
+                <FastImage resizeMode={'contain'} style={styles.goImg} source={goImage} />
               </TouchableOpacity>
             </View>
             <View style={styles.top}>
               <Text style={styles.title}>휴대폰 번호</Text>
               <TouchableOpacity style={styles.box}>
                 <Text style={styles.desc}>010-1111-2222</Text>
-                <FastImage style={{width: 7, height: 14}} source={goImage} />
+                <FastImage resizeMode={'contain'} style={styles.goImg} source={goImage} />
               </TouchableOpacity>
             </View>
             <View style={styles.top}>
               <Text style={styles.title}>비밀번호</Text>
               <TouchableOpacity style={styles.box}>
                 <Text style={{...styles.desc, fontSize: 12}}>● ● ● ● ● ● ● ●</Text>
-                <FastImage style={{width: 7, height: 14}} source={goImage} />
+                <FastImage resizeMode={'contain'} style={styles.goImg} source={goImage} />
               </TouchableOpacity>
             </View>
           </ScrollView>

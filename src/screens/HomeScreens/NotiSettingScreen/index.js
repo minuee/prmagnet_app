@@ -47,7 +47,7 @@ class NotiSettingScreen extends PureComponent {
                     <Text style={styles.desc}>{item.desc}</Text>
                   </View>
                   <Switch
-                    style={{transform: [{scaleX: Platform.OS === 'ios' ? 0.8 : 1}, {scaleY: Platform.OS === 'ios' ? 0.8 : 1}]}}
+                    style={styles.switchIc}
                     trackColor={{false: mConst.borderGray, true: mConst.black}}
                     thumbColor={mConst.white}
                     ios_backgroundColor={mConst.borderGray}

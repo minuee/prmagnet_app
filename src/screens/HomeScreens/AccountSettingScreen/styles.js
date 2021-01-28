@@ -50,4 +50,6 @@ export default StyleSheet.create({
   top: {
     marginTop: mUtils.wScale(25),
   },
+  goImg: {width: mUtils.wScale(7), height: mUtils.wScale(14)},
+  profileImg: {width: mUtils.wScale(95), height: mUtils.wScale(95)},
 })

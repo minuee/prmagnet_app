@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native'
+import {StyleSheet, Platform} from 'react-native'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -32,4 +32,5 @@ export default StyleSheet.create({
     color: '#555555',
     marginTop: mUtils.wScale(7),
   },
+  switchIc: {transform: [{scaleX: Platform.OS === 'ios' ? 0.8 : 1}, {scaleY: Platform.OS === 'ios' ? 0.8 : 1}]},
 })

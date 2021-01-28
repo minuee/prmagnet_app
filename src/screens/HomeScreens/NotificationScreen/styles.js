@@ -47,4 +47,6 @@ export default StyleSheet.create({
   list: {
     paddingHorizontal: mUtils.wScale(20),
   },
+  listImg: {width: mUtils.wScale(40), height: mUtils.wScale(40), marginRight: mUtils.wScale(12)},
+  closeImg: {width: mUtils.wScale(20), height: mUtils.wScale(20)},
 })

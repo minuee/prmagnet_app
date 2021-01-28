@@ -41,7 +41,7 @@ class NotificationScreen extends PureComponent {
     return (
       <View style={styles.itemBox}>
         <View style={styles.items}>
-          <FastImage style={{width: 35, height: 35, marginRight: 12}} source={item.status ? notiSky : notiBlack} />
+          <FastImage resizeMode={'contain'} style={styles.listImg} source={item.status ? notiSky : notiBlack} />
           <View style={{marginTop: mUtils.wScale(5)}}>
             <Text style={styles.title}>{item.title}</Text>
             <Text style={styles.desc}>{item.desc}</Text>
@@ -51,7 +51,7 @@ class NotificationScreen extends PureComponent {
           </View>
         </View>
         <TouchableOpacity hitSlop={{top: 35, bottom: 35, left: 40, right: 40}}>
-          <FastImage style={{width: 20, height: 20}} source={closeBtnImage} />
+          <FastImage resizeMode={'contain'} style={styles.closeImg} source={closeBtnImage} />
         </TouchableOpacity>
       </View>
     )
