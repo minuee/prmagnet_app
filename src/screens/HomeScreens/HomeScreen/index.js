@@ -12,6 +12,7 @@ import mConst from '../../../common/constants'
 import cBind, {callOnce} from '../../../common/navigation'
 import API from '../../../common/services'
 import Text from '../../common/Text'
+import Header from '../../common/Header'
 import styles from './styles'
 
 class HomeScreen extends PureComponent {
@@ -20,12 +21,11 @@ class HomeScreen extends PureComponent {
     cBind(this)
     this.state = {}
   }
-  componentDidMount() {
-    this.menuOption()
-  }
   render() {
     return (
       <SafeAreaView style={styles.container}>
+        <Header />
+        <Text style={styles.screenTitleText}>Home</Text>
         <Text>HomeScreen</Text>
         {(mConst.PRODUCTION || mConst.STAGE) && <CodePush />}
       </SafeAreaView>
