@@ -40,12 +40,14 @@ export default class CommonHeader extends PureComponent {
             />
           </View>
         </TouchableWithoutFeedback>
-        <TouchableOpacity style={styles.inputIconWrapper} onPress={null}>
-          <FastImage source={bellImage} style={styles.inputIcon} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.inputIconWrapper} onPress={null}>
-          <FastImage source={profileImage} style={styles.inputIcon} />
-        </TouchableOpacity>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <TouchableOpacity style={styles.inputIconWrapper} onPress={null}>
+            <FastImage resizeMode={'contain'} source={bellImage} style={styles.inputIcon} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.inputIconWrapper} onPress={null}>
+            <FastImage resizeMode={'contain'} source={profileImage} style={styles.inputIcon} />
+          </TouchableOpacity>
+        </View>
       </View>
     )
   }
@@ -56,8 +58,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    alignSelf: 'center',
-    width: mConst.wWidth - mUtils.wScale(40),
+    //alignSelf: 'center',
+    //width: mConst.wWidth - mUtils.wScale(40),
+    width: '100%',
+    backgroundColor: mConst.white,
+    paddingHorizontal: mUtils.wScale(20),
   },
   inputTextWrapper: {
     width: mConst.wWidth - mConst.wGapUnit * 2.8,
@@ -76,7 +81,7 @@ const styles = StyleSheet.create({
     color: mConst.textBaseColor,
   },
   inputIconWrapper: {
-    padding: 8,
+    padding: 6,
     marginLeft: 0,
   },
   inputIcon: {

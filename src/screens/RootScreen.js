@@ -24,6 +24,7 @@ import MyPageScreen from './HomeScreens/MyPageScreen'
 import NotiSettingScreen from './HomeScreens/NotiSettingScreen'
 import AccountSettingScreen from './HomeScreens/AccountSettingScreen'
 import LookBookScreen from './HomeScreens/LookBookScreen'
+import LookBookDetailScreen from './HomeScreens/LookBookDetailScreen'
 
 // 스크린 기본 설정
 const basicScreenOptions = (headerShown = true, gestureEnabled = mConst.bIos) => ({
@@ -150,9 +151,10 @@ class RootScreen extends PureComponent {
   StartStack = () => {
     const StartStack = createStackNavigator()
     return (
-      <StartStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'HomeScreen'}>
+      <StartStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'LookBookDetailScreen'}>
         <StartStack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}} />
-        <StartStack.Screen name="LookBookScreen" component={LookBookScreen} />
+        <StartStack.Screen name="LookBookDetailScreen" component={LookBookDetailScreen} options={{headerShown: false}} />
+        <StartStack.Screen name="LookBookScreen" component={LookBookScreen} options={{headerShown: false}} />
         <StartStack.Screen name="AccountSettingScreen" component={AccountSettingScreen} />
         <StartStack.Screen name="NotiSettingScreen" component={NotiSettingScreen} />
         <StartStack.Screen name="MyPageScreen" component={MyPageScreen} />
