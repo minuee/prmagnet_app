@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     width: mConst.wWidth - mUtils.wScale(40),
+    marginVertical: mConst.bAndroid ? mUtils.wScale(10) : mUtils.wScale(5),
   },
   inputTextWrapper: {
     width: mConst.wWidth - mConst.wGapUnit * 2.8,
@@ -73,6 +74,7 @@ const styles = StyleSheet.create({
   input: {
     width: mConst.wWidth - mConst.wGapUnit * 4,
     fontSize: mUtils.wScale(15),
+    padding: 0,
     color: mConst.textBaseColor,
   },
   inputIconWrapper: {
