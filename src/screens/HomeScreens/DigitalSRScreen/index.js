@@ -23,7 +23,7 @@ const bookImg = require('../../../images/navi/book_1.png')
 const moreImg = require('../../../images/navi/more_4.png')
 const crownImg = require('../../../images/navi/crown_1.png')
 
-class DigitalShowRoomScreen extends PureComponent {
+class DigitalSRScreen extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
@@ -107,4 +107,4 @@ class DigitalShowRoomScreen extends PureComponent {
 export default connect(
   state => ({}),
   dispatch => ({})
-)(DigitalShowRoomScreen)
+)(DigitalSRScreen)
