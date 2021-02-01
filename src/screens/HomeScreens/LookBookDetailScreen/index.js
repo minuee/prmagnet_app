@@ -39,33 +39,36 @@ class LookBookDetailScreen extends PureComponent {
 
   renderItem = ({item}) => {
     return (
-      <View style={{width: '49%', height: mUtils.wScale(275)}}>
-        <Pressable>
-          {({pressed}) => (
-            <FastImage resizeMode={'contain'} style={styles.modelImg} source={modelImg}>
-              {pressed ? (
-                <View
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: 'rgba(126, 161, 178, 0.8)',
+      <View style={{width: '49%', height: mUtils.wScale(310)}}>
+        <View style={{width: '100%', height: mUtils.wScale(275), backgroundColor: 'red'}}>
+          <Pressable>
+            {({pressed}) => (
+              <FastImage resizeMode={'contain'} style={styles.modelImg} source={modelImg}>
+                {pressed ? (
+                  <View
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      backgroundColor: 'rgba(126, 161, 178, 0.8)',
 
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Text style={styles.title}>{item.title}</Text>
-                  <Text style={styles.desc1}>{item.desc}</Text>
-                  <Text style={styles.desc2}>{item.desc1}</Text>
-                  <Text style={styles.desc2}>{item.desc2}</Text>
-                  <Text style={styles.desc2}>{item.desc3}</Text>
-                  <Text style={styles.desc2}>{item.desc4}</Text>
-                </View>
-              ) : null}
-            </FastImage>
-          )}
-        </Pressable>
-        {item.new ? <FastImage resizeMode={'contain'} style={styles.newImg} source={newImg} /> : null}
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Text style={styles.title}>{item.title}</Text>
+                    <Text style={styles.desc1}>{item.desc}</Text>
+                    <Text style={styles.desc2}>{item.desc1}</Text>
+                    <Text style={styles.desc2}>{item.desc2}</Text>
+                    <Text style={styles.desc2}>{item.desc3}</Text>
+                    <Text style={styles.desc2}>{item.desc4}</Text>
+                  </View>
+                ) : null}
+              </FastImage>
+            )}
+          </Pressable>
+          {item.new ? <FastImage resizeMode={'contain'} style={styles.newImg} source={newImg} /> : null}
+        </View>
+        <Text style={styles.title1}>{item.title}</Text>
       </View>
     )
   }

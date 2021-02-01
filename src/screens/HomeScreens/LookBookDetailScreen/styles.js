@@ -33,6 +33,13 @@ export default StyleSheet.create({
     textAlign: 'left',
     color: '#ffffff',
   },
+  title1: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 15,
+    textAlign: 'center',
+    color: '#070708',
+    marginTop: mUtils.wScale(10),
+  },
   desc1: {
     fontFamily: 'Roboto-Medium',
     fontSize: 14,
