@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {SafeAreaView, View, TouchableWithoutFeedback, TouchableOpacity, TextInput, FlatList, ScrollView} from 'react-native'
+import {SafeAreaView, View, TouchableWithoutFeedback, TouchableOpacity, TextInput, FlatList, ScrollView, Pressable} from 'react-native'
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import moment from 'moment'
@@ -76,7 +76,17 @@ class SchedulerScreen extends PureComponent {
               </View>
             </View>
             <View style={{width: '49%'}}>
-              <View style={styles.layout5}>
+              <Pressable
+                onLongPress={() => {
+                  console.log('2222')
+                }}
+                style={({pressed}) => [
+                  {
+                    opacity: pressed ? 0.3 : 1,
+                  },
+                  styles.layout5,
+                ]}
+              >
                 <View style={styles.layout6}>
                   <Text style={styles.title}>VOGUE</Text>
                   <View style={styles.layout}>
@@ -97,7 +107,7 @@ class SchedulerScreen extends PureComponent {
                     010-7104-5568
                   </Text>
                 </View>
-              </View>
+              </Pressable>
               <TouchableOpacity>
                 <FastImage resizeMode={'contain'} style={styles.plusImg} source={plusImg} />
               </TouchableOpacity>
