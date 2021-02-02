@@ -28,6 +28,8 @@ import LookBookDetailScreen from './HomeScreens/LookBookDetailScreen'
 import FilterSettingScreen from './HomeScreens/FilterSettingScreen'
 import DigitalSRScreen from './HomeScreens/DigitalSRScreen'
 import DigitalSRDetailScreen from './HomeScreens/DigitalSRDetailScreen'
+import FavoritesScreen from './HomeScreens/FavoritesScreen'
+import SchedulerScreen from './HomeScreens/SchedulerScreen'
 
 // 스크린 기본 설정
 const basicScreenOptions = (headerShown = true, gestureEnabled = mConst.bIos) => ({
@@ -154,8 +156,10 @@ class RootScreen extends PureComponent {
   StartStack = () => {
     const StartStack = createStackNavigator()
     return (
-      <StartStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'HomeScreen'}>
+      <StartStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'SchedulerScreen'}>
         <StartStack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}} />
+        <StartStack.Screen name="SchedulerScreen" component={SchedulerScreen} options={{headerShown: false}} />
+        <StartStack.Screen name="FavoritesScreen" component={FavoritesScreen} />
         <StartStack.Screen name="DigitalSRDetailScreen" component={DigitalSRDetailScreen} />
         <StartStack.Screen name="DigitalSRScreen" component={DigitalSRScreen} options={{headerShown: false}} />
         <StartStack.Screen name="FilterSettingScreen" component={FilterSettingScreen} />

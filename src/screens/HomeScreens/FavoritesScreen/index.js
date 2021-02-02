@@ -2,8 +2,8 @@ import React, {PureComponent} from 'react'
 import {connect} from 'react-redux'
 import _ from 'lodash'
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs'
-import Contact from './Contact'
-import ContactConfirm from './ContactConfirm'
+import DigitalShowroom from './DigitalShowroom'
+import PressRelease from './PressRelease'
 
 import mConst from '../../../common/constants'
 import cBind from '../../../common/navigation'
@@ -12,14 +12,14 @@ const closeBtnImage = require('../../../images/navi/close.png')
 const Tab = createMaterialTopTabNavigator()
 const black = mConst.black
 
-class ContactScreen extends PureComponent {
+class FavoritesScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
   }
 
   componentDidMount() {
-    this.pushOption('문의하기')
+    this.pushOption('Favorites')
   }
 
   render() {
@@ -37,8 +37,8 @@ class ContactScreen extends PureComponent {
             style: {backgroundColor: mConst.white},
           }}
         >
-          <Tab.Screen name="Contact" component={Contact} options={{tabBarLabel: '문의하기'}} />
-          <Tab.Screen name="ContactConfirm" component={ContactConfirm} options={{tabBarLabel: '문의내역확인'}} />
+          <Tab.Screen name="DigitalShowroom" component={DigitalShowroom} options={{tabBarLabel: 'Digital Showroom'}} />
+          <Tab.Screen name="PressRelease" component={PressRelease} options={{tabBarLabel: 'Press Release'}} />
         </Tab.Navigator>
       </>
     )
@@ -48,4 +48,4 @@ class ContactScreen extends PureComponent {
 export default connect(
   state => ({}),
   dispatch => ({})
-)(ContactScreen)
+)(FavoritesScreen)
