@@ -8,16 +8,17 @@ import mConst from '../../common/constants'
 import mUtils from '../../common/utils'
 import Text from './Text'
 
-const imgDropdown = require('../../images/common/dropdown.png')
+const moreImg = require('../../images/navi/more_3.png')
 
 const CommonDropDown = props => {
   const {half, onSelect, options, value, placeholder} = props
+
   return (
     <ModalDropdown
       style={styles.dropdownWrapper}
       dropdownStyle={half ? styles.dropdownInnerHalfWrapper : styles.dropdownInnerWrapper}
       onSelect={onSelect}
-      renderRow={({name}) => (
+      renderRow={name => (
         <View style={styles.dropdownItemWrapper}>
           <Text style={styles.dropdownItemText}>{name}</Text>
         </View>
@@ -27,7 +28,7 @@ const CommonDropDown = props => {
     >
       <View style={half ? styles.dropdownTextHalfWrapper : styles.dropdownTextWrapper}>
         {value ? <Text style={styles.dropdownItemText}>{value}</Text> : <Text style={styles.dropdownPlaceholderText}>{placeholder}</Text>}
-        <FastImage source={imgDropdown} style={styles.dropdownIcon} />
+        <FastImage resizeMode={'contain'} source={moreImg} style={styles.dropdownIcon} />
       </View>
     </ModalDropdown>
   )
