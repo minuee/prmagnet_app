@@ -31,6 +31,7 @@ import DigitalSRDetailScreen from './HomeScreens/DigitalSRDetailScreen'
 import FavoritesScreen from './HomeScreens/FavoritesScreen'
 import SchedulerScreen from './HomeScreens/SchedulerScreen'
 import ScheduleMemoScreen from './HomeScreens/ScheduleMemoScreen'
+import NoticeScreen from './HomeScreens/NoticeScreen'
 
 import DevNavigationScreen from './HomeScreens/DevNavigationScreen'
 
@@ -159,9 +160,10 @@ class RootScreen extends PureComponent {
   StartStack = () => {
     const StartStack = createStackNavigator()
     return (
-      <StartStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'DevNavigationScreen'}>
+      <StartStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'NoticeScreen'}>
         <StartStack.Screen name="DevNavigationScreen" component={DevNavigationScreen} />
         <StartStack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}} />
+        <StartStack.Screen name="NoticeScreen" component={NoticeScreen} />
         <StartStack.Screen name="ScheduleMemoScreen" component={ScheduleMemoScreen} />
         <StartStack.Screen name="SchedulerScreen" component={SchedulerScreen} options={{headerShown: false}} />
         <StartStack.Screen name="FavoritesScreen" component={FavoritesScreen} />
