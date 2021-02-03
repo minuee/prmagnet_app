@@ -31,6 +31,8 @@ import DigitalSRDetailScreen from './HomeScreens/DigitalSRDetailScreen'
 import FavoritesScreen from './HomeScreens/FavoritesScreen'
 import SchedulerScreen from './HomeScreens/SchedulerScreen'
 
+import DevNavigationScreen from './HomeScreens/DevNavigationScreen'
+
 // 스크린 기본 설정
 const basicScreenOptions = (headerShown = true, gestureEnabled = mConst.bIos) => ({
   headerShown,
@@ -156,7 +158,8 @@ class RootScreen extends PureComponent {
   StartStack = () => {
     const StartStack = createStackNavigator()
     return (
-      <StartStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'SchedulerScreen'}>
+      <StartStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'DevNavigationScreen'}>
+        <StartStack.Screen name="DevNavigationScreen" component={DevNavigationScreen} />
         <StartStack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}} />
         <StartStack.Screen name="SchedulerScreen" component={SchedulerScreen} options={{headerShown: false}} />
         <StartStack.Screen name="FavoritesScreen" component={FavoritesScreen} />
