@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import _ from 'lodash'
 import Header from '../../common/Header'
+import Modal from 'react-native-modal'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -22,6 +23,8 @@ const settingImg = require('../../../images/navi/setting_1.png')
 const bookImg = require('../../../images/navi/book_1.png')
 const moreImg = require('../../../images/navi/more_4.png')
 const crownImg = require('../../../images/navi/crown_1.png')
+const selectImg1 = require('../../../images/navi/select_1.png')
+const selectImg2 = require('../../../images/navi/select_2.png')
 
 class DigitalSRScreen extends PureComponent {
   constructor(props) {
@@ -35,19 +38,49 @@ class DigitalSRScreen extends PureComponent {
         },
         {img: require('../../../images/navi/model_1.png'), new: false, title: 'Look #2'},
       ],
+      select: [],
+      isvisible: false,
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.state.select.length === 0) {
+      console.log('11')
+      this.setState({...this.state, isvisible: false})
+    } else {
+      console.log('22')
+      this.setState({...this.state, isvisible: true})
     }
   }
 
   renderItem = ({item}) => {
     return (
       <View style={{width: '49%', height: mUtils.wScale(310)}}>
-        <TouchableOpacity activeOpacity={0.5} style={{width: '100%', height: mUtils.wScale(275)}}>
+        <TouchableOpacity
+          onPress={() => {
+            if (this.state.select.includes(item)) {
+              let copy = [...this.state.select]
+              let idx = copy.indexOf(item)
+              copy.splice(idx, 1)
+              this.setState({...this.state, select: copy})
+            } else {
+              this.setState({...this.state, select: this.state.select.concat(item)})
+            }
+          }}
+          activeOpacity={0.5}
+          style={{width: '100%', height: mUtils.wScale(275)}}
+        >
           <FastImage resizeMode={'contain'} style={styles.modelImg} source={modelImg} />
           {item.new ? (
             <FastImage resizeMode={'contain'} style={styles.newImg} source={newImg} />
           ) : (
             <FastImage resizeMode={'contain'} style={styles.newImg} source={crownImg} />
           )}
+          {this.state.select.includes(item) ? (
+            <View style={styles.select}>
+              <FastImage resizeMode={'contain'} style={styles.selectImg} source={selectImg2} />
+            </View>
+          ) : null}
         </TouchableOpacity>
         <Text style={styles.title}>{item.title}</Text>
       </View>
@@ -60,8 +93,15 @@ class DigitalSRScreen extends PureComponent {
       <SafeAreaView style={styles.container}>
         <Header />
         <View style={{paddingHorizontal: mUtils.wScale(20)}}>
-          <Text style={{...styles.mainTitle, marginTop: mUtils.wScale(25)}}>Digital</Text>
-          <Text style={styles.mainTitle1}>Showroom</Text>
+          <View style={{...styles.layout, justifyContent: 'space-between', marginTop: mUtils.wScale(25)}}>
+            <View>
+              <Text style={{...styles.mainTitle}}>Digital</Text>
+              <Text style={styles.mainTitle1}>Showroom</Text>
+            </View>
+            <TouchableOpacity style={{...styles.selectBox}}>
+              <Text style={styles.selectText}>Select</Text>
+            </TouchableOpacity>
+          </View>
           <View style={{...styles.layout, marginTop: mUtils.wScale(10)}}>
             <FastImage resizeMode={'contain'} style={styles.notiImg} source={notiImg} />
             <Text style={styles.noti}>9/20 디지털쇼룸 이용 시 공지사항을 안내해 드립니다.</Text>
@@ -99,6 +139,20 @@ class DigitalSRScreen extends PureComponent {
             numColumns={2}
           />
         </View>
+        {this.state.isvisible ? (
+          <View style={styles.bottomSheet}>
+            <View style={{flexDirection: 'row'}}>
+              <View>
+                <Text style={{...styles.bottomText1}}>Total Number of </Text>
+                <Text style={{...styles.bottomText1, fontFamily: 'Roboto-Bold'}}>Sample Selectsd : </Text>
+              </View>
+              <Text style={{...styles.bottomText2, marginLeft: mUtils.wScale(3)}}>{this.state.select.length}</Text>
+            </View>
+            <TouchableOpacity style={styles.bottomButton}>
+              <Text style={{...styles.bottomText3}}>Request Samples</Text>
+            </TouchableOpacity>
+          </View>
+        ) : null}
       </SafeAreaView>
     )
   }

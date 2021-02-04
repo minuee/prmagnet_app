@@ -78,7 +78,8 @@ class SchedulerScreen extends PureComponent {
             <View style={{width: '49%'}}>
               <Pressable
                 onLongPress={() => {
-                  console.log('2222')
+                  //this.alert('메모 삭제', '해당 메모를 삭제하시겠습니까?')
+                  this.alert('삭제 완료', '메모를 삭제 하였습니다.')
                 }}
                 style={({pressed}) => [
                   {
