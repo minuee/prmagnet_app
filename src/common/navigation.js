@@ -20,6 +20,7 @@ const backBtnImage = require('../images/navi/back.png')
 const closeBtnImage = require('../images/navi/close.png')
 const menuBtnImage = require('../images/navi/menu.png')
 const alarmImage = require('../images/navi/alarm.png')
+const linkImage = require('../images/navi/link.png')
 const alarmNewImage = require('../images/navi/alarm_new.png')
 
 const fontCheck = font => {
@@ -41,7 +42,7 @@ const cBind = reactComp => {
         </View>
       ),
     })
-  reactComp.pushOption = screenName =>
+  reactComp.pushOption = (screenName, link) =>
     navigation.setOptions({
       title: screenName,
       headerStyle: {backgroundColor: mConst.white, shadowColor: 'transparent', elevation: 0},
@@ -51,11 +52,12 @@ const cBind = reactComp => {
           <FastImage style={{width: 10, height: 18}} source={backBtnImage} />
         </TouchableOpacity>
       ),
-      // headerRight: () => (
-      //   <View style={{marginRight: (mConst.wGapUnit * 3) / 5}}>
-      //     <Text style={{fontSize: 18, color: mConst.textBaseColor, fontWeight: 'bold'}}>{screenName}</Text>
-      //   </View>
-      // ),
+      headerRight: () =>
+        link ? (
+          <TouchableOpacity style={{paddingHorizontal: 20}} onPress={reactComp.notReady}>
+            <FastImage style={{width: 20, height: 20}} source={linkImage} />
+          </TouchableOpacity>
+        ) : null,
     })
   reactComp.modalOption = screenName =>
     navigation.setOptions({
