@@ -68,78 +68,59 @@ export default StyleSheet.create({
     borderColor: '#f3f3f3',
   },
   middleText: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#555555',
   },
   middleDescWrapper: {
     flexDirection: 'row',
   },
   middleDescText: {
-    fontSize: 16,
+    fontSize: 15,
     color: mConst.black,
     paddingTop: mUtils.wScale(16),
   },
   middleDescTextBold: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: 'bold',
     color: mConst.black,
     paddingTop: mUtils.wScale(16),
   },
-  headerText: {
-    padding: mUtils.wScale(15),
-    fontSize: 15,
-    color: mConst.gray,
+  grid: {
+    marginTop: mUtils.wScale(30),
   },
-  headerTextOn: {
-    padding: mUtils.wScale(15),
+  col: (heightScale = 1, center) => ({
+    justifyContent: center ? 'center' : undefined,
+    alignItems: center ? 'center' : undefined,
+    height: mUtils.wScale(30) * heightScale,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderBottomWidth: center ? StyleSheet.hairlineWidth : 0,
+  }),
+  row: (backgroundColor = mConst.white) => ({
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: mUtils.wScale(30),
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    backgroundColor,
+  }),
+  sText: (fontSize = 10, color = mConst.textBaseColor) => ({
+    fontSize,
+    color,
+  }),
+  modelImage: {
+    width: mUtils.wScale(45),
+    height: mUtils.wScale((45 * 945) / 630),
+  },
+  bottom: {
+    width: '100%',
+    height: mUtils.hScale(50),
+    backgroundColor: mConst.bgBlue,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bottomText: {
     fontSize: 15,
     fontWeight: 'bold',
-    textDecorationLine: 'underline',
-  },
-  sectionWrapper: {
-    height: mUtils.wScale(60),
-    alignItems: 'center',
-    paddingHorizontal: mUtils.wScale(20),
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderRightWidth: StyleSheet.hairlineWidth,
-    borderColor: mConst.borderGray,
-  },
-  sectionWrapperOn: {
-    height: mUtils.wScale(60),
-    alignItems: 'center',
-    paddingHorizontal: mUtils.wScale(20),
-    backgroundColor: mConst.baseColor,
-  },
-  sectionText: {
-    fontSize: 15,
-    fontWeight: '500',
-  },
-  sectionTextOn: {
-    fontSize: 15,
-    fontWeight: '500',
+    textAlign: 'center',
     color: mConst.white,
-  },
-  itemWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    height: mUtils.wScale(50),
-    alignItems: 'center',
-    paddingLeft: mUtils.wScale(12),
-    paddingRight: mUtils.wScale(24),
-    borderTopWidth: 1,
-    borderColor: mConst.borderGray,
-  },
-  itemHeadText: {
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  itemText: {
-    fontSize: 14,
-    color: '#555555',
-  },
-  foldImage: {
-    width: mUtils.wScale(40 / 3),
-    height: mUtils.wScale(22 / 3),
   },
 })

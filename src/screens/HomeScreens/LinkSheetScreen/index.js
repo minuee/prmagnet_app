@@ -18,6 +18,8 @@ import styles from './styles'
 const goLeftImage = require('../../../images/navi/go_left.png')
 const goRightImage = require('../../../images/navi/go_right.png')
 const unfoldImage = require('../../../images/common/unfold.png')
+const model1Image = require('../../../images/navi/model_1.png')
+const model2Image = require('../../../images/navi/model_2.png')
 
 class FilterScreen extends PureComponent {
   constructor(props) {
@@ -80,14 +82,146 @@ class FilterScreen extends PureComponent {
               <Text style={styles.middleText}>Address</Text>
               <Text style={styles.middleDescText}>서울 강남구 역삼동 지연빌딩 326-33</Text>
             </View>
-            <Grid>
-              <Row style={styles.headerWrapper}></Row>
+            <Grid style={styles.grid}>
               <Row>
-                <Col size={35}></Col>
-                <Col size={65}></Col>
+                <Col style={styles.col()} size={1}></Col>
+                <Col style={styles.col()} size={2}></Col>
+                <Col style={styles.col()} size={2}></Col>
+                <Col style={styles.col(1, true)} size={6}>
+                  <Text>Shoot</Text>
+                </Col>
+                <Col style={styles.col(1, true)} size={6}>
+                  <Text>To</Text>
+                </Col>
+              </Row>
+              <Row>
+                <Col style={styles.col(4, true)} size={1}>
+                  <Text style={styles.sText()}>#1</Text>
+                </Col>
+                <Col style={styles.col(4)} size={2}>
+                  <Row style={styles.row()}>
+                    <Text style={styles.sText()}>Knitwear</Text>
+                  </Row>
+                  <Row style={styles.row()}>
+                    <Text style={styles.sText(9)}>12,000,000</Text>
+                  </Row>
+                  <Row style={styles.row()}>
+                    <Text style={styles.sText()}>Skirt</Text>
+                  </Row>
+                  <Row style={styles.row()}>
+                    <Text style={styles.sText(9)}>6,000,000</Text>
+                  </Row>
+                </Col>
+                <Col style={styles.col(4, true)} size={2}>
+                  <FastImage source={model2Image} style={styles.modelImage} />
+                </Col>
+                <Col style={styles.col(4)} size={6}>
+                  <Row style={styles.row(mConst.bgBlue)}>
+                    <Text style={styles.sText(12)}>GQ이은주ed</Text>
+                  </Row>
+                  <Row style={styles.row()}>
+                    <Text style={styles.sText(12, mConst.darkGray)}>010-4521-9999</Text>
+                  </Row>
+                  <Row style={styles.row(mConst.bgBlue)}>
+                    <Text style={styles.sText(12)}>GQ이은주ed</Text>
+                  </Row>
+                  <Row style={styles.row()}>
+                    <Text style={styles.sText(12, mConst.darkGray)}></Text>
+                  </Row>
+                </Col>
+                <Col style={styles.col(4)} size={6}>
+                  <Row style={styles.row(mConst.bgKhaki)}>
+                    <Text style={styles.sText(12)}>스타일H김나현st</Text>
+                  </Row>
+                  <Row style={styles.row()}>
+                    <Text style={styles.sText(12, mConst.darkGray)}>010-4521-9999</Text>
+                  </Row>
+                  <Row style={styles.row(mConst.bgKhaki)}>
+                    <Text style={styles.sText(12)}>스타일H김나현st</Text>
+                  </Row>
+                  <Row style={styles.row()}>
+                    <Text style={styles.sText(12, mConst.darkGray)}></Text>
+                  </Row>
+                </Col>
+              </Row>
+              <Row>
+                <Col style={styles.col(6, true)} size={1}>
+                  <Text style={styles.sText()}>#1</Text>
+                </Col>
+                <Col style={styles.col(6)} size={2}>
+                  <Row style={styles.row()}>
+                    <Text style={styles.sText()}>Knitwear</Text>
+                  </Row>
+                  <Row style={styles.row()}>
+                    <Text style={styles.sText(9)}>12,000,000</Text>
+                  </Row>
+                  <Row style={styles.row()}>
+                    <Text style={styles.sText()}>Skirt</Text>
+                  </Row>
+                  <Row style={styles.row()}>
+                    <Text style={styles.sText(9)}>6,000,000</Text>
+                  </Row>
+                  <Row style={styles.row()}>
+                    <Text style={styles.sText()}>Jacket</Text>
+                  </Row>
+                  <Row style={styles.row()}>
+                    <Text style={styles.sText(9)}>4,000,000</Text>
+                  </Row>
+                </Col>
+                <Col style={styles.col(6, true)} size={2}>
+                  <FastImage source={model1Image} style={styles.modelImage} />
+                </Col>
+                <Col style={styles.col(6)} size={6}>
+                  <Row style={styles.row(mConst.bgBlue)}>
+                    <Text style={styles.sText(12)}>GQ이은주ed</Text>
+                  </Row>
+                  <Row style={styles.row()}>
+                    <Text style={styles.sText(12, mConst.darkGray)}></Text>
+                  </Row>
+                  <Row style={styles.row(mConst.bgBlue)}>
+                    <Text style={styles.sText(12)}>GQ이은주ed</Text>
+                  </Row>
+                  <Row style={styles.row()}>
+                    <Text style={styles.sText(12, mConst.darkGray)}></Text>
+                  </Row>
+                  <Row style={styles.row(mConst.bgBlue)}>
+                    <Text style={styles.sText(12)}>GQ이은주ed</Text>
+                  </Row>
+                  <Row style={styles.row()}>
+                    <Text style={styles.sText(12, mConst.darkGray)}></Text>
+                  </Row>
+                </Col>
+                <Col style={styles.col(6)} size={6}>
+                  <Row style={styles.row(mConst.bgKhaki)}>
+                    <Text style={styles.sText(12)}>스타일H김나현st</Text>
+                  </Row>
+                  <Row style={styles.row()}>
+                    <Text style={styles.sText(12, mConst.darkGray)}></Text>
+                  </Row>
+                  <Row style={styles.row(mConst.bgKhaki)}>
+                    <Text style={styles.sText(12)}>스타일H김나현st</Text>
+                  </Row>
+                  <Row style={styles.row()}>
+                    <Text style={styles.sText(12, mConst.darkGray)}></Text>
+                  </Row>
+                  <Row style={styles.row(mConst.bgKhaki)}>
+                    <Text style={styles.sText(12)}>스타일H김나현st</Text>
+                  </Row>
+                  <Row style={styles.row()}>
+                    <Text style={styles.sText(12, mConst.darkGray)}></Text>
+                  </Row>
+                </Col>
               </Row>
             </Grid>
           </ScrollView>
+          <TouchableOpacity
+            onPress={() => {
+              this.alert('문의하기 완료', '문의가 정상적으로 접수되었습니다.')
+            }}
+            style={styles.bottom}
+          >
+            <Text style={styles.bottomText}>All Picked Up</Text>
+          </TouchableOpacity>
         </SafeAreaView>
       </>
     )
