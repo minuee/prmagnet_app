@@ -42,7 +42,44 @@ class FilterScreen extends PureComponent {
               </View>
               <FastImage source={goRightImage} style={styles.goImage} />
             </View>
-            <View style={styles.horizonLine} />
+            <View style={styles.middleWrapper}>
+              <Text style={styles.middleText}>Magazine</Text>
+              <Text style={styles.middleDescText}>GQ</Text>
+            </View>
+            <View style={styles.middleGroupWrapper}>
+              <View style={styles.middleDualWrapper}>
+                <Text style={styles.middleText}>Editor/Stylist</Text>
+                <View style={styles.middleDescWrapper}>
+                  <Text style={styles.middleDescTextBold}>이은주ed</Text>
+                  <Text style={styles.middleDescText}> 010-1111-2222</Text>
+                </View>
+              </View>
+              <View style={styles.middleDualWrapper}>
+                <Text style={styles.middleText}>Assistant</Text>
+                <View style={styles.middleDescWrapper}>
+                  <Text style={styles.middleDescTextBold}>박지연ed</Text>
+                  <Text style={styles.middleDescText}> 010-5423-9999</Text>
+                </View>
+              </View>
+            </View>
+            <View style={styles.middleGroupWrapper}>
+              <View style={styles.middleTripleWrapper}>
+                <Text style={styles.middleText}>Loading Date</Text>
+                <Text style={styles.middleDescText}>8/4(MON)</Text>
+              </View>
+              <View style={styles.middleTripleWrapper}>
+                <Text style={styles.middleText}>Shooting Date</Text>
+                <Text style={styles.middleDescText}>8/5(SUN)</Text>
+              </View>
+              <View style={styles.middleTripleWrapper}>
+                <Text style={styles.middleText}>Returning Date</Text>
+                <Text style={styles.middleDescText}>8/6(TUE)</Text>
+              </View>
+            </View>
+            <View style={styles.middleWrapper}>
+              <Text style={styles.middleText}>Address</Text>
+              <Text style={styles.middleDescText}>서울 강남구 역삼동 지연빌딩 326-33</Text>
+            </View>
             <Grid>
               <Row style={styles.headerWrapper}></Row>
               <Row>

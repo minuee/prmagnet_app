@@ -11,6 +11,7 @@ export default StyleSheet.create({
     backgroundColor: mConst.white,
   },
   titleWrapper: {
+    width: mConst.wWidth - mUtils.wScale(20) * 2,
     height: mUtils.wScale(60),
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -38,12 +39,51 @@ export default StyleSheet.create({
     height: mUtils.wScale(20 / 3),
     marginLeft: mUtils.wScale(8),
   },
-  headerWrapper: {
-    width: mConst.wWidth,
-    height: mUtils.wScale(60),
-    alignItems: 'center',
-    paddingHorizontal: mUtils.wScale(5),
-    borderColor: mConst.black,
+  middleWrapper: {
+    width: mConst.wWidth - mUtils.wScale(20) * 2,
+    paddingTop: mUtils.wScale(16),
+    paddingBottom: mUtils.wScale(12),
+    marginHorizontal: mUtils.wScale(20),
+    borderBottomWidth: 1,
+    borderColor: '#f3f3f3',
+  },
+  middleGroupWrapper: {
+    width: mConst.wWidth - mUtils.wScale(20) * 2,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignSelf: 'center',
+  },
+  middleDualWrapper: {
+    width: (mConst.wWidth - mUtils.wScale(20) * 2) / 2 - mUtils.wScale(4),
+    paddingTop: mUtils.wScale(16),
+    paddingBottom: mUtils.wScale(12),
+    borderBottomWidth: 1,
+    borderColor: '#f3f3f3',
+  },
+  middleTripleWrapper: {
+    width: (mConst.wWidth - mUtils.wScale(20) * 2) / 3 - mUtils.wScale(4),
+    paddingTop: mUtils.wScale(16),
+    paddingBottom: mUtils.wScale(12),
+    borderBottomWidth: 1,
+    borderColor: '#f3f3f3',
+  },
+  middleText: {
+    fontSize: 14,
+    color: '#555555',
+  },
+  middleDescWrapper: {
+    flexDirection: 'row',
+  },
+  middleDescText: {
+    fontSize: 16,
+    color: mConst.black,
+    paddingTop: mUtils.wScale(16),
+  },
+  middleDescTextBold: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: mConst.black,
+    paddingTop: mUtils.wScale(16),
   },
   headerText: {
     padding: mUtils.wScale(15),
