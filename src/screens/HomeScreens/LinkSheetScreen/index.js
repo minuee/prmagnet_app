@@ -29,6 +29,7 @@ class LinkSheetScreen extends PureComponent {
   }
   componentDidMount() {
     this.pushOption('Return', true)
+    // this.alert('수령 완료', '“스타일H김나현님께 Look #1 Knitwear 수령 완료"', [{onPress: () => null}, {onPress: () => null}])
   }
   render() {
     return (
