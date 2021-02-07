@@ -21,7 +21,7 @@ const unfoldImage = require('../../../images/common/unfold.png')
 const model1Image = require('../../../images/navi/model_1.png')
 const model2Image = require('../../../images/navi/model_2.png')
 
-class FilterScreen extends PureComponent {
+class LinkSheetScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
@@ -146,7 +146,7 @@ class FilterScreen extends PureComponent {
               </Row>
               <Row>
                 <Col style={styles.col(6, true)} size={1}>
-                  <Text style={styles.sText()}>#1</Text>
+                  <Text style={styles.sText()}>#6</Text>
                 </Col>
                 <Col style={styles.col(6)} size={2}>
                   <Row style={styles.row()}>
@@ -216,7 +216,7 @@ class FilterScreen extends PureComponent {
           </ScrollView>
           <TouchableOpacity
             onPress={() => {
-              this.alert('문의하기 완료', '문의가 정상적으로 접수되었습니다.')
+              this.alert('수령 완료', '“스타일H김나현님께 Look #1 Knitwear 수령 완료"')
             }}
             style={styles.bottom}
           >
@@ -231,4 +231,4 @@ class FilterScreen extends PureComponent {
 export default connect(
   state => ({}),
   dispatch => ({})
-)(FilterScreen)
+)(LinkSheetScreen)
