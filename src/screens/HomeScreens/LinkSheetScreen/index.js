@@ -3,12 +3,14 @@ import {SafeAreaView, ScrollView, View, TouchableOpacity, Image} from 'react-nat
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import {Grid, Col, Row} from 'react-native-easy-grid'
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures'
 import _ from 'lodash'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
+import Swiper from '../../common/Swiper'
 import CategoryGroup from '../../common/CategoryGroup'
 import ColorGroup from '../../common/ColorGroup'
 import MaterialGroup from '../../common/MaterialGroup'
@@ -20,18 +22,26 @@ const goRightImage = require('../../../images/navi/go_right.png')
 const unfoldImage = require('../../../images/common/unfold.png')
 const model1Image = require('../../../images/navi/model_1.png')
 const model2Image = require('../../../images/navi/model_2.png')
+const circleCheckImage = require('../../../images/common/circle_check.png')
+const circleCheckOnImage = require('../../../images/common/circle_check_on.png')
 
 class LinkSheetScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
-    this.state = {}
+    this.state = {
+      swipe: true,
+    }
   }
   componentDidMount() {
     this.pushOption('Return', true)
     // this.alert('수령 완료', '“스타일H김나현님께 Look #1 Knitwear 수령 완료"', [{onPress: () => null}, {onPress: () => null}])
   }
+  onSwipe = gesture => {
+    this.setState({swipe: gesture === 'left' ? true : false})
+  }
   render() {
+    const {swipe} = this.state
     return (
       <>
         <SafeAreaView style={styles.container}>
@@ -118,27 +128,50 @@ class LinkSheetScreen extends PureComponent {
                 </Col>
                 <Col style={styles.col(4)} size={6}>
                   <Row style={styles.row(mConst.bgBlue)}>
-                    <Text style={styles.sText(12)}>GQ이은주ed</Text>
+                    <Text style={styles.sText(12)} numberOfLines={1}>
+                      GQ이은주ed
+                    </Text>
                   </Row>
                   <Row style={styles.row()}>
                     <Text style={styles.sText(12, mConst.darkGray)}>010-4521-9999</Text>
                   </Row>
                   <Row style={styles.row(mConst.bgBlue)}>
-                    <Text style={styles.sText(12)}>GQ이은주ed</Text>
+                    <Text style={styles.sText(12)} numberOfLines={1}>
+                      GQ이은주ed
+                    </Text>
                   </Row>
                   <Row style={styles.row()}>
                     <Text style={styles.sText(12, mConst.darkGray)}></Text>
                   </Row>
                 </Col>
                 <Col style={styles.col(4)} size={6}>
-                  <Row style={styles.row(mConst.bgKhaki)}>
-                    <Text style={styles.sText(12)}>스타일H김나현st</Text>
-                  </Row>
+                  <Swiper onSwipeLeft={() => this.onSwipe('left')} onSwipeRight={() => this.onSwipe('right')}>
+                    <Row style={styles.row(mConst.bgKhaki)}>
+                      {swipe ? (
+                        <>
+                          <Col style={styles.col(1, true, mConst.bgKhaki)} size={3}>
+                            <Text style={styles.sText(12)} numberOfLines={1}>
+                              스타일H김나현st
+                            </Text>
+                          </Col>
+                          <Col style={styles.col(1, true)} size={1}>
+                            <FastImage source={circleCheckImage} style={styles.checkImage} />
+                          </Col>
+                        </>
+                      ) : (
+                        <Text style={styles.sText(12)} numberOfLines={1}>
+                          스타일H김나현st
+                        </Text>
+                      )}
+                    </Row>
+                  </Swiper>
                   <Row style={styles.row()}>
                     <Text style={styles.sText(12, mConst.darkGray)}>010-4521-9999</Text>
                   </Row>
                   <Row style={styles.row(mConst.bgKhaki)}>
-                    <Text style={styles.sText(12)}>스타일H김나현st</Text>
+                    <Text style={styles.sText(12)} numberOfLines={1}>
+                      스타일H김나현st
+                    </Text>
                   </Row>
                   <Row style={styles.row()}>
                     <Text style={styles.sText(12, mConst.darkGray)}></Text>
@@ -174,19 +207,25 @@ class LinkSheetScreen extends PureComponent {
                 </Col>
                 <Col style={styles.col(6)} size={6}>
                   <Row style={styles.row(mConst.bgBlue)}>
-                    <Text style={styles.sText(12)}>GQ이은주ed</Text>
+                    <Text style={styles.sText(12)} numberOfLines={1}>
+                      GQ이은주ed
+                    </Text>
                   </Row>
                   <Row style={styles.row()}>
                     <Text style={styles.sText(12, mConst.darkGray)}></Text>
                   </Row>
                   <Row style={styles.row(mConst.bgBlue)}>
-                    <Text style={styles.sText(12)}>GQ이은주ed</Text>
+                    <Text style={styles.sText(12)} numberOfLines={1}>
+                      GQ이은주ed
+                    </Text>
                   </Row>
                   <Row style={styles.row()}>
                     <Text style={styles.sText(12, mConst.darkGray)}></Text>
                   </Row>
                   <Row style={styles.row(mConst.bgBlue)}>
-                    <Text style={styles.sText(12)}>GQ이은주ed</Text>
+                    <Text style={styles.sText(12)} numberOfLines={1}>
+                      GQ이은주ed
+                    </Text>
                   </Row>
                   <Row style={styles.row()}>
                     <Text style={styles.sText(12, mConst.darkGray)}></Text>
@@ -194,19 +233,25 @@ class LinkSheetScreen extends PureComponent {
                 </Col>
                 <Col style={styles.col(6)} size={6}>
                   <Row style={styles.row(mConst.bgKhaki)}>
-                    <Text style={styles.sText(12)}>스타일H김나현st</Text>
+                    <Text style={styles.sText(12)} numberOfLines={1}>
+                      스타일H김나현st
+                    </Text>
                   </Row>
                   <Row style={styles.row()}>
                     <Text style={styles.sText(12, mConst.darkGray)}></Text>
                   </Row>
                   <Row style={styles.row(mConst.bgKhaki)}>
-                    <Text style={styles.sText(12)}>스타일H김나현st</Text>
+                    <Text style={styles.sText(12)} numberOfLines={1}>
+                      스타일H김나현st
+                    </Text>
                   </Row>
                   <Row style={styles.row()}>
                     <Text style={styles.sText(12, mConst.darkGray)}></Text>
                   </Row>
                   <Row style={styles.row(mConst.bgKhaki)}>
-                    <Text style={styles.sText(12)}>스타일H김나현st</Text>
+                    <Text style={styles.sText(12)} numberOfLines={1}>
+                      스타일H김나현st
+                    </Text>
                   </Row>
                   <Row style={styles.row()}>
                     <Text style={styles.sText(12, mConst.darkGray)}></Text>
