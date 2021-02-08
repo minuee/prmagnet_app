@@ -29,11 +29,13 @@ import FilterSettingScreen from './HomeScreens/FilterSettingScreen'
 import DigitalSRScreen from './HomeScreens/DigitalSRScreen'
 import DigitalSRDetailScreen from './HomeScreens/DigitalSRDetailScreen'
 import FavoritesScreen from './HomeScreens/FavoritesScreen'
-import SchedulerScreen from './HomeScreens/SchedulerScreen'
+import BrandSchedulerScreen from './HomeScreens/BrandSchedulerScreen'
 import ScheduleMemoScreen from './HomeScreens/ScheduleMemoScreen'
 import NoticeScreen from './HomeScreens/NoticeScreen'
 import SampleRequestsScreen from './HomeScreens/SampleRequestsScreen'
+import SampleRequestsListScreen from './HomeScreens/SampleRequestsListScreen'
 import LinkSheetScreen from './HomeScreens/LinkSheetScreen'
+import MagazineSchedulerScreen from './HomeScreens/MagazineSchedulerScreen'
 
 import DevNavigationScreen from './HomeScreens/DevNavigationScreen'
 
@@ -162,13 +164,15 @@ class RootScreen extends PureComponent {
   StartStack = () => {
     const StartStack = createStackNavigator()
     return (
-      <StartStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'DevNavigationScreen'}>
+      <StartStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'LinkSheetScreen'}>
         <StartStack.Screen name="DevNavigationScreen" component={DevNavigationScreen} />
         <StartStack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}} />
+        <StartStack.Screen name="MagazineSchedulerScreen" component={MagazineSchedulerScreen} options={{headerShown: false}} />
+        <StartStack.Screen name="SampleRequestsListScreen" component={SampleRequestsListScreen} options={{headerShown: false}} />
         <StartStack.Screen name="SampleRequestsScreen" component={SampleRequestsScreen} options={{headerShown: false}} />
         <StartStack.Screen name="NoticeScreen" component={NoticeScreen} />
         <StartStack.Screen name="ScheduleMemoScreen" component={ScheduleMemoScreen} />
-        <StartStack.Screen name="SchedulerScreen" component={SchedulerScreen} options={{headerShown: false}} />
+        <StartStack.Screen name="BrandSchedulerScreen" component={BrandSchedulerScreen} options={{headerShown: false}} />
         <StartStack.Screen name="FavoritesScreen" component={FavoritesScreen} />
         <StartStack.Screen name="DigitalSRDetailScreen" component={DigitalSRDetailScreen} />
         <StartStack.Screen name="DigitalSRScreen" component={DigitalSRScreen} options={{headerShown: false}} />
