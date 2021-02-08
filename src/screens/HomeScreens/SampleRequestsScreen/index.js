@@ -1,10 +1,11 @@
 import React, {PureComponent} from 'react'
-import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity, Pressable} from 'react-native'
+import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity, TextInput} from 'react-native'
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import _ from 'lodash'
 import Header1 from '../../common/Header1'
 import Modal from 'react-native-modal'
+import Postcode from 'react-native-daum-postcode'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -13,7 +14,6 @@ import Text from '../../common/Text'
 import {Grid, Col, Row} from 'react-native-easy-grid'
 import styles from './styles'
 import {multicastChannel} from 'redux-saga'
-import {TextInput} from 'react-native'
 
 const modelImg = require('../../../images/navi/model_1.png')
 const moreImg = require('../../../images/navi/more_2.png')
@@ -37,19 +37,16 @@ class SampleRequestsScreen extends PureComponent {
       ],
       selected: [],
       yesNo: '',
+      isvisible: false,
     }
   }
 
-  select = model => {
-    this.setState()
-  }
-
   render() {
-    const {data} = this.state
+    const {data, isvisible} = this.state
     return (
       <SafeAreaView style={styles.container}>
         <Header1 />
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{paddingHorizontal: mUtils.wScale(20)}}>
             <Text style={{...styles.mainTitle, marginTop: mUtils.wScale(25)}}>Sample</Text>
             <Text style={styles.mainTitle1}>Requests</Text>
@@ -135,7 +132,12 @@ class SampleRequestsScreen extends PureComponent {
             <Text style={styles.smallTitle}>Shipping destination</Text>
             <View style={{...styles.box2, width: '100%'}}>
               <Text style={styles.boxText}>강남대로 135-5295</Text>
-              <TouchableOpacity style={{...styles.postBox}}>
+              <TouchableOpacity
+                onPress={() => {
+                  this.setState({...this.state, isvisible: true})
+                }}
+                style={{...styles.postBox}}
+              >
                 <Text style={styles.postCode}>우편번호</Text>
               </TouchableOpacity>
             </View>
@@ -222,13 +224,13 @@ class SampleRequestsScreen extends PureComponent {
             <TextInput
               style={{...styles.inputBox, marginTop: mUtils.wScale(3), marginBottom: mUtils.wScale(18)}}
               placeholder={'Number of pages'}
-              placeholderTextColor={'#555555'}
+              placeholderTextColor={mConst.borderGray}
             />
             <Text style={styles.smallTitle}>함께 들어가는 브랜드</Text>
             <TextInput
               style={{...styles.inputBox, marginTop: mUtils.wScale(3), marginBottom: mUtils.wScale(18)}}
               placeholder={'Different brand'}
-              placeholderTextColor={'#555555'}
+              placeholderTextColor={mConst.borderGray}
             />
             <Text style={styles.smallTitle}>Message</Text>
             <TextInput
@@ -237,15 +239,32 @@ class SampleRequestsScreen extends PureComponent {
               textAlignVertical={'top'}
             />
           </View>
+          <View style={styles.layout}>
+            <TouchableOpacity style={{...styles.bottomButton, backgroundColor: mConst.borderGray}}>
+              <Text style={{...styles.buttonText, color: mConst.black}}>Temporary Save</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{...styles.bottomButton, backgroundColor: mConst.black}}>
+              <Text style={{...styles.buttonText, color: mConst.white}}>Sample Request</Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
-        <View style={styles.layout}>
-          <TouchableOpacity style={{...styles.bottomButton, backgroundColor: mConst.borderGray}}>
-            <Text style={{...styles.buttonText, color: mConst.black}}>Temporary Save</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={{...styles.bottomButton, backgroundColor: mConst.black}}>
-            <Text style={{...styles.buttonText, color: mConst.white}}>Sample Request</Text>
-          </TouchableOpacity>
-        </View>
+        <Modal
+          isVisible={isvisible}
+          useNativeDriver={true}
+          onBackButtonPress={() => this.setState({...this.state, isvisible: false})}
+          onBackdropPress={() => this.setState({...this.state, isvisible: false})}
+        >
+          <View style={{height: '80%', width: '100%'}}>
+            <Postcode
+              style={{flex: 1}}
+              jsOptions={{animated: false}}
+              onSelected={re => {
+                console.log('postcode>>>>', re)
+                //this.setState({...this.state, isvisible: false})
+              }}
+            />
+          </View>
+        </Modal>
       </SafeAreaView>
     )
   }

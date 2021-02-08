@@ -24,7 +24,7 @@ const plusImg = require('../../../images/navi/plus_1.png')
 const memoImg = require('../../../images/navi/memo_1.png')
 const linkImg = require('../../../images/navi/link_1.png')
 
-class SchedulerScreen extends PureComponent {
+class BrandSchedulerScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
@@ -126,4 +126,4 @@ class SchedulerScreen extends PureComponent {
 export default connect(
   state => ({}),
   dispatch => ({})
-)(SchedulerScreen)
+)(BrandSchedulerScreen)
