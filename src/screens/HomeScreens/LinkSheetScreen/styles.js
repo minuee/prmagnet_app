@@ -88,12 +88,13 @@ export default StyleSheet.create({
   grid: {
     marginTop: mUtils.wScale(30),
   },
-  col: (heightScale = 1, center) => ({
+  col: (heightScale = 1, center, backgroundColor = mConst.white) => ({
     justifyContent: center ? 'center' : undefined,
     alignItems: center ? 'center' : undefined,
     height: mUtils.wScale(30) * heightScale,
     borderWidth: StyleSheet.hairlineWidth,
     borderBottomWidth: center ? StyleSheet.hairlineWidth : 0,
+    backgroundColor,
   }),
   row: (backgroundColor = mConst.white) => ({
     justifyContent: 'center',
@@ -109,6 +110,16 @@ export default StyleSheet.create({
   modelImage: {
     width: mUtils.wScale(45),
     height: mUtils.wScale((45 * 945) / 630),
+  },
+  checkWrapper: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: mConst.white,
+    height: mUtils.wScale(30),
+  },
+  checkImage: {
+    width: mUtils.wScale(15),
+    height: mUtils.wScale(15),
   },
   bottom: {
     width: '100%',
