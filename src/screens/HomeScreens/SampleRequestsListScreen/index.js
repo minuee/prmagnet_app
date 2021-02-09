@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import _ from 'lodash'
 import Header1 from '../../common/Header1'
+import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-menu'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -19,6 +20,7 @@ const moreImage3 = require('../../../images/navi/more_3.png')
 class SampleRequestsListScreen extends PureComponent {
   constructor(props) {
     super(props)
+    cBind(this)
     this.state = {
       data: [
         {title: 'GUCCI', filming_dt: '2020-08-05', request_dt: '2020-08-05', status: 'Pending'},
@@ -34,11 +36,49 @@ class SampleRequestsListScreen extends PureComponent {
         <TouchableOpacity style={styles.layout3}>
           <View style={styles.layout4}>
             <Text style={styles.title}>{item.title}</Text>
-            <TouchableOpacity>
-              <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImage1} />
-            </TouchableOpacity>
+            <Menu>
+              <MenuTrigger
+                customStyles={{
+                  TriggerTouchableComponent: TouchableOpacity,
+                  triggerTouchable: {
+                    activeOpacity: 90,
+                    style: {
+                      flex: 1,
+                    },
+                  },
+                }}
+                style={styles.layout5}
+              >
+                <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImage1} />
+              </MenuTrigger>
+              <MenuOptions optionsContainerStyle={{marginTop: mUtils.wScale(35)}}>
+                <MenuOption
+                  style={{paddingTop: mUtils.wScale(17), paddingBottom: mUtils.wScale(12), paddingHorizontal: mUtils.wScale(15)}}
+                  onSelect={() => {}}
+                >
+                  <Text style={styles.delete}>Edit</Text>
+                </MenuOption>
+                <MenuOption
+                  style={{paddingTop: mUtils.wScale(12), paddingBottom: mUtils.wScale(17), paddingHorizontal: mUtils.wScale(15)}}
+                  onSelect={() => {
+                    this.alert('샘플요청 삭제', '선택하신 샘플을 삭제 하시겠습니까?', [
+                      {
+                        onPress: () => {
+                          setTimeout(() => {
+                            this.alert('요청삭제 완료', '요청이 삭제되었습니다.')
+                          }, 100)
+                        },
+                      },
+                      {onPress: () => null},
+                    ])
+                  }}
+                >
+                  <Text style={styles.delete}>Delete</Text>
+                </MenuOption>
+              </MenuOptions>
+            </Menu>
           </View>
-          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: mUtils.wScale(15)}}>
+          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: mUtils.wScale(5)}}>
             <View>
               <Text style={{...styles.dt}}>
                 Filming date{'  '}

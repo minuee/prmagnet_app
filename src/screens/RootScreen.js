@@ -36,6 +36,7 @@ import SampleRequestsScreen from './HomeScreens/SampleRequestsScreen'
 import SampleRequestsListScreen from './HomeScreens/SampleRequestsListScreen'
 import LinkSheetScreen from './HomeScreens/LinkSheetScreen'
 import MagazineSchedulerScreen from './HomeScreens/MagazineSchedulerScreen'
+import BrandLinkSheetScreen from './HomeScreens/BrandLinkSheetScreen'
 
 import DevNavigationScreen from './HomeScreens/DevNavigationScreen'
 
@@ -164,9 +165,10 @@ class RootScreen extends PureComponent {
   StartStack = () => {
     const StartStack = createStackNavigator()
     return (
-      <StartStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'LinkSheetScreen'}>
+      <StartStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'BrandLinkSheetScreen'}>
         <StartStack.Screen name="DevNavigationScreen" component={DevNavigationScreen} />
         <StartStack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}} />
+        <StartStack.Screen name="BrandLinkSheetScreen" component={BrandLinkSheetScreen} options={{headerShown: false}} />
         <StartStack.Screen name="MagazineSchedulerScreen" component={MagazineSchedulerScreen} options={{headerShown: false}} />
         <StartStack.Screen name="SampleRequestsListScreen" component={SampleRequestsListScreen} options={{headerShown: false}} />
         <StartStack.Screen name="SampleRequestsScreen" component={SampleRequestsScreen} options={{headerShown: false}} />

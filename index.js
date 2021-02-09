@@ -6,6 +6,7 @@ import {PersistGate} from 'redux-persist/integration/react'
 import {RootSiblingParent} from 'react-native-root-siblings'
 import {getStorybookUI, configure, addDecorator} from '@storybook/react-native'
 import {withKnobs} from '@storybook/addon-knobs'
+import {MenuProvider} from 'react-native-popup-menu'
 
 import {name as appName} from './app.json'
 import {loadStories} from './storybook/storyLoader'
@@ -21,13 +22,15 @@ const persistor = persistStore(store)
 
 const App = () => {
   return (
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <RootSiblingParent>
-          <RootScreen />
-        </RootSiblingParent>
-      </PersistGate>
-    </Provider>
+    <MenuProvider>
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <RootSiblingParent>
+            <RootScreen />
+          </RootSiblingParent>
+        </PersistGate>
+      </Provider>
+    </MenuProvider>
   )
 }
 

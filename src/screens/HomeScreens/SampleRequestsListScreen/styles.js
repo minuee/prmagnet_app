@@ -38,6 +38,12 @@ export default StyleSheet.create({
     textAlign: 'left',
     color: mConst.black,
   },
+  delete: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 18,
+    textAlign: 'left',
+    color: '#070708',
+  },
   layout1: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -54,13 +60,20 @@ export default StyleSheet.create({
   },
   layout3: {
     paddingHorizontal: mUtils.wScale(20),
-    paddingVertical: mUtils.wScale(25),
+    paddingVertical: mUtils.wScale(15),
     backgroundColor: mConst.white,
   },
   layout4: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  layout5: {
+    width: mUtils.wScale(70),
+    height: mUtils.wScale(40),
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: -mUtils.wScale(33),
   },
   latestImg: {
     width: mUtils.wScale(7),
