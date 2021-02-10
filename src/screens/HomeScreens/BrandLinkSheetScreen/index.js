@@ -15,14 +15,25 @@ import styles from './styles'
 
 const moreImg = require('../../../images/navi/more_4.png')
 const schedulerImg = require('../../../images/navi/scheduler_1.png')
+const noCheckImg = require('../../../images/navi/no_check_2.png')
+const brandImg = require('../../../images/navi/brand_1.png')
 
 class BrandLinkSheetScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
-    this.state = {}
+    this.state = {
+      data: [
+        {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
+        {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
+        {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
+        {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
+        {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
+      ],
+    }
   }
   render() {
+    const {data} = this.state
     return (
       <SafeAreaView style={styles.container}>
         <Header />
@@ -41,7 +52,35 @@ class BrandLinkSheetScreen extends PureComponent {
             <Text style={styles.change}>변경</Text>
           </TouchableOpacity>
         </View>
-        <ScrollView style={{paddingHorizontal: mUtils.wScale(20), paddingVertical: mUtils.wScale(25)}}></ScrollView>
+        <ScrollView style={{paddingBottom: mUtils.wScale(25)}}>
+          <View style={{width: '100%', marginTop: mUtils.wScale(25)}}>
+            <TouchableOpacity style={{...styles.layout1, marginBottom: mUtils.wScale(15), paddingHorizontal: mUtils.wScale(20)}}>
+              <FastImage resizeMode={'contain'} style={styles.checkImg} source={noCheckImg} />
+              <Text style={{...styles.subDt}}>
+                8/2(SUN)
+                <Text style={{fontSize: 16}}>
+                  {' '}
+                  : <Text style={{fontSize: 16, color: '#7ea1b2'}}>8</Text>
+                </Text>
+              </Text>
+            </TouchableOpacity>
+            <View style={{...styles.layout, flexWrap: 'wrap', paddingHorizontal: mUtils.wScale(20)}}>
+              {data.map((item, index) => {
+                return (
+                  <TouchableOpacity style={{...styles.brandBox}} key={index}>
+                    <View style={styles.box1}>
+                      <FastImage resizeMode={'contain'} style={styles.brandImg} source={item.img} />
+                    </View>
+                    <View style={styles.box2}>
+                      <Text style={{...styles.name}}>{item.name}</Text>
+                      <Text style={{...styles.brand, marginTop: mUtils.wScale(5)}}>{item.brand}</Text>
+                    </View>
+                  </TouchableOpacity>
+                )
+              })}
+            </View>
+          </View>
+        </ScrollView>
       </SafeAreaView>
     )
   }

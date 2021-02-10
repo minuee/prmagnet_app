@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native'
+import {StyleSheet, Platform} from 'react-native'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -26,6 +26,24 @@ export default StyleSheet.create({
     textAlign: 'left',
     color: '#7ea1b2',
   },
+  subDt: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 14,
+    textAlign: 'left',
+    color: '#555555',
+  },
+  name: {
+    fontFamily: 'NotoSansKR-Bold',
+    fontSize: 15,
+    textAlign: 'left',
+    color: mConst.black,
+  },
+  brand: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 12,
+    textAlign: 'left',
+    color: '#999999',
+  },
   layout: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -44,5 +62,42 @@ export default StyleSheet.create({
     width: mUtils.wScale(15),
     height: mUtils.wScale(15),
     marginRight: mUtils.wScale(5),
+  },
+  checkImg: {
+    width: mUtils.wScale(14),
+    height: mUtils.wScale(14),
+    marginRight: mUtils.wScale(5),
+  },
+  brandImg: {
+    width: mUtils.wScale(40),
+    height: mUtils.wScale(10),
+  },
+  brandBox: {
+    width: '48%',
+    borderStyle: 'solid',
+    borderWidth: 0.7,
+    borderColor: '#f3f3f3',
+    shadowColor: '#000',
+    shadowOffset: {width: 3, height: 3},
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 5,
+    borderRadius: mUtils.wScale(7),
+    marginBottom: mUtils.wScale(12),
+  },
+  box1: {
+    backgroundColor: '#b8c18c',
+    borderTopLeftRadius: mUtils.wScale(7),
+    borderTopRightRadius: mUtils.wScale(7),
+    paddingHorizontal: mUtils.wScale(8),
+    paddingVertical: mUtils.wScale(8),
+  },
+  box2: {
+    backgroundColor: 'white',
+    borderBottomLeftRadius: mUtils.wScale(7),
+    borderBottomRightRadius: mUtils.wScale(7),
+    paddingHorizontal: mUtils.wScale(8),
+    paddingTop: mUtils.wScale(10),
+    paddingBottom: mUtils.wScale(20),
   },
 })
