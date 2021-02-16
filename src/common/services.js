@@ -20,7 +20,7 @@ const commonAPI = (path, data, method) => {
     withCredentials: true,
     data: method === 'post' ? payload : undefined,
     params: method === 'get' ? payload : undefined,
-    timeout: 3000,
+    timeout: 10000,
   })
     .then(response => response.data)
     .catch(e => e)
