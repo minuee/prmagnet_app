@@ -44,6 +44,12 @@ export default StyleSheet.create({
     textAlign: 'left',
     color: '#999999',
   },
+  menuText: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 18,
+    textAlign: 'left',
+    color: '#070708',
+  },
   layout: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -99,5 +105,15 @@ export default StyleSheet.create({
     paddingHorizontal: mUtils.wScale(8),
     paddingTop: mUtils.wScale(10),
     paddingBottom: mUtils.wScale(20),
+  },
+  menuOptions: {
+    marginTop: mUtils.wScale(45),
+    marginLeft: mUtils.wScale(20),
+    width: mUtils.wScale(158),
+    paddingVertical: mUtils.wScale(7),
+  },
+  menuOption: {
+    paddingHorizontal: mUtils.wScale(15),
+    paddingVertical: mUtils.wScale(8),
   },
 })

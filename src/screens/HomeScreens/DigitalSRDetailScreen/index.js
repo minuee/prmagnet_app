@@ -3,6 +3,7 @@ import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity, Pressable, I
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import _ from 'lodash'
+import Swiper from 'react-native-swiper'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -12,7 +13,6 @@ import {Grid, Col, Row} from 'react-native-easy-grid'
 import styles from './styles'
 import {multicastChannel} from 'redux-saga'
 
-const modelImg = require('../../../images/navi/model_2.png')
 const noCheckImg = require('../../../images/navi/no_check_1.png')
 const checkImg = require('../../../images/navi/check_1.png')
 
@@ -21,6 +21,12 @@ class DigitalSRDetailScreen extends PureComponent {
     super(props)
     cBind(this)
     this.state = {
+      model: [
+        require('../../../images/navi/model_2.png'),
+        require('../../../images/navi/model_2.png'),
+        require('../../../images/navi/model_2.png'),
+        require('../../../images/navi/model_2.png'),
+      ],
       name: '2020 CUCCI FREE FOLE',
       season: 'Fall',
       gender: 'Women',
@@ -40,7 +46,24 @@ class DigitalSRDetailScreen extends PureComponent {
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView>
-          <FastImage resizeMode={'cover'} style={{width: '100%', height: mUtils.wScale(500)}} source={modelImg} />
+          <Swiper
+            loop={false}
+            height={mUtils.wScale(500)}
+            style={{height: mUtils.wScale(500), flex: 0}}
+            containerStyle={{
+              height: mUtils.wScale(500),
+              flex: 0,
+            }}
+            activeDotColor={mConst.black}
+            dotColor={mConst.white}
+            dotStyle={styles.swipeDot}
+            activeDotStyle={styles.swipeActiveDot}
+          >
+            {this.state.model.map((item, index) => {
+              return <FastImage key={index} resizeMode={'cover'} style={{width: '100%', height: mUtils.wScale(500)}} source={item} />
+            })}
+          </Swiper>
+
           <View style={{paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(25)}}>
             <Text style={styles.title}>Look #1</Text>
             <View style={styles.emptyBar} />

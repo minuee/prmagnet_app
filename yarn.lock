@@ -2910,19 +2910,19 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.6.0.tgz"
   integrity sha512-cPqjjzuFWNK3BSKLm0abspP0sp/IGOli4p5I5fKFAzdS8fvjdOwDCfZqAaIiXd9lPkOWi3SUUfZof3hEb7J/uw==
 
-"@psyrenpark/api@^1.0.43":
+"@psyrenpark/api@1.0.43":
   version "1.0.43"
   resolved "https://registry.yarnpkg.com/@psyrenpark/api/-/api-1.0.43.tgz#87bba706359d9628037f9dc72ccbbcc3615885aa"
   integrity sha512-cZjIR4ZtUP2z23DDxpQrX+vHmSYU3A3PI6WTJSMhaEM/LuQzCzdj+OQPoHmfCL4b5snsEzcbzv2YNiNNccogqA==
 
-"@psyrenpark/auth@^1.0.75":
+"@psyrenpark/auth@1.0.75":
   version "1.0.75"
   resolved "https://registry.yarnpkg.com/@psyrenpark/auth/-/auth-1.0.75.tgz#1352ededd98fc2aa981b3e45b6d2a1c662836853"
   integrity sha512-NQnEREcfsDfA+1EX9m+awTagdABZLjz29vyyaTU2AhvgzHj/IkXo4aErUUu4nMFq2RjZ4H9Lcnh0BYnM9+yqyg==
   dependencies:
     "@types/crypto-js" "^4.0.1"
 
-"@psyrenpark/storage@^1.0.4":
+"@psyrenpark/storage@1.0.4":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@psyrenpark/storage/-/storage-1.0.4.tgz#ffcb97b01657453a88f098aafe28e27600f35351"
   integrity sha512-ucleWRYW+7HdmGkw/NyAG223YUDcE14m+f8MegAVuTrmF+40IEkHD1m/BFlu1rxrBSNiPKKeZk6DNQyIUwr8Wg==
@@ -3093,7 +3093,7 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.10.tgz"
   integrity sha512-rk4sWFsmtOw8oyx8SD3KSvawwaK7gRBSEIy2TAwURyGt+3TizssXP1r8nx3zY+R7v2vYYHXZ+k2/GULAT/bcaQ==
 
-"@react-native-community/netinfo@^5.9.10":
+"@react-native-community/netinfo@5.9.10":
   version "5.9.10"
   resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-5.9.10.tgz#97d3a9fa62a3a4838ec7a6ec91cfec5a26e365b6"
   integrity sha512-1NPlBA2Hu/KWc3EnQcDRPRX0x8Dg9tuQlQQVWVQjlg+u+PjCq7ANEtbikOFKp5yQqfF8tqzU5+84/IfDO8zpiA==
@@ -4484,7 +4484,7 @@ ajv@^7.0.2:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
-amazon-cognito-identity-js@4.5.10, amazon-cognito-identity-js@^4.5.10:
+amazon-cognito-identity-js@4.5.10:
   version "4.5.10"
   resolved "https://registry.yarnpkg.com/amazon-cognito-identity-js/-/amazon-cognito-identity-js-4.5.10.tgz#b98495e09ff81ab9cf5e310b2c979275a51b91bf"
   integrity sha512-bjPlWz8JZMSH8J8Hr/QHtm+BIVnP65thEiiS9umFIlaxhyVuWEewBDwQzl1yTPR2KN3KL79qOEMDixivf1vcgg==
@@ -4885,7 +4885,7 @@ autoprefixer@^9.7.2:
     postcss "^7.0.32"
     postcss-value-parser "^4.1.0"
 
-aws-amplify@^3.3.19:
+aws-amplify@3.3.19:
   version "3.3.19"
   resolved "https://registry.yarnpkg.com/aws-amplify/-/aws-amplify-3.3.19.tgz#6952cb71eaa38f94f9fdaa2119ecaf941dbd5218"
   integrity sha512-phCEyDmbE0KFOiqo08/Zaeos4X+wuxbq7zQhdhbVlObjRwnH9bAxHcY4sALz3eEXnzK8I4y0XNTbUPcnP6n9OA==
@@ -12421,9 +12421,9 @@ react-native-daum-postcode@1.0.9:
   resolved "https://registry.yarnpkg.com/react-native-daum-postcode/-/react-native-daum-postcode-1.0.9.tgz#957053c142434cbf8b2f3b0f1842153fc8e8ed2c"
   integrity sha512-xrlYmbyn6geCRz4M2O7AQTUpRvrVnbIvpXzL0tPj9+k2c18YnRmTWWUT6L2FVMuFDM5kHt/egLLQm7+04sOsGw==
 
-react-native-device-info@^8.0.1:
+react-native-device-info@8.0.1:
   version "8.0.1"
-  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-8.0.1.tgz"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-8.0.1.tgz#23a038ab39a9fe3ea8963feb366361ee7c03a2a1"
   integrity sha512-5fIcrEfxsyIJ0HZ/pHd+DeYwC81wi5tupFkPSASYXz/7QhatF8W0W6qR+YlvI6gJVSFNgQKgrPrh18RGMgbZdg==
 
 react-native-easy-grid@0.2.2:
@@ -12591,6 +12591,13 @@ react-native-swipe-gestures@1.0.5, react-native-swipe-gestures@^1.0.4, react-nat
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/react-native-swipe-gestures/-/react-native-swipe-gestures-1.0.5.tgz#a172cb0f3e7478ccd681fd36b8bfbcdd098bde7c"
   integrity sha512-Ns7Bn9H/Tyw278+5SQx9oAblDZ7JixyzeOczcBK8dipQk2pD7Djkcfnf1nB/8RErAmMLL9iXgW0QHqiII8AhKw==
+
+react-native-swiper@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-swiper/-/react-native-swiper-1.6.0.tgz#59fdbdf95addee49630312f27077622c27776819"
+  integrity sha512-OnkTTZi+9uZUgy0uz1I9oYDhCU3z36lZn+LFsk9FXPRelxb/KeABzvPs3r3SrHWy1aA67KGtSFj0xNK2QD0NJQ==
+  dependencies:
+    prop-types "^15.5.10"
 
 react-native-tab-view@2.15.2:
   version "2.15.2"

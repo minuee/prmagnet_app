@@ -5,6 +5,7 @@ import FastImage from 'react-native-fast-image'
 import moment from 'moment'
 import 'moment/locale/ko'
 import _ from 'lodash'
+import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-menu'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -30,19 +31,49 @@ class BrandLinkSheetScreen extends PureComponent {
         {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
         {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
       ],
+      title: ['Send Out', 'Return'],
+      selectTitle: 'Send Out',
     }
   }
   render() {
-    const {data} = this.state
+    const {data, selectTitle} = this.state
     return (
       <SafeAreaView style={styles.container}>
         <Header />
-        <TouchableOpacity
-          style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(20), marginBottom: mUtils.wScale(30)}}
-        >
-          <Text style={styles.mainTitle}>Return</Text>
-          <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
-        </TouchableOpacity>
+        <Menu>
+          <MenuTrigger
+            customStyles={{
+              TriggerTouchableComponent: TouchableOpacity,
+              triggerTouchable: {
+                activeOpacity: 90,
+                style: {
+                  width: '45%',
+                },
+              },
+            }}
+          >
+            <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(20), marginBottom: mUtils.wScale(30)}}>
+              <Text style={styles.mainTitle}>{selectTitle}</Text>
+              <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+            </View>
+          </MenuTrigger>
+          <MenuOptions optionsContainerStyle={styles.menuOptions}>
+            {this.state.title.map((item, index) => {
+              return (
+                <MenuOption
+                  key={index}
+                  style={styles.menuOption}
+                  onSelect={() => {
+                    this.setState({...this.state, selectTitle: item})
+                  }}
+                >
+                  <Text style={styles.menuText}>{item}</Text>
+                </MenuOption>
+              )
+            })}
+          </MenuOptions>
+        </Menu>
+
         <View style={{...styles.layout, backgroundColor: '#f6f6f6', paddingHorizontal: mUtils.wScale(20), paddingVertical: mUtils.wScale(10)}}>
           <View style={styles.layout1}>
             <FastImage resizeMode={'contain'} style={styles.schedulerImg} source={schedulerImg} />

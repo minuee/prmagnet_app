@@ -64,4 +64,18 @@ export default StyleSheet.create({
     textAlign: 'left',
     color: '#999999',
   },
+  swipeDot: {
+    borderRadius: 0,
+    height: mUtils.wScale(3),
+    width: mUtils.wScale(40),
+    marginLeft: 0,
+    marginRight: 0,
+  },
+  swipeActiveDot: {
+    borderRadius: 0,
+    height: mUtils.wScale(3),
+    width: mUtils.wScale(45),
+    marginLeft: 0,
+    marginRight: 0,
+  },
 })
