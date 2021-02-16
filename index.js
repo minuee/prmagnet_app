@@ -14,6 +14,15 @@ import configureStore from './src/redux/store'
 import RootScreen from './src/screens/RootScreen'
 import mConst from './src/common/constants'
 import './storybook/rn-addons'
+import {Auth} from '@psyrenpark/auth'
+import {Api} from '@psyrenpark/api'
+import {Storage} from '@psyrenpark/storage'
+import awsmobile from './src/common/aws-exports'
+
+//! psyrenpark 라이브러리 초기화
+Auth.setConfigure(awsmobile)
+Api.setConfigure(awsmobile)
+Storage.setConfigure(awsmobile)
 
 LogBox.ignoreAllLogs()
 
