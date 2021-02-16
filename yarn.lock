@@ -2915,10 +2915,10 @@
   resolved "https://registry.yarnpkg.com/@psyrenpark/api/-/api-1.0.43.tgz#87bba706359d9628037f9dc72ccbbcc3615885aa"
   integrity sha512-cZjIR4ZtUP2z23DDxpQrX+vHmSYU3A3PI6WTJSMhaEM/LuQzCzdj+OQPoHmfCL4b5snsEzcbzv2YNiNNccogqA==
 
-"@psyrenpark/auth@1.0.75":
-  version "1.0.75"
-  resolved "https://registry.yarnpkg.com/@psyrenpark/auth/-/auth-1.0.75.tgz#1352ededd98fc2aa981b3e45b6d2a1c662836853"
-  integrity sha512-NQnEREcfsDfA+1EX9m+awTagdABZLjz29vyyaTU2AhvgzHj/IkXo4aErUUu4nMFq2RjZ4H9Lcnh0BYnM9+yqyg==
+"@psyrenpark/auth@1.0.76":
+  version "1.0.76"
+  resolved "https://registry.yarnpkg.com/@psyrenpark/auth/-/auth-1.0.76.tgz#1dcde108a8b6ea07ca20a8339755963af6b96975"
+  integrity sha512-nxw8nZVhkrQlpFhOK8vfUMSS236qhMxsll2ZCGJ+2IGPlUlY9RxN2Y+d4hOycfcZ3669pGJQQZsxumuq6GiHjA==
   dependencies:
     "@types/crypto-js" "^4.0.1"
 
