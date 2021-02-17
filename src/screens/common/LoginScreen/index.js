@@ -32,6 +32,10 @@ class LoginScreen extends PureComponent {
       email,
       pw, // : hash, //TODO 추후 암호화 적용
     }
+    if (email.trim() === '') return this.alert('', '이메일을 입력해주세요.')
+    if (!mUtils.isEmail(email)) return this.alert('', '이메일 형식이 아닙니다.')
+    if (pw.trim() === '') return this.alert('', '비밀번호를 입력해주세요.')
+    if (!mUtils.isPassword(pw)) return this.alert('', '비밀번호 형식을 확인해주세요.')
     login(data, {
       cbSuccess: async response => {
         loginSuccess(response)
@@ -60,7 +64,7 @@ class LoginScreen extends PureComponent {
                   ref={comp => (this.emailInput = comp)}
                   style={styles.input}
                   placeholderTextColor={mConst.textPhColor}
-                  value={mUtils.phoneFormat(email)}
+                  value={email}
                   onChangeText={this.changeInputText('email')}
                   placeholder="이메일을 입력해주세요."
                   returnKeyType={mConst.bAndroid ? 'default' : 'done'}
@@ -68,7 +72,7 @@ class LoginScreen extends PureComponent {
                   keyboardType="email-address"
                   autoCompleteType="off"
                   autoCapitalize="none"
-                  maxLength={13}
+                  maxLength={100}
                   textContentType={'username'}
                 />
               </View>
@@ -87,7 +91,7 @@ class LoginScreen extends PureComponent {
                   onSubmitEditing={this.handleLogin}
                   autoCompleteType="off"
                   autoCapitalize="none"
-                  maxLength={20}
+                  maxLength={16}
                   secureTextEntry={true}
                   textContentType={'password'}
                 />

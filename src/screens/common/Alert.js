@@ -37,14 +37,14 @@ export const alert = (title, content, button) => {
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
-                  if (button && button[0].onPress) {
+                  if (button[0].onPress) {
                     button[0].onPress()
                   }
                   elements.destroy()
                   elements = null
                 }}
               >
-                <Text style={styles.buttonText}>{button && button[0].text ? button[0].text : 'Confirm'}</Text>
+                <Text style={styles.buttonText}>{button[0].text || 'Confirm'}</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -53,7 +53,7 @@ export const alert = (title, content, button) => {
               <TouchableOpacity
                 style={styles.confirmButton}
                 onPress={() => {
-                  if (button && button[0].onPress) {
+                  if (button[0].onPress) {
                     button[0].onPress()
                   }
                   elements.destroy()
@@ -65,7 +65,7 @@ export const alert = (title, content, button) => {
               <TouchableOpacity
                 style={styles.cancelButton}
                 onPress={() => {
-                  if (button && button[1].onPress) {
+                  if (button[1].onPress) {
                     button[1].onPress()
                   }
                   elements.destroy()
