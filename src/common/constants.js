@@ -38,7 +38,7 @@ export default {
   darkGray: '#555555',
   darkBlue: '#0450c2',
   lightBlue: '#7ea1b2',
-  lightGray: '#f4f4f4',
+  lightGray: '#f3f3f3',
   textBaseColor: '#000000',
   textPhColor: '#b8b8b8',
   textGray: '#999999',

@@ -24,7 +24,7 @@ const linkImage = require('../images/navi/link.png')
 const alarmNewImage = require('../images/navi/alarm_new.png')
 
 const fontCheck = font => {
-  var check_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/
+  const check_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/
   return check_kor.test(font)
 }
 

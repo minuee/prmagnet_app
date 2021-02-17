@@ -1,16 +1,15 @@
 import React, {PureComponent} from 'react'
 import {KeyboardAvoidingView, SafeAreaView, View, TouchableWithoutFeedback, TouchableOpacity, TextInput} from 'react-native'
 import {connect} from 'react-redux'
-import FastImage from 'react-native-fast-image'
 import {sha256} from 'react-native-sha256'
 import _ from 'lodash'
 
 import {actionLogin} from '../../../redux/actions'
+import {login} from '../../../common/aws-auth'
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
-import PushHeader from '../../common/PushHeader'
 import styles from './styles'
 
 class LoginScreen extends PureComponent {
@@ -18,47 +17,55 @@ class LoginScreen extends PureComponent {
     super(props)
     cBind(this)
     this.state = {
-      phone: '',
-      pw: '',
+      email: 'test1000@ruu.kr',
+      pw: 'test1000@ruu.kr',
     }
   }
+  componentDidMount() {
+    this.pushOption('')
+  }
   handleLogin = callOnce(async () => {
-    const {login} = this.props
-    const {phone, pw} = this.state
+    const {email, pw} = this.state
+    const {loginSuccess, loginFailure} = this.props
     const hash = await sha256(pw.toString())
     const data = {
-      mobile_no: phone,
-      user_pass: hash,
+      email,
+      pw, // : hash, //TODO 추후 암호화 적용
     }
     login(data, {
-      cbSuccess: response => {
+      cbSuccess: async response => {
+        loginSuccess(response)
+        console.log('###로그인 성공:', response)
         // console.log('로그인 시 props 확인 : ', this.props)
       },
       cbFailure: e => {
-        // console.log('로그인 실패 : ', e)
-        this.showErrorMsg(e)
+        loginFailure(e)
+        console.log('###로그인 실패', e)
+        // this.showErrorMsg(e)
       },
     })
   })
   render() {
-    const {phone, pw} = this.state
+    const {email, pw} = this.state
     return (
       <KeyboardAvoidingView behavior={mConst.bIos ? 'padding' : null} style={{flex: 1}}>
         <SafeAreaView style={styles.container}>
-          <PushHeader onPress={this.pop} />
-          <View style={styles.lowerWrapper}>
-            <TouchableWithoutFeedback onPress={() => this.phoneInput.focus()}>
+          <Text style={styles.screenTitleText}>로그인</Text>
+          {/* <PushHeader onPress={this.pop} /> */}
+          <View style={styles.upperWrapper}>
+            <Text style={styles.inputTitleText}>이메일</Text>
+            <TouchableWithoutFeedback onPress={() => this.emailInput.focus()}>
               <View style={styles.inputTextWrapper}>
                 <TextInput
-                  ref={comp => (this.phoneInput = comp)}
+                  ref={comp => (this.emailInput = comp)}
                   style={styles.input}
                   placeholderTextColor={mConst.textPhColor}
-                  value={mUtils.phoneFormat(phone)}
-                  onChangeText={this.changeInputText('phone')}
-                  placeholder="휴대폰 번호"
+                  value={mUtils.phoneFormat(email)}
+                  onChangeText={this.changeInputText('email')}
+                  placeholder="이메일을 입력해주세요."
                   returnKeyType={mConst.bAndroid ? 'default' : 'done'}
                   onSubmitEditing={() => this.passInput.focus()}
-                  keyboardType="number-pad"
+                  keyboardType="email-address"
                   autoCompleteType="off"
                   autoCapitalize="none"
                   maxLength={13}
@@ -66,6 +73,7 @@ class LoginScreen extends PureComponent {
                 />
               </View>
             </TouchableWithoutFeedback>
+            <Text style={styles.inputTitleText}>비밀번호</Text>
             <TouchableWithoutFeedback onPress={() => this.passInput.focus()}>
               <View style={styles.inputTextWrapper}>
                 <TextInput
@@ -75,7 +83,7 @@ class LoginScreen extends PureComponent {
                   value={pw}
                   onChangeText={this.changeInputText('pw')}
                   returnKeyType={mConst.bAndroid ? 'default' : 'done'}
-                  placeholder="비밀번호"
+                  placeholder="8자리 이상 숫자, 문자 조합"
                   onSubmitEditing={this.handleLogin}
                   autoCompleteType="off"
                   autoCapitalize="none"
@@ -85,24 +93,25 @@ class LoginScreen extends PureComponent {
                 />
               </View>
             </TouchableWithoutFeedback>
+          </View>
+          <View style={styles.middleWrapper}>
+            <TouchableOpacity style={styles.loginButtonWrapper} onPress={this.handleLogin}>
+              <Text style={styles.loginButtonText}>로그인</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.joinButtonWrapper} onPress={this.notReady}>
+              <Text style={styles.joinButtonText}>회원가입</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.lowerWrapper}>
             <View style={styles.lowerSubWrapper}>
               <TouchableOpacity style={styles.itemTextWrapper} onPress={this.notReady}>
-                <Text style={styles.itemText}>
-                  {'     '}비밀번호 찾기{'     '}
-                </Text>
+                <Text style={styles.itemText}>아이디 찾기</Text>
               </TouchableOpacity>
-              <Text style={styles.itemText}>|</Text>
+              <Text style={styles.fence}>|</Text>
               <TouchableOpacity style={styles.itemTextWrapper} onPress={this.notReady}>
-                <Text style={styles.itemText}>
-                  {'     '}회원가입{'     '}
-                </Text>
+                <Text style={styles.itemText}>비밀번호 찾기</Text>
               </TouchableOpacity>
             </View>
-          </View>
-          <View style={styles.bottomWrapper}>
-            <TouchableOpacity style={styles.buttonWrapper} onPress={this.handleLogin}>
-              <Text style={styles.buttonText}>로그인</Text>
-            </TouchableOpacity>
           </View>
         </SafeAreaView>
       </KeyboardAvoidingView>
@@ -115,6 +124,7 @@ export default connect(
     user: state.user,
   }),
   dispatch => ({
-    login: (data, rest) => dispatch(actionLogin.request(data, rest)),
+    loginSuccess: data => dispatch(actionLogin.success(data)),
+    loginFailure: data => dispatch(actionLogin.failure(data)),
   })
 )(LoginScreen)
