@@ -44,7 +44,7 @@ export const login = (userData, rest) => {
   )
 }
 
-export const logout = () => {
+export const logout = rest => {
   Auth.signOutProcess(
     {
       authType: AuthType.EMAIL,
@@ -53,9 +53,11 @@ export const logout = () => {
       // 성공처리 및 로그아웃
       // 리덕스나, context의 저장된 정보 초기화 필요
       // 그후 로그인 화면으로 이동
+      awsUtils.onSuccess(rest, data)
     },
     error => {
       // 실패처리,
+      awsUtils.onFailure(rest, error)
     }
     // loadingFunction
   )

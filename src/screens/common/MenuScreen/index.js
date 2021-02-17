@@ -5,6 +5,7 @@ import FastImage from 'react-native-fast-image'
 import _ from 'lodash'
 
 import {actionLogout} from '../../../redux/actions'
+import {logout} from '../../../common/aws-auth'
 import mConst from '../../../common/constants'
 import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
@@ -18,8 +19,17 @@ class MenuScreen extends PureComponent {
     this.imgClose = require('../../../images/navi/close.png')
   }
   handleLogout = callOnce(() => {
-    const {logout} = this.props
-    logout()
+    const {logoutSuccess, logoutFailure} = this.props
+    logout({
+      cbSuccess: async response => {
+        logoutSuccess(response)
+        console.log('###로그아웃 성공:', response)
+      },
+      cbFailure: async e => {
+        logoutFailure(e)
+        console.log('###로그아웃 실패', e)
+      },
+    })
   })
   render() {
     return (
@@ -81,6 +91,7 @@ class MenuScreen extends PureComponent {
 export default connect(
   state => ({}),
   dispatch => ({
-    logout: (data, rest) => dispatch(actionLogout.success(data, rest)),
+    logoutSuccess: data => dispatch(actionLogout.success(data)),
+    logoutFailure: data => dispatch(actionLogout.failure(data)),
   })
 )(MenuScreen)
