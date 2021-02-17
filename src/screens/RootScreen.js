@@ -191,7 +191,7 @@ class RootScreen extends PureComponent {
         <StartStack.Screen name="SelectScheduleScreen" component={SelectScheduleScreen} />
         <StartStack.Screen name="FilterScreen" component={FilterScreen} />
         <StartStack.Screen name="StartScreen" component={StartScreen} options={{headerShown: false}} />
-        <StartStack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown: false}} />
+        <StartStack.Screen name="LoginScreen" component={LoginScreen} />
         <StartStack.Screen name="LinkSheetScreen" component={LinkSheetScreen} />
       </StartStack.Navigator>
     )
