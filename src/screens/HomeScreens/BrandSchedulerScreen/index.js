@@ -82,7 +82,7 @@ class BrandSchedulerScreen extends PureComponent {
                     {
                       onPress: () => {
                         setTimeout(() => {
-                          this.alert('삭제 완료', '메모를 삭제 하였습니다.')
+                          this.alert('삭제 완료', '메모를 삭제 하였습니다.', [{onPress: () => null}])
                         }, 100)
                       },
                     },

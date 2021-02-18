@@ -65,7 +65,7 @@ class SampleRequestsListScreen extends PureComponent {
                       {
                         onPress: () => {
                           setTimeout(() => {
-                            this.alert('요청삭제 완료', '요청이 삭제되었습니다.')
+                            this.alert('요청삭제 완료', '요청이 삭제되었습니다.', [{onPress: () => null}])
                           }, 100)
                         },
                       },
