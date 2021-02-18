@@ -1,3 +1,4 @@
+import {Platform} from 'react-native'
 import {StyleSheet} from 'react-native'
 
 import mConst from '../../../common/constants'
@@ -133,5 +134,51 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     color: mConst.white,
+  },
+  modal: {
+    justifyContent: 'flex-end',
+    margin: 0,
+    marginBottom: Platform.OS === 'ios' ? mUtils.wScale(30) : 0,
+  },
+  modalView: {
+    backgroundColor: mConst.white,
+    width: '100%',
+    height: mUtils.wScale(130),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  layout: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: mConst.white,
+    width: '100%',
+    justifyContent: 'space-between',
+    marginTop: -mUtils.wScale(3),
+  },
+  modalButton: {
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#ebebeb',
+    width: '50%',
+    paddingVertical: mUtils.wScale(15),
+  },
+  modalName: {
+    fontFamily: 'NotoSansKR-Bold',
+    fontSize: 18,
+    textAlign: 'center',
+    color: '#222222',
+  },
+  modalPhone: {
+    fontFamily: 'NotoSansKR-Regular',
+    fontSize: 16,
+    textAlign: 'center',
+    color: mConst.black,
+    marginTop: mUtils.wScale(15),
+  },
+  modalText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 16,
+    textAlign: 'center',
+    color: '#7ea1b2',
   },
 })

@@ -1,10 +1,11 @@
 import React, {PureComponent} from 'react'
-import {SafeAreaView, ScrollView, View, TouchableOpacity, Image} from 'react-native'
+import {SafeAreaView, ScrollView, View, TouchableOpacity, Pressable, Linking} from 'react-native'
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import {Grid, Col, Row} from 'react-native-easy-grid'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures'
 import _ from 'lodash'
+import Modal from 'react-native-modal'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -31,6 +32,7 @@ class LinkSheetScreen extends PureComponent {
     cBind(this)
     this.state = {
       swipe: true,
+      isvisible: {open: false, phone: '', name: ''},
     }
   }
   componentDidMount() {
@@ -127,14 +129,40 @@ class LinkSheetScreen extends PureComponent {
                   <FastImage source={model2Image} style={styles.modelImage} />
                 </Col>
                 <Col style={styles.col(4)} size={6}>
-                  <Row style={styles.row(mConst.bgBlue)}>
-                    <Text style={styles.sText(12)} numberOfLines={1}>
-                      GQ이은주ed
-                    </Text>
-                  </Row>
-                  <Row style={styles.row()}>
-                    <Text style={styles.sText(12, mConst.darkGray)}>010-4521-9999</Text>
-                  </Row>
+                  <Pressable
+                    onLongPress={() => {
+                      // eslint-disable-next-line quotes
+                      this.alert('상품 미수령 알림', "'EL 손다예'님께 상품미수령 알림을 보내시겠습니까?", [
+                        {
+                          onPress: () => {
+                            setTimeout(() => {
+                              this.alert('미수령 알림 전송 완료', '미수령 알림을 전송하였습니다.', [{onPress: () => null}])
+                            }, 100)
+                          },
+                        },
+                        {onPress: () => null},
+                      ])
+                    }}
+                  >
+                    {({pressed}) => (
+                      <Row style={styles.row(pressed ? 'rgba(126, 161, 178, 0.7)' : mConst.bgBlue)}>
+                        <Text style={styles.sText(12)} numberOfLines={1}>
+                          GQ이은주ed
+                        </Text>
+                      </Row>
+                    )}
+                  </Pressable>
+                  <Pressable
+                    onLongPress={() => {
+                      this.setState({...this.state, isvisible: {open: true, phone: '010-4521-9999', name: 'EL손다예st'}})
+                    }}
+                  >
+                    {({pressed}) => (
+                      <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : 'white')}>
+                        <Text style={styles.sText(12, mConst.darkGray)}>010-4521-9999</Text>
+                      </Row>
+                    )}
+                  </Pressable>
                   <Row style={styles.row(mConst.bgBlue)}>
                     <Text style={styles.sText(12)} numberOfLines={1}>
                       GQ이은주ed
@@ -165,9 +193,17 @@ class LinkSheetScreen extends PureComponent {
                       )}
                     </Row>
                   </Swiper>
-                  <Row style={styles.row()}>
-                    <Text style={styles.sText(12, mConst.darkGray)}>010-4521-9999</Text>
-                  </Row>
+                  <Pressable
+                    onLongPress={() => {
+                      console.log('1111')
+                    }}
+                  >
+                    {({pressed}) => (
+                      <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : 'white')}>
+                        <Text style={styles.sText(12, mConst.darkGray)}>010-4521-9999</Text>
+                      </Row>
+                    )}
+                  </Pressable>
                   <Row style={styles.row(mConst.bgKhaki)}>
                     <Text style={styles.sText(12)} numberOfLines={1}>
                       스타일H김나현st
@@ -268,6 +304,30 @@ class LinkSheetScreen extends PureComponent {
           >
             <Text style={styles.bottomText}>All Picked Up</Text>
           </TouchableOpacity>
+          <Modal style={styles.modal} isVisible={this.state.isvisible.open} useNativeDriver={true}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalName}>{this.state.isvisible.name}</Text>
+              <Text style={styles.modalPhone}>{this.state.isvisible.phone}</Text>
+            </View>
+            <View style={styles.layout}>
+              <TouchableOpacity
+                style={styles.modalButton}
+                onPress={() => {
+                  this.setState({...this.state, isvisible: {open: false, phone: '', name: ''}})
+                }}
+              >
+                <Text style={styles.modalText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.modalButton}
+                onPress={async () => {
+                  Linking.openURL(`tel:${this.state.isvisible.phone}`)
+                }}
+              >
+                <Text style={styles.modalText}>Call</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
         </SafeAreaView>
       </>
     )
