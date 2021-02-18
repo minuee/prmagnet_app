@@ -13,6 +13,14 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  layout1: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: mUtils.wScale(30),
+    borderStyle: 'solid',
+    borderBottomWidth: 0.5,
+    borderBottomColor: mConst.borderGray,
+  },
   bottom: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -38,6 +46,15 @@ export default StyleSheet.create({
     height: mUtils.wScale(16),
     marginRight: mUtils.wScale(5),
   },
+  heartImg: {
+    width: mUtils.wScale(14),
+    height: mUtils.wScale(14),
+    marginRight: mUtils.wScale(5),
+  },
+  checkImg: {
+    width: mUtils.wScale(14),
+    height: mUtils.wScale(14),
+  },
   rightText: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -52,5 +69,11 @@ export default StyleSheet.create({
     fontFamily: 'NotoSansKR-Regular',
     fontSize: 14,
     textAlign: 'left',
+  },
+  brandText: {
+    fontFamily: 'Roboto-Light',
+    fontSize: 14,
+    textAlign: 'left',
+    color: '#555555',
   },
 })
