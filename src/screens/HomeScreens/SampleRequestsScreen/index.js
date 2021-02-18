@@ -15,7 +15,7 @@ import {Grid, Col, Row} from 'react-native-easy-grid'
 import styles from './styles'
 import {multicastChannel} from 'redux-saga'
 
-const modelImg = require('../../../images/navi/model_1.png')
+const modelImg = require('../../../images/sample/model_1.png')
 const moreImg = require('../../../images/navi/more_2.png')
 const starImg = require('../../../images/navi/star_1.png')
 const checkImg = require('../../../images/navi/check_1.png')

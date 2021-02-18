@@ -58,15 +58,10 @@ const modalScreenOptions = (headerShown = false, gestureEnabled = mConst.bIos) =
 })
 
 const TabStack = () => {
-  const iconStyle = {
-    width: 26,
-    height: 26,
-  }
-  const tabTextStyle = focused => ({
-    fontSize: 10,
-    color: focused ? 'blue' : mConst.white,
-    marginTop: -5,
-    marginBottom: 10,
+  const iconStyle = (width = 96) => ({
+    width: (42 * width) / 155,
+    height: 42,
+    marginTop: 8,
   })
 
   const TabNavi = createBottomTabNavigator()
@@ -76,39 +71,39 @@ const TabStack = () => {
   const TabScheduleStack = createStackNavigator()
   const TabLinkStack = createStackNavigator()
 
-  const tabIconHome = require('../images/navi/tab_home.png')
-  const tabIconShow = require('../images/navi/tab_show.png')
-  const tabIconLook = require('../images/navi/tab_look.png')
-  const tabIconSchedule = require('../images/navi/tab_schedule.png')
-  const tabIconLink = require('../images/navi/tab_link.png')
-  const tabIconHomeOn = require('../images/navi/tab_home_on.png')
-  const tabIconShowOn = require('../images/navi/tab_show_on.png')
-  const tabIconLookOn = require('../images/navi/tab_look_on.png')
-  const tabIconScheduleOn = require('../images/navi/tab_schedule_on.png')
-  const tabIconLinkOn = require('../images/navi/tab_link_on.png')
+  const tabIconHome = require('../images/tabs/tab_home.png')
+  const tabIconShow = require('../images/tabs/tab_show.png')
+  const tabIconLook = require('../images/tabs/tab_look.png')
+  const tabIconSchedule = require('../images/tabs/tab_schedule.png')
+  const tabIconLink = require('../images/tabs/tab_link.png')
+  const tabIconHomeOn = require('../images/tabs/tab_home_on.png')
+  const tabIconShowOn = require('../images/tabs/tab_show_on.png')
+  const tabIconLookOn = require('../images/tabs/tab_look_on.png')
+  const tabIconScheduleOn = require('../images/tabs/tab_schedule_on.png')
+  const tabIconLinkOn = require('../images/tabs/tab_link_on.png')
   return (
     // TODO 탭바 높이값 지정
     <TabNavi.Navigator
-      tabBarOptions={{style: {height: mConst.bottomTabHeight, backgroundColor: '#7ea1b2'}}}
+      tabBarOptions={{style: {height: mConst.bottomTabHeight, backgroundColor: mConst.black}}}
       tabBar={props => <CustomBottomTabBar {...props} />}
     >
       <TabNavi.Screen
         name="HomeTab"
         options={{
-          tabBarIcon: ({focused}) => <FastImage source={focused ? tabIconHomeOn : tabIconHome} style={iconStyle} />,
-          tabBarLabel: ({focused}) => <Text style={tabTextStyle(focused)}>HOME</Text>,
+          tabBarIcon: ({focused}) => <FastImage source={focused ? tabIconHomeOn : tabIconHome} style={iconStyle()} />,
+          tabBarLabel: () => null,
         }}
         children={() => (
           <TabHomeStack.Navigator>
-            <TabHomeStack.Screen name="HomeScreen" component={HomeScreen} />
+            <TabHomeStack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}} />
           </TabHomeStack.Navigator>
         )}
       />
       <TabNavi.Screen
         name="ShowTab"
         options={{
-          tabBarIcon: ({focused}) => <FastImage source={focused ? tabIconShowOn : tabIconShow} style={iconStyle} />,
-          tabBarLabel: ({focused}) => <Text style={tabTextStyle(focused)}>디지털쇼룸</Text>,
+          tabBarIcon: ({focused}) => <FastImage source={focused ? tabIconShowOn : tabIconShow} style={iconStyle(136)} />,
+          tabBarLabel: () => null,
         }}
         children={() => (
           <TabShowStack.Navigator>
@@ -119,8 +114,8 @@ const TabStack = () => {
       <TabNavi.Screen
         name="LookTab"
         options={{
-          tabBarIcon: ({focused}) => <FastImage source={focused ? tabIconLookOn : tabIconLook} style={iconStyle} />,
-          tabBarLabel: ({focused}) => <Text style={tabTextStyle(focused)}>룩북</Text>,
+          tabBarIcon: ({focused}) => <FastImage source={focused ? tabIconLookOn : tabIconLook} style={iconStyle(97)} />,
+          tabBarLabel: () => null,
         }}
         children={() => (
           <TabLookStack.Navigator>
@@ -131,8 +126,8 @@ const TabStack = () => {
       <TabNavi.Screen
         name="ScheduleTab"
         options={{
-          tabBarIcon: ({focused}) => <FastImage source={focused ? tabIconScheduleOn : tabIconSchedule} style={iconStyle} />,
-          tabBarLabel: ({focused}) => <Text style={tabTextStyle(focused)}>스케쥴</Text>,
+          tabBarIcon: ({focused}) => <FastImage source={focused ? tabIconScheduleOn : tabIconSchedule} style={iconStyle()} />,
+          tabBarLabel: () => null,
         }}
         children={() => (
           <TabScheduleStack.Navigator>
@@ -143,8 +138,8 @@ const TabStack = () => {
       <TabNavi.Screen
         name="LinkTab"
         options={{
-          tabBarIcon: ({focused}) => <FastImage source={focused ? tabIconLinkOn : tabIconLink} style={iconStyle} />,
-          tabBarLabel: ({focused}) => <Text style={tabTextStyle(focused)}>연결시트</Text>,
+          tabBarIcon: ({focused}) => <FastImage source={focused ? tabIconLinkOn : tabIconLink} style={iconStyle(110)} />,
+          tabBarLabel: () => null,
         }}
         children={() => (
           <TabLinkStack.Navigator>

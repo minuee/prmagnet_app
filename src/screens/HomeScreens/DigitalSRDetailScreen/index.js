@@ -22,10 +22,10 @@ class DigitalSRDetailScreen extends PureComponent {
     cBind(this)
     this.state = {
       model: [
-        require('../../../images/navi/model_2.png'),
-        require('../../../images/navi/model_2.png'),
-        require('../../../images/navi/model_2.png'),
-        require('../../../images/navi/model_2.png'),
+        require('../../../images/sample/model_2.png'),
+        require('../../../images/sample/model_2.png'),
+        require('../../../images/sample/model_2.png'),
+        require('../../../images/sample/model_2.png'),
       ],
       name: '2020 CUCCI FREE FOLE',
       season: 'Fall',

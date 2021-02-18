@@ -22,7 +22,7 @@ class MagazineSchedulerScreen extends PureComponent {
     this.state = {
       data: [
         {
-          modelImg: require('../../../images/navi/model_3.png'),
+          modelImg: require('../../../images/sample/model_3.png'),
           brand: 'GUCCI',
           dt: '2020-08-02',
           name: '이진선 ed',
