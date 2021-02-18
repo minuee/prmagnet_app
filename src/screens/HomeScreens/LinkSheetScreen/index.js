@@ -20,8 +20,8 @@ import styles from './styles'
 const goLeftImage = require('../../../images/navi/go_left.png')
 const goRightImage = require('../../../images/navi/go_right.png')
 const unfoldImage = require('../../../images/common/unfold.png')
-const model1Image = require('../../../images/navi/model_1.png')
-const model2Image = require('../../../images/navi/model_2.png')
+const model1Image = require('../../../images/sample/model_1.png')
+const model2Image = require('../../../images/sample/model_2.png')
 const circleCheckImage = require('../../../images/common/circle_check.png')
 const circleCheckOnImage = require('../../../images/common/circle_check_on.png')
 

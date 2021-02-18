@@ -13,7 +13,7 @@ import {Grid, Col, Row} from 'react-native-easy-grid'
 import styles from './styles'
 import {multicastChannel} from 'redux-saga'
 
-const modelImg = require('../../../images/navi/model_1.png')
+const modelImg = require('../../../images/sample/model_1.png')
 const newImg = require('../../../images/navi/new_1.png')
 
 class LookBookDetailScreen extends PureComponent {
@@ -22,7 +22,7 @@ class LookBookDetailScreen extends PureComponent {
     this.state = {
       data: [
         {
-          img: require('../../../images/navi/model_1.png'),
+          img: require('../../../images/sample/model_1.png'),
           new: true,
           title: 'Look #1',
           desc: 'ALL IN',
@@ -31,7 +31,7 @@ class LookBookDetailScreen extends PureComponent {
           desc3: 'Shirt',
           desc4: 'Pants',
         },
-        {img: require('../../../images/navi/model_1.png'), new: false, title: 'Look #2'},
+        {img: require('../../../images/sample/model_1.png'), new: false, title: 'Look #2'},
       ],
       brandTitle: 'GUCCI WOMEN COLLECTION',
     }

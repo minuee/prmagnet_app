@@ -12,7 +12,7 @@ import {Grid, Col, Row} from 'react-native-easy-grid'
 import styles from './styles'
 import {multicastChannel} from 'redux-saga'
 
-const modelImg = require('../../../../images/navi/model_1.png')
+const modelImg = require('../../../../images/sample/model_1.png')
 const likeImg = require('../../../../images/navi/like_1.png')
 
 class DigitalShowroom extends PureComponent {
@@ -22,11 +22,11 @@ class DigitalShowroom extends PureComponent {
     this.state = {
       data: [
         {
-          img: require('../../../../images/navi/model_1.png'),
+          img: require('../../../../images/sample/model_1.png'),
           like: true,
           title: 'Look #1',
         },
-        {img: require('../../../../images/navi/model_1.png'), new: false, title: 'Look #2'},
+        {img: require('../../../../images/sample/model_1.png'), new: false, title: 'Look #2'},
       ],
     }
   }

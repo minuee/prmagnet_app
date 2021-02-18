@@ -16,7 +16,7 @@ import styles from './styles'
 const moreImg = require('../../../images/navi/more_4.png')
 const fixImg = require('../../../images/navi/fix_1.png')
 const schedulerImg = require('../../../images/navi/scheduler_1.png')
-const modelImg = require('../../../images/navi/model_2.png')
+const modelImg = require('../../../images/sample/model_2.png')
 const dollarImg1 = require('../../../images/navi/dollar_1.png')
 const airplaneImg = require('../../../images/navi/airplane_1.png')
 const dollarImg2 = require('../../../images/navi/dollar_2.png')
