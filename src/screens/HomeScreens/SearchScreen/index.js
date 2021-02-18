@@ -14,7 +14,7 @@ import styles from './styles'
 import {multicastChannel} from 'redux-saga'
 
 const searchImage = require('../../../images/common/search.png')
-const modelImg = require('../../../images/navi/model_3.png')
+const modelImg = require('../../../images/sample/model_3.png')
 
 class SearchScreen extends PureComponent {
   constructor(props) {
