@@ -18,6 +18,8 @@ export default class CommonHeader extends PureComponent {
   }
   render() {
     const {keyword} = this.state
+    const {props} = this.props
+    console.log(props)
     return (
       <View style={styles.upperWrapper}>
         <TouchableWithoutFeedback onPress={() => this.keywordInput.focus()}>
@@ -44,7 +46,12 @@ export default class CommonHeader extends PureComponent {
           <TouchableOpacity style={styles.inputIconWrapper} onPress={null}>
             <FastImage resizeMode={'contain'} source={bellImage} style={styles.inputIcon} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.inputIconWrapper} onPress={null}>
+          <TouchableOpacity
+            style={styles.inputIconWrapper}
+            onPress={() => {
+              props.navigation.navigate('MyPageScreen')
+            }}
+          >
             <FastImage resizeMode={'contain'} source={profileImage} style={styles.inputIcon} />
           </TouchableOpacity>
         </View>
