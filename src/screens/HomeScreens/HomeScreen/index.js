@@ -43,7 +43,7 @@ class HomeScreen extends PureComponent {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <Header />
+        <Header props={this.props} />
         {(mConst.PRODUCTION || mConst.STAGE) && <CodePush />}
         <ScrollView>
           <Text style={styles.screenTitleText}>Home</Text>
