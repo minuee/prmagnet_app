@@ -11,7 +11,8 @@ import CodePush from '../../common/CodePush'
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
-import API from '../../../common/services'
+// import API from '../../../common/services'
+import API from '../../../common/aws-api'
 import Text from '../../common/Text'
 import Header from '../../common/Header'
 import styles from './styles'
@@ -34,6 +35,10 @@ class HomeScreen extends PureComponent {
         {brand: 'BAZAAR', name: '오재혁 ed', dt: '2020-08-09', custom: 'Elle • 아이즈원'},
       ],
     }
+  }
+  async componentDidMount() {
+    const userType = await API.getUserType()
+    console.log('###getUserType:', userType)
   }
   render() {
     return (

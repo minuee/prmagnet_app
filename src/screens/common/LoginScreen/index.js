@@ -5,7 +5,7 @@ import {sha256} from 'react-native-sha256'
 import _ from 'lodash'
 
 import {actionLogin} from '../../../redux/actions'
-import {login} from '../../../common/aws-auth'
+import API from '../../../common/aws-api'
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
@@ -36,7 +36,7 @@ class LoginScreen extends PureComponent {
     if (!mUtils.isEmail(email)) return this.alert('', '이메일 형식이 아닙니다.')
     if (pw.trim() === '') return this.alert('', '비밀번호를 입력해주세요.')
     if (!mUtils.isPassword(pw)) return this.alert('', '비밀번호 형식을 확인해주세요.')
-    login(data, {
+    API.login(data, {
       cbSuccess: async response => {
         loginSuccess(response)
         console.log('###로그인 성공:', response)
