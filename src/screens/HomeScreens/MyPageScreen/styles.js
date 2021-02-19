@@ -57,5 +57,20 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     paddingTop: mUtils.wScale(40),
   },
-  profileImg: {width: mUtils.wScale(60), height: mUtils.wScale(60)},
+  profileImg: {
+    width: mUtils.wScale(60),
+    height: mUtils.wScale(60),
+  },
+  editBox: {
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: mConst.borderGray,
+    paddingVertical: mUtils.wScale(7),
+  },
+  edit: {
+    fontFamily: 'NotoSansKR-Regular',
+    fontSize: 15,
+    textAlign: 'center',
+    color: mConst.black,
+  },
 })

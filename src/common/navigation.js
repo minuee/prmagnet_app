@@ -59,6 +59,33 @@ const cBind = reactComp => {
           </TouchableOpacity>
         ) : null,
     })
+  reactComp.logOutOption = (screenName, logout) =>
+    navigation.setOptions({
+      title: screenName,
+      headerStyle: {backgroundColor: mConst.white, shadowColor: 'transparent', elevation: 0},
+      headerTitleStyle: {fontSize: mUtils.wScale(21), alignSelf: 'center', fontFamily: fontCheck(screenName) ? 'NotoSansKR-Medium' : 'Roboto-Bold'},
+      headerLeft: () => (
+        <TouchableOpacity style={{paddingHorizontal: 20}} onPress={reactComp.pop}>
+          <FastImage style={{width: 10, height: 18}} source={backBtnImage} />
+        </TouchableOpacity>
+      ),
+      headerRight: () =>
+        logout ? (
+          <TouchableOpacity
+            style={{paddingHorizontal: 20}}
+            onPress={() => {
+              reactComp.alert('로그아웃', '로그아웃 하시겠습니까?', [
+                {
+                  onPress: () => logout(),
+                },
+                {onPress: () => null},
+              ])
+            }}
+          >
+            <Text style={{fontFamily: 'NotoSansKR-Regular', fontSize: 16, textAlign: 'right', color: '#999999'}}>로그아웃</Text>
+          </TouchableOpacity>
+        ) : null,
+    })
   reactComp.modalOption = screenName =>
     navigation.setOptions({
       title: screenName,

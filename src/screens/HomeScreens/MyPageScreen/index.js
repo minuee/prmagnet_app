@@ -9,9 +9,9 @@ import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
-import {Grid, Col, Row} from 'react-native-easy-grid'
 import styles from './styles'
-import {multicastChannel} from 'redux-saga'
+import API from '../../../common/aws-api'
+import Loading from '../../common/Loading'
 
 const profileImage = require('../../../images/navi/profile_1.png')
 
@@ -19,36 +19,45 @@ class MyPageScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
-    this.state = {name: '최서영', brand: 'Vogue', position: '어시'}
+    this.state = {info: ''}
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.pushOption('마이페이지')
+    const userInfo = await API.getUserInfo()
+    this.setState({info: userInfo})
   }
 
   render() {
-    return (
+    const {navigation} = this.props
+    const {info} = this.state
+    return info ? (
       <>
         <SafeAreaView style={styles.container}>
           <ScrollView contentContainerStyle={{flex: 1, paddingHorizontal: mUtils.wScale(20)}}>
             <View style={styles.topBox}>
               <View style={styles.img}>
-                <FastImage resizeMode={'contain'} style={styles.profileImg} source={profileImage} />
+                <FastImage resizeMode={'contain'} style={styles.profileImg} source={info.img_url_adres} />
               </View>
               <View style={{marginLeft: mUtils.wScale(10)}}>
-                <Text style={styles.name}>{this.state.name}</Text>
+                <Text style={styles.name}>{info.brand_user_nm}</Text>
                 <Text style={styles.info}>
-                  {this.state.brand} • {this.state.position}
+                  {info.brand_nm} • {info.user_position}
                 </Text>
               </View>
             </View>
+            <TouchableOpacity
+              style={styles.editBox}
+              onPress={() => {
+                navigation.navigate('AccountSettingScreen', {info: info})
+              }}
+            >
+              <Text style={styles.edit}>프로필 수정</Text>
+            </TouchableOpacity>
             <TouchableOpacity style={{paddingVertical: mUtils.wScale(40)}}>
               <Text style={styles.text1}>문의하기</Text>
             </TouchableOpacity>
             <Text style={styles.text1}>설정</Text>
-            <TouchableOpacity style={{paddingTop: mUtils.wScale(30)}}>
-              <Text style={styles.text2}>계정</Text>
-            </TouchableOpacity>
             <TouchableOpacity style={{paddingTop: mUtils.wScale(40)}}>
               <Text style={styles.text2}>알림</Text>
             </TouchableOpacity>
@@ -65,6 +74,8 @@ class MyPageScreen extends PureComponent {
           </ScrollView>
         </SafeAreaView>
       </>
+    ) : (
+      <Loading />
     )
   }
 }

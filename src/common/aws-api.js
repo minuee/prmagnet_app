@@ -193,6 +193,13 @@ const API = {
 
     return Api.get(apiName, path, init)
   },
+  getUserInfo: () => {
+    var apiName = v1Api
+    var path = '/brand/my-info'
+    var init = {}
+
+    return Api.get(apiName, path, init)
+  },
 }
 
 export default API
