@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {SafeAreaView, View, TextInput, TouchableOpacity} from 'react-native'
+import {SafeAreaView, View, TextInput, TouchableOpacity, Keyboard} from 'react-native'
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import _ from 'lodash'
@@ -8,8 +8,8 @@ import mConst from '../../../../common/constants'
 import mUtils from '../../../../common/utils'
 import cBind, {callOnce} from '../../../../common/navigation'
 import Text from '../../../common/Text'
-import {Grid, Col, Row} from 'react-native-easy-grid'
 import styles from './styles'
+import API from '../../../../common/aws-api'
 
 const closeBtnImage = require('../../../../images/navi/close.png')
 
@@ -20,6 +20,21 @@ class Contact extends PureComponent {
     this.state = {
       title: '',
       desc: '',
+    }
+  }
+
+  postQna = async () => {
+    const {title, desc} = this.state
+    console.log(title, desc)
+    try {
+      let response = await API.postQna(title, desc)
+      console.log('postQna>>>>', response)
+      if (response.success) {
+        this.setState({title: '', desc: ''})
+        this.alert('문의하기 완료', '문의가 정상적으로 접수되었습니다.', [{onPress: () => null}])
+      }
+    } catch (error) {
+      console.log('postQna>>>>', error)
     }
   }
 
@@ -49,7 +64,8 @@ class Contact extends PureComponent {
           />
           <TouchableOpacity
             onPress={() => {
-              this.alert('문의하기 완료', '문의가 정상적으로 접수되었습니다.')
+              Keyboard.dismiss()
+              this.postQna()
             }}
             style={styles.bottom}
           >
