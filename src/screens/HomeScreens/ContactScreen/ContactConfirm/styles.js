@@ -18,13 +18,14 @@ export default StyleSheet.create({
     borderBottomColor: '#ebebeb',
   },
   title: {
+    fontFamily: 'NotoSansKR-Bold',
     fontSize: 16,
-    fontWeight: 'bold',
     fontStyle: 'normal',
     textAlign: 'left',
     color: mConst.black,
   },
   dt: {
+    fontFamily: 'NotoSansKR-Regular',
     fontSize: 14,
     fontWeight: 'normal',
     fontStyle: 'normal',
@@ -33,8 +34,8 @@ export default StyleSheet.create({
     marginTop: mUtils.wScale(3.5),
   },
   box: {
-    width: mUtils.wScale(66),
-    height: mUtils.wScale(26.75),
+    width: mUtils.wScale(70),
+    height: mUtils.wScale(27),
     borderStyle: 'solid',
     borderWidth: 0.7,
     borderColor: mConst.borderGray,
@@ -42,11 +43,10 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   boxtext: {
+    fontFamily: 'NotoSansKR-Regular',
     fontSize: 12,
-    fontWeight: 'normal',
     fontStyle: 'normal',
     textAlign: 'center',
-    color: mConst.black,
   },
   list: {
     paddingHorizontal: mUtils.wScale(20),
