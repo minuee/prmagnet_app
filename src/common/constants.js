@@ -29,6 +29,7 @@ export default {
   STORYBOOK: !PRODUCTION && !STAGE && STORYBOOK,
   TESTLOGGING,
   getApiUri: () => (PRODUCTION ? PROD_APIURI : STAGE ? STG_APIURI : DEV_APIURI),
+  userType: 'B',
   baseColor: '#7ea1b2',
   baseXColor: '#000000',
   white: '#ffffff',
