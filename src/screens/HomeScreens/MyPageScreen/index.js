@@ -63,7 +63,12 @@ class MyPageScreen extends PureComponent {
               <Text style={styles.text1}>문의하기</Text>
             </TouchableOpacity>
             <Text style={styles.text1}>설정</Text>
-            <TouchableOpacity style={{paddingTop: mUtils.wScale(40)}}>
+            <TouchableOpacity
+              style={{paddingTop: mUtils.wScale(40)}}
+              onPress={() => {
+                navigation.navigate('NotificationScreen')
+              }}
+            >
               <Text style={styles.text2}>알림</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{paddingTop: mUtils.wScale(40)}}>

@@ -234,6 +234,16 @@ const API = {
     }
     return Api.get(apiName, path, init)
   },
+  getAlarm: next_token => {
+    var apiName = v1Api
+    var path = '/brand/alarm'
+    var init = {
+      queryStringParameters: {
+        next_token: next_token,
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
 }
 
 export default API

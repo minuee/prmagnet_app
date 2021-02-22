@@ -8,8 +8,9 @@ import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
-import {Grid, Col, Row} from 'react-native-easy-grid'
 import styles from './styles'
+import API from '../../../common/aws-api'
+import Loading from '../../common/Loading'
 
 const closeBtnImage = require('../../../images/navi/close.png')
 const notiSky = require('../../../images/navi/noti_sky.png')
@@ -20,7 +21,7 @@ class NotificationScreen extends PureComponent {
     super(props)
     cBind(this)
     this.state = {
-      data: [
+      list: [
         {
           title: '[요청확인] GUCCI에서 요청확인을 했습니다.',
           desc: 'GUCCI에서 샘플요청을 확인했습니다.',
@@ -33,8 +34,14 @@ class NotificationScreen extends PureComponent {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.pushOption('알림')
+    try {
+      let response = await API.getAlarm(sys_inqry_no)
+      console.log('getQnaDetail>>>', response)
+    } catch (error) {
+      console.log('getQnaDetail>>>', error)
+    }
   }
 
   renderItem = ({item}) => {
@@ -57,10 +64,11 @@ class NotificationScreen extends PureComponent {
     )
   }
   render() {
+    const {list} = this.state
     return (
       <>
         <SafeAreaView style={styles.container}>
-          <FlatList style={styles.list} data={this.state.data} renderItem={this.renderItem} keyExtractor={item => item.dt} />
+          <FlatList style={styles.list} data={list} renderItem={this.renderItem} keyExtractor={item => item.dt} />
         </SafeAreaView>
       </>
     )
