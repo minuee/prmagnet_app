@@ -1,4 +1,5 @@
 import {Api} from '@psyrenpark/api'
+import _ from 'lodash'
 
 import {login} from './aws-auth'
 
@@ -100,6 +101,7 @@ const API = {
 
     // return Api.get(apiName, path, myInit, loadingFunction);
   },
+  getTestResult: response => _.get(response, 'success'),
   login: (data, rest) => {
     login(data, rest)
   },
