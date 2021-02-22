@@ -30,6 +30,7 @@ export default {
   TESTLOGGING,
   getApiUri: () => (PRODUCTION ? PROD_APIURI : STAGE ? STG_APIURI : DEV_APIURI),
   baseColor: '#7ea1b2',
+  baseXColor: '#000000',
   white: '#ffffff',
   black: '#000000',
   blue: '#0046ff',
