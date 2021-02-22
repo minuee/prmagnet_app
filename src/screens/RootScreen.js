@@ -19,6 +19,7 @@ import MenuScreen from './common/MenuScreen'
 import HomeScreen from './HomeScreens/HomeScreen'
 import SelectScheduleScreen from './HomeScreens/SelectScheduleScreen'
 import ContactScreen from './HomeScreens/ContactScreen'
+import ContactDetailScreen from './HomeScreens/ContactDetailScreen'
 import NotificationScreen from './HomeScreens/NotificationScreen'
 import MyPageScreen from './HomeScreens/MyPageScreen'
 import NotiSettingScreen from './HomeScreens/NotiSettingScreen'
@@ -186,6 +187,7 @@ class RootScreen extends PureComponent {
         <StartStack.Screen name="MyPageScreen" component={MyPageScreen} />
         <StartStack.Screen name="NotificationScreen" component={NotificationScreen} />
         <StartStack.Screen name="ContactScreen" component={ContactScreen} />
+        <StartStack.Screen name="ContactDetailScreen" component={ContactDetailScreen} />
         <StartStack.Screen name="SelectScheduleScreen" component={SelectScheduleScreen} />
         <StartStack.Screen name="FilterScreen" component={FilterScreen} />
         <StartStack.Screen name="StartScreen" component={StartScreen} options={{headerShown: false}} />
@@ -217,6 +219,7 @@ class RootScreen extends PureComponent {
         <MemberStack.Screen name="MyPageScreen" component={MyPageScreen} />
         <MemberStack.Screen name="NotificationScreen" component={NotificationScreen} />
         <MemberStack.Screen name="ContactScreen" component={ContactScreen} />
+        <MemberStack.Screen name="ContactDetailScreen" component={ContactDetailScreen} />
         <MemberStack.Screen name="SelectScheduleScreen" component={SelectScheduleScreen} />
         <MemberStack.Screen name="FilterScreen" component={FilterScreen} />
         <MemberStack.Screen name="StartScreen" component={StartScreen} options={{headerShown: false}} />

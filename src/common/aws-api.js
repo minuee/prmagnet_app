@@ -200,6 +200,40 @@ const API = {
 
     return Api.get(apiName, path, init)
   },
+  postQna: (subject, content) => {
+    console.log('>>>>>', subject, content)
+    var apiName = v1Api
+    var path = '/brand/qna'
+    var myInit = {
+      body: {
+        subject: subject,
+        content: content,
+      },
+    }
+    return Api.post(apiName, path, myInit)
+  },
+  getQnaList: (page, limit, search_text) => {
+    var apiName = v1Api
+    var path = '/brand/qna-list'
+    var init = {
+      queryStringParameters: {
+        page: page,
+        limit: limit,
+        search_text: search_text,
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
+  getQnaDetail: sys_inqry_no => {
+    var apiName = v1Api
+    var path = `/brand/qna/${sys_inqry_no}`
+    var init = {
+      queryStringParameters: {
+        sys_inqry_no: sys_inqry_no,
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
 }
 
 export default API
