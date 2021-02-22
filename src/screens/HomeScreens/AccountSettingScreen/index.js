@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {SafeAreaView, View, ScrollView} from 'react-native'
+import {SafeAreaView, View, ScrollView, TouchableOpacity} from 'react-native'
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import _ from 'lodash'
@@ -12,8 +12,8 @@ import styles from './styles'
 import {logout} from '../../../common/aws-auth'
 import {actionLogout} from '../../../redux/actions'
 
-const profileImage = require('../../../images/navi/profile_1.png')
-const goImage = require('../../../images/navi/go_1.png')
+const profileImg = require('../../../images/navi/profile_1.png')
+const cameraImg = require('../../../images/navi/camera_1.png')
 
 class AccountSettingScreen extends PureComponent {
   constructor(props) {
@@ -45,9 +45,10 @@ class AccountSettingScreen extends PureComponent {
       <>
         <SafeAreaView style={styles.container}>
           <ScrollView contentContainerStyle={styles.scroll}>
-            <View style={styles.img}>
+            <TouchableOpacity style={styles.img}>
               <FastImage resizeMode={'contain'} style={styles.profileImg} source={info.img_url_adres} />
-            </View>
+              <FastImage resizeMode={'contain'} style={styles.cameraImg} source={cameraImg} />
+            </TouchableOpacity>
             <View style={styles.top}>
               <Text style={styles.title}>이름</Text>
               <View style={styles.box}>

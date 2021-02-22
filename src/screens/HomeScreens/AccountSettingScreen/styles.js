@@ -23,6 +23,9 @@ export default StyleSheet.create({
     shadowRadius: 2.22,
     elevation: 3,
     alignSelf: 'center',
+    width: mUtils.wScale(80),
+    height: mUtils.wScale(80),
+    borderRadius: mUtils.wScale(50),
   },
   box: {
     width: '100%',
@@ -40,8 +43,15 @@ export default StyleSheet.create({
     height: mUtils.wScale(14),
   },
   profileImg: {
-    width: mUtils.wScale(95),
-    height: mUtils.wScale(95),
+    width: mUtils.wScale(80),
+    height: mUtils.wScale(80),
+  },
+  cameraImg: {
+    width: mUtils.wScale(26),
+    height: mUtils.wScale(26),
+    position: 'absolute',
+    right: mUtils.wScale(2),
+    bottom: mUtils.wScale(2),
   },
   title: {
     fontFamily: 'NotoSansKR-Regular',
