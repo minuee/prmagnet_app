@@ -54,7 +54,12 @@ class MyPageScreen extends PureComponent {
             >
               <Text style={styles.edit}>프로필 수정</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{paddingVertical: mUtils.wScale(40)}}>
+            <TouchableOpacity
+              style={{paddingVertical: mUtils.wScale(40)}}
+              onPress={() => {
+                navigation.navigate('ContactScreen')
+              }}
+            >
               <Text style={styles.text1}>문의하기</Text>
             </TouchableOpacity>
             <Text style={styles.text1}>설정</Text>
