@@ -52,7 +52,7 @@ export default class Tabs extends PureComponent {
               top: -tabBorderWidth,
               height: tabBorderWidth,
               width: tabTotalWidth / tabCount,
-              backgroundColor: mConst.baseColor,
+              backgroundColor: mConst.baseColorFn(),
               left: this.moveBorderValue,
             }}
           />

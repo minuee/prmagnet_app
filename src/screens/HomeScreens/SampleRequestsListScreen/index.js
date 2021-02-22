@@ -2,9 +2,9 @@ import React, {PureComponent} from 'react'
 import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity} from 'react-native'
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
-import _ from 'lodash'
-import Header1 from '../../common/Header1'
 import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-menu'
+import Header from '../../common/Header'
+import _ from 'lodash'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -102,7 +102,7 @@ class SampleRequestsListScreen extends PureComponent {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <Header1 />
+        <Header like pushTo={this.pushTo} />
         <View style={styles.layout1}>
           <Text style={styles.mainTitle}>My Requests</Text>
           <TouchableOpacity style={styles.layout2} hitSlop={{top: 20, bottom: 20, left: 30, right: 30}}>

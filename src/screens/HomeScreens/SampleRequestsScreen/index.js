@@ -2,10 +2,10 @@ import React, {PureComponent} from 'react'
 import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity, TextInput} from 'react-native'
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
-import _ from 'lodash'
-import Header1 from '../../common/Header1'
 import Modal from 'react-native-modal'
 import Postcode from 'react-native-daum-postcode'
+import Header from '../../common/Header'
+import _ from 'lodash'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -28,6 +28,7 @@ const yesNo = ['Yes', 'No']
 class SampleRequestsScreen extends PureComponent {
   constructor(props) {
     super(props)
+    cBind(this)
     this.state = {
       data: [
         {img: modelImg, title: 'Look #1'},
@@ -45,7 +46,7 @@ class SampleRequestsScreen extends PureComponent {
     const {data, isvisible} = this.state
     return (
       <SafeAreaView style={styles.container}>
-        <Header1 />
+        <Header like pushTo={this.pushTo} />
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{paddingHorizontal: mUtils.wScale(20)}}>
             <Text style={{...styles.mainTitle, marginTop: mUtils.wScale(25)}}>Sample</Text>

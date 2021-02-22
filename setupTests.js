@@ -16,5 +16,9 @@ jest.mock('@react-native-community/netinfo', () => mockRNCNetInfo)
 jest.useFakeTimers()
 
 global.console = {
+  log: console.log,
   warn: jest.fn(), // warning 로그 제거
+  error: console.error,
+  info: console.info,
+  debug: console.debug,
 }

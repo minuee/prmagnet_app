@@ -58,99 +58,26 @@ const modalScreenOptions = (headerShown = false, gestureEnabled = mConst.bIos) =
   ...TransitionPresets.ModalSlideFromBottomIOS,
 })
 
-const TabStack = () => {
-  const iconStyle = (width = 96) => ({
-    width: (42 * width) / 155,
-    height: 42,
-    marginTop: 8,
-  })
-
-  const TabNavi = createBottomTabNavigator()
-  const TabHomeStack = createStackNavigator()
-  const TabShowStack = createStackNavigator()
-  const TabLookStack = createStackNavigator()
-  const TabScheduleStack = createStackNavigator()
-  const TabLinkStack = createStackNavigator()
-
-  const tabIconHome = require('../images/tabs/tab_home.png')
-  const tabIconShow = require('../images/tabs/tab_show.png')
-  const tabIconLook = require('../images/tabs/tab_look.png')
-  const tabIconSchedule = require('../images/tabs/tab_schedule.png')
-  const tabIconLink = require('../images/tabs/tab_link.png')
-  const tabIconHomeOn = require('../images/tabs/tab_home_on.png')
-  const tabIconShowOn = require('../images/tabs/tab_show_on.png')
-  const tabIconLookOn = require('../images/tabs/tab_look_on.png')
-  const tabIconScheduleOn = require('../images/tabs/tab_schedule_on.png')
-  const tabIconLinkOn = require('../images/tabs/tab_link_on.png')
-  return (
-    // TODO 탭바 높이값 지정
-    <TabNavi.Navigator
-      tabBarOptions={{style: {height: mConst.bottomTabHeight, backgroundColor: mConst.black}}}
-      tabBar={props => <CustomBottomTabBar {...props} />}
-    >
-      <TabNavi.Screen
-        name="HomeTab"
-        options={{
-          tabBarIcon: ({focused}) => <FastImage source={focused ? tabIconHomeOn : tabIconHome} style={iconStyle()} />,
-          tabBarLabel: () => null,
-        }}
-        children={() => (
-          <TabHomeStack.Navigator>
-            <TabHomeStack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}} />
-          </TabHomeStack.Navigator>
-        )}
-      />
-      <TabNavi.Screen
-        name="ShowTab"
-        options={{
-          tabBarIcon: ({focused}) => <FastImage source={focused ? tabIconShowOn : tabIconShow} style={iconStyle(136)} />,
-          tabBarLabel: () => null,
-        }}
-        children={() => (
-          <TabShowStack.Navigator>
-            <TabShowStack.Screen name="ShowScreen" component={DigitalSRScreen} options={{headerShown: false}} />
-          </TabShowStack.Navigator>
-        )}
-      />
-      <TabNavi.Screen
-        name="LookTab"
-        options={{
-          tabBarIcon: ({focused}) => <FastImage source={focused ? tabIconLookOn : tabIconLook} style={iconStyle(97)} />,
-          tabBarLabel: () => null,
-        }}
-        children={() => (
-          <TabLookStack.Navigator>
-            <TabLookStack.Screen name="LookScreen" component={LookBookScreen} options={{headerShown: false}} />
-          </TabLookStack.Navigator>
-        )}
-      />
-      <TabNavi.Screen
-        name="ScheduleTab"
-        options={{
-          tabBarIcon: ({focused}) => <FastImage source={focused ? tabIconScheduleOn : tabIconSchedule} style={iconStyle()} />,
-          tabBarLabel: () => null,
-        }}
-        children={() => (
-          <TabScheduleStack.Navigator>
-            <TabScheduleStack.Screen name="ScheduleScreen" component={MagazineSchedulerScreen} options={{headerShown: false}} />
-          </TabScheduleStack.Navigator>
-        )}
-      />
-      <TabNavi.Screen
-        name="LinkTab"
-        options={{
-          tabBarIcon: ({focused}) => <FastImage source={focused ? tabIconLinkOn : tabIconLink} style={iconStyle(110)} />,
-          tabBarLabel: () => null,
-        }}
-        children={() => (
-          <TabLinkStack.Navigator>
-            <TabLinkStack.Screen name="LinkScreen" component={LinkSheetScreen} options={{headerShown: false}} />
-          </TabLinkStack.Navigator>
-        )}
-      />
-    </TabNavi.Navigator>
-  )
-}
+const tabIconHome = require('../images/tabs/tab_home.png')
+const tabIconShow = require('../images/tabs/tab_show.png')
+const tabIconLook = require('../images/tabs/tab_look.png')
+const tabIconSchedule = require('../images/tabs/tab_schedule.png')
+const tabIconLink = require('../images/tabs/tab_link.png')
+const tabIconHomeOn = require('../images/tabs/tab_home_on.png')
+const tabIconShowOn = require('../images/tabs/tab_show_on.png')
+const tabIconLookOn = require('../images/tabs/tab_look_on.png')
+const tabIconScheduleOn = require('../images/tabs/tab_schedule_on.png')
+const tabIconLinkOn = require('../images/tabs/tab_link_on.png')
+const tabIconHome2 = require('../images/tabs/tab_home_2.png')
+const tabIconShow2 = require('../images/tabs/tab_show_2.png')
+const tabIconSample = require('../images/tabs/tab_sample.png')
+const tabIconSchedule2 = require('../images/tabs/tab_schedule_2.png')
+const tabIconLink2 = require('../images/tabs/tab_link_2.png')
+const tabIconHomeOn2 = require('../images/tabs/tab_home_on_2.png')
+const tabIconShowOn2 = require('../images/tabs/tab_show_on_2.png')
+const tabIconSampleOn = require('../images/tabs/tab_sample_on.png')
+const tabIconScheduleOn2 = require('../images/tabs/tab_schedule_on_2.png')
+const tabIconLinkOn2 = require('../images/tabs/tab_link_on_2.png')
 
 class RootScreen extends PureComponent {
   constructor(props) {
@@ -227,6 +154,104 @@ class RootScreen extends PureComponent {
       </MemberStack.Navigator>
     )
   }
+  TabStack = () => {
+    const {user} = this.props
+    const iconStyle = (width = 96) => ({
+      width: (42 * width) / 155,
+      height: 42,
+      marginTop: 8,
+    })
+    const TabNavi = createBottomTabNavigator()
+    const TabHomeStack = createStackNavigator()
+    const TabShowStack = createStackNavigator()
+    const TabLookStack = createStackNavigator()
+    const TabScheduleStack = createStackNavigator()
+    const TabLinkStack = createStackNavigator()
+    const two = user.userType === 'M'
+    return (
+      <TabNavi.Navigator
+        tabBarOptions={{style: {height: mConst.bottomTabHeight, backgroundColor: mConst.baseXColorDirect(user.userType)}}}
+        tabBar={props => <CustomBottomTabBar {...props} />}
+      >
+        <TabNavi.Screen
+          name="HomeTab"
+          options={{
+            tabBarIcon: ({focused}) => (
+              <FastImage source={two ? (focused ? tabIconHomeOn2 : tabIconHome2) : focused ? tabIconHomeOn : tabIconHome} style={iconStyle()} />
+            ),
+            tabBarLabel: () => null,
+          }}
+          children={() => (
+            <TabHomeStack.Navigator>
+              <TabHomeStack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}} />
+            </TabHomeStack.Navigator>
+          )}
+        />
+        <TabNavi.Screen
+          name="ShowTab"
+          options={{
+            tabBarIcon: ({focused}) => (
+              <FastImage source={two ? (focused ? tabIconShowOn2 : tabIconShow2) : focused ? tabIconShowOn : tabIconShow} style={iconStyle(136)} />
+            ),
+            tabBarLabel: () => null,
+          }}
+          children={() => (
+            <TabShowStack.Navigator>
+              <TabShowStack.Screen name="ShowScreen" component={DigitalSRScreen} options={{headerShown: false}} />
+            </TabShowStack.Navigator>
+          )}
+        />
+        <TabNavi.Screen
+          name="LookTab"
+          options={{
+            tabBarIcon: ({focused}) => (
+              <FastImage
+                source={two ? (focused ? tabIconSampleOn : tabIconSample) : focused ? tabIconLookOn : tabIconLook}
+                style={iconStyle(two ? 110 : 97)}
+              />
+            ),
+            tabBarLabel: () => null,
+          }}
+          children={() => (
+            <TabLookStack.Navigator>
+              <TabLookStack.Screen name="LookScreen" component={LookBookScreen} options={{headerShown: false}} />
+            </TabLookStack.Navigator>
+          )}
+        />
+        <TabNavi.Screen
+          name="ScheduleTab"
+          options={{
+            tabBarIcon: ({focused}) => (
+              <FastImage
+                source={two ? (focused ? tabIconScheduleOn2 : tabIconSchedule2) : focused ? tabIconScheduleOn : tabIconSchedule}
+                style={iconStyle()}
+              />
+            ),
+            tabBarLabel: () => null,
+          }}
+          children={() => (
+            <TabScheduleStack.Navigator>
+              <TabScheduleStack.Screen name="ScheduleScreen" component={MagazineSchedulerScreen} options={{headerShown: false}} />
+            </TabScheduleStack.Navigator>
+          )}
+        />
+        <TabNavi.Screen
+          name="LinkTab"
+          options={{
+            tabBarIcon: ({focused}) => (
+              <FastImage source={two ? (focused ? tabIconLinkOn2 : tabIconLink2) : focused ? tabIconLinkOn : tabIconLink} style={iconStyle(110)} />
+            ),
+            tabBarLabel: () => null,
+          }}
+          children={() => (
+            <TabLinkStack.Navigator>
+              <TabLinkStack.Screen name="LinkScreen" component={LinkSheetScreen} options={{headerShown: false}} />
+            </TabLinkStack.Navigator>
+          )}
+        />
+      </TabNavi.Navigator>
+    )
+  }
   MenuDrawer = () => {
     const MenuDrawer = createDrawerNavigator()
     return (
@@ -236,7 +261,7 @@ class RootScreen extends PureComponent {
         screenOptions={basicScreenOptions(false, true)}
         drawerContent={props => <MenuScreen {...props} />}
       >
-        <MenuDrawer.Screen name="HomeScreen" component={TabStack} />
+        <MenuDrawer.Screen name="HomeScreen" component={this.TabStack} />
       </MenuDrawer.Navigator>
     )
   }

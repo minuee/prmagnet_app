@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {sha256} from 'react-native-sha256'
 import _ from 'lodash'
 
-import {actionLogin} from '../../../redux/actions'
+import {actionLogin, actionUserType} from '../../../redux/actions'
 import API from '../../../common/aws-api'
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -26,7 +26,7 @@ class LoginScreen extends PureComponent {
   }
   handleLogin = callOnce(async () => {
     const {email, pw} = this.state
-    const {loginSuccess, loginFailure} = this.props
+    const {loginSuccess, loginFailure, userTypeSuccess} = this.props
     const hash = await sha256(pw.toString())
     const data = {
       email,
@@ -38,7 +38,10 @@ class LoginScreen extends PureComponent {
     if (!mUtils.isPassword(pw)) return this.alert('', '비밀번호 형식을 확인해주세요.')
     API.login(data, {
       cbSuccess: async response => {
-        loginSuccess(response)
+        API.getUserType().then(resUserType => {
+          userTypeSuccess(resUserType)
+          loginSuccess(response)
+        })
         console.log('###로그인 성공:', response)
         // console.log('로그인 시 props 확인 : ', this.props)
       },
@@ -130,5 +133,6 @@ export default connect(
   dispatch => ({
     loginSuccess: data => dispatch(actionLogin.success(data)),
     loginFailure: data => dispatch(actionLogin.failure(data)),
+    userTypeSuccess: data => dispatch(actionUserType.success(data)),
   })
 )(LoginScreen)

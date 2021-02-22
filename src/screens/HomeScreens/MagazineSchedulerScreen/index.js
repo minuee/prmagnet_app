@@ -2,8 +2,8 @@ import React, {PureComponent} from 'react'
 import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity} from 'react-native'
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
+import Header from '../../common/Header'
 import _ from 'lodash'
-import Header1 from '../../common/Header1'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -19,6 +19,7 @@ const airplaneImg = require('../../../images/navi/airplane_1.png')
 class MagazineSchedulerScreen extends PureComponent {
   constructor(props) {
     super(props)
+    cBind(this)
     this.state = {
       data: [
         {
@@ -48,7 +49,7 @@ class MagazineSchedulerScreen extends PureComponent {
     const {data} = this.state
     return (
       <SafeAreaView style={styles.container}>
-        <Header1 />
+        <Header like pushTo={this.pushTo} />
         <View
           style={{
             ...styles.layout,

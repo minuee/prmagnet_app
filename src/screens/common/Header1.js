@@ -6,7 +6,7 @@ import mConst from '../../common/constants'
 import mUtils from '../../common/utils'
 
 const searchImage = require('../../images/common/search.png')
-const bellImage = require('../../images/common/bell_1.png')
+const bellImage = require('../../images/common/bell_2.png')
 const profileImage = require('../../images/common/profile_2.png')
 const likeImage = require('../../images/common/like_2.png')
 

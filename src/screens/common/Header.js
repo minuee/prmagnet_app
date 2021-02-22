@@ -7,7 +7,10 @@ import mUtils from '../../common/utils'
 
 const searchImage = require('../../images/common/search.png')
 const bellImage = require('../../images/common/bell.png')
+const bell2Image = require('../../images/common/bell_2.png')
 const profileImage = require('../../images/common/profile.png')
+const profile2Image = require('../../images/common/profile_2.png')
+const like2Image = require('../../images/common/like_2.png')
 
 export default class CommonHeader extends PureComponent {
   constructor(props) {
@@ -18,17 +21,18 @@ export default class CommonHeader extends PureComponent {
   }
   render() {
     const {keyword} = this.state
-    const {props} = this.props
+    const {like, pushTo, userType} = this.props
+    const mUserType = userType || mConst.userTypeFn()
     return (
       <View style={styles.upperWrapper}>
         <TouchableWithoutFeedback onPress={() => this.keywordInput.focus()}>
-          <View style={styles.inputTextWrapper}>
+          <View style={styles.inputTextWrapper(like)}>
             <TouchableOpacity style={styles.inputIconWrapper} onPress={null}>
               <FastImage source={searchImage} style={styles.inputIcon} />
             </TouchableOpacity>
             <TextInput
               ref={comp => (this.keywordInput = comp)}
-              style={styles.input}
+              style={styles.input(like)}
               placeholderTextColor={mConst.textPhColor}
               value={keyword}
               onChangeText={text => this.setState({keyword: text})}
@@ -42,21 +46,16 @@ export default class CommonHeader extends PureComponent {
           </View>
         </TouchableWithoutFeedback>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <TouchableOpacity
-            style={styles.inputIconWrapper}
-            onPress={() => {
-              props.navigation.navigate('NotificationScreen')
-            }}
-          >
-            <FastImage resizeMode={'contain'} source={bellImage} style={styles.inputIcon} />
+          {like && (
+            <TouchableOpacity style={styles.inputIconWrapper} onPress={null}>
+              <FastImage resizeMode={'contain'} source={like2Image} style={styles.inputIcon} />
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity style={styles.inputIconWrapper} onPress={() => pushTo('NotificationScreen')}>
+            <FastImage resizeMode={'contain'} source={mUserType === 'B' ? bellImage : bell2Image} style={styles.inputIcon} />
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.inputIconWrapper}
-            onPress={() => {
-              props.navigation.navigate('MyPageScreen')
-            }}
-          >
-            <FastImage resizeMode={'contain'} source={profileImage} style={styles.inputIcon} />
+          <TouchableOpacity style={styles.inputIconWrapper} onPress={() => pushTo('MyPageScreen')}>
+            <FastImage resizeMode={'contain'} source={mUserType === 'B' ? profileImage : profile2Image} style={styles.inputIcon} />
           </TouchableOpacity>
         </View>
       </View>
@@ -73,8 +72,8 @@ const styles = StyleSheet.create({
     width: mConst.wWidth - mUtils.wScale(40),
     marginVertical: mConst.bAndroid ? mUtils.wScale(10) : mUtils.wScale(5),
   },
-  inputTextWrapper: {
-    width: mConst.wWidth - mConst.wGapUnit * 2.8,
+  inputTextWrapper: threeIcons => ({
+    width: mConst.wWidth - mConst.wGapUnit * (threeIcons ? 3.3 : 2.8),
     height: mUtils.wScale(40),
     flexDirection: 'row',
     alignItems: 'center',
@@ -83,13 +82,13 @@ const styles = StyleSheet.create({
     borderRadius: mUtils.wScale(5),
     paddingHorizontal: mUtils.wScale(5),
     backgroundColor: '#f1f2ea',
-  },
-  input: {
-    width: mConst.wWidth - mConst.wGapUnit * 4,
+  }),
+  input: threeIcons => ({
+    width: mConst.wWidth - mConst.wGapUnit * (threeIcons ? 4.3 : 4),
     fontSize: mUtils.wScale(15),
     padding: 0,
     color: mConst.textBaseColor,
-  },
+  }),
   inputIconWrapper: {
     padding: 6,
     marginLeft: 0,

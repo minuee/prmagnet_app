@@ -27,7 +27,7 @@ export default StyleSheet.create({
   },
   headerRightText: {
     fontSize: 23,
-    color: mConst.baseColor,
+    color: mConst.baseColorFn(),
   },
   menuGroupWrapper: {
     justifyContent: 'space-around',

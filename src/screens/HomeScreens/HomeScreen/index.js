@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {SafeAreaView, View, TouchableWithoutFeedback, TouchableOpacity, TextInput, FlatList, ScrollView} from 'react-native'
+import {AppState, SafeAreaView, View, TouchableWithoutFeedback, TouchableOpacity, TextInput, FlatList, ScrollView} from 'react-native'
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import moment from 'moment'
@@ -11,7 +11,6 @@ import CodePush from '../../common/CodePush'
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
-// import API from '../../../common/services'
 import API from '../../../common/aws-api'
 import Text from '../../common/Text'
 import Header from '../../common/Header'
@@ -37,14 +36,14 @@ class HomeScreen extends PureComponent {
     }
   }
   async componentDidMount() {
-    const userType = await API.getUserType()
-    console.log('###getUserType:', userType)
+    const {user} = this.props
+    global.mUserType = user.userType
   }
   render() {
+    const {user} = this.props
     return (
       <SafeAreaView style={styles.container}>
-        <Header props={this.props} />
-        {(mConst.PRODUCTION || mConst.STAGE) && <CodePush />}
+        <Header pushTo={this.pushTo} userType={user.userType} />
         <ScrollView>
           <Text style={styles.screenTitleText}>Home</Text>
           <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20)}}>
@@ -103,6 +102,7 @@ class HomeScreen extends PureComponent {
             })}
           </View>
         </ScrollView>
+        {(mConst.PRODUCTION || mConst.STAGE) && <CodePush />}
       </SafeAreaView>
     )
   }

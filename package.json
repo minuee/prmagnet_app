@@ -30,7 +30,7 @@
     "moment": "^2.29.1",
     "react": "16.13.1",
     "react-native": "0.63.4",
-    "react-native-calendars": "1.1249.0",
+    "react-native-calendars": "1.1250.0",
     "react-native-code-push": "7.0.0",
     "react-native-daum-postcode": "1.0.9",
     "react-native-device-info": "8.0.1",

@@ -11,13 +11,15 @@ const userFn = () =>
   describe('사용자 API 테스트', () => {
     it('회원 로그인 성공', async () => {
       API.login(loginData(), {
-        cbSuccess: async response => {
+        cbSuccess: response => {
+          // if (TESTLOGGING) {
+          console.log('회원 로그인 성공', response)
+          // }
           expect(true).toBe(true)
         },
         cbFailure: e => {
-          expect(false).toBe(true)
           console.log('###로그인 실패', e)
-          // this.showErrorMsg(e)
+          expect(false).toBe(true)
         },
       })
     })
