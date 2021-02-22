@@ -27,7 +27,7 @@
     "amazon-cognito-identity-js": "4.5.10",
     "aws-amplify": "3.3.19",
     "axios": "0.21.1",
-    "moment": "2.29.1",
+    "moment": "^2.29.1",
     "react": "16.13.1",
     "react-native": "0.63.4",
     "react-native-calendars": "1.1249.0",
