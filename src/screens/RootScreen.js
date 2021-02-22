@@ -170,7 +170,7 @@ class RootScreen extends PureComponent {
     const two = user.userType === 'M'
     return (
       <TabNavi.Navigator
-        tabBarOptions={{style: {height: mConst.bottomTabHeight, backgroundColor: mConst.baseXColorDirect(user.userType)}}}
+        tabBarOptions={{style: {height: mConst.bottomTabHeight, backgroundColor: mConst.getBaseXColorDirect(user.userType)}}}
         tabBar={props => <CustomBottomTabBar {...props} />}
       >
         <TabNavi.Screen

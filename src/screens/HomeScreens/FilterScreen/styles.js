@@ -41,7 +41,7 @@ export default StyleSheet.create({
     height: mUtils.wScale(60),
     alignItems: 'center',
     paddingHorizontal: mUtils.wScale(20),
-    backgroundColor: mConst.baseColorFn(),
+    backgroundColor: mConst.getBaseColor(),
   },
   sectionText: {
     fontSize: 15,

@@ -22,7 +22,7 @@ export default class CommonHeader extends PureComponent {
   render() {
     const {keyword} = this.state
     const {like, pushTo, userType} = this.props
-    const mUserType = userType || mConst.userTypeFn()
+    const mUserType = userType || mConst.getUserType()
     return (
       <View style={styles.upperWrapper}>
         <TouchableWithoutFeedback onPress={() => this.keywordInput.focus()}>

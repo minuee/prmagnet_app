@@ -83,7 +83,7 @@ const cBind = reactComp => {
     navigation.setOptions({
       title: 'PRMagnet',
       headerStyle: {backgroundColor: mConst.white, shadowColor: 'transparent', elevation: 0},
-      headerTitleStyle: {fontSize: mUtils.wScale(23), color: mConst.baseColorFn(), alignSelf: 'center'},
+      headerTitleStyle: {fontSize: mUtils.wScale(23), color: mConst.getBaseColor(), alignSelf: 'center'},
       headerLeft: () => (
         <TouchableOpacity style={{paddingHorizontal: 12}} onPress={reactComp.openMenu}>
           <FastImage style={{width: mUtils.wScale(35), height: mUtils.wScale(35)}} source={menuBtnImage} />
