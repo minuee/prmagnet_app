@@ -1,0 +1,70 @@
+import React, {PureComponent} from 'react'
+import {SafeAreaView, View, ScrollView, TouchableOpacity} from 'react-native'
+import {connect} from 'react-redux'
+import FastImage from 'react-native-fast-image'
+import _ from 'lodash'
+import moment from 'moment'
+
+import mConst from '../../../common/constants'
+import mUtils from '../../../common/utils'
+import cBind, {callOnce} from '../../../common/navigation'
+import Text from '../../common/Text'
+import styles from './styles'
+import API from '../../../common/aws-api'
+import Loading from '../../common/Loading'
+
+class ContactDetailScreen extends PureComponent {
+  constructor(props) {
+    super(props)
+    cBind(this)
+    this.state = {desc: ''}
+  }
+
+  async componentDidMount() {
+    const {sys_inqry_no} = this.props.route.params
+    this.pushOption('문의확인')
+    try {
+      let response = await API.getQnaDetail(sys_inqry_no)
+      console.log('getQnaDetail>>>', response)
+      if (response.success) {
+        this.setState({desc: response})
+      }
+    } catch (error) {
+      console.log('getQnaDetail>>>', error)
+    }
+  }
+  render() {
+    const {desc} = this.state
+    return desc ? (
+      <>
+        <SafeAreaView style={styles.container}>
+          <ScrollView>
+            <View style={styles.itemBox}>
+              <View>
+                <Text style={styles.title}>{desc.inqry_subj}</Text>
+                <Text style={styles.dt}>작성일: {moment(desc.inqry_dt * 1000).format('YYYY.MM.DD')}</Text>
+              </View>
+              <View style={{...styles.box, backgroundColor: desc.answer_yn ? mConst.black : mConst.white}}>
+                <Text style={{...styles.boxtext, color: desc.answer_yn ? mConst.white : mConst.black}}>
+                  {desc.answer_yn ? '답변완료' : '답변대기'}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.descBox}>
+              <Text style={styles.desc}>{desc.inqry_cntent}</Text>
+              <Text style={styles.desc} />
+              <Text style={styles.desc}>{desc.answer_cntent}</Text>
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      </>
+    ) : (
+      <Loading />
+    )
+  }
+}
+
+export default connect(
+  state => ({}),
+  dispatch => ({})
+)(ContactDetailScreen)
