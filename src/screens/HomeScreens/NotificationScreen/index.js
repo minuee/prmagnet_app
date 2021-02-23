@@ -38,9 +38,9 @@ class NotificationScreen extends PureComponent {
     this.pushOption('알림')
     try {
       let response = await API.getAlarm(sys_inqry_no)
-      console.log('getQnaDetail>>>', response)
+      console.log('getAlarm>>>', response)
     } catch (error) {
-      console.log('getQnaDetail>>>', error)
+      console.log('getAlarm>>>', error)
     }
   }
 
