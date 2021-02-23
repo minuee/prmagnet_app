@@ -203,7 +203,6 @@ const API = {
     return Api.get(apiName, path, init)
   },
   postQna: (subject, content) => {
-    console.log('>>>>>', subject, content)
     var apiName = v1Api
     var path = '/brand/qna'
     var myInit = {

@@ -40,6 +40,7 @@ import MagazineSchedulerScreen from './HomeScreens/MagazineSchedulerScreen'
 import BrandLinkSheetScreen from './HomeScreens/BrandLinkSheetScreen'
 import ByBrandsSearchScreen from './HomeScreens/ByBrandsSearchScreen'
 import SearchScreen from './HomeScreens/SearchScreen'
+import NoticeListScreen from './HomeScreens/NoticeListScreen'
 
 import DevNavigationScreen from './HomeScreens/DevNavigationScreen'
 
@@ -94,6 +95,7 @@ class RootScreen extends PureComponent {
         <StartStack.Screen name="LoginScreen" component={LoginScreen} />
         <StartStack.Screen name="DevNavigationScreen" component={DevNavigationScreen} />
         <StartStack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}} />
+        <StartStack.Screen name="NoticeListScreen" component={NoticeListScreen} />
         <StartStack.Screen name="SearchScreen" component={SearchScreen} />
         <StartStack.Screen name="ByBrandsSearchScreen" component={ByBrandsSearchScreen} />
         <StartStack.Screen name="BrandLinkSheetScreen" component={BrandLinkSheetScreen} options={{headerShown: false}} />
@@ -127,6 +129,7 @@ class RootScreen extends PureComponent {
     return (
       <MemberStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'HomeScreen'}>
         <MemberStack.Screen name="HomeScreen" component={this.MenuDrawer} options={{headerShown: false, gestureEnabled: false}} />
+        <MemberStack.Screen name="NoticeListScreen" component={NoticeListScreen} />
         <MemberStack.Screen name="ByBrandsSearchScreen" component={ByBrandsSearchScreen} />
         <MemberStack.Screen name="BrandLinkSheetScreen" component={BrandLinkSheetScreen} options={{headerShown: false}} />
         <MemberStack.Screen name="MagazineSchedulerScreen" component={MagazineSchedulerScreen} options={{headerShown: false}} />
