@@ -18,6 +18,7 @@ const closeBtnImage = require('../../../../images/navi/close.png')
 class ContactConfirm extends PureComponent {
   constructor(props) {
     super(props)
+    cBind(this)
     this.state = {list: [], page: 1, limit: 10, search_text: ''}
   }
   renderItem = ({item}) => {
@@ -56,7 +57,15 @@ class ContactConfirm extends PureComponent {
   handleLoadMore = async () => {
     this.getQnaList()
   }
-  async componentDidMount() {
+
+  componentDidMount() {
+    this.onFocus(this.handleOnFocus)
+  }
+  componentWillUnmount() {
+    this.removeFocus()
+  }
+
+  handleOnFocus = () => {
     this.getQnaList()
   }
 

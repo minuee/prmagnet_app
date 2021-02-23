@@ -20,9 +20,8 @@ class ContactDetailScreen extends PureComponent {
     this.state = {desc: ''}
   }
 
-  async componentDidMount() {
+  getQnaDetail = async () => {
     const {sys_inqry_no} = this.props.route.params
-    this.pushOption('문의확인')
     try {
       let response = await API.getQnaDetail(sys_inqry_no)
       console.log('getQnaDetail>>>', response)
@@ -33,6 +32,19 @@ class ContactDetailScreen extends PureComponent {
       console.log('getQnaDetail>>>', error)
     }
   }
+
+  componentDidMount() {
+    this.pushOption('문의확인')
+    this.onFocus(this.handleOnFocus)
+  }
+  componentWillUnmount() {
+    this.removeFocus()
+  }
+
+  handleOnFocus = () => {
+    this.getQnaDetail()
+  }
+
   render() {
     const {desc} = this.state
     return desc ? (
