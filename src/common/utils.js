@@ -1,3 +1,5 @@
+import moment from 'moment'
+import 'moment/locale/es'
 import _ from 'lodash'
 
 import mConst from './constants'
@@ -342,6 +344,25 @@ const utils = {
   hScale(x) {
     if (x === undefined || x === null || x === '' || _.isNaN(x)) return x
     return Math.floor((x * mConst.wHeight) / 896)
+  },
+  getToday() {
+    const now = new Date()
+    now.setHours(0, 0, 0)
+    return now.getTime()
+  },
+  getNextWeek() {
+    const nextWeek = new Date()
+    nextWeek.setDate(nextWeek.getDate() + 7)
+    nextWeek.setHours(23, 59, 59)
+    return nextWeek.getTime()
+  },
+  getDayValue(year, month, date, isEnd = false) {
+    const day = new Date(year, month - 1, date)
+    isEnd ? day.setHours(23, 59, 59) : day.setHours(0, 0, 0)
+    return day.getTime()
+  },
+  getMonthDayWeek(time) {
+    return moment(time).format('M/D(ddd)')
   },
 }
 
