@@ -360,11 +360,11 @@ const utils = {
     isEnd ? day.setHours(23, 59, 59) : day.setHours(0, 0, 0)
     return Math.floor(day.getTime() / 1000)
   },
-  getShortDate(dbTime) {
+  getShowDate(dbTime, format = 'M/D(ddd)') {
     // 파라미터는 Date.getTime() / 1000 값임
     return moment(dbTime * 1000)
       .locale('en')
-      .format('M/D(ddd)')
+      .format(format)
       .toUpperCase()
   },
   getCalendarMinDate() {
