@@ -1,20 +1,16 @@
 import React, {PureComponent} from 'react'
 import {SafeAreaView, View, ScrollView, Switch, Platform} from 'react-native'
 import {connect} from 'react-redux'
-import FastImage from 'react-native-fast-image'
 import _ from 'lodash'
-import DeviceInfo from 'react-native-device-info'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
-import {Grid, Col, Row} from 'react-native-easy-grid'
 import styles from './styles'
-import {multicastChannel} from 'redux-saga'
+import Loading from '../../common/Loading'
 
-const profileImage = require('../../../images/navi/profile_1.png')
-const item = [
+const magazine = [
   {title: '디지털 쇼룸', desc: '디지털 쇼룸의 알림을 받아보세요'},
   {title: '샘플 요청', desc: '샘플 요청의 알림을 받아보세요'},
   {title: 'PR GPS 소식', desc: 'PR GPS의 새로운 소식을 받아보세요'},
@@ -22,24 +18,33 @@ const item = [
   {title: '보도자료', desc: '보도자료의 알림을 받아보세요 '},
 ]
 
+const brand = [
+  {title: '샘플 요청', desc: '샘플 요청의 알림을 받아보세요'},
+  {title: 'PR GPS 소식', desc: 'PR GPS의 새로운 소식을 받아보세요'},
+  {title: '방해 금지 시간', desc: '특정 시간동안 알림을 받지않아요'},
+]
+
 class NotiSettingScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
-    this.state = {isEnabled: [false, false, false, false, false]}
+    this.state = {isEnabled: ''}
   }
 
   componentDidMount() {
     this.pushOption('알림 설정')
+    const arr = mConst.getUserType() === 'M' ? [false, false, false, false, false] : [false, false, false]
+    this.setState({isEnabled: arr})
   }
 
   render() {
     const {isEnabled} = this.state
+    const userType = mConst.getUserType()
     return (
       <>
         <SafeAreaView style={styles.container}>
           <ScrollView contentContainerStyle={styles.scroll}>
-            {_.map(item, (item, index) => {
+            {_.map(userType === 'M' ? magazine : brand, (item, index) => {
               return (
                 <View key={index} style={styles.listBox}>
                   <View>

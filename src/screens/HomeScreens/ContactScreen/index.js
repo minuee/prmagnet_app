@@ -28,10 +28,10 @@ class ContactScreen extends PureComponent {
         <Tab.Navigator
           swipeEnabled={false}
           tabBarOptions={{
-            activeTintColor: black,
+            activeTintColor: mConst.getBaseXColor(),
             inactiveTintColor: mConst.gray,
             indicatorStyle: {
-              backgroundColor: black,
+              backgroundColor: mConst.getBaseXColor(),
             },
             labelStyle: {fontSize: 14, fontWeight: 'bold'},
             style: {backgroundColor: mConst.white},

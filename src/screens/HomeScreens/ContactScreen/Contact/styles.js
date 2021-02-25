@@ -32,7 +32,7 @@ export default StyleSheet.create({
   bottom: {
     width: '100%',
     height: mUtils.hScale(50),
-    backgroundColor: mConst.black,
+    backgroundColor: mConst.getBaseXColor(),
     alignItems: 'center',
     justifyContent: 'center',
   },

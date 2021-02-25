@@ -36,8 +36,9 @@ class NotificationScreen extends PureComponent {
 
   async componentDidMount() {
     this.pushOption('알림')
+    const userType = mConst.getUserType()
     try {
-      let response = await API.getAlarm(sys_inqry_no)
+      let response = await API.getAlarm({next_token: next_token, userType: userType})
       console.log('getAlarm>>>', response)
     } catch (error) {
       console.log('getAlarm>>>', error)

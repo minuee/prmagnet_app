@@ -13,8 +13,6 @@ import styles from './styles'
 import API from '../../../common/aws-api'
 import Loading from '../../common/Loading'
 
-const profileImage = require('../../../images/navi/profile_1.png')
-
 class MyPageScreen extends PureComponent {
   constructor(props) {
     super(props)
@@ -24,7 +22,8 @@ class MyPageScreen extends PureComponent {
 
   async componentDidMount() {
     this.pushOption('마이페이지')
-    const userInfo = await API.getUserInfo()
+    const userType = mConst.getUserType()
+    const userInfo = await API.getUserInfo({userType: userType})
     this.setState({info: userInfo})
   }
 
@@ -64,7 +63,7 @@ class MyPageScreen extends PureComponent {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('NotificationScreen')
+                navigation.navigate('NotiSettingScreen')
               }}
             >
               <Text style={styles.text1}>알림</Text>

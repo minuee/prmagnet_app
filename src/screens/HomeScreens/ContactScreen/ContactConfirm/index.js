@@ -13,8 +13,6 @@ import styles from './styles'
 import API from '../../../../common/aws-api'
 import Loading from '../../../common/Loading'
 
-const closeBtnImage = require('../../../../images/navi/close.png')
-
 class ContactConfirm extends PureComponent {
   constructor(props) {
     super(props)
@@ -33,8 +31,10 @@ class ContactConfirm extends PureComponent {
           <Text style={styles.title}>{item.inqry_subj}</Text>
           <Text style={styles.dt}>작성일: {moment(item.inqry_dt * 1000).format('YYYY.MM.DD')}</Text>
         </View>
-        <View style={{...styles.box, backgroundColor: item.answer_yn ? mConst.black : mConst.white}}>
-          <Text style={{...styles.boxtext, color: item.answer_yn ? mConst.white : mConst.black}}>{item.answer_yn ? '답변완료' : '답변대기'}</Text>
+        <View style={{...styles.box, backgroundColor: item.answer_yn ? mConst.getBaseXColor() : mConst.white}}>
+          <Text style={{...styles.boxtext, color: item.answer_yn ? mConst.white : mConst.getBaseXColor()}}>
+            {item.answer_yn ? '답변완료' : '답변대기'}
+          </Text>
         </View>
       </TouchableOpacity>
     )
@@ -42,8 +42,9 @@ class ContactConfirm extends PureComponent {
 
   getQnaList = async () => {
     const {list, page, limit, search_text} = this.state
+    const userType = mConst.getUserType()
     try {
-      let response = await API.getQnaList(page, limit, search_text)
+      let response = await API.getQnaList({page: page, limit: limit, search_text: search_text, userType: userType})
       console.log('getQnaList>>>', response)
       if (response.success) {
         if (response.list.length > 0) {

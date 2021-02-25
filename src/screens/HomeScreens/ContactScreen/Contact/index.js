@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react'
 import {SafeAreaView, View, TextInput, TouchableOpacity, Keyboard} from 'react-native'
 import {connect} from 'react-redux'
-import FastImage from 'react-native-fast-image'
 import _ from 'lodash'
 
 import mConst from '../../../../common/constants'
@@ -10,8 +9,6 @@ import cBind, {callOnce} from '../../../../common/navigation'
 import Text from '../../../common/Text'
 import styles from './styles'
 import API from '../../../../common/aws-api'
-
-const closeBtnImage = require('../../../../images/navi/close.png')
 
 class Contact extends PureComponent {
   constructor(props) {
@@ -25,9 +22,9 @@ class Contact extends PureComponent {
 
   postQna = async () => {
     const {title, desc} = this.state
-    console.log(title, desc)
+    const userType = mConst.getUserType()
     try {
-      let response = await API.postQna(title, desc)
+      let response = await API.postQna({subject: title, content: desc, userType: userType})
       console.log('postQna>>>>', response)
       if (response.success) {
         this.setState({title: '', desc: ''})
