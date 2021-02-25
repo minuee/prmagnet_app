@@ -1,5 +1,4 @@
 import moment from 'moment'
-import 'moment/locale/es'
 import _ from 'lodash'
 
 import mConst from './constants'
@@ -361,8 +360,25 @@ const utils = {
     isEnd ? day.setHours(23, 59, 59) : day.setHours(0, 0, 0)
     return Math.floor(day.getTime() / 1000)
   },
-  getMonthDayWeek(time) {
-    return moment(time).format('M/D(ddd)')
+  getShortDate(dbTime) {
+    // 파라미터는 Date.getTime() / 1000 값임
+    return moment(dbTime * 1000)
+      .locale('en')
+      .format('M/D(ddd)')
+      .toUpperCase()
+  },
+  getCalendarMinDate() {
+    const minDate = new Date()
+    minDate.setMonth(minDate.getMonth() - 1)
+    minDate.setDate(1)
+    return minDate
+  },
+  getDateStamp(dbTime) {
+    return new Date(dbTime * 1000).getTime()
+  },
+  getCalendarDateObj(dbTime) {
+    const calDate = moment(new Date(dbTime * 1000))
+    return {dateString: calDate.format('YYYY-MM-DD'), day: calDate.date(), month: calDate.month(), year: calDate.year()}
   },
 }
 
