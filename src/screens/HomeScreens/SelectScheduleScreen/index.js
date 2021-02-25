@@ -13,7 +13,6 @@ import Text from '../../common/Text'
 import {Grid, Col, Row} from 'react-native-easy-grid'
 import styles from './styles'
 
-const closeBtnImage = require('../../../images/navi/close.png')
 LocaleConfig.locales['ko'] = {
   monthNames: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
   monthNamesShort: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -108,10 +107,10 @@ class SelectScheduleScreen extends PureComponent {
       const {timestamp: savedTimestamp} = start
       if (savedTimestamp > timestamp) {
         const period = this.getPeriod(timestamp, savedTimestamp)
-        this.setState({start: newDayObj, end: start, period}, () => console.log('###start1:', this.state.start, this.state.end, this.state.period))
+        this.setState({start: newDayObj, end: start, period})
       } else {
         const period = this.getPeriod(savedTimestamp, timestamp)
-        this.setState({end: newDayObj, start, period}, () => console.log('###start2:', this.state.start, this.state.end, this.state.period))
+        this.setState({end: newDayObj, start, period})
       }
     }
   }
@@ -125,15 +124,7 @@ class SelectScheduleScreen extends PureComponent {
       this.alert('', '날짜 설정이 필요합니다')
       return
     }
-    console.log('**********start:', mUtils.getDayValue(start.year, start.month, start.day))
-    console.log('**********end:', mUtils.getDayValue(end.year, end.month, end.day))
-    console.log('**********start2:', mUtils.getShowDate(mUtils.getDayValue(start.year, start.month, start.day)))
-    console.log('**********end2:', mUtils.getShowDate(mUtils.getDayValue(end.year, end.month, end.day)))
-    this.pushTo(caller, {
-      start: String(mUtils.getDayValue(start.year, start.month, start.day)),
-      end: String(mUtils.getDayValue(end.year, end.month, end.day, true)),
-    })
-    // this.pushTo(caller, {start: String(mUtils.getToday()), end: String(mUtils.getNextWeek())})
+    this.pushTo(caller, {start: mUtils.getDayValue(start.year, start.month, start.day), end: mUtils.getDayValue(end.year, end.month, end.day, true)})
   }
   render() {
     const {period} = this.state

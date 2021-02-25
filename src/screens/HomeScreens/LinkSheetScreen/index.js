@@ -46,19 +46,15 @@ class LinkSheetScreen extends PureComponent {
     } catch (error) {
       console.log('픽업 스케쥴 조회 실패', error)
     }
-    console.log('####moment:', mUtils.getShowDate(new Date().getTime() / 1000))
-    console.log('####start:', mUtils.getCalendarDateObj(start))
-    console.log('####end:', mUtils.getCalendarDateObj(end))
     this.onFocus(this.handleOnFocus)
   }
   componentWillUnmount() {
     this.removeFocus()
   }
   handleOnFocus = () => {
-    const {start, end} = this.params
-    console.log('@@@@start,end1:', start, end)
+    const {start, end} = this.props.route.params // onFocus에서는 이렇게 불러와야 함 navigation.js 33번째 줄 참조
     if (start && end) {
-      this.setState({start, end}, () => console.log('@@@@start,end2:', start, end))
+      this.setState({start, end})
     }
   }
   handleChangeSchedule = () => {
