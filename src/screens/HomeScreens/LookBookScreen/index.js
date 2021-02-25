@@ -22,7 +22,7 @@ class LookBookScreen extends PureComponent {
     super(props)
     cBind(this)
     this.state = {
-      list: '',
+      list: [],
       page: 1,
       limit: 10,
       search_text: '',
@@ -106,10 +106,10 @@ class LookBookScreen extends PureComponent {
               <Text style={styles.seasonGen}>
                 {item.season} • {item.gender}
               </Text>
-              <Text style={styles.dt}>Date Created • {item.dt}</Text>
+              <Text style={styles.dt}>Date Created • {mUtils.getShowDate(item.dt, 'YYYY-MM-DD')}</Text>
             </View>
             <View style={styles.smallBox}>
-              <Text style={styles.brand}>{item.brand}</Text>
+              <Text style={styles.brand}>{item.made_for}</Text>
             </View>
           </View>
         </TouchableOpacity>
