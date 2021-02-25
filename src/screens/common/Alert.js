@@ -3,6 +3,7 @@ import {View, StyleSheet, TouchableOpacity} from 'react-native'
 import Modal from 'react-native-modal'
 import RootSiblings from 'react-native-root-siblings'
 import FastImage from 'react-native-fast-image'
+import _ from 'lodash'
 
 import mConst from '../../common/constants'
 import mUtils from '../../common/utils'
@@ -37,14 +38,14 @@ export const alert = (title, content, button) => {
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
-                  if (button[0].onPress) {
+                  if (_.get(button, '[0].onPress')) {
                     button[0].onPress()
                   }
                   elements.destroy()
                   elements = null
                 }}
               >
-                <Text style={styles.buttonText}>{button[0].text || 'Confirm'}</Text>
+                <Text style={styles.buttonText}>{_.get(button, '[0].text', 'Confirm')}</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -53,26 +54,26 @@ export const alert = (title, content, button) => {
               <TouchableOpacity
                 style={styles.confirmButton}
                 onPress={() => {
-                  if (button[0].onPress) {
+                  if (_.get(button, '[0].onPress')) {
                     button[0].onPress()
                   }
                   elements.destroy()
                   elements = null
                 }}
               >
-                <Text style={styles.confirmButtonText}>{button[0].text || 'Confirm'}</Text>
+                <Text style={styles.confirmButtonText}>{_.get(button, '[0].text', 'Confirm')}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.cancelButton}
                 onPress={() => {
-                  if (button[1].onPress) {
+                  if (_.get(button, '[1].onPress')) {
                     button[1].onPress()
                   }
                   elements.destroy()
                   elements = null
                 }}
               >
-                <Text style={styles.cancelButtonText}>{button[1].text || 'Cancel'}</Text>
+                <Text style={styles.cancelButtonText}>{_.get(button, '[1].text', 'Cancel')}</Text>
               </TouchableOpacity>
             </View>
           )}
