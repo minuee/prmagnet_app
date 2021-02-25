@@ -43,6 +43,8 @@
 	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>사진 라이브러리 접근을 허용하시면 보유한 이미지를 프로필에 사용할 수 있어요.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>카메라 접근을 허용하시면 촬영한 이미지를 프로필에 사용할 수 있어요.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Fonts/NotoSansKR-Black.otf</string>
