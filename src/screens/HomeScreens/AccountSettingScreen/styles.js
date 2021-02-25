@@ -74,4 +74,25 @@ export default StyleSheet.create({
     color: '#999999',
     marginTop: mUtils.wScale(30),
   },
+  modal: {
+    alignItems: 'center',
+  },
+  modalView: {
+    width: mUtils.wScale(280),
+    backgroundColor: mConst.white,
+    borderStyle: 'solid',
+    borderWidth: 0.3,
+    borderColor: '#707070',
+  },
+  select: {
+    paddingHorizontal: mUtils.wScale(20),
+    paddingVertical: mUtils.wScale(16),
+  },
+  modaltext: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 15,
+    fontStyle: 'normal',
+    textAlign: 'left',
+    color: '#1d1d1d',
+  },
 })
