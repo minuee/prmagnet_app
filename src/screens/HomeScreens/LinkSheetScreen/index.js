@@ -27,42 +27,75 @@ class LinkSheetScreen extends PureComponent {
       start: 1611100800, // mUtils.getToday(), // TODO 테스트 데이타 관계로 일단 임시 값으로 설정
       end: mUtils.getNextWeek(),
       brandId: '',
-      data: [
-        {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
-        {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
-        {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
-        {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
-        {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
-      ],
+      requests: [],
+      brands: [],
       title: ['Send Out', 'Return'],
       selectTitle: 'Send Out',
     }
   }
   async componentDidMount() {
-    const {start, end, brandId} = this.state
-    try {
-      const response = await API.getPickupSchedule({start_date: start, fin_date: end, brand_id: brandId})
-      console.log('픽업 스케쥴 조회 성공', JSON.stringify(response))
-    } catch (error) {
-      console.log('픽업 스케쥴 조회 실패', error)
-    }
     this.onFocus(this.handleOnFocus)
   }
   componentWillUnmount() {
     this.removeFocus()
   }
   handleOnFocus = () => {
-    const {start, end} = this.props.route.params // onFocus에서는 이렇게 불러와야 함 navigation.js 33번째 줄 참조
+    const {brandId} = this.state
+    const {start, end} = _.get(this.props, 'route.params', {}) // onFocus에서는 이렇게 불러와야 함 navigation.js 33번째 줄 참조
     if (start && end) {
+      this.handleLoadData(start, end, brandId)
       this.setState({start, end})
+    } else {
+      this.handleLoadData(this.state.start, this.state.end, brandId)
+    }
+  }
+  handleLoadData = async (start, end, brandId) => {
+    try {
+      const response = await API.getPickupSchedule({start_date: start, fin_date: end, brand_id: brandId})
+      this.setState({requests: _.get(response, 'request_list', []), brands: _.get(response, 'brand_list', [])})
+      console.log('픽업 스케쥴 조회 성공', JSON.stringify(response))
+    } catch (error) {
+      console.log('픽업 스케쥴 조회 실패', error)
     }
   }
   handleChangeSchedule = () => {
     const {start, end} = this.state
     this.pushTo('SelectScheduleScreen', {start, end, caller: 'LinkSheetScreen'})
   }
+  // 샘플 데이타
+  // {
+  //   "request_list": [
+  //     {
+  //       "receive_date": 1611100800,
+  //       "individual_schedules": [
+  //         {
+  //           "req_no": "20210219000074",
+  //           "brand_id": "BRAND_TEST001",
+  //           "receive_date": 1611100800,
+  //           "brand_user_nm": null,
+  //           "brand_nm": "테스트브랜드1",
+  //           "brand_logo_url_adres": "https://fpr-prod-file.s3-ap-northeast-2.amazonaws.com"
+  //         }
+  //       ]
+  //     }
+  //   ],
+  //   "brand_list": [
+  //     {
+  //       "brand_id": "BRAND_TEST001",
+  //       "brand_nm": "테스트브랜드1"
+  //     }
+  //   ],
+  //   "success": true
+  // }
+  // data: [
+  //   {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
+  //   {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
+  //   {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
+  //   {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
+  //   {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
+  // ],
   render() {
-    const {start, end, brandId, data, selectTitle} = this.state
+    const {start, end, brandId, requests, brands, selectTitle} = this.state
     return (
       <SafeAreaView style={styles.container}>
         <Header />
@@ -104,7 +137,7 @@ class LinkSheetScreen extends PureComponent {
           <View style={styles.layout1}>
             <FastImage resizeMode={'contain'} style={styles.schedulerImg} source={schedulerImg} />
             <Text style={styles.date}>
-              {mUtils.getShowDate(start)} - {mUtils.getShowDate(end)}, {start}, {end}
+              {mUtils.getShowDate(start)} - {mUtils.getShowDate(end)}
             </Text>
           </View>
           <TouchableOpacity onPress={this.handleChangeSchedule}>
@@ -112,7 +145,38 @@ class LinkSheetScreen extends PureComponent {
           </TouchableOpacity>
         </View>
         <ScrollView style={{paddingBottom: mUtils.wScale(25)}}>
-          <View style={{width: '100%', marginTop: mUtils.wScale(25)}}>
+          {_.map(requests, (item, index) => {
+            return (
+              <View key={index} style={{width: '100%', marginTop: mUtils.wScale(25)}}>
+                <TouchableOpacity style={{...styles.layout1, marginBottom: mUtils.wScale(15), paddingHorizontal: mUtils.wScale(20)}}>
+                  <FastImage resizeMode={'contain'} style={styles.checkImg} source={noCheckImg} />
+                  <Text style={{...styles.subDt}}>
+                    {mUtils.getShowDate(item.receive_date)}
+                    <Text style={{fontSize: 16}}>
+                      {' '}
+                      : <Text style={{fontSize: 16, color: '#7ea1b2'}}>{_.size(item.individual_schedules)}</Text>
+                    </Text>
+                  </Text>
+                </TouchableOpacity>
+                <View style={{...styles.layout, flexWrap: 'wrap', paddingHorizontal: mUtils.wScale(20)}}>
+                  {_.map(item.individual_schedules, (subItem, subIndex) => {
+                    return (
+                      <TouchableOpacity key={subIndex} style={{...styles.brandBox}}>
+                        <View style={styles.box1}>
+                          <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_url_adres}} />
+                        </View>
+                        <View style={styles.box2}>
+                          <Text style={{...styles.name}}>{subItem.brand_user_nm}</Text>
+                          <Text style={{...styles.brand, marginTop: mUtils.wScale(5)}}>{subItem.brand_nm}</Text>
+                        </View>
+                      </TouchableOpacity>
+                    )
+                  })}
+                </View>
+              </View>
+            )
+          })}
+          {/* <View style={{width: '100%', marginTop: mUtils.wScale(25)}}>
             <TouchableOpacity style={{...styles.layout1, marginBottom: mUtils.wScale(15), paddingHorizontal: mUtils.wScale(20)}}>
               <FastImage resizeMode={'contain'} style={styles.checkImg} source={noCheckImg} />
               <Text style={{...styles.subDt}}>
@@ -138,7 +202,7 @@ class LinkSheetScreen extends PureComponent {
                 )
               })}
             </View>
-          </View>
+          </View> */}
         </ScrollView>
       </SafeAreaView>
     )

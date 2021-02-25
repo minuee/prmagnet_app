@@ -92,7 +92,7 @@ class RootScreen extends PureComponent {
   MemberStack = () => {
     const MemberStack = createStackNavigator()
     return (
-      <MemberStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'LinkSheetScreen'}>
+      <MemberStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'HomeScreen'}>
         <MemberStack.Screen name="HomeScreen" component={this.MenuDrawer} options={{headerShown: false, gestureEnabled: false}} />
         {/* 개발 편의를 위한 임시 화면 start --------- */}
         <MemberStack.Screen name="DevNavigationScreen" component={DevNavigationScreen} />
