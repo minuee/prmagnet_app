@@ -1,5 +1,4 @@
-import {Platform} from 'react-native'
-import {StyleSheet} from 'react-native'
+import {StyleSheet, Platform} from 'react-native'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -7,178 +6,114 @@ import mUtils from '../../../common/utils'
 export default StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: mConst.white,
   },
-  titleWrapper: {
-    width: mConst.wWidth - mUtils.wScale(20) * 2,
-    height: mUtils.wScale(60),
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: mUtils.wScale(20),
-    paddingBottom: mUtils.wScale(18),
-    marginHorizontal: mUtils.wScale(20),
-    borderBottomWidth: 1,
-  },
-  goImage: {
-    width: mUtils.wScale(24),
-    height: mUtils.wScale(24),
-  },
-  titleSubWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  titleSubText: {
+  mainTitle: {
+    fontFamily: 'Roboto-Bold',
     fontSize: 20,
-    fontWeight: 'bold',
+    textAlign: 'left',
+    color: mConst.black,
   },
-  unfoldImage: {
-    width: mUtils.wScale(36 / 3),
-    height: mUtils.wScale(20 / 3),
-    marginLeft: mUtils.wScale(8),
+  date: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 15,
+    textAlign: 'left',
+    color: mConst.black,
   },
-  middleWrapper: {
-    width: mConst.wWidth - mUtils.wScale(20) * 2,
-    paddingTop: mUtils.wScale(16),
-    paddingBottom: mUtils.wScale(12),
-    marginHorizontal: mUtils.wScale(20),
-    borderBottomWidth: 1,
-    borderColor: '#f3f3f3',
+  change: {
+    fontFamily: 'NotoSansKR-Bold',
+    fontSize: 14,
+    textAlign: 'left',
+    color: '#7ea1b2',
   },
-  middleGroupWrapper: {
-    width: mConst.wWidth - mUtils.wScale(20) * 2,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignSelf: 'center',
-  },
-  middleDualWrapper: {
-    width: (mConst.wWidth - mUtils.wScale(20) * 2) / 2 - mUtils.wScale(4),
-    paddingTop: mUtils.wScale(16),
-    paddingBottom: mUtils.wScale(12),
-    borderBottomWidth: 1,
-    borderColor: '#f3f3f3',
-  },
-  middleTripleWrapper: {
-    width: (mConst.wWidth - mUtils.wScale(20) * 2) / 3 - mUtils.wScale(4),
-    paddingTop: mUtils.wScale(16),
-    paddingBottom: mUtils.wScale(12),
-    borderBottomWidth: 1,
-    borderColor: '#f3f3f3',
-  },
-  middleText: {
-    fontSize: 13,
+  subDt: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 14,
+    textAlign: 'left',
     color: '#555555',
   },
-  middleDescWrapper: {
-    flexDirection: 'row',
-  },
-  middleDescText: {
+  name: {
+    fontFamily: 'NotoSansKR-Bold',
     fontSize: 15,
+    textAlign: 'left',
     color: mConst.black,
-    paddingTop: mUtils.wScale(16),
   },
-  middleDescTextBold: {
-    fontSize: 15,
-    fontWeight: 'bold',
-    color: mConst.black,
-    paddingTop: mUtils.wScale(16),
+  brand: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 12,
+    textAlign: 'left',
+    color: '#999999',
   },
-  grid: {
-    marginTop: mUtils.wScale(30),
-  },
-  col: (heightScale = 1, center, backgroundColor = mConst.white) => ({
-    justifyContent: center ? 'center' : undefined,
-    alignItems: center ? 'center' : undefined,
-    height: mUtils.wScale(30) * heightScale,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderBottomWidth: center ? StyleSheet.hairlineWidth : 0,
-    backgroundColor,
-  }),
-  row: (backgroundColor = mConst.white) => ({
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: mUtils.wScale(30),
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    backgroundColor,
-  }),
-  sText: (fontSize = 10, color = mConst.textBaseColor) => ({
-    fontSize,
-    color,
-  }),
-  modelImage: {
-    width: mUtils.wScale(45),
-    height: mUtils.wScale((45 * 945) / 630),
-  },
-  checkWrapper: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: mConst.white,
-    height: mUtils.wScale(30),
-  },
-  checkImage: {
-    width: mUtils.wScale(15),
-    height: mUtils.wScale(15),
-  },
-  bottom: {
-    width: '100%',
-    height: mUtils.hScale(50),
-    backgroundColor: mConst.bgBlue,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  bottomText: {
-    fontSize: 15,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: mConst.white,
-  },
-  modal: {
-    justifyContent: 'flex-end',
-    margin: 0,
-    marginBottom: Platform.OS === 'ios' ? mUtils.wScale(30) : 0,
-  },
-  modalView: {
-    backgroundColor: mConst.white,
-    width: '100%',
-    height: mUtils.wScale(130),
-    alignItems: 'center',
-    justifyContent: 'center',
+  menuText: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 18,
+    textAlign: 'left',
+    color: '#070708',
   },
   layout: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: mConst.white,
-    width: '100%',
     justifyContent: 'space-between',
-    marginTop: -mUtils.wScale(3),
   },
-  modalButton: {
+  layout1: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  moreImg: {
+    width: mUtils.wScale(12),
+    height: mUtils.wScale(12),
+    marginLeft: mUtils.wScale(10),
+  },
+  schedulerImg: {
+    width: mUtils.wScale(15),
+    height: mUtils.wScale(15),
+    marginRight: mUtils.wScale(5),
+  },
+  checkImg: {
+    width: mUtils.wScale(14),
+    height: mUtils.wScale(14),
+    marginRight: mUtils.wScale(5),
+  },
+  brandImg: {
+    width: mUtils.wScale(40),
+    height: mUtils.wScale(10),
+  },
+  brandBox: {
+    width: '48%',
     borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: '#ebebeb',
-    width: '50%',
-    paddingVertical: mUtils.wScale(15),
+    borderWidth: 0.7,
+    borderColor: '#f3f3f3',
+    shadowColor: '#000',
+    shadowOffset: {width: 3, height: 3},
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 5,
+    borderRadius: mUtils.wScale(7),
+    marginBottom: mUtils.wScale(12),
   },
-  modalName: {
-    fontFamily: 'NotoSansKR-Bold',
-    fontSize: 18,
-    textAlign: 'center',
-    color: '#222222',
+  box1: {
+    backgroundColor: '#b8c18c',
+    borderTopLeftRadius: mUtils.wScale(7),
+    borderTopRightRadius: mUtils.wScale(7),
+    paddingHorizontal: mUtils.wScale(8),
+    paddingVertical: mUtils.wScale(8),
   },
-  modalPhone: {
-    fontFamily: 'NotoSansKR-Regular',
-    fontSize: 16,
-    textAlign: 'center',
-    color: mConst.black,
-    marginTop: mUtils.wScale(15),
+  box2: {
+    backgroundColor: 'white',
+    borderBottomLeftRadius: mUtils.wScale(7),
+    borderBottomRightRadius: mUtils.wScale(7),
+    paddingHorizontal: mUtils.wScale(8),
+    paddingTop: mUtils.wScale(10),
+    paddingBottom: mUtils.wScale(20),
   },
-  modalText: {
-    fontFamily: 'Roboto-Regular',
-    fontSize: 16,
-    textAlign: 'center',
-    color: '#7ea1b2',
+  menuOptions: {
+    marginTop: mUtils.wScale(45),
+    marginLeft: mUtils.wScale(20),
+    width: mUtils.wScale(158),
+    paddingVertical: mUtils.wScale(7),
+  },
+  menuOption: {
+    paddingHorizontal: mUtils.wScale(15),
+    paddingVertical: mUtils.wScale(8),
   },
 })

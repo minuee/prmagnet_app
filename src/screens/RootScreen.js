@@ -36,8 +36,8 @@ import NoticeScreen from './HomeScreens/NoticeScreen'
 import SampleRequestsScreen from './HomeScreens/SampleRequestsScreen'
 import SampleRequestsListScreen from './HomeScreens/SampleRequestsListScreen'
 import LinkSheetScreen from './HomeScreens/LinkSheetScreen'
+import LinkSheetDetailScreen from './HomeScreens/LinkSheetDetailScreen'
 import MagazineSchedulerScreen from './HomeScreens/MagazineSchedulerScreen'
-import BrandLinkSheetScreen from './HomeScreens/BrandLinkSheetScreen'
 import ByBrandsSearchScreen from './HomeScreens/ByBrandsSearchScreen'
 import SearchScreen from './HomeScreens/SearchScreen'
 import NoticeListScreen from './HomeScreens/NoticeListScreen'
@@ -98,7 +98,8 @@ class RootScreen extends PureComponent {
         <StartStack.Screen name="NoticeListScreen" component={NoticeListScreen} />
         <StartStack.Screen name="SearchScreen" component={SearchScreen} />
         <StartStack.Screen name="ByBrandsSearchScreen" component={ByBrandsSearchScreen} />
-        <StartStack.Screen name="BrandLinkSheetScreen" component={BrandLinkSheetScreen} options={{headerShown: false}} />
+        <StartStack.Screen name="LinkSheetScreen" component={LinkSheetScreen} options={{headerShown: false}} />
+        <StartStack.Screen name="LinkSheetDetailScreen" component={LinkSheetDetailScreen} />
         <StartStack.Screen name="MagazineSchedulerScreen" component={MagazineSchedulerScreen} options={{headerShown: false}} />
         <StartStack.Screen name="SampleRequestsListScreen" component={SampleRequestsListScreen} options={{headerShown: false}} />
         <StartStack.Screen name="SampleRequestsScreen" component={SampleRequestsScreen} options={{headerShown: false}} />
@@ -120,18 +121,19 @@ class RootScreen extends PureComponent {
         <StartStack.Screen name="SelectScheduleScreen" component={SelectScheduleScreen} />
         <StartStack.Screen name="FilterScreen" component={FilterScreen} />
         <StartStack.Screen name="StartScreen" component={StartScreen} options={{headerShown: false}} />
-        <StartStack.Screen name="LinkSheetScreen" component={LinkSheetScreen} />
       </StartStack.Navigator>
     )
   }
   MemberStack = () => {
     const MemberStack = createStackNavigator()
     return (
-      <MemberStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'HomeScreen'}>
+      <MemberStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'DevNavigationScreen'}>
         <MemberStack.Screen name="HomeScreen" component={this.MenuDrawer} options={{headerShown: false, gestureEnabled: false}} />
+        <MemberStack.Screen name="DevNavigationScreen" component={DevNavigationScreen} />
         <MemberStack.Screen name="NoticeListScreen" component={NoticeListScreen} />
         <MemberStack.Screen name="ByBrandsSearchScreen" component={ByBrandsSearchScreen} />
-        <MemberStack.Screen name="BrandLinkSheetScreen" component={BrandLinkSheetScreen} options={{headerShown: false}} />
+        <MemberStack.Screen name="LinkSheetScreen" component={LinkSheetScreen} options={{headerShown: false}} />
+        <MemberStack.Screen name="LinkSheetDetailScreen" component={LinkSheetDetailScreen} />
         <MemberStack.Screen name="MagazineSchedulerScreen" component={MagazineSchedulerScreen} options={{headerShown: false}} />
         <MemberStack.Screen name="SampleRequestsListScreen" component={SampleRequestsListScreen} options={{headerShown: false}} />
         <MemberStack.Screen name="SampleRequestsScreen" component={SampleRequestsScreen} options={{headerShown: false}} />
@@ -153,7 +155,6 @@ class RootScreen extends PureComponent {
         <MemberStack.Screen name="SelectScheduleScreen" component={SelectScheduleScreen} />
         <MemberStack.Screen name="FilterScreen" component={FilterScreen} />
         <MemberStack.Screen name="StartScreen" component={StartScreen} options={{headerShown: false}} />
-        <MemberStack.Screen name="LinkSheetScreen" component={LinkSheetScreen} />
       </MemberStack.Navigator>
     )
   }
