@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react'
 import {SafeAreaView, View, TouchableOpacity, Image} from 'react-native'
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
+import moment from 'moment'
 import _ from 'lodash'
 import {CalendarList, LocaleConfig} from 'react-native-calendars'
 
@@ -28,17 +29,24 @@ class SelectScheduleScreen extends PureComponent {
     cBind(this)
     this.state = {start: {}, end: {}, period: {}}
   }
-
   componentDidMount() {
     this.modalOption('Select schedule')
+    const {start, end} = this.params
+    // console.log('###start:', start)
+    // console.log('###end:', end)
+    if (start && end) {
+      this.setState({
+        start: mUtils.getCalendarDateObj(start),
+        end: mUtils.getCalendarDateObj(end),
+        period: this.getPeriod(mUtils.getDateStamp(start), mUtils.getDateStamp(end)),
+      })
+    }
   }
-
-  getDateString(timestamp) {
+  getDateString = timestamp => {
     const date = new Date(timestamp)
     const year = date.getFullYear()
     const month = date.getMonth() + 1
     const day = date.getDate()
-
     let dateString = `${year}-`
     if (month < 10) {
       dateString += `0${month}-`
@@ -50,11 +58,9 @@ class SelectScheduleScreen extends PureComponent {
     } else {
       dateString += day
     }
-
     return dateString
   }
-
-  getPeriod(startTimestamp, endTimestamp) {
+  getPeriod = (startTimestamp, endTimestamp) => {
     const period = {}
     let currentTimestamp = startTimestamp
     while (currentTimestamp < endTimestamp) {
@@ -80,8 +86,7 @@ class SelectScheduleScreen extends PureComponent {
     }
     return period
   }
-
-  setDay(dayObj) {
+  setDay = dayObj => {
     const {start, end} = this.state
     const {dateString, day, month, year} = dayObj
     // timestamp returned by dayObj is in 12:00AM UTC 0, want local 12:00AM
@@ -103,14 +108,33 @@ class SelectScheduleScreen extends PureComponent {
       const {timestamp: savedTimestamp} = start
       if (savedTimestamp > timestamp) {
         const period = this.getPeriod(timestamp, savedTimestamp)
-        this.setState({start: newDayObj, end: start, period})
+        this.setState({start: newDayObj, end: start, period}, () => console.log('###start1:', this.state.start, this.state.end, this.state.period))
       } else {
         const period = this.getPeriod(savedTimestamp, timestamp)
-        this.setState({end: newDayObj, start, period})
+        this.setState({end: newDayObj, start, period}, () => console.log('###start2:', this.state.start, this.state.end, this.state.period))
       }
     }
   }
-
+  handleReset = () => {
+    this.setState({start: {}, end: {}, period: {}})
+  }
+  handleConfirm = () => {
+    const {start, end} = this.state
+    const {caller} = this.params
+    if (_.isEmpty(start) || _.isEmpty(end)) {
+      this.alert('', '날짜 설정이 필요합니다')
+      return
+    }
+    console.log('**********start:', mUtils.getDayValue(start.year, start.month, start.day))
+    console.log('**********end:', mUtils.getDayValue(end.year, end.month, end.day))
+    console.log('**********start2:', mUtils.getShowDate(mUtils.getDayValue(start.year, start.month, start.day)))
+    console.log('**********end2:', mUtils.getShowDate(mUtils.getDayValue(end.year, end.month, end.day)))
+    this.pushTo(caller, {
+      start: String(mUtils.getDayValue(start.year, start.month, start.day)),
+      end: String(mUtils.getDayValue(end.year, end.month, end.day, true)),
+    })
+    // this.pushTo(caller, {start: String(mUtils.getToday()), end: String(mUtils.getNextWeek())})
+  }
   render() {
     const {period} = this.state
     return (
@@ -119,26 +143,25 @@ class SelectScheduleScreen extends PureComponent {
           <Grid>
             <Row>
               <CalendarList
-                onVisibleMonthsChange={months => {
-                  console.log('now these months are visible', months)
-                }}
-                pastScrollRange={0}
+                // onVisibleMonthsChange={months => {
+                //   console.log('now these months are visible', months)
+                // }}
+                pastScrollRange={1} // 과거 날짜도 선택할 수 있게 함(한 달)
                 futureScrollRange={50}
-                scrollEnabled={true}
                 showScrollIndicator={true}
-                minDate={Date()}
-                current={Date()}
-                onDayPress={this.setDay.bind(this)}
+                minDate={mUtils.getCalendarMinDate()}
+                // current={mUtils.getCalendarMinDate()} // 이거 활성화하면 첫 날짜 선택시 자동 스크롤 됨
+                onDayPress={this.setDay}
                 markingType="period"
                 markedDates={period}
                 style={styles.calder}
               />
             </Row>
             <Row style={styles.bottom}>
-              <TouchableOpacity style={styles.leftButton}>
+              <TouchableOpacity style={styles.leftButton} onPress={this.handleReset}>
                 <Text style={styles.leftText}>Reset</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.rightButton}>
+              <TouchableOpacity style={styles.rightButton} onPress={this.handleConfirm}>
                 <Text style={styles.rightText}>Confirm</Text>
               </TouchableOpacity>
             </Row>

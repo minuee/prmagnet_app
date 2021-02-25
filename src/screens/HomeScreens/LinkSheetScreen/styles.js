@@ -25,6 +25,10 @@ export default StyleSheet.create({
     fontSize: 14,
     textAlign: 'left',
     color: '#7ea1b2',
+    paddingVertical: mUtils.wScale(10),
+    paddingHorizontal: mUtils.wScale(10),
+    marginRight: -mUtils.wScale(10),
+    marginVertical: -mUtils.wScale(10),
   },
   subDt: {
     fontFamily: 'Roboto-Medium',

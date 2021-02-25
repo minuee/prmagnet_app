@@ -3,7 +3,6 @@ import {SafeAreaView, View, TouchableWithoutFeedback, TouchableOpacity, TextInpu
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import moment from 'moment'
-import 'moment/locale/ko'
 import _ from 'lodash'
 import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-menu'
 
@@ -25,6 +24,9 @@ class LinkSheetScreen extends PureComponent {
     super(props)
     cBind(this)
     this.state = {
+      start: 1611100800, // mUtils.getToday(), // TODO 테스트 데이타 관계로 일단 임시 값으로 설정
+      end: mUtils.getNextWeek(),
+      brandId: '',
       data: [
         {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
         {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
@@ -37,15 +39,34 @@ class LinkSheetScreen extends PureComponent {
     }
   }
   async componentDidMount() {
+    const {start, end, brandId} = this.state
     try {
-      const response = await API.getPickupSchedule({start_date: '1611100800', fin_date: '1611187200'})
+      const response = await API.getPickupSchedule({start_date: start, fin_date: end, brand_id: brandId})
       console.log('픽업 스케쥴 조회 성공', JSON.stringify(response))
     } catch (error) {
       console.log('픽업 스케쥴 조회 실패', error)
     }
+    console.log('####moment:', mUtils.getShowDate(new Date().getTime() / 1000))
+    console.log('####start:', mUtils.getCalendarDateObj(start))
+    console.log('####end:', mUtils.getCalendarDateObj(end))
+    this.onFocus(this.handleOnFocus)
+  }
+  componentWillUnmount() {
+    this.removeFocus()
+  }
+  handleOnFocus = () => {
+    const {start, end} = this.params
+    console.log('@@@@start,end1:', start, end)
+    if (start && end) {
+      this.setState({start, end}, () => console.log('@@@@start,end2:', start, end))
+    }
+  }
+  handleChangeSchedule = () => {
+    const {start, end} = this.state
+    this.pushTo('SelectScheduleScreen', {start, end, caller: 'LinkSheetScreen'})
   }
   render() {
-    const {data, selectTitle} = this.state
+    const {start, end, brandId, data, selectTitle} = this.state
     return (
       <SafeAreaView style={styles.container}>
         <Header />
@@ -86,9 +107,11 @@ class LinkSheetScreen extends PureComponent {
         <View style={{...styles.layout, backgroundColor: '#f6f6f6', paddingHorizontal: mUtils.wScale(20), paddingVertical: mUtils.wScale(10)}}>
           <View style={styles.layout1}>
             <FastImage resizeMode={'contain'} style={styles.schedulerImg} source={schedulerImg} />
-            <Text style={styles.date}>8/2(SUN) - 8/8(SAT)</Text>
+            <Text style={styles.date}>
+              {mUtils.getShowDate(start)} - {mUtils.getShowDate(end)}, {start}, {end}
+            </Text>
           </View>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={this.handleChangeSchedule}>
             <Text style={styles.change}>변경</Text>
           </TouchableOpacity>
         </View>

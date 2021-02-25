@@ -92,7 +92,7 @@ class RootScreen extends PureComponent {
   MemberStack = () => {
     const MemberStack = createStackNavigator()
     return (
-      <MemberStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'HomeScreen'}>
+      <MemberStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'LinkSheetScreen'}>
         <MemberStack.Screen name="HomeScreen" component={this.MenuDrawer} options={{headerShown: false, gestureEnabled: false}} />
         {/* 개발 편의를 위한 임시 화면 start --------- */}
         <MemberStack.Screen name="DevNavigationScreen" component={DevNavigationScreen} />
@@ -121,7 +121,7 @@ class RootScreen extends PureComponent {
         <MemberStack.Screen name="NotificationScreen" component={NotificationScreen} />
         <MemberStack.Screen name="ContactScreen" component={ContactScreen} />
         <MemberStack.Screen name="ContactDetailScreen" component={ContactDetailScreen} />
-        <MemberStack.Screen name="SelectScheduleScreen" component={SelectScheduleScreen} />
+        <MemberStack.Screen name="SelectScheduleScreen" component={SelectScheduleScreen} options={modalScreenOptions} />
         <MemberStack.Screen name="FilterScreen" component={FilterScreen} />
         <MemberStack.Screen name="StartScreen" component={StartScreen} options={{headerShown: false}} />
       </MemberStack.Navigator>
