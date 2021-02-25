@@ -195,16 +195,16 @@ const API = {
 
     return Api.get(apiName, path, init)
   },
-  getUserInfo: () => {
+  getUserInfo: ({userType}) => {
     var apiName = v1Api
-    var path = '/brand/my-info'
+    var path = `/${userType === 'M' ? 'stylist' : 'brand'}/my-info`
     var init = {}
 
     return Api.get(apiName, path, init)
   },
-  postQna: (subject, content) => {
+  postQna: ({subject, content, userType}) => {
     var apiName = v1Api
-    var path = '/brand/qna'
+    var path = `/${userType === 'M' ? 'stylist' : 'brand'}/brand/qna`
     var myInit = {
       body: {
         subject: subject,
@@ -213,9 +213,9 @@ const API = {
     }
     return Api.post(apiName, path, myInit)
   },
-  getQnaList: (page, limit, search_text) => {
+  getQnaList: ({page, limit, search_text, userType}) => {
     var apiName = v1Api
-    var path = '/brand/qna-list'
+    var path = `/${userType === 'M' ? 'stylist' : 'brand'}/qna-list`
     var init = {
       queryStringParameters: {
         page: page,
@@ -225,9 +225,9 @@ const API = {
     }
     return Api.get(apiName, path, init)
   },
-  getQnaDetail: sys_inqry_no => {
+  getQnaDetail: ({sys_inqry_no, userType}) => {
     var apiName = v1Api
-    var path = `/brand/qna/${sys_inqry_no}`
+    var path = `/${userType === 'M' ? 'stylist' : 'brand'}/qna/${sys_inqry_no}`
     var init = {
       queryStringParameters: {
         sys_inqry_no: sys_inqry_no,
@@ -235,9 +235,9 @@ const API = {
     }
     return Api.get(apiName, path, init)
   },
-  getAlarm: next_token => {
+  getAlarm: ({next_token, userType}) => {
     var apiName = v1Api
-    var path = '/brand/alarm'
+    var path = `/${userType === 'M' ? 'stylist' : 'brand'}/alarm`
     var init = {
       queryStringParameters: {
         next_token: next_token,
@@ -291,6 +291,18 @@ const API = {
     var apiName = v1Api
     var path = `/stylist/sendout-detailed/${req_no}`
     var init = {}
+    return Api.get(apiName, path, init)
+  },
+  getLookBook: ({page, limit, search_text}) => {
+    var apiName = v1Api
+    var path = '/brand/lookbook-list'
+    var init = {
+      queryStringParameters: {
+        page: page,
+        limit: limit,
+        search_text: search_text,
+      },
+    }
     return Api.get(apiName, path, init)
   },
 }
