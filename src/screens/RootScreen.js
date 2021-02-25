@@ -41,6 +41,7 @@ import MagazineSchedulerScreen from './HomeScreens/MagazineSchedulerScreen'
 import ByBrandsSearchScreen from './HomeScreens/ByBrandsSearchScreen'
 import SearchScreen from './HomeScreens/SearchScreen'
 import NoticeListScreen from './HomeScreens/NoticeListScreen'
+import NoticeDetailScreen from './HomeScreens/NoticeDetailScreen'
 
 import DevNavigationScreen from './HomeScreens/DevNavigationScreen'
 
@@ -97,6 +98,7 @@ class RootScreen extends PureComponent {
         <MemberStack.Screen name="DevNavigationScreen" component={DevNavigationScreen} />
         <MemberStack.Screen name="LoginScreen" component={LoginScreen} />
         {/* 개발 편의를 위한 임시 화면 end --------- */}
+        <MemberStack.Screen name="NoticeDetailScreen" component={NoticeDetailScreen} />
         <MemberStack.Screen name="NoticeListScreen" component={NoticeListScreen} />
         <MemberStack.Screen name="ByBrandsSearchScreen" component={ByBrandsSearchScreen} />
         <MemberStack.Screen name="LinkSheetScreen" component={LinkSheetScreen} options={{headerShown: false}} />
@@ -185,7 +187,11 @@ class RootScreen extends PureComponent {
           }}
           children={() => (
             <TabLookStack.Navigator>
-              <TabLookStack.Screen name="LookScreen" component={LookBookScreen} options={{headerShown: false}} />
+              <TabLookStack.Screen
+                name={two ? 'SampleRequestsScreen' : 'LookBookScreen'}
+                component={two ? SampleRequestsScreen : LookBookScreen}
+                options={{headerShown: false}}
+              />
             </TabLookStack.Navigator>
           )}
         />
