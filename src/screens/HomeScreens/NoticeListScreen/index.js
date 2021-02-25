@@ -3,7 +3,6 @@ import {SafeAreaView, FlatList, View, TouchableOpacity} from 'react-native'
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import _ from 'lodash'
-import moment from 'moment'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -31,7 +30,7 @@ class NoticeListScreen extends PureComponent {
         }}
       >
         <Text style={styles.title}>{item.inqry_subj}</Text>
-        <Text style={styles.dt}>작성일: {moment(item.inqry_dt * 1000).format('YYYY.MM.DD')}</Text>
+        <Text style={styles.dt}>작성일: {mUtils.getShowDate(item.inqry_dt, 'YYYY.MM.DD')}</Text>
       </TouchableOpacity>
     )
   }

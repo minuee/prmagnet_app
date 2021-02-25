@@ -3,7 +3,6 @@ import {SafeAreaView, View, TouchableOpacity, ScrollView} from 'react-native'
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import _ from 'lodash'
-import moment from 'moment'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -36,7 +35,7 @@ class NoticeDetailScreen extends PureComponent {
         <ScrollView>
           <View style={styles.itemBox}>
             <Text style={styles.title}>{inqry_subj}</Text>
-            <Text style={styles.dt}>{moment(inqry_dt * 1000).format('YYYY.MM.DD')}</Text>
+            <Text style={styles.dt}>{mUtils.getShowDate(inqry_dt, 'YYYY.MM.DD')}</Text>
           </View>
           <Text style={styles.desc}>{inqry_cntent}</Text>
         </ScrollView>
