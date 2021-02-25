@@ -348,18 +348,18 @@ const utils = {
   getToday() {
     const now = new Date()
     now.setHours(0, 0, 0)
-    return now.getTime()
+    return Math.floor(now.getTime() / 1000)
   },
   getNextWeek() {
     const nextWeek = new Date()
     nextWeek.setDate(nextWeek.getDate() + 7)
     nextWeek.setHours(23, 59, 59)
-    return nextWeek.getTime()
+    return Math.floor(nextWeek.getTime() / 1000)
   },
   getDayValue(year, month, date, isEnd = false) {
     const day = new Date(year, month - 1, date)
     isEnd ? day.setHours(23, 59, 59) : day.setHours(0, 0, 0)
-    return day.getTime()
+    return Math.floor(day.getTime() / 1000)
   },
   getMonthDayWeek(time) {
     return moment(time).format('M/D(ddd)')
