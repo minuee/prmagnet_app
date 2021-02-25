@@ -88,48 +88,15 @@ class RootScreen extends PureComponent {
   componentDidMount() {
     SplashScreen.hide()
   }
-  StartStack = () => {
-    const StartStack = createStackNavigator()
-    return (
-      <StartStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'DevNavigationScreen'}>
-        <StartStack.Screen name="LoginScreen" component={LoginScreen} />
-        <StartStack.Screen name="DevNavigationScreen" component={DevNavigationScreen} />
-        <StartStack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}} />
-        <StartStack.Screen name="NoticeListScreen" component={NoticeListScreen} />
-        <StartStack.Screen name="SearchScreen" component={SearchScreen} />
-        <StartStack.Screen name="ByBrandsSearchScreen" component={ByBrandsSearchScreen} />
-        <StartStack.Screen name="LinkSheetScreen" component={LinkSheetScreen} options={{headerShown: false}} />
-        <StartStack.Screen name="LinkSheetDetailScreen" component={LinkSheetDetailScreen} />
-        <StartStack.Screen name="MagazineSchedulerScreen" component={MagazineSchedulerScreen} options={{headerShown: false}} />
-        <StartStack.Screen name="SampleRequestsListScreen" component={SampleRequestsListScreen} options={{headerShown: false}} />
-        <StartStack.Screen name="SampleRequestsScreen" component={SampleRequestsScreen} options={{headerShown: false}} />
-        <StartStack.Screen name="NoticeScreen" component={NoticeScreen} />
-        <StartStack.Screen name="ScheduleMemoScreen" component={ScheduleMemoScreen} />
-        <StartStack.Screen name="BrandSchedulerScreen" component={BrandSchedulerScreen} options={{headerShown: false}} />
-        <StartStack.Screen name="FavoritesScreen" component={FavoritesScreen} />
-        <StartStack.Screen name="DigitalSRDetailScreen" component={DigitalSRDetailScreen} />
-        <StartStack.Screen name="DigitalSRScreen" component={DigitalSRScreen} options={{headerShown: false}} />
-        <StartStack.Screen name="FilterSettingScreen" component={FilterSettingScreen} />
-        <StartStack.Screen name="LookBookDetailScreen" component={LookBookDetailScreen} options={{headerShown: false}} />
-        <StartStack.Screen name="LookBookScreen" component={LookBookScreen} options={{headerShown: false}} />
-        <StartStack.Screen name="AccountSettingScreen" component={AccountSettingScreen} />
-        <StartStack.Screen name="NotiSettingScreen" component={NotiSettingScreen} />
-        <StartStack.Screen name="MyPageScreen" component={MyPageScreen} />
-        <StartStack.Screen name="NotificationScreen" component={NotificationScreen} />
-        <StartStack.Screen name="ContactScreen" component={ContactScreen} />
-        <StartStack.Screen name="ContactDetailScreen" component={ContactDetailScreen} />
-        <StartStack.Screen name="SelectScheduleScreen" component={SelectScheduleScreen} />
-        <StartStack.Screen name="FilterScreen" component={FilterScreen} />
-        <StartStack.Screen name="StartScreen" component={StartScreen} options={{headerShown: false}} />
-      </StartStack.Navigator>
-    )
-  }
   MemberStack = () => {
     const MemberStack = createStackNavigator()
     return (
-      <MemberStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'DevNavigationScreen'}>
+      <MemberStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'HomeScreen'}>
         <MemberStack.Screen name="HomeScreen" component={this.MenuDrawer} options={{headerShown: false, gestureEnabled: false}} />
+        {/* 개발 편의를 위한 임시 화면 start --------- */}
         <MemberStack.Screen name="DevNavigationScreen" component={DevNavigationScreen} />
+        <MemberStack.Screen name="LoginScreen" component={LoginScreen} />
+        {/* 개발 편의를 위한 임시 화면 end --------- */}
         <MemberStack.Screen name="NoticeListScreen" component={NoticeListScreen} />
         <MemberStack.Screen name="ByBrandsSearchScreen" component={ByBrandsSearchScreen} />
         <MemberStack.Screen name="LinkSheetScreen" component={LinkSheetScreen} options={{headerShown: false}} />
@@ -278,7 +245,7 @@ class RootScreen extends PureComponent {
           {user.isLogged ? (
             <RootStack.Screen name="MemberStack" component={this.MemberStack} />
           ) : (
-            <RootStack.Screen name="StartStack" component={this.StartStack} />
+            <RootStack.Screen name="LoginScreen" component={LoginScreen} />
           )}
         </RootStack.Navigator>
       </NavigationContainer>

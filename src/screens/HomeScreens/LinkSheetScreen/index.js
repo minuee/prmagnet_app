@@ -10,6 +10,7 @@ import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-men
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
+import API from '../../../common/aws-api'
 import Text from '../../common/Text'
 import Header from '../../common/Header'
 import styles from './styles'
@@ -33,6 +34,14 @@ class LinkSheetScreen extends PureComponent {
       ],
       title: ['Send Out', 'Return'],
       selectTitle: 'Send Out',
+    }
+  }
+  async componentDidMount() {
+    try {
+      const response = await API.getPickupSchedule({start_date: '1611100800', fin_date: '1611187200'})
+      console.log('픽업 스케쥴 조회 성공', JSON.stringify(response))
+    } catch (error) {
+      console.log('픽업 스케쥴 조회 실패', error)
     }
   }
   render() {
