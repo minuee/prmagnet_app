@@ -17,12 +17,19 @@ class NoticeListScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
-    this.state = {list: []}
+    this.state = {
+      list: [{inqry_subj: '공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요. 공지사항 내용을 입력해주세요.', inqry_dt: 1611303128}],
+    }
   }
 
   renderItem = ({item}) => {
     return (
-      <TouchableOpacity style={styles.itemBox} onPress={() => {}}>
+      <TouchableOpacity
+        style={styles.itemBox}
+        onPress={() => {
+          this.pushTo('NoticeDetailScreen')
+        }}
+      >
         <Text style={styles.title}>{item.inqry_subj}</Text>
         <Text style={styles.dt}>작성일: {moment(item.inqry_dt * 1000).format('YYYY.MM.DD')}</Text>
       </TouchableOpacity>

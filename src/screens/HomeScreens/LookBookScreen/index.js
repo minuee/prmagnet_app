@@ -10,9 +10,9 @@ import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
-import {Grid, Col, Row} from 'react-native-easy-grid'
 import styles from './styles'
-import {multicastChannel} from 'redux-saga'
+import Loading from '../../common/Loading'
+import API from '../../../common/aws-api'
 
 const moreImage1 = require('../../../images/navi/more_1.png')
 const moreImage3 = require('../../../images/navi/more_3.png')
@@ -22,12 +22,41 @@ class LookBookScreen extends PureComponent {
     super(props)
     cBind(this)
     this.state = {
-      data: [
-        {title: 'GUCCI WOMEN COLLECTION', brand: 'VOGUE', season: 'Pre-Spring', gender: 'Women', dt: '2020-08-05'},
-        {title: 'GUCCI WOMEN COLLECTION', brand: 'VOGUE', season: 'Pre-Spring', gender: 'Women', dt: '2020-08-05'},
-        {title: 'GUCCI WOMEN COLLECTION', brand: 'VOGUE', season: 'Pre-Spring', gender: 'Women', dt: '2020-08-05'},
-      ],
+      list: '',
+      page: 1,
+      limit: 10,
+      search_text: '',
     }
+  }
+
+  getLookBook = async () => {
+    const {list, page, limit, search_text} = this.state
+    try {
+      let response = await API.getLookBook({page: page, limit: limit, search_text: search_text})
+      console.log('getLookBook>>>', response)
+      if (response.success) {
+        if (response.list.length > 0) {
+          this.setState({...this.state, list: list.concat(response.list), page: page + 1})
+        }
+      }
+    } catch (error) {
+      console.log('getLookBook>>>', error)
+    }
+  }
+
+  handleLoadMore = async () => {
+    this.getLookBook()
+  }
+
+  componentDidMount() {
+    this.onFocus(this.handleOnFocus)
+  }
+  componentWillUnmount() {
+    this.removeFocus()
+  }
+
+  handleOnFocus = () => {
+    this.getLookBook()
   }
 
   renderItem = ({item}) => {
@@ -35,7 +64,7 @@ class LookBookScreen extends PureComponent {
       <>
         <TouchableOpacity style={styles.layout3}>
           <View style={styles.layout4}>
-            <Text style={styles.title}>{item.title}</Text>
+            <Text style={styles.title}>{item.lookbook_nm}</Text>
             <Menu>
               <MenuTrigger
                 customStyles={{
@@ -90,6 +119,7 @@ class LookBookScreen extends PureComponent {
   }
 
   render() {
+    const {list} = this.state
     return (
       <SafeAreaView style={styles.container}>
         <Header />
@@ -100,13 +130,19 @@ class LookBookScreen extends PureComponent {
             <FastImage resizeMode={'contain'} style={styles.latestImg} source={moreImage3} />
           </TouchableOpacity>
         </View>
-        <FlatList
-          bounces={false}
-          style={styles.list}
-          data={this.state.data}
-          renderItem={this.renderItem}
-          keyExtractor={item => `${item.dt}_${Math.random()}`}
-        />
+        {list ? (
+          <FlatList
+            bounces={false}
+            style={styles.list}
+            data={list}
+            renderItem={this.renderItem}
+            keyExtractor={item => `${item.dt}_${Math.random()}`}
+            onEndReached={this.handleLoadMore}
+            onEndReachedThreshold={1}
+          />
+        ) : (
+          <Loading />
+        )}
       </SafeAreaView>
     )
   }
