@@ -189,8 +189,8 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getUserType: () => {
-    var apiName = v1Cdn
-    var path = '/cdn/user-type'
+    var apiName = v1Api
+    var path = '/api/user-type'
     var init = {}
 
     return Api.get(apiName, path, init)
