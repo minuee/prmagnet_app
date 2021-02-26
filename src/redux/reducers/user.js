@@ -26,7 +26,7 @@ export default function user(state = initialState, action) {
     }
     case USER_TYPE.SUCCESS: {
       const data = API.getData(action)
-      const userType = _.get(data, 'is_brand_user') ? 'M' : 'B'
+      const userType = _.get(data, 'is_brand_user') ? 'B' : _.get(data, 'is_mgzn_user') ? 'M' : 'S'
       global.mUserType = userType
       return {
         ...state,
