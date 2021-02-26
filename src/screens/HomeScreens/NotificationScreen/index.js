@@ -3,6 +3,7 @@ import {SafeAreaView, FlatList, View, TouchableOpacity} from 'react-native'
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import _ from 'lodash'
+import moment from 'moment'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -21,28 +22,69 @@ class NotificationScreen extends PureComponent {
     super(props)
     cBind(this)
     this.state = {
-      list: [
-        {
-          title: '[요청확인] GUCCI에서 요청확인을 했습니다.',
-          desc: 'GUCCI에서 샘플요청을 확인했습니다.',
-          dt: '9월9일',
-          dt1: '오전 10:30',
-          status: false,
-        },
-        {title: '[샘플발송]GQ에서 샘플 발송', desc: 'GQ에서 샘플을 발송하였습니다.', dt: '9월2일', dt1: '오전 10:30', status: true},
-      ],
+      list: [],
+      next_token: '',
+      has_next: true,
     }
   }
 
-  async componentDidMount() {
-    this.pushOption('알림')
+  deleteAlarm = async notice_id => {
+    const userType = mConst.getUserType()
+    try {
+      let response = await API.deleteAlarm({notice_id: notice_id, userType: userType})
+      console.log('deleteAlarm>>>', response)
+      if (response.success) {
+        this.getAlarmReset()
+      }
+    } catch (error) {
+      console.log('deleteAlarm>>>', error)
+    }
+  }
+
+  getAlarm = async () => {
+    const {next_token, list} = this.state
     const userType = mConst.getUserType()
     try {
       let response = await API.getAlarm({next_token: next_token, userType: userType})
       console.log('getAlarm>>>', response)
+      if (response.success) {
+        this.setState({list: list.concat(response.list), next_token: response.next_token, has_next: response.has_next})
+      }
     } catch (error) {
       console.log('getAlarm>>>', error)
     }
+  }
+
+  getAlarmReset = async () => {
+    const userType = mConst.getUserType()
+    try {
+      let response = await API.getAlarm({next_token: '', userType: userType})
+      console.log('getAlarm>>>', response)
+      if (response.success) {
+        this.setState(response)
+      }
+    } catch (error) {
+      console.log('getAlarm>>>', error)
+    }
+  }
+
+  handleLoadMore = async () => {
+    const {has_next} = this.state
+    if (has_next) {
+      this.getAlarm()
+    }
+  }
+
+  componentDidMount() {
+    this.pushOption('알림')
+    this.onFocus(this.handleOnFocus)
+  }
+  componentWillUnmount() {
+    this.removeFocus()
+  }
+
+  handleOnFocus = () => {
+    this.getAlarm()
   }
 
   renderItem = ({item}) => {
@@ -51,14 +93,26 @@ class NotificationScreen extends PureComponent {
         <View style={styles.items}>
           <FastImage resizeMode={'contain'} style={styles.listImg} source={item.status ? notiSky : notiBlack} />
           <View style={{marginTop: mUtils.wScale(5)}}>
-            <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.desc}>{item.desc}</Text>
+            <Text style={styles.title}>{item.subj}</Text>
+            <Text style={styles.desc}>{item.cntent}</Text>
             <Text style={styles.dt}>
-              {item.dt} · {item.dt1}
+              {/*{item.dt} · {item.dt1}*/}
+              {moment(item.send_dt * 1000)
+                .locale('ko')
+                .format('MMM Do')}{' '}
+              ·
+              {moment(item.send_dt * 1000)
+                .locale('ko')
+                .format('LT')}
             </Text>
           </View>
         </View>
-        <TouchableOpacity hitSlop={{top: 35, bottom: 35, left: 40, right: 40}}>
+        <TouchableOpacity
+          hitSlop={{top: 35, bottom: 35, left: 40, right: 40}}
+          onPress={() => {
+            this.deleteAlarm(item.notice_id)
+          }}
+        >
           <FastImage resizeMode={'contain'} style={styles.closeImg} source={closeBtnImage} />
         </TouchableOpacity>
       </View>
@@ -66,12 +120,21 @@ class NotificationScreen extends PureComponent {
   }
   render() {
     const {list} = this.state
-    return (
+    return list.length > 0 ? (
       <>
         <SafeAreaView style={styles.container}>
-          <FlatList style={styles.list} data={list} renderItem={this.renderItem} keyExtractor={item => item.dt} />
+          <FlatList
+            style={styles.list}
+            data={list}
+            renderItem={this.renderItem}
+            keyExtractor={item => `_${item.notice_id}_${Math.random()}`}
+            onEndReached={this.handleLoadMore}
+            onEndReachedThreshold={1}
+          />
         </SafeAreaView>
       </>
+    ) : (
+      <Loading />
     )
   }
 }

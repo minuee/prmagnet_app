@@ -35,10 +35,30 @@ class HomeScreen extends PureComponent {
       ],
     }
   }
-  async componentDidMount() {
+
+  getHome = async () => {
+    const date = Math.floor(new Date().getTime() / 1000)
+    try {
+      let response = await API.getHome({date: date})
+      console.log('getHome>>>', response)
+    } catch (error) {
+      console.log('getHome>>>', error)
+    }
+  }
+
+  componentDidMount() {
     const {user} = this.props
     global.mUserType = user.userType
+    this.onFocus(this.handleOnFocus)
   }
+  componentWillUnmount() {
+    this.removeFocus()
+  }
+
+  handleOnFocus = () => {
+    this.getHome()
+  }
+
   render() {
     const {user} = this.props
     return (

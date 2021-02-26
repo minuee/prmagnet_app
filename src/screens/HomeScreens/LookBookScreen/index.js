@@ -62,7 +62,12 @@ class LookBookScreen extends PureComponent {
   renderItem = ({item}) => {
     return (
       <>
-        <TouchableOpacity style={styles.layout3}>
+        <TouchableOpacity
+          style={styles.layout3}
+          onPress={() => {
+            this.pushTo('LookBookDetailScreen', {lookbook_no: item.lookbook_no, lookbook_nm: item.lookbook_nm})
+          }}
+        >
           <View style={styles.layout4}>
             <Text style={styles.title}>{item.lookbook_nm}</Text>
             <Menu>
@@ -106,7 +111,7 @@ class LookBookScreen extends PureComponent {
               <Text style={styles.seasonGen}>
                 {item.season} • {item.gender}
               </Text>
-              <Text style={styles.dt}>Date Created • {mUtils.getShowDate(item.dt, 'YYYY-MM-DD')}</Text>
+              <Text style={styles.dt}>Date Created • {mUtils.getShowDate(item.date_created, 'YYYY-MM-DD')}</Text>
             </View>
             <View style={styles.smallBox}>
               <Text style={styles.brand}>{item.made_for}</Text>
