@@ -245,6 +245,16 @@ const API = {
     }
     return Api.get(apiName, path, init)
   },
+  deleteAlarm: ({notice_id, userType}) => {
+    var apiName = v1Api
+    var path = `/${userType === 'M' ? 'stylist' : 'brand'}/alarm-delete`
+    var init = {
+      queryStringParameters: {
+        notice_id: notice_id,
+      },
+    }
+    return Api.del(apiName, path, init)
+  },
   getPickupSchedule: ({start_date, fin_date, brand_id}) => {
     var apiName = v1Api
     var path = '/stylist/pickup-schedule'
@@ -301,6 +311,38 @@ const API = {
         page: page,
         limit: limit,
         search_text: search_text,
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
+  getShare: ({lookbook_no, lookbook_nm}) => {
+    var apiName = v1Api
+    var path = `/brand/lookbook/:${lookbook_no}/share-uuid`
+    var init = {
+      queryStringParameters: {
+        lookbook_nm: lookbook_nm,
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
+  getLookBookDetail: ({lookbook_no, page, limit}) => {
+    var apiName = v1Api
+    var path = `/brand/lookbook-showroom-list/${lookbook_no}`
+    var init = {
+      queryStringParameters: {
+        lookbook_no: lookbook_no,
+        page: page,
+        limit: limit,
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
+  getHome: ({date}) => {
+    var apiName = v1Api
+    var path = '/brand/home'
+    var init = {
+      queryStringParameters: {
+        date: date,
       },
     }
     return Api.get(apiName, path, init)
