@@ -17,7 +17,6 @@ import styles from './styles'
 import Loading from '../../common/Loading'
 
 const moreImg = require('../../../images/navi/more_5.png')
-const userType = mConst.getUserType()
 
 class HomeScreen extends PureComponent {
   constructor(props) {
@@ -28,6 +27,7 @@ class HomeScreen extends PureComponent {
 
   requests = () => {
     const {data} = this.state
+    const userType = mConst.getUserType()
     return (
       <View>
         <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20)}}>
@@ -70,6 +70,7 @@ class HomeScreen extends PureComponent {
 
   sendOuts = () => {
     const {data} = this.state
+    const userType = mConst.getUserType()
     return (
       <View>
         <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(40)}}>
@@ -111,6 +112,7 @@ class HomeScreen extends PureComponent {
 
   getHome = async () => {
     const date = Math.floor(new Date().getTime() / 1000)
+    const userType = mConst.getUserType()
     try {
       let response = await API.getHome({date: date, userType: userType})
       console.log('getHome>>>', response)
