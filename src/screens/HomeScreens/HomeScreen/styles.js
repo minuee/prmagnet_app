@@ -14,7 +14,11 @@ export default StyleSheet.create({
     paddingVertical: mUtils.wScale(30),
     paddingHorizontal: mUtils.wScale(20),
   },
-  brand: {},
+  brandImg: {
+    width: mUtils.wScale(52.5),
+    height: mUtils.wScale(18),
+    backgroundColor: 'red',
+  },
   name: {
     fontFamily: 'NotoSansKR-Bold',
     fontSize: 12,

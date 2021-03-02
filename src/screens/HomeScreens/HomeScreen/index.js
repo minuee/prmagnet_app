@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react'
 import {AppState, SafeAreaView, View, TouchableWithoutFeedback, TouchableOpacity, TextInput, FlatList, ScrollView} from 'react-native'
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
-import moment from 'moment'
 import 'moment/locale/ko'
 import _ from 'lodash'
 
@@ -15,32 +14,107 @@ import API from '../../../common/aws-api'
 import Text from '../../common/Text'
 import Header from '../../common/Header'
 import styles from './styles'
+import Loading from '../../common/Loading'
 
 const moreImg = require('../../../images/navi/more_5.png')
+const userType = mConst.getUserType()
 
 class HomeScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
-    this.state = {
-      data1: [
-        {brand: 'BAZAAR', name: '오재혁 ed', dt: '2020-08-09', custom: 'Elle • 아이즈원'},
-        {brand: 'BAZAAR', name: '오재혁 ed', dt: '2020-08-09', custom: 'Elle • 아이즈원'},
-        {brand: 'BAZAAR', name: '오재혁 ed', dt: '2020-08-09', custom: 'Elle • 아이즈원'},
-      ],
-      data2: [
-        {brand: 'BAZAAR', name: '오재혁 ed', dt: '2020-08-09', custom: 'Elle • 아이즈원'},
-        {brand: 'BAZAAR', name: '오재혁 ed', dt: '2020-08-09', custom: 'Elle • 아이즈원'},
-        {brand: 'BAZAAR', name: '오재혁 ed', dt: '2020-08-09', custom: 'Elle • 아이즈원'},
-      ],
-    }
+    this.state = {data: ''}
+  }
+
+  requests = () => {
+    const {data} = this.state
+    return (
+      <View>
+        <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20)}}>
+          <Text style={styles.new}>
+            {userType === 'M' ? 'Confirmed' : 'New'} <Text style={{fontFamily: 'Roboto-Medium'}}>Requests : </Text>
+            <Text style={{fontFamily: 'Roboto-Bold', color: '#7ea1b2'}}>{data.cnfirm_request.length}</Text>
+          </Text>
+          <TouchableOpacity
+            style={styles.layout}
+            onPress={() => {
+              this.pushTo('HomeDetailScreen', {type: true, title: userType === 'M' ? 'Confirmed Requests' : 'New Requests'})
+            }}
+          >
+            <Text style={styles.more}>More</Text>
+            <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            ...styles.layout2,
+            backgroundColor: 'rgba(126, 161, 178, 0.2)',
+          }}
+        >
+          {data.cnfirm_request.map((item, index) => {
+            return (
+              <View key={index} style={styles.layout3}>
+                <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: item.mgzn_logo_url_adres}} />
+                <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>{item.editor_nm}</Text>
+                <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>{mUtils.getShowDate(item.brand_cnfirm_dt, 'YYYY-MM-DD')}</Text>
+                <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
+                  {item.mgzn_nm} • {item.mgzn_nm}
+                </Text>
+              </View>
+            )
+          })}
+        </View>
+      </View>
+    )
+  }
+
+  sendOuts = () => {
+    const {data} = this.state
+    return (
+      <View>
+        <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(40)}}>
+          <Text style={styles.new}>
+            Today's <Text style={{fontFamily: 'Roboto-Medium'}}>{userType === 'M' ? 'PickUps' : 'Send-Outs'} : </Text>
+            <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}>{data.today_request.length}</Text>
+          </Text>
+          <TouchableOpacity
+            style={styles.layout}
+            onPress={() => {
+              // eslint-disable-next-line quotes
+              this.pushTo('HomeDetailScreen', {type: false, title: userType === 'M' ? "Today's PickUps" : "Today's Send-Outs"})
+            }}
+          >
+            <Text style={styles.more}>More</Text>
+            <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            ...styles.layout2,
+            backgroundColor: 'rgba(178, 126, 126, 0.2)',
+          }}
+        >
+          {data.today_request.map((item, index) => {
+            return (
+              <View key={index} style={styles.layout3}>
+                <Text style={{...styles.brand}}>{item.brand}</Text>
+                <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>{item.name}</Text>
+                <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>{item.dt}</Text>
+                <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>{item.custom}</Text>
+              </View>
+            )
+          })}
+        </View>
+      </View>
+    )
   }
 
   getHome = async () => {
     const date = Math.floor(new Date().getTime() / 1000)
     try {
-      let response = await API.getHome({date: date})
+      let response = await API.getHome({date: date, userType: userType})
       console.log('getHome>>>', response)
+      this.setState({data: response})
     } catch (error) {
       console.log('getHome>>>', error)
     }
@@ -61,66 +135,20 @@ class HomeScreen extends PureComponent {
 
   render() {
     const {user} = this.props
+    const {data} = this.state
     return (
       <SafeAreaView style={styles.container}>
         <Header pushTo={this.pushTo} userType={user.userType} />
-        <ScrollView>
+        <ScrollView contentContainerStyle={{flex: 1}}>
           <Text style={styles.screenTitleText}>Home</Text>
-          <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20)}}>
-            <Text style={styles.new}>
-              New <Text style={{fontFamily: 'Roboto-Medium'}}>Requests : </Text>
-              <Text style={{fontFamily: 'Roboto-Bold', color: '#7ea1b2'}}>32</Text>
-            </Text>
-            <TouchableOpacity style={styles.layout}>
-              <Text style={styles.more}>More</Text>
-              <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              ...styles.layout2,
-              backgroundColor: 'rgba(126, 161, 178, 0.2)',
-            }}
-          >
-            {this.state.data1.map((item, index) => {
-              return (
-                <View key={index} style={styles.layout3}>
-                  <Text style={{...styles.brand}}>{item.brand}</Text>
-                  <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>{item.name}</Text>
-                  <Text style={{...styles.dt}}>{item.dt}</Text>
-                  <Text style={{...styles.custom, marginTop: mUtils.wScale(3)}}>{item.custom}</Text>
-                </View>
-              )
-            })}
-          </View>
-
-          <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(40)}}>
-            <Text style={styles.new}>
-              Today's <Text style={{fontFamily: 'Roboto-Medium'}}>Send-Outs : </Text>
-              <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}>9</Text>
-            </Text>
-            <TouchableOpacity style={styles.layout}>
-              <Text style={styles.more}>More</Text>
-              <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              ...styles.layout2,
-              backgroundColor: 'rgba(178, 126, 126, 0.2)',
-            }}
-          >
-            {this.state.data1.map((item, index) => {
-              return (
-                <View key={index} style={styles.layout3}>
-                  <Text style={{...styles.brand}}>{item.brand}</Text>
-                  <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>{item.name}</Text>
-                  <Text style={{...styles.dt}}>{item.dt}</Text>
-                  <Text style={{...styles.custom, marginTop: mUtils.wScale(3)}}>{item.custom}</Text>
-                </View>
-              )
-            })}
-          </View>
+          {data ? (
+            <>
+              {this.requests()}
+              {this.sendOuts()}
+            </>
+          ) : (
+            <Loading />
+          )}
         </ScrollView>
         {(mConst.PRODUCTION || mConst.STAGE) && <CodePush />}
       </SafeAreaView>
