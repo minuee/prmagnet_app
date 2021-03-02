@@ -337,9 +337,9 @@ const API = {
     }
     return Api.get(apiName, path, init)
   },
-  getHome: ({date}) => {
+  getHome: ({date, userType}) => {
     var apiName = v1Api
-    var path = '/brand/home'
+    var path = `/${userType === 'M' ? 'stylist' : 'brand'}/home`
     var init = {
       queryStringParameters: {
         date: date,
