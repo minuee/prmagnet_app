@@ -23,18 +23,20 @@ class LinkSheetScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
+    const titles = mConst.getUserType() === 'B' ? ['Send Out', 'Return'] : ['Pickups', 'Send Out']
     this.state = {
       start: 1611100800, // mUtils.getToday(), // TODO 테스트 데이타 관계로 일단 임시 값으로 설정
       end: mUtils.getNextWeek(),
       brandId: '',
-      requests: [],
+      dataList: [],
       brands: [],
-      title: ['Send Out', 'Return'],
-      selectTitle: 'Send Out',
+      titles,
+      selectTitle: titles[0],
     }
   }
   async componentDidMount() {
     this.onFocus(this.handleOnFocus)
+    console.log('###apiPath:', mConst.getApiPath())
   }
   componentWillUnmount() {
     this.removeFocus()
@@ -50,17 +52,31 @@ class LinkSheetScreen extends PureComponent {
     }
   }
   handleLoadData = async (start, end, brandId) => {
-    try {
-      const response = await API.getPickupSchedule({start_date: start, fin_date: end, brand_id: brandId})
-      this.setState({requests: _.get(response, 'request_list', []), brands: _.get(response, 'brand_list', [])})
-      console.log('픽업 스케쥴 조회 성공', JSON.stringify(response))
-    } catch (error) {
-      console.log('픽업 스케쥴 조회 실패', error)
+    const {selectTitle} = this.state
+    if (selectTitle === 'Pickups') {
+      try {
+        const response = await API.getPickupSchedule({start_date: start, fin_date: end, brand_id: brandId})
+        this.setState({dataList: _.get(response, 'request_list', []), brands: _.get(response, 'brand_list', [])})
+        console.log('픽업 스케쥴 조회 성공', JSON.stringify(response))
+      } catch (error) {
+        console.log('픽업 스케쥴 조회 실패', error)
+      }
+    } else if (selectTitle === 'Send Out') {
+      try {
+        const response = await API.getSendoutSchedule({start_date: start, fin_date: end, brand_id: brandId})
+        this.setState({dataList: _.get(response, 'request_list', []), brands: _.get(response, 'brand_list', [])})
+        console.log('픽업 스케쥴 조회 성공', JSON.stringify(response))
+      } catch (error) {
+        console.log('픽업 스케쥴 조회 실패', error)
+      }
     }
   }
   handleChangeSchedule = () => {
     const {start, end} = this.state
     this.pushTo('SelectScheduleScreen', {start, end, caller: 'LinkSheetScreen'})
+  }
+  handleChangeTitle = item => {
+    this.setState({selectTitle: item}, () => this.handleLoadData())
   }
   // 샘플 데이타
   // {
@@ -95,7 +111,7 @@ class LinkSheetScreen extends PureComponent {
   //   {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
   // ],
   render() {
-    const {start, end, brandId, requests, brands, selectTitle} = this.state
+    const {start, end, brandId, dataList, brands, selectTitle} = this.state
     return (
       <SafeAreaView style={styles.container}>
         <Header />
@@ -117,15 +133,9 @@ class LinkSheetScreen extends PureComponent {
             </View>
           </MenuTrigger>
           <MenuOptions optionsContainerStyle={styles.menuOptions}>
-            {this.state.title.map((item, index) => {
+            {this.state.titles.map((item, index) => {
               return (
-                <MenuOption
-                  key={index}
-                  style={styles.menuOption}
-                  onSelect={() => {
-                    this.setState({...this.state, selectTitle: item})
-                  }}
-                >
+                <MenuOption key={index} style={styles.menuOption} onSelect={() => this.handleChangeTitle(item)}>
                   <Text style={styles.menuText}>{item}</Text>
                 </MenuOption>
               )
@@ -145,7 +155,7 @@ class LinkSheetScreen extends PureComponent {
           </TouchableOpacity>
         </View>
         <ScrollView style={{paddingBottom: mUtils.wScale(25)}}>
-          {_.map(requests, (item, index) => {
+          {_.map(dataList, (item, index) => {
             return (
               <View key={index} style={{width: '100%', marginTop: mUtils.wScale(25)}}>
                 <TouchableOpacity style={{...styles.layout1, marginBottom: mUtils.wScale(15), paddingHorizontal: mUtils.wScale(20)}}>

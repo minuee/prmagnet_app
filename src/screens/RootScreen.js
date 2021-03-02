@@ -142,7 +142,7 @@ class RootScreen extends PureComponent {
     const TabLookStack = createStackNavigator()
     const TabScheduleStack = createStackNavigator()
     const TabLinkStack = createStackNavigator()
-    const two = user.userType === 'M'
+    const two = user.userType === 'M' || user.userType === 'S'
     return (
       <TabNavi.Navigator
         tabBarOptions={{style: {height: mConst.bottomTabHeight, backgroundColor: mConst.getBaseXColorDirect(user.userType)}}}

@@ -26,7 +26,8 @@ export default function user(state = initialState, action) {
     }
     case USER_TYPE.SUCCESS: {
       const data = API.getData(action)
-      const userType = _.get(data, 'is_brand_user') ? 'B' : _.get(data, 'is_mgzn_user') ? 'M' : 'S'
+      // const userType = _.get(data, 'is_brand_user') ? 'B' : _.get(data, 'is_mgzn_user') ? 'M' : 'S' // 임시로 주석처리
+      const userType = 'S' // 테스트 중
       global.mUserType = userType
       return {
         ...state,

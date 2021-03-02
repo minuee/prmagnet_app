@@ -33,6 +33,7 @@ export default {
   getBaseColor: () => (global.mUserType === 'B' ? '#7ea1b2' : '#000000'),
   getBaseXColor: () => (global.mUserType === 'B' ? '#000000' : '#7ea1b2'),
   getBaseXColorDirect: userType => (userType === 'B' ? '#000000' : '#7ea1b2'),
+  getApiPath: () => (global.mUserType === 'B' ? '/brand' : global.mUserType === 'M' ? '/magazine' : '/stylist'),
   white: '#ffffff',
   black: '#000000',
   blue: '#0046ff',

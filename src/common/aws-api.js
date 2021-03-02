@@ -2,6 +2,7 @@ import {Api} from '@psyrenpark/api'
 import _ from 'lodash'
 
 import {login} from './aws-auth'
+import mConst from './constants'
 
 var projectName = 'fpr' // 각 프로젝트 단축명
 var projectEnv = 'prod' // 각 프로젝트 환경 // dev, test, prod
@@ -269,7 +270,7 @@ const API = {
   },
   getPickupSchedule: ({start_date, fin_date, brand_id}) => {
     var apiName = v1Api
-    var path = '/stylist/pickup-schedule'
+    var path = `${mConst.getApiPath()}/pickup-schedule`
     var init = {
       queryStringParameters: {
         start_date,
@@ -281,7 +282,7 @@ const API = {
   },
   getSendoutSchedule: ({start_date, fin_date, brand_id}) => {
     var apiName = v1Api
-    var path = '/stylist/sendout-schedule'
+    var path = `${mConst.getApiPath()}/sendout-schedule`
     var init = {
       queryStringParameters: {
         start_date,
