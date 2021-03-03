@@ -47,7 +47,7 @@ class ContactConfirm extends PureComponent {
       console.log('getQnaList>>>', response)
       if (response.success) {
         if (response.list.length > 0) {
-          this.setState({...this.state, list: list.concat(response.list), page: page + 1})
+          this.setState({list: list.concat(response.list), page: page + 1})
         }
       }
     } catch (error) {
