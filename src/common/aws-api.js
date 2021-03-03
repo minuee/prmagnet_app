@@ -198,14 +198,14 @@ const API = {
   },
   getUserInfo: () => {
     var apiName = v1Api
-    var path = `/${mConst.getApiPath()}/my-info`
+    var path = `${mConst.getApiPath()}/my-info`
     var init = {}
 
     return Api.get(apiName, path, init)
   },
   postQna: ({subject, content}) => {
     var apiName = v1Api
-    var path = `/${mConst.getApiPath()}/brand/qna`
+    var path = `${mConst.getApiPath()}/brand/qna`
     var myInit = {
       body: {
         subject: subject,
@@ -216,7 +216,7 @@ const API = {
   },
   getQnaList: ({page, limit, search_text}) => {
     var apiName = v1Api
-    var path = `/${mConst.getApiPath()}/qna-list`
+    var path = `${mConst.getApiPath()}/qna-list`
     var init = {
       queryStringParameters: {
         page: page,
@@ -228,7 +228,7 @@ const API = {
   },
   getQnaDetail: ({sys_inqry_no}) => {
     var apiName = v1Api
-    var path = `/${mConst.getApiPath()}/qna/${sys_inqry_no}`
+    var path = `${mConst.getApiPath()}/qna/${sys_inqry_no}`
     var init = {
       queryStringParameters: {
         sys_inqry_no: sys_inqry_no,
@@ -238,7 +238,7 @@ const API = {
   },
   getAlarm: ({next_token}) => {
     var apiName = v1Api
-    var path = `/${mConst.getApiPath()}/alarm`
+    var path = `${mConst.getApiPath()}/alarm`
     var init = {
       queryStringParameters: {
         next_token: next_token,
@@ -248,7 +248,7 @@ const API = {
   },
   deleteAlarm: ({notice_id}) => {
     var apiName = v1Api
-    var path = `/${mConst.getApiPath()}/alarm-delete`
+    var path = `${mConst.getApiPath()}/alarm-delete`
     var init = {
       queryStringParameters: {
         notice_id: notice_id,
@@ -340,7 +340,7 @@ const API = {
   },
   getHome: ({date}) => {
     var apiName = v1Api
-    var path = `/${mConst.getApiPath()}/home`
+    var path = `${mConst.getApiPath()}/home`
     var init = {
       queryStringParameters: {
         date: date,
@@ -350,7 +350,7 @@ const API = {
   },
   getDigitalSR: ({page, limit, season_year, season_cd_id}) => {
     var apiName = v1Api
-    var path = `/${mConst.getApiPath()}/showroom-list`
+    var path = `${mConst.getApiPath()}/showroom-list`
     var init = {
       queryStringParameters: {
         page: page,
@@ -360,6 +360,55 @@ const API = {
       },
     }
     return Api.get(apiName, path, init)
+  },
+  getNotice: () => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/notice`
+    var init = {}
+    return Api.get(apiName, path, init)
+  },
+  getInquiryNum: () => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/inquiry-number`
+    var init = {}
+    return Api.get(apiName, path, init)
+  },
+  getSRInquiry: () => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/showroom-inquiry`
+    var init = {}
+    return Api.get(apiName, path, init)
+  },
+  postNotice: ({notice}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/notice`
+    var myInit = {
+      body: {
+        notice_contents: notice,
+      },
+    }
+    return Api.post(apiName, path, myInit)
+  },
+  postInquiryNum: ({inquiryNum}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/inquiry-number`
+    var myInit = {
+      body: {
+        inquiry_number: inquiryNum,
+      },
+    }
+    return Api.post(apiName, path, myInit)
+  },
+  postSRInquiry: ({SRInquiryNum, email}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/showroom-inquiry`
+    var myInit = {
+      body: {
+        showroom_inquiry_contact: SRInquiryNum,
+        showroom_inquiry_email: email,
+      },
+    }
+    return Api.post(apiName, path, myInit)
   },
 }
 
