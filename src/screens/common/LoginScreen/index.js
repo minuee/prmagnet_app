@@ -17,8 +17,8 @@ class LoginScreen extends PureComponent {
     super(props)
     cBind(this)
     this.state = {
-      email: 'test1000@ruu.kr',
-      pw: 'test1000@ruu.kr',
+      email: 'brand_01@ruu.kr',
+      pw: 'yes1234',
     }
   }
   componentDidMount() {
