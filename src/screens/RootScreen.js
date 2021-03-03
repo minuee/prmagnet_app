@@ -116,7 +116,6 @@ class RootScreen extends PureComponent {
         <MemberStack.Screen name="DigitalSRScreen" component={DigitalSRScreen} options={{headerShown: false}} />
         <MemberStack.Screen name="FilterSettingScreen" component={FilterSettingScreen} />
         <MemberStack.Screen name="LookBookDetailScreen" component={LookBookDetailScreen} options={{headerShown: false}} />
-        <MemberStack.Screen name="LookBookScreen" component={LookBookScreen} options={{headerShown: false}} />
         <MemberStack.Screen name="AccountSettingScreen" component={AccountSettingScreen} />
         <MemberStack.Screen name="NotiSettingScreen" component={NotiSettingScreen} />
         <MemberStack.Screen name="MyPageScreen" component={MyPageScreen} />
