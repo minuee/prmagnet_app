@@ -10,9 +10,9 @@ import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
-import {Grid, Col, Row} from 'react-native-easy-grid'
 import styles from './styles'
-import {multicastChannel} from 'redux-saga'
+import API from '../../../common/aws-api'
+import Loading from '../../common/Loading'
 
 const modelImg = require('../../../images/sample/model_1.png')
 const newImg = require('../../../images/navi/new_1.png')
@@ -29,6 +29,7 @@ const selectImg2 = require('../../../images/navi/select_2.png')
 class DigitalSRScreen extends PureComponent {
   constructor(props) {
     super(props)
+    cBind(this)
     this.state = {
       data: [
         {
@@ -40,15 +41,38 @@ class DigitalSRScreen extends PureComponent {
       ],
       select: [],
       isvisible: false,
+      page: 1,
+      limit: 10,
+      season_year: '',
+      season_cd_id: '',
     }
+  }
+
+  getDigitalSR = async () => {
+    const {page, limit, season_year, season_cd_id} = this.state
+    try {
+      let response = await API.getDigitalSR({page: page, limit: limit, season_year: season_year, season_cd_id: season_cd_id})
+      console.log('getDigitalSR>>>', response)
+    } catch (error) {
+      console.log('getDigitalSR>>>', error)
+    }
+  }
+
+  componentDidMount() {
+    this.onFocus(this.handleOnFocus)
+  }
+  componentWillUnmount() {
+    this.removeFocus()
+  }
+
+  handleOnFocus = () => {
+    this.getDigitalSR()
   }
 
   componentDidUpdate() {
     if (this.state.select.length === 0) {
-      console.log('11')
       this.setState({...this.state, isvisible: false})
     } else {
-      console.log('22')
       this.setState({...this.state, isvisible: true})
     }
   }
