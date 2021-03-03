@@ -137,8 +137,8 @@ class SelectScheduleScreen extends PureComponent {
                 // onVisibleMonthsChange={months => {
                 //   console.log('now these months are visible', months)
                 // }}
-                pastScrollRange={1} // 과거 날짜도 선택할 수 있게 함(한 달)
-                futureScrollRange={50}
+                pastScrollRange={2} // 과거 날짜도 선택할 수 있게 함(두 달)
+                futureScrollRange={24}
                 showScrollIndicator={true}
                 minDate={mUtils.getCalendarMinDate()}
                 // current={mUtils.getCalendarMinDate()} // 이거 활성화하면 첫 날짜 선택시 자동 스크롤 됨
