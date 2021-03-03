@@ -19,6 +19,12 @@ class LoginScreen extends PureComponent {
     this.state = {
       email: 'test1000@ruu.kr',
       pw: 'test1000@ruu.kr',
+      // email: 'brand_01@ruu.kr',
+      // pw: 'yes1234',
+      // email: 'mgzn_05@ruu.kr',
+      // pw: 'yes1234',
+      // email: 'stylist_01@ruu.kr',
+      // pw: 'yes1234',
     }
   }
   componentDidMount() {
@@ -35,10 +41,11 @@ class LoginScreen extends PureComponent {
     if (email.trim() === '') return this.alert('', '이메일을 입력해주세요.')
     if (!mUtils.isEmail(email)) return this.alert('', '이메일 형식이 아닙니다.')
     if (pw.trim() === '') return this.alert('', '비밀번호를 입력해주세요.')
-    if (!mUtils.isPassword(pw)) return this.alert('', '비밀번호 형식을 확인해주세요.')
+    // if (!mUtils.isPassword(pw)) return this.alert('', '비밀번호 형식을 확인해주세요.') // TODO 임시 주석 처리
     API.login(data, {
       cbSuccess: async response => {
         API.getUserType().then(resUserType => {
+          // console.log('###UserType:', resUserType)
           userTypeSuccess(resUserType)
           loginSuccess(response)
         })
