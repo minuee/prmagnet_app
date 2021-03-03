@@ -51,14 +51,14 @@ class HomeScreen extends PureComponent {
             backgroundColor: 'rgba(126, 161, 178, 0.2)',
           }}
         >
-          {data.cnfirm_request.map((item, index) => {
+          {data.cnfirm_request.slice(0, 6).map((item, index) => {
             return (
               <View key={index} style={styles.layout3}>
                 <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: item.mgzn_logo_url_adres}} />
                 <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>{item.editor_nm}</Text>
                 <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>{mUtils.getShowDate(item.brand_cnfirm_dt, 'YYYY-MM-DD')}</Text>
                 <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
-                  {item.mgzn_nm} • {item.mgzn_nm}
+                  {item.mgzn_nm} • {item.photogrf_modl_nm}
                 </Text>
               </View>
             )
@@ -95,13 +95,15 @@ class HomeScreen extends PureComponent {
             backgroundColor: 'rgba(178, 126, 126, 0.2)',
           }}
         >
-          {data.today_request.map((item, index) => {
+          {data.today_request.slice(0, 6).map((item, index) => {
             return (
               <View key={index} style={styles.layout3}>
                 <Text style={{...styles.brand}}>{item.brand}</Text>
                 <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>{item.name}</Text>
                 <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>{item.dt}</Text>
-                <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>{item.custom}</Text>
+                <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
+                  {item.mgzn_nm} • {item.photogrf_modl_nm}
+                </Text>
               </View>
             )
           })}
@@ -141,7 +143,7 @@ class HomeScreen extends PureComponent {
     return (
       <SafeAreaView style={styles.container}>
         <Header pushTo={this.pushTo} userType={user.userType} />
-        <ScrollView contentContainerStyle={{flex: 1}}>
+        <ScrollView contentContainerStyle={{flexGrow: 1}}>
           <Text style={styles.screenTitleText}>Home</Text>
           {data ? (
             <>
