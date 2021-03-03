@@ -196,16 +196,16 @@ const API = {
 
     return Api.get(apiName, path, init)
   },
-  getUserInfo: ({userType}) => {
+  getUserInfo: () => {
     var apiName = v1Api
-    var path = `/${userType === 'M' ? 'stylist' : 'brand'}/my-info`
+    var path = `/${mConst.getApiPath()}/my-info`
     var init = {}
 
     return Api.get(apiName, path, init)
   },
-  postQna: ({subject, content, userType}) => {
+  postQna: ({subject, content}) => {
     var apiName = v1Api
-    var path = `/${userType === 'M' ? 'stylist' : 'brand'}/brand/qna`
+    var path = `/${mConst.getApiPath()}/brand/qna`
     var myInit = {
       body: {
         subject: subject,
@@ -214,9 +214,9 @@ const API = {
     }
     return Api.post(apiName, path, myInit)
   },
-  getQnaList: ({page, limit, search_text, userType}) => {
+  getQnaList: ({page, limit, search_text}) => {
     var apiName = v1Api
-    var path = `/${userType === 'M' ? 'stylist' : 'brand'}/qna-list`
+    var path = `/${mConst.getApiPath()}/qna-list`
     var init = {
       queryStringParameters: {
         page: page,
@@ -226,9 +226,9 @@ const API = {
     }
     return Api.get(apiName, path, init)
   },
-  getQnaDetail: ({sys_inqry_no, userType}) => {
+  getQnaDetail: ({sys_inqry_no}) => {
     var apiName = v1Api
-    var path = `/${userType === 'M' ? 'stylist' : 'brand'}/qna/${sys_inqry_no}`
+    var path = `/${mConst.getApiPath()}/qna/${sys_inqry_no}`
     var init = {
       queryStringParameters: {
         sys_inqry_no: sys_inqry_no,
@@ -236,9 +236,9 @@ const API = {
     }
     return Api.get(apiName, path, init)
   },
-  getAlarm: ({next_token, userType}) => {
+  getAlarm: ({next_token}) => {
     var apiName = v1Api
-    var path = `/${userType === 'M' ? 'stylist' : 'brand'}/alarm`
+    var path = `/${mConst.getApiPath()}/alarm`
     var init = {
       queryStringParameters: {
         next_token: next_token,
@@ -246,9 +246,9 @@ const API = {
     }
     return Api.get(apiName, path, init)
   },
-  deleteAlarm: ({notice_id, userType}) => {
+  deleteAlarm: ({notice_id}) => {
     var apiName = v1Api
-    var path = `/${userType === 'M' ? 'stylist' : 'brand'}/alarm-delete`
+    var path = `/${mConst.getApiPath()}/alarm-delete`
     var init = {
       queryStringParameters: {
         notice_id: notice_id,
@@ -338,12 +338,25 @@ const API = {
     }
     return Api.get(apiName, path, init)
   },
-  getHome: ({date, userType}) => {
+  getHome: ({date}) => {
     var apiName = v1Api
-    var path = `/${userType === 'M' ? 'stylist' : 'brand'}/home`
+    var path = `/${mConst.getApiPath()}/home`
     var init = {
       queryStringParameters: {
         date: date,
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
+  getDigitalSR: ({page, limit, season_year, season_cd_id}) => {
+    var apiName = v1Api
+    var path = `/${mConst.getApiPath()}/showroom-list`
+    var init = {
+      queryStringParameters: {
+        page: page,
+        limit: limit,
+        season_year: season_year,
+        season_cd_id: season_cd_id,
       },
     }
     return Api.get(apiName, path, init)

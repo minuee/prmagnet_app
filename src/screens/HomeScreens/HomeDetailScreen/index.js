@@ -56,7 +56,7 @@ class HomeDetailScreen extends PureComponent {
         <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>{item.editor_nm}</Text>
         <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>{mUtils.getShowDate(item.brand_cnfirm_dt, 'YYYY-MM-DD')}</Text>
         <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
-          {item.mgzn_nm} • {item.mgzn_nm}
+          {item.mgzn_nm} • {item.photogrf_modl_nm}
         </Text>
       </View>
     )
@@ -91,7 +91,9 @@ class HomeDetailScreen extends PureComponent {
           >
             <FlatList
               style={{flexDirection: 'column'}}
+              contentContainerStyle={{paddingBottom: mUtils.wScale(50)}}
               columnWrapperStyle={{justifyContent: 'space-between'}}
+              showsVerticalScrollIndicator={false}
               numColumns={2}
               data={type ? data.cnfirm_request : data.today_request}
               renderItem={this.renderItem}
