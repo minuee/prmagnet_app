@@ -380,6 +380,13 @@ const utils = {
     const calDate = moment(new Date(dbTime * 1000))
     return {dateString: calDate.format('YYYY-MM-DD'), day: calDate.date(), month: calDate.month(), year: calDate.year()}
   },
+  allNumber(number) {
+    const result = number
+      .replace(/[^0-9]/g, '')
+      .replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/, '$1-$2-$3')
+      .replace('--', '-')
+    return result
+  },
 }
 
 export default utils
