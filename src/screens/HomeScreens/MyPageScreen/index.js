@@ -20,11 +20,25 @@ class MyPageScreen extends PureComponent {
     this.state = {info: ''}
   }
 
-  async componentDidMount() {
+  getUserInfo = async () => {
+    try {
+      let response = await API.getUserInfo()
+      console.log('getUserInfo>>>', response)
+      this.setState({info: response})
+    } catch (error) {
+      console.log('getUserInfo>>>', error)
+    }
+  }
+  componentDidMount() {
     this.pushOption('마이페이지')
-    const userType = mConst.getUserType()
-    const userInfo = await API.getUserInfo({userType: userType})
-    this.setState({info: userInfo})
+    this.onFocus(this.handleOnFocus)
+  }
+  componentWillUnmount() {
+    this.removeFocus()
+  }
+
+  handleOnFocus = () => {
+    this.getUserInfo()
   }
 
   render() {
@@ -63,7 +77,9 @@ class MyPageScreen extends PureComponent {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('NotiSettingScreen')
+                navigation.navigate('NotiSettingScreen', {
+                  info: info,
+                })
               }}
             >
               <Text style={styles.text1}>알림</Text>
