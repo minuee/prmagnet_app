@@ -410,6 +410,58 @@ const API = {
     }
     return Api.post(apiName, path, myInit)
   },
+  putSampleRequests: ({recv_yn}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/notify-control/sample-request`
+    var myInit = {
+      body: {
+        recv_yn: recv_yn,
+      },
+    }
+    return Api.put(apiName, path, myInit)
+  },
+  putNotice: ({recv_yn}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/notify-control/notice`
+    var myInit = {
+      body: {
+        recv_yn: recv_yn,
+      },
+    }
+    return Api.put(apiName, path, myInit)
+  },
+  putSR: ({recv_yn}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/notify-control/showroom`
+    var myInit = {
+      body: {
+        recv_yn: recv_yn,
+      },
+    }
+    return Api.put(apiName, path, myInit)
+  },
+  putPress: ({recv_yn}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/notify-control/press`
+    var myInit = {
+      body: {
+        recv_yn: recv_yn,
+      },
+    }
+    return Api.put(apiName, path, myInit)
+  },
+  putNotDis: ({mode_on, begin_dt, end_dt}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/notify-control/not-disturb-mode`
+    var myInit = {
+      body: {
+        mode_on: mode_on,
+        begin_dt: begin_dt,
+        end_dt: end_dt,
+      },
+    }
+    return Api.put(apiName, path, myInit)
+  },
 }
 
 export default API
