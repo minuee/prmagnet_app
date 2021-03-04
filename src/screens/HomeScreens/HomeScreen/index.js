@@ -33,7 +33,7 @@ class HomeScreen extends PureComponent {
         <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20)}}>
           <Text style={styles.new}>
             {userType === 'M' ? 'Confirmed' : 'New'} <Text style={{fontFamily: 'Roboto-Medium'}}>Requests : </Text>
-            <Text style={{fontFamily: 'Roboto-Bold', color: '#7ea1b2'}}>{data.cnfirm_request.length}</Text>
+            <Text style={{fontFamily: 'Roboto-Bold', color: '#7ea1b2'}}>{data.new_request.length}</Text>
           </Text>
           <TouchableOpacity
             style={styles.layout}
@@ -51,7 +51,7 @@ class HomeScreen extends PureComponent {
             backgroundColor: 'rgba(126, 161, 178, 0.2)',
           }}
         >
-          {data.cnfirm_request.slice(0, 6).map((item, index) => {
+          {data.new_request.slice(0, 6).map((item, index) => {
             return (
               <View key={index} style={styles.layout3}>
                 <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: item.mgzn_logo_url_adres}} />
