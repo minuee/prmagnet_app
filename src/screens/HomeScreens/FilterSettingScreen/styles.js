@@ -74,7 +74,6 @@ export default StyleSheet.create({
     color: '#070708',
   },
   rightButton: {
-    width: '70%',
     paddingVertical: mUtils.wScale(15),
     alignItems: 'center',
     justifyContent: 'center',

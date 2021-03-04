@@ -203,19 +203,14 @@ class FilterSettingScreen extends PureComponent {
             })}
           </View>
           {this.selectView()}
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <TouchableOpacity style={styles.leftButton}>
-              <Text style={styles.leftText}>Delete</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.rightButton}
-              onPress={() => {
-                this.postNotice()
-              }}
-            >
-              <Text style={styles.rightText}>Confirm</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            style={styles.rightButton}
+            onPress={() => {
+              this.postNotice()
+            }}
+          >
+            <Text style={styles.rightText}>Confirm</Text>
+          </TouchableOpacity>
         </SafeAreaView>
       </>
     )
