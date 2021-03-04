@@ -143,6 +143,18 @@ export default StyleSheet.create({
     textAlign: 'center',
     color: mConst.white,
   },
+  selectText: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 12,
+    textAlign: 'center',
+    color: mConst.white,
+  },
+  menuText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 18,
+    textAlign: 'left',
+    color: '#070708',
+  },
   bottomButton: {
     borderRadius: mUtils.wScale(7),
     backgroundColor: mConst.black,
@@ -155,10 +167,13 @@ export default StyleSheet.create({
     paddingHorizontal: mUtils.wScale(10),
     paddingVertical: mUtils.wScale(7),
   },
-  selectText: {
-    fontFamily: 'Roboto-Medium',
-    fontSize: 12,
-    textAlign: 'center',
-    color: mConst.white,
+  menuOptions: {
+    marginTop: mUtils.wScale(20),
+    width: mUtils.wScale(133),
+    paddingVertical: mUtils.wScale(15),
+  },
+  menuOption: {
+    paddingHorizontal: mUtils.wScale(15),
+    paddingVertical: mUtils.wScale(8),
   },
 })

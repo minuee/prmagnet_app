@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import _ from 'lodash'
 import Header from '../../common/Header'
-import Modal from 'react-native-modal'
+import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-menu'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -27,6 +27,7 @@ const selectImg1 = require('../../../images/navi/select_1.png')
 const selectImg2 = require('../../../images/navi/select_2.png')
 
 const userType = mConst.getUserType()
+const arr = ['2020 F/W', '2190 F/S', '2018 F/S', '2017 S/S']
 
 class DigitalSRScreen extends PureComponent {
   constructor(props) {
@@ -145,9 +146,10 @@ class DigitalSRScreen extends PureComponent {
   render() {
     const {data} = this.state
     const {notice, inquiryNum} = this.state
+    const userType = mConst.getUserType()
     return (
       <SafeAreaView style={styles.container}>
-        <Header />
+        <Header pushTo={this.pushTo} userType={userType} />
         <View style={{paddingHorizontal: mUtils.wScale(20), flex: 1}}>
           <View style={{...styles.layout, justifyContent: 'space-between', marginTop: mUtils.wScale(25)}}>
             <View>
@@ -171,10 +173,30 @@ class DigitalSRScreen extends PureComponent {
           {data ? (
             <>
               <View style={{...styles.layout, justifyContent: 'space-between', paddingTop: mUtils.wScale(20), paddingBottom: mUtils.wScale(15)}}>
-                <TouchableOpacity style={{...styles.layout}}>
-                  <Text style={styles.season}>2020 F/W</Text>
-                  <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
-                </TouchableOpacity>
+                <Menu>
+                  <MenuTrigger
+                    customStyles={{
+                      TriggerTouchableComponent: TouchableOpacity,
+                      //triggerTouchable: {
+                      //  activeOpacity: 10,
+                      //},
+                    }}
+                  >
+                    <View style={{...styles.layout}}>
+                      <Text style={styles.season}>2020 F/W</Text>
+                      <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                    </View>
+                  </MenuTrigger>
+                  <MenuOptions optionsContainerStyle={styles.menuOptions}>
+                    {arr.map((item, index) => {
+                      return (
+                        <MenuOption key={index} style={styles.menuOption} onSelect={() => {}}>
+                          <Text style={styles.menuText}>{item}</Text>
+                        </MenuOption>
+                      )
+                    })}
+                  </MenuOptions>
+                </Menu>
                 <View style={{...styles.layout}}>
                   {userType === 'M' ? (
                     <TouchableOpacity
