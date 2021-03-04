@@ -9,6 +9,9 @@ const MOBILE_FORMAT = /^01([0|1|6|7|8|9]+)-?([0-9]{3,4})-?([0-9]{4})$/i
 const TO_FIXED_POS = 3
 
 const utils = {
+  get(object, path, defaultValue) {
+    return _.defaultTo(_.get(object, path, defaultValue), defaultValue)
+  },
   numberWithCommas(x) {
     if (x === undefined || x === null || x === '' || _.isNaN(x)) return x
     let parts = x.toString().replace(/,/g, '').split('.')
