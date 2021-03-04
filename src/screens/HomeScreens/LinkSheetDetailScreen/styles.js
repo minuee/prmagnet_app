@@ -68,12 +68,20 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#f3f3f3',
   },
+  middleSubWrapper: (size = 2) => ({
+    width: (mConst.wWidth - mUtils.wScale(20) * 2) / size - mUtils.wScale(4),
+    paddingTop: mUtils.wScale(16),
+    paddingBottom: mUtils.wScale(12),
+    borderBottomWidth: 1,
+    borderColor: '#f3f3f3',
+  }),
   middleText: {
     fontSize: 13,
     color: '#555555',
   },
   middleDescWrapper: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   middleDescText: {
     fontSize: 15,

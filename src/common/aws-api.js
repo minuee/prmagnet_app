@@ -258,18 +258,6 @@ const API = {
   },
   getPickupSchedule: ({start_date, fin_date, brand_id}) => {
     var apiName = v1Api
-    var path = '/stylist/pickup-schedule'
-    var init = {
-      queryStringParameters: {
-        start_date,
-        fin_date,
-        brand_id,
-      },
-    }
-    return Api.get(apiName, path, init)
-  },
-  getPickupSchedule: ({start_date, fin_date, brand_id}) => {
-    var apiName = v1Api
     var path = `${mConst.getApiPath()}/pickup-schedule`
     var init = {
       queryStringParameters: {
@@ -294,13 +282,13 @@ const API = {
   },
   getPickupDetail: req_no => {
     var apiName = v1Api
-    var path = `/stylist/pickup-detailed/${req_no}`
+    var path = `${mConst.getApiPath()}/pickup-detailed/${req_no}`
     var init = {}
     return Api.get(apiName, path, init)
   },
-  getPickupDetail: req_no => {
+  getSendoutDetail: req_no => {
     var apiName = v1Api
-    var path = `/stylist/sendout-detailed/${req_no}`
+    var path = `${mConst.getApiPath()}/sendout-detailed/${req_no}`
     var init = {}
     return Api.get(apiName, path, init)
   },

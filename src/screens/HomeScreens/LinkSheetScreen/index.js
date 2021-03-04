@@ -171,7 +171,11 @@ class LinkSheetScreen extends PureComponent {
                 <View style={{...styles.layout, flexWrap: 'wrap', paddingHorizontal: mUtils.wScale(20)}}>
                   {_.map(item.individual_schedules, (subItem, subIndex) => {
                     return (
-                      <TouchableOpacity key={subIndex} style={{...styles.brandBox}}>
+                      <TouchableOpacity
+                        key={subIndex}
+                        style={{...styles.brandBox}}
+                        onPress={() => this.pushTo('LinkSheetDetailScreen', {reqNo: subItem.req_no})}
+                      >
                         <View style={styles.box1}>
                           <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_url_adres}} />
                         </View>
