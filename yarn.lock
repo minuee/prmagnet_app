@@ -12508,7 +12508,7 @@ react-native-code-push@7.0.0:
     semver "^7.3.2"
     xcode "3.0.1"
 
-react-native-date-picker@^3.2.10:
+react-native-date-picker@3.2.10:
   version "3.2.10"
   resolved "https://registry.yarnpkg.com/react-native-date-picker/-/react-native-date-picker-3.2.10.tgz#5e690db8e628255d8390e33b1e6f8fa9477f6fb9"
   integrity sha512-/fA+htnZcr3rBw3eaOR/DvMwGLDTg59MCiiluin5YcHBxNZQYs/uYp/l6Hf719qZXndPGcixS46YIgso4Jf4gg==
