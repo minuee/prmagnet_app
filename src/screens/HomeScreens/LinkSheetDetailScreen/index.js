@@ -58,6 +58,10 @@ class LinkSheetDetailScreen extends PureComponent {
   }
   render() {
     const {swipe, data} = this.state
+    const fromName = mUtils.get(data, 'send_user_nm')
+    const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'phone_no'))
+    const toName = mUtils.get(data, 'brand_user_nm')
+    const toPhone = mUtils.phoneFormat(mUtils.get(data, 'brand_phone_no'))
     return (
       <>
         <SafeAreaView style={styles.container}>
@@ -67,7 +71,7 @@ class LinkSheetDetailScreen extends PureComponent {
               <FastImage source={goLeftImage} style={styles.goImage} />
               <View style={styles.titleSubWrapper}>
                 <Text style={styles.titleSubText}>
-                  {mUtils.get(data, 'send_user_nm')}-&gt;{mUtils.get(data, 'brand_user_nm')}
+                  {fromName}-&gt;{toName}
                 </Text>
                 <FastImage source={unfoldImage} style={styles.unfoldImage} />
               </View>
@@ -81,8 +85,8 @@ class LinkSheetDetailScreen extends PureComponent {
               <View style={styles.middleSubWrapper()}>
                 <Text style={styles.middleText}>Editor/Stylist</Text>
                 <View style={styles.middleDescWrapper}>
-                  <Text style={styles.middleDescTextBold}>{mUtils.get(data, 'send_user_nm', '-')}</Text>
-                  <Text style={styles.middleDescText}> {mUtils.phoneFormat(mUtils.get(data, 'phone_no', ''))}</Text>
+                  <Text style={styles.middleDescTextBold}>{fromName}</Text>
+                  <Text style={styles.middleDescText}> {fromPhone}</Text>
                 </View>
               </View>
               <View style={styles.middleSubWrapper()}>
@@ -119,113 +123,116 @@ class LinkSheetDetailScreen extends PureComponent {
                   <Text>Shoot</Text>
                 </Col>
               </Row>
-              <Row>
-                <Col style={styles.col(4, true)} size={1}>
-                  <Text style={styles.sText()}>#1</Text>
-                </Col>
-                <Col style={styles.col(4)} size={2}>
-                  <Row style={styles.row()}>
-                    <Text style={styles.sText()}>Knitwear</Text>
+              {_.map(mUtils.get(data, 'showroom_list', []), (item, index) => {
+                const samples = mUtils.get(item, 'individual_samples', [])
+                const roomName = mUtils.get(item, 'individual_samples[0].showroom_nm')
+                const rowSize = _.size(samples)
+                return (
+                  <Row>
+                    <Col style={styles.col(rowSize * 2, true)} size={1}>
+                      <Text style={styles.sText()}>{roomName}</Text>
+                    </Col>
+                    <Col style={styles.col(rowSize * 2)} size={2}>
+                      {_.map(samples, (subItem, subIndex) => {
+                        return (
+                          <React.Fragment key={subIndex}>
+                            <Row style={styles.row()}>
+                              <Text style={styles.sText()}>{mUtils.get(subItem, 'sample_category')}</Text>
+                            </Row>
+                            <Row style={styles.row()}>
+                              <Text style={styles.sText(9)}>{mUtils.moneyFormat(mUtils.get(subItem, 'price', 0))}</Text>
+                            </Row>
+                          </React.Fragment>
+                        )
+                      })}
+                    </Col>
+                    <Col style={styles.col(rowSize * 2, true)} size={2}>
+                      <FastImage source={model2Image} style={styles.modelImage} />
+                    </Col>
+                    <Col style={styles.col(rowSize * 2)} size={6}>
+                      {_.map(samples, (subItem, subIndex) => {
+                        return (
+                          <React.Fragment key={subIndex}>
+                            <Pressable
+                              onLongPress={() => {
+                                // eslint-disable-next-line quotes
+                                this.alert('상품 미수령 알림', "'EL 손다예'님께 상품미수령 알림을 보내시겠습니까?", [
+                                  {
+                                    onPress: () => {
+                                      setTimeout(() => {
+                                        this.alert('미수령 알림 전송 완료', '미수령 알림을 전송하였습니다.', [{onPress: () => null}])
+                                      }, 100)
+                                    },
+                                  },
+                                  {onPress: () => null},
+                                ])
+                              }}
+                            >
+                              {({pressed}) => (
+                                <Row style={styles.row(pressed ? 'rgba(126, 161, 178, 0.7)' : mConst.bgBlue)}>
+                                  <Text style={styles.sText(12)} numberOfLines={1}>
+                                    {fromName}
+                                  </Text>
+                                </Row>
+                              )}
+                            </Pressable>
+                            <Pressable
+                              onLongPress={() => {
+                                this.setState({...this.state, isvisible: {open: true, phone: fromPhone, name: fromName}})
+                              }}
+                            >
+                              {({pressed}) => (
+                                <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : 'white')}>
+                                  <Text style={styles.sText(12, mConst.darkGray)}>{fromPhone}</Text>
+                                </Row>
+                              )}
+                            </Pressable>
+                          </React.Fragment>
+                        )
+                      })}
+                    </Col>
+                    <Col style={styles.col(rowSize * 2)} size={6}>
+                      {_.map(samples, (subItem, subIndex) => {
+                        return (
+                          <React.Fragment key={subIndex}>
+                            <Swiper onSwipeLeft={() => this.onSwipe('left')} onSwipeRight={() => this.onSwipe('right')}>
+                              <Row style={styles.row(mConst.bgKhaki)}>
+                                {swipe ? (
+                                  <>
+                                    <Col style={styles.col(1, true, mConst.bgKhaki)} size={3}>
+                                      <Text style={styles.sText(12)} numberOfLines={1}>
+                                        {toName}
+                                      </Text>
+                                    </Col>
+                                    <Col style={styles.col(1, true)} size={1}>
+                                      <FastImage source={circleCheckImage} style={styles.checkImage} />
+                                    </Col>
+                                  </>
+                                ) : (
+                                  <Text style={styles.sText(12)} numberOfLines={1}>
+                                    {toName}
+                                  </Text>
+                                )}
+                              </Row>
+                            </Swiper>
+                            <Pressable
+                              onLongPress={() => {
+                                this.setState({...this.state, isvisible: {open: true, phone: toPhone, name: toName}})
+                              }}
+                            >
+                              {({pressed}) => (
+                                <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : 'white')}>
+                                  <Text style={styles.sText(12, mConst.darkGray)}>{toPhone}</Text>
+                                </Row>
+                              )}
+                            </Pressable>
+                          </React.Fragment>
+                        )
+                      })}
+                    </Col>
                   </Row>
-                  <Row style={styles.row()}>
-                    <Text style={styles.sText(9)}>12,000,000</Text>
-                  </Row>
-                  <Row style={styles.row()}>
-                    <Text style={styles.sText()}>Skirt</Text>
-                  </Row>
-                  <Row style={styles.row()}>
-                    <Text style={styles.sText(9)}>6,000,000</Text>
-                  </Row>
-                </Col>
-                <Col style={styles.col(4, true)} size={2}>
-                  <FastImage source={model2Image} style={styles.modelImage} />
-                </Col>
-                <Col style={styles.col(4)} size={6}>
-                  <Pressable
-                    onLongPress={() => {
-                      // eslint-disable-next-line quotes
-                      this.alert('상품 미수령 알림', "'EL 손다예'님께 상품미수령 알림을 보내시겠습니까?", [
-                        {
-                          onPress: () => {
-                            setTimeout(() => {
-                              this.alert('미수령 알림 전송 완료', '미수령 알림을 전송하였습니다.', [{onPress: () => null}])
-                            }, 100)
-                          },
-                        },
-                        {onPress: () => null},
-                      ])
-                    }}
-                  >
-                    {({pressed}) => (
-                      <Row style={styles.row(pressed ? 'rgba(126, 161, 178, 0.7)' : mConst.bgBlue)}>
-                        <Text style={styles.sText(12)} numberOfLines={1}>
-                          GQ이은주ed
-                        </Text>
-                      </Row>
-                    )}
-                  </Pressable>
-                  <Pressable
-                    onLongPress={() => {
-                      this.setState({...this.state, isvisible: {open: true, phone: '010-4521-9999', name: 'EL손다예st'}})
-                    }}
-                  >
-                    {({pressed}) => (
-                      <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : 'white')}>
-                        <Text style={styles.sText(12, mConst.darkGray)}>010-4521-9999</Text>
-                      </Row>
-                    )}
-                  </Pressable>
-                  <Row style={styles.row(mConst.bgBlue)}>
-                    <Text style={styles.sText(12)} numberOfLines={1}>
-                      GQ이은주ed
-                    </Text>
-                  </Row>
-                  <Row style={styles.row()}>
-                    <Text style={styles.sText(12, mConst.darkGray)}></Text>
-                  </Row>
-                </Col>
-                <Col style={styles.col(4)} size={6}>
-                  <Swiper onSwipeLeft={() => this.onSwipe('left')} onSwipeRight={() => this.onSwipe('right')}>
-                    <Row style={styles.row(mConst.bgKhaki)}>
-                      {swipe ? (
-                        <>
-                          <Col style={styles.col(1, true, mConst.bgKhaki)} size={3}>
-                            <Text style={styles.sText(12)} numberOfLines={1}>
-                              스타일H김나현st
-                            </Text>
-                          </Col>
-                          <Col style={styles.col(1, true)} size={1}>
-                            <FastImage source={circleCheckImage} style={styles.checkImage} />
-                          </Col>
-                        </>
-                      ) : (
-                        <Text style={styles.sText(12)} numberOfLines={1}>
-                          스타일H김나현st
-                        </Text>
-                      )}
-                    </Row>
-                  </Swiper>
-                  <Pressable
-                    onLongPress={() => {
-                      console.log('1111')
-                    }}
-                  >
-                    {({pressed}) => (
-                      <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : 'white')}>
-                        <Text style={styles.sText(12, mConst.darkGray)}>010-4521-9999</Text>
-                      </Row>
-                    )}
-                  </Pressable>
-                  <Row style={styles.row(mConst.bgKhaki)}>
-                    <Text style={styles.sText(12)} numberOfLines={1}>
-                      스타일H김나현st
-                    </Text>
-                  </Row>
-                  <Row style={styles.row()}>
-                    <Text style={styles.sText(12, mConst.darkGray)}></Text>
-                  </Row>
-                </Col>
-              </Row>
+                )
+              })}
               <Row>
                 <Col style={styles.col(6, true)} size={1}>
                   <Text style={styles.sText()}>#6</Text>
