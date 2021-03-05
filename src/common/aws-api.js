@@ -336,6 +336,27 @@ const API = {
     }
     return Api.get(apiName, path, init)
   },
+  getHomeNR: ({next_token}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/home/new-request`
+    var init = {
+      queryStringParameters: {
+        next_token: next_token,
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
+  getHomeTR: ({date, next_token}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/home/today-request`
+    var init = {
+      queryStringParameters: {
+        date: date,
+        next_token: next_token,
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
   getDigitalSR: ({page, limit, season_year, season_cd_id}) => {
     var apiName = v1Api
     var path = `${mConst.getApiPath()}/showroom-list`

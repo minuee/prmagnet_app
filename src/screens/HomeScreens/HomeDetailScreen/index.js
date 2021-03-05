@@ -19,21 +19,51 @@ class HomeDetailScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
-    this.state = {data: ''}
+    this.state = {data: [], next_token: '', has_next: true, total_count: 0}
   }
 
-  getHome = async () => {
-    const date = Math.floor(new Date().getTime() / 1000)
+  getHomeNR = async () => {
+    const {next_token, data} = this.state
     try {
-      let response = await API.getHome({date: date, userType: userType})
-      console.log('getHome>>>', response)
-      this.setState({data: response})
+      let response = await API.getHomeNR({next_token: next_token})
+      console.log('getHomeNR>>>', response)
+      this.setState({
+        data: data.concat(response.new_request),
+        next_token: response.next_token,
+        has_next: response.has_next,
+        total_count: response.total_count,
+      })
     } catch (error) {
-      console.log('getHome>>>1', error)
+      console.log('getHomeNR>>>1', error)
     }
   }
 
-  handleLoadMore = async () => {}
+  getHomeTR = async () => {
+    const date = Math.floor(new Date().getTime() / 1000)
+    const {next_token, data} = this.state
+    try {
+      let response = await API.getHomeTR({date: date, next_token: next_token})
+      console.log('getHomeTR>>>', response)
+      this.setState({
+        data: data.concat(response.new_request),
+        next_token: response.next_token,
+        has_next: response.has_next,
+        total_count: response.total_count,
+      })
+    } catch (error) {
+      console.log('getHomeTR>>>1', error)
+    }
+  }
+
+  handleLoadMore = async () => {
+    const {has_next} = this.state
+    const {type} = this.props.route.params
+    if (has_next && type) {
+      this.getHomeNR()
+    } else if (has_next && !type) {
+      this.getHomeTR()
+    }
+  }
 
   componentDidMount() {
     const {title} = this.props.route.params
@@ -45,7 +75,12 @@ class HomeDetailScreen extends PureComponent {
   }
 
   handleOnFocus = () => {
-    this.getHome()
+    const {type} = this.props.route.params
+    if (type) {
+      this.getHomeNR()
+    } else {
+      this.getHomeTR()
+    }
   }
 
   renderItem = ({item}) => {
@@ -63,23 +98,23 @@ class HomeDetailScreen extends PureComponent {
   }
 
   render() {
-    const {data} = this.state
+    const {data, total_count} = this.state
     const {type} = this.props.route.params
-    return data ? (
+    return (
       <>
         <SafeAreaView style={styles.container}>
           {type ? (
             <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(30)}}>
               <Text style={styles.new}>
                 {userType === 'M' ? 'Confirmed' : 'New'} <Text style={{fontFamily: 'Roboto-Medium'}}>Requests : </Text>
-                <Text style={{fontFamily: 'Roboto-Bold', color: '#7ea1b2'}}>{data.cnfirm_request.length}</Text>
+                <Text style={{fontFamily: 'Roboto-Bold', color: '#7ea1b2'}}>{total_count}</Text>
               </Text>
             </View>
           ) : (
             <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(30)}}>
               <Text style={styles.new}>
                 Today's <Text style={{fontFamily: 'Roboto-Medium'}}>{userType === 'M' ? 'PickUps' : 'Send-Outs'} : </Text>
-                <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}>{data.today_request.length}</Text>
+                <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}>{total_count}</Text>
               </Text>
             </View>
           )}
@@ -95,7 +130,7 @@ class HomeDetailScreen extends PureComponent {
               columnWrapperStyle={{justifyContent: 'space-between'}}
               showsVerticalScrollIndicator={false}
               numColumns={2}
-              data={type ? data.cnfirm_request : data.today_request}
+              data={data}
               renderItem={this.renderItem}
               keyExtractor={item => `_${item.req_no}_${Math.random()}`}
               onEndReached={this.handleLoadMore}
@@ -104,8 +139,6 @@ class HomeDetailScreen extends PureComponent {
           </View>
         </SafeAreaView>
       </>
-    ) : (
-      <Loading />
     )
   }
 }
