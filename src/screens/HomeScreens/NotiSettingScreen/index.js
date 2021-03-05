@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import _ from 'lodash'
 import Modal from 'react-native-modal'
 import DatePicker from 'react-native-date-picker'
+import moment from 'moment'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -74,10 +75,18 @@ class NotiSettingScreen extends PureComponent {
   }
 
   putNotDis = async switchValue => {
-    const {from, to} = this.state
+    const from = this.state.from.getTime() / 1000
+    const to = this.state.to.getTime() / 1000
     try {
-      let response = await API.putNotDis({mode_on: switchValue, begin_dt: from, end_dt: to})
+      let response = await API.putNotDis({
+        mode_on: switchValue,
+        begin_dt: switchValue ? (from > to ? to : from) : null,
+        end_dt: switchValue ? (from > to ? from : to) : null,
+      })
       console.log('putNotDis>>>', response)
+      if (response.success) {
+        this.setState({isvisible: {open: false, in: ''}})
+      }
     } catch (error) {
       console.log('putNotDis>>>', error)
     }
@@ -101,7 +110,12 @@ class NotiSettingScreen extends PureComponent {
         this.setState({isEnabled: copy})
         break
       case '방해 금지 시간':
-        this.setState({isEnabled: copy, isvisible: {open: true, in: index}})
+        if (isEnabled[index]) {
+          this.putNotDis(switchValue)
+          this.setState({isEnabled: copy})
+        } else {
+          this.setState({isEnabled: copy, isvisible: {open: true, in: index}})
+        }
         break
       case '보도자료':
         this.putPress(switchValue)
@@ -115,12 +129,19 @@ class NotiSettingScreen extends PureComponent {
     const {info} = this.props.route.params
     const arr =
       userType === 'M' ? [false, false, false, false, false] : [info.req_notifi_recv_yn, info.notice_notifi_recv_yn, info.not_disturb_mode_yn]
-    this.setState({isEnabled: arr, from: _.defaultTo(info.not_disturb_begin_dt, new Date()), to: _.defaultTo(info.not_disturb_end_dt, new Date())})
+    this.setState({
+      isEnabled: arr,
+      from: _.defaultTo(new Date(moment.unix(info.not_disturb_begin_dt).format()), new Date()),
+      to: _.defaultTo(new Date(moment.unix(info.not_disturb_end_dt).format()), new Date()),
+      //from: new Date(),
+      //to: new Date(),
+    })
   }
 
   render() {
     const {isEnabled, isvisible, from, to, selected} = this.state
     const copy = [...isEnabled]
+    console.log('>>>>>', from, to)
     return (
       <>
         <SafeAreaView style={styles.container}>
@@ -175,7 +196,6 @@ class NotiSettingScreen extends PureComponent {
                 date={selected === 'From' ? from : to}
                 onDateChange={date => {
                   if (selected === 'From') {
-                    console.log('from>>>>>', date.getTime() / 1000)
                     this.setState({from: date})
                   } else {
                     this.setState({to: date})
@@ -198,6 +218,7 @@ class NotiSettingScreen extends PureComponent {
                 <TouchableOpacity
                   style={{...styles.modalBottomR}}
                   onPress={() => {
+                    //this.setState({isvisible: {open: false, in: ''}, from: new Date(), to: new Date()})
                     this.putNotDis(true)
                   }}
                 >
