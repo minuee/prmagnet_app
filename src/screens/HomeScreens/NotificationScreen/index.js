@@ -120,7 +120,7 @@ class NotificationScreen extends PureComponent {
   }
   render() {
     const {list} = this.state
-    return list.length > 0 ? (
+    return (
       <>
         <SafeAreaView style={styles.container}>
           <FlatList
@@ -133,8 +133,6 @@ class NotificationScreen extends PureComponent {
           />
         </SafeAreaView>
       </>
-    ) : (
-      <Loading />
     )
   }
 }
