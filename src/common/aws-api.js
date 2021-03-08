@@ -304,6 +304,16 @@ const API = {
     }
     return Api.get(apiName, path, init)
   },
+  putLookBook: ({lookbook_no_list}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/lookbook-delete`
+    var myInit = {
+      body: {
+        lookbook_no_list: lookbook_no_list,
+      },
+    }
+    return Api.put(apiName, path, myInit)
+  },
   getShare: ({lookbook_no, lookbook_nm}) => {
     var apiName = v1Api
     var path = `/brand/lookbook/:${lookbook_no}/share-uuid`
@@ -470,6 +480,13 @@ const API = {
       },
     }
     return Api.put(apiName, path, myInit)
+  },
+  getSRDetail: showroom_no => {
+    console.log('>>>>', showroom_no)
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/showroom/${showroom_no}`
+    var init = {}
+    return Api.get(apiName, path, init)
   },
 }
 
