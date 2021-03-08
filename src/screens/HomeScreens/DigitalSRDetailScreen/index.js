@@ -9,9 +9,9 @@ import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
-import {Grid, Col, Row} from 'react-native-easy-grid'
 import styles from './styles'
-import {multicastChannel} from 'redux-saga'
+import API from '../../../common/aws-api'
+import Loading from '../../common/Loading'
 
 const noCheckImg = require('../../../images/navi/no_check_1.png')
 const checkImg = require('../../../images/navi/check_1.png')
@@ -20,30 +20,34 @@ class DigitalSRDetailScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
-    this.state = {
-      model: [
-        require('../../../images/sample/model_2.png'),
-        require('../../../images/sample/model_2.png'),
-        require('../../../images/sample/model_2.png'),
-        require('../../../images/sample/model_2.png'),
-      ],
-      name: '2020 CUCCI FREE FOLE',
-      season: 'Fall',
-      gender: 'Women',
-      category: '드레스',
-      color: 'White',
-      size: 'Samll',
-      material: '코튼',
-      price: '1,000,000',
-      in: true,
+    this.state = {data: ''}
+  }
+  getSRDetail = async () => {
+    const {no} = this.props.route.params
+    try {
+      let response = await API.getSRDetail(no)
+      console.log('getSRDetail>>>', JSON.stringify(response))
+      this.setState({data: response})
+    } catch (error) {
+      console.log('getSRDetail>>>', error)
     }
   }
+
   componentDidMount() {
     this.pushOption('')
+    this.onFocus(this.handleOnFocus)
   }
+  componentWillUnmount() {
+    this.removeFocus()
+  }
+
+  handleOnFocus = () => {
+    this.getSRDetail()
+  }
+
   render() {
     const {data} = this.state
-    return (
+    return data ? (
       <SafeAreaView style={styles.container}>
         <ScrollView>
           <Swiper
@@ -59,65 +63,69 @@ class DigitalSRDetailScreen extends PureComponent {
             dotStyle={styles.swipeDot}
             activeDotStyle={styles.swipeActiveDot}
           >
-            {this.state.model.map((item, index) => {
-              return <FastImage key={index} resizeMode={'cover'} style={{width: '100%', height: mUtils.wScale(500)}} source={item} />
+            {data.sample_list[0].sample_image_list.map((item, index) => {
+              return (
+                <FastImage key={index} resizeMode={'contain'} style={{width: '100%', height: mUtils.wScale(500)}} source={{uri: item.full_url}} />
+              )
             })}
           </Swiper>
 
           <View style={{paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(25)}}>
-            <Text style={styles.title}>Look #1</Text>
+            <Text style={styles.title}>{data.showroom_nm}</Text>
             <View style={styles.emptyBar} />
             <View style={styles.layout}>
               <Text style={styles.left}>Sample name</Text>
-              <Text style={{...styles.right}}>{this.state.name}</Text>
+              <Text style={{...styles.right}}>{data.sample_list[0].sample_nm}</Text>
             </View>
             <View style={styles.layout}>
               <Text style={styles.left}>Season</Text>
-              <Text style={{...styles.right}}>{this.state.season}</Text>
+              <Text style={{...styles.right}}>{data.season_text}</Text>
             </View>
             <View style={styles.layout}>
               <Text style={styles.left}>Gender</Text>
-              <Text style={{...styles.right}}>{this.state.gender}</Text>
+              <Text style={{...styles.right}}>{data.sample_list[0].gender_text}</Text>
             </View>
             <View style={styles.layout}>
               <Text style={styles.left}>Category</Text>
-              <Text style={{...styles.right}}>{this.state.category}</Text>
+              <Text style={{...styles.right}}>{data.sample_list[0].category_middle_text}</Text>
             </View>
             <View style={styles.layout}>
               <Text style={styles.left}>Color</Text>
-              <Text style={{...styles.right}}>{this.state.color}</Text>
+              <Text style={{...styles.right}}>{data.sample_list[0].color_text}</Text>
             </View>
             <View style={styles.layout}>
               <Text style={styles.left}>Size</Text>
-              <Text style={{...styles.right}}>{this.state.size}</Text>
+              <Text style={{...styles.right}}>{mUtils.get(data.sample_list[0].size_text, '')}</Text>
             </View>
             <View style={styles.layout}>
               <Text style={styles.left}>Material</Text>
-              <Text style={{...styles.right}}>{this.state.material}</Text>
+              <Text style={{...styles.right}}>{data.sample_list[0].material_text}</Text>
             </View>
             <View style={styles.layout}>
               <Text style={styles.left}>Price</Text>
-              <Text style={{...styles.right}}>{this.state.price}</Text>
+              <Text style={{...styles.right}}>{mUtils.numberWithCommas(data.sample_list[0].price)}</Text>
             </View>
             <View style={styles.layout}>
               <Text style={styles.left}>In</Text>
-              <FastImage resizeMode={'contain'} style={styles.checkImg} source={this.state.in ? checkImg : noCheckImg} />
+              <FastImage resizeMode={'contain'} style={styles.checkImg} source={data.sample_list[0].in_yn ? checkImg : noCheckImg} />
             </View>
 
             <Text style={styles.left}>Caption</Text>
             <View style={{...styles.layout1, marginTop: mUtils.wScale(10)}}>
-              <Text style={styles.desc}>Korean</Text>
+              <Text style={styles.desc}>{data.sample_list[0].caption_korean}</Text>
             </View>
             <View style={{...styles.layout1, marginTop: mUtils.wScale(6), marginBottom: mUtils.wScale(13)}}>
-              <Text style={styles.desc}>English</Text>
+              <Text style={styles.desc}>{data.sample_list[0].caption_english}</Text>
             </View>
             <Text style={styles.left}>Etc</Text>
             <View style={{...styles.layout2, marginTop: mUtils.wScale(10), marginBottom: mUtils.wScale(30)}}>
-              <Text style={styles.desc}>Contents</Text>
+              <Text style={styles.desc}>{data.sample_list[0].etc}</Text>
             </View>
           </View>
         </ScrollView>
       </SafeAreaView>
+    ) : (
+      <Loading />
     )
   }
 }

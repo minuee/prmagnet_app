@@ -29,6 +29,20 @@ class LookBookScreen extends PureComponent {
     }
   }
 
+  putLookBook = async lookbook_no_list => {
+    try {
+      let response = await API.putLookBook({lookbook_no_list: [lookbook_no_list]})
+      console.log('putLookBook>>>', response)
+      if (response.success) {
+        setTimeout(() => {
+          this.alert('삭제 완료', '룩북을 삭제 하였습니다.', [{onPress: () => this.getLookBookReset()}])
+        }, 100)
+      }
+    } catch (error) {
+      console.log('putLookBook>>>', error)
+    }
+  }
+
   getLookBook = async () => {
     const {list, page, limit, search_text} = this.state
     try {
@@ -36,11 +50,24 @@ class LookBookScreen extends PureComponent {
       console.log('getLookBook>>>', response)
       if (response.success) {
         if (response.list.length > 0) {
-          this.setState({...this.state, list: list.concat(response.list), page: page + 1})
+          this.setState({list: list.concat(response.list), page: page + 1})
         }
       }
     } catch (error) {
       console.log('getLookBook>>>', error)
+    }
+  }
+
+  getLookBookReset = async () => {
+    const {list, page, limit, search_text} = this.state
+    try {
+      let response = await API.getLookBook({page: 1, limit: limit, search_text: search_text})
+      console.log('getLookBookReset>>>', response)
+      if (response.success) {
+        this.setState({list: response.list, page: 2})
+      }
+    } catch (error) {
+      console.log('getLookBookReset>>>', error)
     }
   }
 
@@ -92,9 +119,7 @@ class LookBookScreen extends PureComponent {
                     this.alert('룩북 삭제', '해당 룩북을 삭제하시겠습니까?', [
                       {
                         onPress: () => {
-                          setTimeout(() => {
-                            this.alert('삭제 완료', '룩북을 삭제 하였습니다.')
-                          }, 100)
+                          this.putLookBook(item.lookbook_no)
                         },
                       },
                       {onPress: () => null},
