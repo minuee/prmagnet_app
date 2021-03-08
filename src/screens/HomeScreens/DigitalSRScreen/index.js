@@ -39,11 +39,15 @@ class DigitalSRScreen extends PureComponent {
       isvisible: false,
       page: 1,
       limit: 10,
-      season_year: '',
-      season_cd_id: '',
+      season_year: {season_year: '', season_cd_id: ''},
       notice: '',
       inquiryNum: '',
     }
+  }
+
+  handleLoadMore = () => {
+    console.log('1111')
+    this.getDigitalSR()
   }
 
   selected = item => {
@@ -59,19 +63,31 @@ class DigitalSRScreen extends PureComponent {
   }
 
   getDigitalSR = async () => {
-    const {page, limit, season_year, season_cd_id} = this.state
+    const {data, page, limit, season_year, season_cd_id} = this.state
     try {
-      let response = await API.getDigitalSR({page: page, limit: limit, season_year: season_year, season_cd_id: season_cd_id})
+      let response = await API.getDigitalSR({page: page, limit: limit, season_year: season_year.season_year, season_cd_id: season_year.season_cd_id})
       console.log('getDigitalSR>>>', response)
       if (response.success) {
         if (page === 1) {
-          this.setState({data: response, page: page + 1})
+          this.setState({data: response, season_year: response.season_list[0], page: page + 1})
         } else if (response.list.length > 0) {
-          this.setState({data: {list: list.concat(response.list)}, page: page + 1})
+          this.setState({data: {...data, list: data.list.concat(response.list)}, page: page + 1})
         }
       }
     } catch (error) {
       console.log('getDigitalSR>>>', error)
+    }
+  }
+
+  getDigitalSRReset = async (year, id) => {
+    try {
+      let response = await API.getDigitalSR({page: 1, limit: 10, season_year: year, season_cd_id: id})
+      console.log('getDigitalSRReset>>>', response)
+      if (response.success) {
+        this.setState({data: response, page: 2})
+      }
+    } catch (error) {
+      console.log('getDigitalSRReset>>>', error)
     }
   }
 
@@ -121,7 +137,7 @@ class DigitalSRScreen extends PureComponent {
       <View style={{width: '49%', height: mUtils.wScale(310)}}>
         <TouchableOpacity
           onPress={() => {
-            userType === 'M' ? this.selected(item) : this.pushTo('DigitalSRDetailScreen')
+            userType === 'M' ? this.selected(item) : this.pushTo('DigitalSRDetailScreen', {no: item.showroom_no})
           }}
           activeOpacity={0.5}
           style={{width: '100%', height: mUtils.wScale(275)}}
@@ -145,7 +161,7 @@ class DigitalSRScreen extends PureComponent {
 
   render() {
     const {data} = this.state
-    const {notice, inquiryNum} = this.state
+    const {notice, inquiryNum, season_year} = this.state
     const userType = mConst.getUserType()
     return (
       <SafeAreaView style={styles.container}>
@@ -177,21 +193,29 @@ class DigitalSRScreen extends PureComponent {
                   <MenuTrigger
                     customStyles={{
                       TriggerTouchableComponent: TouchableOpacity,
-                      //triggerTouchable: {
-                      //  activeOpacity: 10,
-                      //},
                     }}
                   >
                     <View style={{...styles.layout}}>
-                      <Text style={styles.season}>2020 F/W</Text>
+                      <Text style={styles.season}>
+                        {season_year.season_year} {season_year.season_simple_text}
+                      </Text>
                       <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
                     </View>
                   </MenuTrigger>
                   <MenuOptions optionsContainerStyle={styles.menuOptions}>
-                    {arr.map((item, index) => {
+                    {data.season_list.map((item, index) => {
                       return (
-                        <MenuOption key={index} style={styles.menuOption} onSelect={() => {}}>
-                          <Text style={styles.menuText}>{item}</Text>
+                        <MenuOption
+                          key={index}
+                          style={styles.menuOption}
+                          onSelect={() => {
+                            this.setState({season_year: item})
+                            this.getDigitalSRReset(item.season_year, item.season_cd_id)
+                          }}
+                        >
+                          <Text style={styles.menuText}>
+                            {item.season_year} {item.season_simple_text}
+                          </Text>
                         </MenuOption>
                       )
                     })}
@@ -237,12 +261,15 @@ class DigitalSRScreen extends PureComponent {
               </View>
               <FlatList
                 bounces={false}
-                data={data}
+                data={data.list}
                 renderItem={this.renderItem}
                 keyExtractor={item => `${item.title}_${Math.random()}`}
                 contentContainerStyle={{}}
                 columnWrapperStyle={{justifyContent: 'space-between'}}
                 numColumns={2}
+                showsVerticalScrollIndicator={false}
+                onEndReached={this.handleLoadMore}
+                onEndReachedThreshold={1}
               />
             </>
           ) : (
