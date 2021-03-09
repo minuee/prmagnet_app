@@ -28,6 +28,7 @@ class LinkSheetDetailScreen extends PureComponent {
     cBind(this)
     this.state = {
       swipe: true,
+      checked: false,
       isvisible: {open: false, phone: '', name: ''},
       data: {},
       showList: [],
@@ -66,8 +67,11 @@ class LinkSheetDetailScreen extends PureComponent {
   handleLongPressPhone = (name, phone) => {
     this.setState({isvisible: {open: true, name, phone}})
   }
+  handleOnSwipeCheck = () => {
+    this.setState(prevState => ({checked: !prevState.checked}))
+  }
   render() {
-    const {swipe, data} = this.state
+    const {swipe, data, checked} = this.state
     const fromName = mUtils.get(data, 'send_user_nm')
     const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'phone_no'))
     const toName = mUtils.get(data, 'brand_user_nm')
@@ -177,11 +181,13 @@ class LinkSheetDetailScreen extends PureComponent {
                       {_.map(samples, (subItem, subIndex) => {
                         return (
                           <LinkSheetUnit
+                            checked={checked}
                             name={toName}
                             phone={toPhone}
                             index={subIndex}
                             onLongPress={() => this.handleLongPress(toName, subItem.sample_no)}
                             onLongPressPhone={() => this.handleLongPressPhone(toName, toPhone)}
+                            onSwipeCheck={this.handleOnSwipeCheck}
                             color={mConst.bgKhaki}
                           />
                         )

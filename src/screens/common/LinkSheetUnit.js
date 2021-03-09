@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {Pressable, StyleSheet} from 'react-native'
+import {TouchableWithoutFeedback, Pressable, StyleSheet} from 'react-native'
 import FastImage from 'react-native-fast-image'
 import {Col, Row} from 'react-native-easy-grid'
 import _ from 'lodash'
@@ -16,45 +16,47 @@ export default class LinkSheetUnit extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      swipe: false,
+      swiped: false,
     }
   }
   onSwipe = gesture => {
-    this.setState({swipe: gesture === 'left' ? true : false})
+    this.setState({swiped: gesture === 'left' ? true : false})
   }
   render() {
-    const {swipe} = this.state
+    const {swiped} = this.state
     const {name, phone, index, onLongPress, onLongPressPhone, onSwipeCheck, color, checked} = this.props
     return (
       <React.Fragment key={index}>
         <Swiper onSwipeLeft={() => this.onSwipe('left')} onSwipeRight={() => this.onSwipe('right')}>
-          <Pressable onLongPress={onLongPress}>
-            {({pressed}) => (
+          {swiped || checked ? (
+            <TouchableWithoutFeedback onPress={swiped ? onSwipeCheck : null}>
               <Row style={styles.row(color)}>
-                {swipe ? (
-                  <>
-                    <Col style={styles.col(1, true, pressed ? 'rgba(0, 0, 0, 0.2)' : color)} size={3}>
-                      <Text style={styles.sText(12)} numberOfLines={1}>
-                        {name}
-                      </Text>
-                    </Col>
-                    <Col style={styles.col(1, true)} size={1}>
-                      <FastImage source={circleCheckImage} style={styles.checkImage} />
-                    </Col>
-                  </>
-                ) : (
-                  <Text style={styles.sText(12)} numberOfLines={1}>
+                <Col style={styles.col(1, true, color, checked)} size={3}>
+                  <Text style={styles.sText()} numberOfLines={1}>
                     {name}
                   </Text>
-                )}
+                </Col>
+                <Col style={styles.col(1, true, checked ? color : mConst.white, checked)} size={1}>
+                  <FastImage source={checked ? circleCheckOnImage : circleCheckImage} style={styles.checkImage} />
+                </Col>
               </Row>
-            )}
-          </Pressable>
+            </TouchableWithoutFeedback>
+          ) : (
+            <Pressable onLongPress={onLongPress}>
+              {({pressed}) => (
+                <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : color)}>
+                  <Text style={styles.sText()} numberOfLines={1}>
+                    {name}
+                  </Text>
+                </Row>
+              )}
+            </Pressable>
+          )}
         </Swiper>
         <Pressable onLongPress={onLongPressPhone}>
           {({pressed}) => (
-            <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : 'white')}>
-              <Text style={styles.sText(12, mConst.darkGray)}>{phone}</Text>
+            <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : mConst.white)}>
+              <Text style={styles.sText(mConst.darkGray)}>{phone}</Text>
             </Row>
           )}
         </Pressable>
@@ -64,12 +66,14 @@ export default class LinkSheetUnit extends PureComponent {
 }
 
 const styles = StyleSheet.create({
-  col: (heightScale = 1, center, backgroundColor = mConst.white) => ({
+  col: (heightScale = 1, center, backgroundColor = mConst.white, noSideBorder = false) => ({
     justifyContent: center ? 'center' : undefined,
     alignItems: center ? 'center' : undefined,
     height: mUtils.wScale(30) * heightScale,
     borderWidth: StyleSheet.hairlineWidth,
     borderBottomWidth: center ? StyleSheet.hairlineWidth : 0,
+    borderLeftWidth: noSideBorder ? 0 : StyleSheet.hairlineWidth,
+    borderRightWidth: noSideBorder ? 0 : StyleSheet.hairlineWidth,
     backgroundColor,
   }),
   row: (backgroundColor = mConst.white) => ({
@@ -79,8 +83,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     backgroundColor,
   }),
-  sText: (fontSize = 10, color = mConst.textBaseColor) => ({
-    fontSize,
+  sText: (color = mConst.textBaseColor) => ({
+    fontSize: 12,
     color,
   }),
   checkImage: {
