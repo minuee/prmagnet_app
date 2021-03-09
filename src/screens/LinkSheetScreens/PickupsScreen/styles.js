@@ -54,20 +54,6 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     alignSelf: 'center',
   },
-  middleDualWrapper: {
-    width: (mConst.wWidth - mUtils.wScale(20) * 2) / 2 - mUtils.wScale(4),
-    paddingTop: mUtils.wScale(16),
-    paddingBottom: mUtils.wScale(12),
-    borderBottomWidth: 1,
-    borderColor: '#f3f3f3',
-  },
-  middleTripleWrapper: {
-    width: (mConst.wWidth - mUtils.wScale(20) * 2) / 3 - mUtils.wScale(4),
-    paddingTop: mUtils.wScale(16),
-    paddingBottom: mUtils.wScale(12),
-    borderBottomWidth: 1,
-    borderColor: '#f3f3f3',
-  },
   middleSubWrapper: (size = 2) => ({
     width: (mConst.wWidth - mUtils.wScale(20) * 2) / size - mUtils.wScale(4),
     paddingTop: mUtils.wScale(16),

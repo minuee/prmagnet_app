@@ -49,6 +49,8 @@ export default {
   borderGray: '#dddddd',
   bgBlue: '#7ea1b2',
   bgKhaki: '#b8c18c',
+  bgYellow: '#e1c668',
+  bgOrange: '#d78979',
   shadow,
   navTopBgOption: {background: {color: '#ffc102'}},
   wWidth: window.width,

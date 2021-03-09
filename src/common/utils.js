@@ -365,6 +365,7 @@ const utils = {
   },
   getShowDate(dbTime, format = 'M/D(ddd)') {
     // 파라미터는 Date.getTime() / 1000 값임
+    if (!dbTime) return '-'
     return moment(dbTime * 1000)
       .locale('en')
       .format(format)
