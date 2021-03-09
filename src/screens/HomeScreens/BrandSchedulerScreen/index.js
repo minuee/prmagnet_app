@@ -34,19 +34,9 @@ class BrandSchedulerScreen extends PureComponent {
     return (
       <SafeAreaView style={styles.container}>
         <Header />
-        <View style={{...styles.layout, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(20), marginBottom: mUtils.wScale(30)}}>
-          <Text style={styles.mainTitle}>Scheduler</Text>
-          <View style={styles.layout1}>
-            <TouchableOpacity style={styles.layout2}>
-              <Text style={styles.celLook}>Celeb</Text>
-              <FastImage resizeMode={'contain'} style={styles.moreImg1} source={moreImg} />
-            </TouchableOpacity>
-            <TouchableOpacity style={{...styles.layout2, marginLeft: mUtils.wScale(5)}}>
-              <Text style={styles.celLook}>By LOOK</Text>
-              <FastImage resizeMode={'contain'} style={styles.moreImg1} source={moreImg} />
-            </TouchableOpacity>
-          </View>
-        </View>
+
+        <Text style={styles.mainTitle}>Scheduler</Text>
+
         <View style={{...styles.layout, paddingHorizontal: mUtils.wScale(20), marginBottom: mUtils.wScale(10)}}>
           <TouchableOpacity style={styles.layout1}>
             <Text style={styles.dateSeason}>2020 F/W</Text>
@@ -123,7 +113,12 @@ class BrandSchedulerScreen extends PureComponent {
             </View>
           </View>
         </ScrollView>
-        <TouchableOpacity style={{...styles.layout8}}>
+        <TouchableOpacity
+          style={{...styles.layout8}}
+          onPress={() => {
+            this.pushTo('ScheduleMemoScreen')
+          }}
+        >
           <FastImage resizeMode={'contain'} style={styles.memoImg} source={memoImg} />
         </TouchableOpacity>
       </SafeAreaView>
