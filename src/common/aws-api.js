@@ -155,7 +155,7 @@ const API = {
         mobile_no,
       },
     }
-    return Api.post(apiName, path, init)
+    return Api.get(apiName, path, init)
   },
   getMoblieAuthCheck: ({mobile_no, auth_no}) => {
     var apiName = v1Cdn
@@ -188,6 +188,17 @@ const API = {
     var init = {}
 
     return Api.get(apiName, path, init)
+  },
+  postErrLog: ({error, desc}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/log`
+    var myInit = {
+      body: {
+        error: error,
+        desc: desc,
+      },
+    }
+    return Api.post(apiName, path, myInit)
   },
   getUserType: () => {
     var apiName = v1Api
@@ -315,8 +326,10 @@ const API = {
     return Api.put(apiName, path, myInit)
   },
   getShare: ({lookbook_no, lookbook_nm}) => {
+    console.log('>>>', lookbook_no)
     var apiName = v1Api
-    var path = `/brand/lookbook/:${lookbook_no}/share-uuid`
+    var path = `/brand/lookbook/${lookbook_no}/share-uuid`
+    console.log('???', path)
     var init = {
       queryStringParameters: {
         lookbook_nm: lookbook_nm,
@@ -487,6 +500,22 @@ const API = {
     var path = `${mConst.getApiPath()}/showroom/${showroom_no}`
     var init = {}
     return Api.get(apiName, path, init)
+  },
+  putProfile: ({user_nm, post_no, adres, brand_pos_cd, phone_no, team_user_id, img_url_adres}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/my-profile`
+    var myInit = {
+      body: {
+        user_nm: user_nm,
+        post_no: post_no,
+        adres: adres,
+        brand_pos_cd: brand_pos_cd,
+        phone_no: phone_no,
+        team_user_id: team_user_id,
+        img_url_adres: img_url_adres,
+      },
+    }
+    return Api.put(apiName, path, myInit)
   },
 }
 
