@@ -30,19 +30,30 @@ export default class CommonHeader extends PureComponent {
             <TouchableOpacity style={styles.inputIconWrapper} onPress={null}>
               <FastImage source={searchImage} style={styles.inputIcon} />
             </TouchableOpacity>
-            <TextInput
-              ref={comp => (this.keywordInput = comp)}
-              style={styles.input(like)}
-              placeholderTextColor={mConst.textPhColor}
-              value={keyword}
-              onChangeText={text => this.setState({keyword: text})}
-              placeholder="검색어를 입력해주세요."
-              returnKeyType={mConst.bAndroid ? 'default' : 'done'}
-              onSubmitEditing={null}
-              autoCompleteType="off"
-              autoCapitalize="none"
-              maxLength={100}
-            />
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={() => {
+                pushTo('SearchScreen')
+              }}
+            >
+              <TextInput
+                editable={false}
+                ref={comp => (this.keywordInput = comp)}
+                style={styles.input(like)}
+                placeholderTextColor={mConst.textPhColor}
+                value={keyword}
+                onChangeText={text => this.setState({keyword: text})}
+                placeholder="검색어를 입력해주세요."
+                returnKeyType={mConst.bAndroid ? 'default' : 'done'}
+                onSubmitEditing={null}
+                autoCompleteType="off"
+                autoCapitalize="none"
+                maxLength={100}
+                onTouchStart={() => {
+                  pushTo('SearchScreen')
+                }}
+              />
+            </TouchableOpacity>
           </View>
         </TouchableWithoutFeedback>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>

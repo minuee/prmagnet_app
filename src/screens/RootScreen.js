@@ -100,6 +100,7 @@ class RootScreen extends PureComponent {
         <MemberStack.Screen name="DevNavigationScreen" component={DevNavigationScreen} />
         <MemberStack.Screen name="LoginScreen" component={LoginScreen} />
         {/* 개발 편의를 위한 임시 화면 end --------- */}
+        <MemberStack.Screen name="SearchScreen" component={SearchScreen} />
         <MemberStack.Screen name="NoticeDetailScreen" component={NoticeDetailScreen} />
         <MemberStack.Screen name="NoticeListScreen" component={NoticeListScreen} />
         <MemberStack.Screen name="ByBrandsSearchScreen" component={ByBrandsSearchScreen} />
@@ -209,7 +210,11 @@ class RootScreen extends PureComponent {
           }}
           children={() => (
             <TabScheduleStack.Navigator>
-              <TabScheduleStack.Screen name="ScheduleScreen" component={MagazineSchedulerScreen} options={{headerShown: false}} />
+              <TabScheduleStack.Screen
+                name="ScheduleScreen"
+                component={two ? MagazineSchedulerScreen : BrandSchedulerScreen}
+                options={{headerShown: false}}
+              />
             </TabScheduleStack.Navigator>
           )}
         />
