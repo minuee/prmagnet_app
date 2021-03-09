@@ -153,13 +153,7 @@ class LookBookScreen extends PureComponent {
     return (
       <SafeAreaView style={styles.container}>
         <Header />
-        <View style={styles.layout1}>
-          <Text style={styles.mainTitle}>LookBook</Text>
-          <TouchableOpacity style={styles.layout2}>
-            <Text style={styles.rightSmall}>Latest</Text>
-            <FastImage resizeMode={'contain'} style={styles.latestImg} source={moreImage3} />
-          </TouchableOpacity>
-        </View>
+        <Text style={styles.mainTitle}>LookBook</Text>
         {list ? (
           <FlatList
             bounces={false}

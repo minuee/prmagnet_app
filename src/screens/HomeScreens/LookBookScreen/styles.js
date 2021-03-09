@@ -13,6 +13,9 @@ export default StyleSheet.create({
     fontFamily: 'Roboto-Bold',
     textAlign: 'left',
     color: mConst.black,
+    marginHorizontal: mUtils.wScale(20),
+    marginTop: mUtils.wScale(35),
+    marginBottom: mUtils.wScale(10),
   },
   rightSmall: {
     fontSize: 12,
@@ -50,15 +53,6 @@ export default StyleSheet.create({
     fontSize: 18,
     textAlign: 'left',
     color: '#070708',
-  },
-  layout1: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: mUtils.wScale(20),
-    paddingTop: mUtils.wScale(35),
-    paddingBottom: mUtils.wScale(10),
-    backgroundColor: mConst.white,
   },
   layout2: {
     flexDirection: 'row',
