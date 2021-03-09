@@ -5,6 +5,7 @@ import FastImage from 'react-native-fast-image'
 import _ from 'lodash'
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker'
 import Modal from 'react-native-modal'
+import {Storage} from '@psyrenpark/storage'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -13,6 +14,8 @@ import Text from '../../common/Text'
 import styles from './styles'
 import {logout} from '../../../common/aws-auth'
 import {actionLogout} from '../../../redux/actions'
+import API from '../../../common/aws-api'
+import Loading from '../../common/Loading'
 
 const profileImg = require('../../../images/navi/profile_1.png')
 const cameraImg = require('../../../images/navi/camera_1.png')
@@ -22,6 +25,25 @@ class AccountSettingScreen extends PureComponent {
     super(props)
     cBind(this)
     this.state = {isvisible: false}
+  }
+
+  putProfile = async url => {
+    const {info} = this.props.route.params
+    try {
+      let response = await API.putProfile({
+        user_nm: info.brand_user_nm,
+        post_no: info.post_no,
+        adres: info.adres,
+        brand_pos_cd: info.user_position_id,
+        phone_no: info.phone_no,
+        team_user_id: info.teammate_id,
+        img_url_adres: `public/${url}`,
+      })
+      console.log('putProfile>>>', response)
+      this.goBack()
+    } catch (error) {
+      console.log('putProfile>>>', error)
+    }
   }
 
   requestCameraPermission = async type => {
@@ -54,6 +76,7 @@ class AccountSettingScreen extends PureComponent {
           },
           response => {
             console.log('camera', response)
+            this.putImageFunction(response)
           }
         )
       case 'gallery':
@@ -66,13 +89,39 @@ class AccountSettingScreen extends PureComponent {
           },
           response => {
             console.log('gallery', response)
+            this.putImageFunction(response)
           }
         )
     }
   }
 
+  putImageFunction = async image => {
+    this.setState({isvisible: false})
+    const response = await fetch(image.uri)
+    const file = await response.blob()
+    console.log('>>>>>>', file)
+    const date = new Date()
+    try {
+      var data = await Storage.put(
+        {
+          key: `profile/brand/${date.getTime()}.png`,
+          object: file,
+          config: {
+            contentType: 'image',
+            level: 'public',
+          },
+        }
+        //loadingFunction
+      )
+      console.log(data.key)
+      this.putProfile(data.key)
+    } catch (error) {
+      console.log('putImageFunction>>>', error)
+    }
+  }
+
   close = () => {
-    this.setState({...this.state, isvisible: false})
+    this.setState({isvisible: false})
   }
 
   handleLogout = callOnce(() => {
@@ -96,6 +145,7 @@ class AccountSettingScreen extends PureComponent {
   render() {
     const {isvisible} = this.state
     const {info} = this.props.route.params
+    console.log('info', info)
     return (
       <>
         <SafeAreaView style={styles.container}>
@@ -103,10 +153,10 @@ class AccountSettingScreen extends PureComponent {
             <TouchableOpacity
               style={styles.img}
               onPress={() => {
-                this.setState({...this.state, isvisible: true})
+                this.setState({isvisible: true})
               }}
             >
-              <FastImage resizeMode={'contain'} style={styles.profileImg} source={info.img_url_adres} />
+              <FastImage resizeMode={'contain'} style={styles.profileImg} source={{uri: info.img_full_path}} />
               <FastImage resizeMode={'contain'} style={styles.cameraImg} source={cameraImg} />
             </TouchableOpacity>
             <View style={styles.top}>
