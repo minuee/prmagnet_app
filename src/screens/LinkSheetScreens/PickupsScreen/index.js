@@ -64,7 +64,7 @@ class PickupsScreen extends PureComponent {
   }
   handleCheckItem = (name, sampleName, sampleNo) => {
     if (!this.state.checkedList.includes(sampleNo)) {
-      this.alert('수령완료', `"${name}님께 ${sampleName} 수령 완료"`, [
+      this.alert('수령완료', `${name}님께 ${sampleName} 수령 완료`, [
         {
           onPress: () => this.setState(prevstate => ({checkedList: prevstate.checkedList.concat(sampleNo)})),
         },

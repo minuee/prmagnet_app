@@ -64,7 +64,7 @@ class ReturnScreen extends PureComponent {
   }
   handleCheckItem = (name, sampleName, sampleNo) => {
     if (!this.state.checkedList.includes(sampleNo)) {
-      this.alert('수령완료', `"${name}님께 ${sampleName} 수령 완료"`, [
+      this.alert('수령완료', `${name}님께 ${sampleName} 수령 완료`, [
         {
           onPress: () => this.setState(prevstate => ({checkedList: prevstate.checkedList.concat(sampleNo)})),
         },
@@ -171,23 +171,23 @@ class ReturnScreen extends PureComponent {
                     </Col>
                     <Col style={styles.col(rowSize * 2)} size={6}>
                       {_.map(samples, (subItem, subIndex) => {
-                        return (
-                          <LinkSheetUnit
-                            key={subIndex}
-                            checked={checkedList.includes(subItem.sample_no) || allChecked}
-                            name={fromName}
-                            phone={fromPhone}
-                            onLongPress={() => this.handleLongPress(fromName, subItem.sample_no)}
-                            onLongPressPhone={() => this.handleLongPressPhone(fromName, fromPhone)}
-                            onSwipeCheck={() => this.handleCheckItem(fromName, subItem.sample_nm, subItem.sample_no)}
-                            color={mConst.bgYellow}
-                          />
-                        )
+                        return <LinkSheetUnit readOnly key={subIndex} name={fromName} phone={fromPhone} color={mConst.bgBlue} />
                       })}
                     </Col>
                     <Col style={styles.col(rowSize * 2)} size={6}>
                       {_.map(samples, (subItem, subIndex) => {
-                        return <LinkSheetUnit readOnly key={subIndex} name={toName} phone={toPhone} color={mConst.bgOrange} />
+                        return (
+                          <LinkSheetUnit
+                            key={subIndex}
+                            checked={checkedList.includes(subItem.sample_no) || allChecked}
+                            name={toName}
+                            phone={toPhone}
+                            onLongPress={() => this.handleLongPress(toName, subItem.sample_no)}
+                            onLongPressPhone={() => this.handleLongPressPhone(toName, toPhone)}
+                            onSwipeCheck={() => this.handleCheckItem(toName, subItem.sample_nm, subItem.sample_no)}
+                            color={mConst.bgKhaki}
+                          />
+                        )
                       })}
                     </Col>
                   </Row>
