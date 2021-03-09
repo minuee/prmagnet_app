@@ -45,6 +45,7 @@ export default StyleSheet.create({
   profileImg: {
     width: mUtils.wScale(80),
     height: mUtils.wScale(80),
+    borderRadius: mUtils.wScale(50),
   },
   cameraImg: {
     width: mUtils.wScale(26),

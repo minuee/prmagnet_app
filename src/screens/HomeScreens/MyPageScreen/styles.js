@@ -25,6 +25,7 @@ export default StyleSheet.create({
     shadowRadius: 2.22,
 
     elevation: 3,
+    borderRadius: mUtils.wScale(50),
   },
   name: {
     fontSize: 15,
@@ -60,6 +61,7 @@ export default StyleSheet.create({
   profileImg: {
     width: mUtils.wScale(60),
     height: mUtils.wScale(60),
+    borderRadius: mUtils.wScale(50),
   },
   editBox: {
     borderStyle: 'solid',

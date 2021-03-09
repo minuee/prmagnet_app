@@ -50,78 +50,90 @@ class DigitalSRDetailScreen extends PureComponent {
     return data ? (
       <SafeAreaView style={styles.container}>
         <ScrollView>
-          <Swiper
-            loop={false}
-            height={mUtils.wScale(500)}
-            style={{height: mUtils.wScale(500), flex: 0}}
-            containerStyle={{
-              height: mUtils.wScale(500),
-              flex: 0,
-            }}
-            activeDotColor={mConst.black}
-            dotColor={mConst.white}
-            dotStyle={styles.swipeDot}
-            activeDotStyle={styles.swipeActiveDot}
-          >
-            {data.sample_list[0].sample_image_list.map((item, index) => {
-              return (
-                <FastImage key={index} resizeMode={'contain'} style={{width: '100%', height: mUtils.wScale(500)}} source={{uri: item.full_url}} />
-              )
-            })}
-          </Swiper>
+          {data.sample_list.map((item, index) => {
+            return (
+              <>
+                <Swiper
+                  loop={false}
+                  height={mUtils.wScale(500)}
+                  style={{height: mUtils.wScale(500), flex: 0}}
+                  containerStyle={{
+                    height: mUtils.wScale(500),
+                    flex: 0,
+                  }}
+                  activeDotColor={mConst.black}
+                  dotColor={mConst.white}
+                  dotStyle={styles.swipeDot}
+                  activeDotStyle={styles.swipeActiveDot}
+                >
+                  {item.sample_image_list.map((item, index) => {
+                    return (
+                      <FastImage
+                        key={index}
+                        resizeMode={'contain'}
+                        style={{width: '100%', height: mUtils.wScale(500)}}
+                        source={{uri: item.full_url}}
+                      />
+                    )
+                  })}
+                </Swiper>
 
-          <View style={{paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(25)}}>
-            <Text style={styles.title}>{data.showroom_nm}</Text>
-            <View style={styles.emptyBar} />
-            <View style={styles.layout}>
-              <Text style={styles.left}>Sample name</Text>
-              <Text style={{...styles.right}}>{data.sample_list[0].sample_nm}</Text>
-            </View>
-            <View style={styles.layout}>
-              <Text style={styles.left}>Season</Text>
-              <Text style={{...styles.right}}>{data.season_text}</Text>
-            </View>
-            <View style={styles.layout}>
-              <Text style={styles.left}>Gender</Text>
-              <Text style={{...styles.right}}>{data.sample_list[0].gender_text}</Text>
-            </View>
-            <View style={styles.layout}>
-              <Text style={styles.left}>Category</Text>
-              <Text style={{...styles.right}}>{data.sample_list[0].category_middle_text}</Text>
-            </View>
-            <View style={styles.layout}>
-              <Text style={styles.left}>Color</Text>
-              <Text style={{...styles.right}}>{data.sample_list[0].color_text}</Text>
-            </View>
-            <View style={styles.layout}>
-              <Text style={styles.left}>Size</Text>
-              <Text style={{...styles.right}}>{mUtils.get(data.sample_list[0].size_text, '')}</Text>
-            </View>
-            <View style={styles.layout}>
-              <Text style={styles.left}>Material</Text>
-              <Text style={{...styles.right}}>{data.sample_list[0].material_text}</Text>
-            </View>
-            <View style={styles.layout}>
-              <Text style={styles.left}>Price</Text>
-              <Text style={{...styles.right}}>{mUtils.numberWithCommas(data.sample_list[0].price)}</Text>
-            </View>
-            <View style={styles.layout}>
-              <Text style={styles.left}>In</Text>
-              <FastImage resizeMode={'contain'} style={styles.checkImg} source={data.sample_list[0].in_yn ? checkImg : noCheckImg} />
-            </View>
+                <View style={{paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(25)}}>
+                  {index === 0 ? <Text style={styles.title}>{data.showroom_nm}</Text> : null}
 
-            <Text style={styles.left}>Caption</Text>
-            <View style={{...styles.layout1, marginTop: mUtils.wScale(10)}}>
-              <Text style={styles.desc}>{data.sample_list[0].caption_korean}</Text>
-            </View>
-            <View style={{...styles.layout1, marginTop: mUtils.wScale(6), marginBottom: mUtils.wScale(13)}}>
-              <Text style={styles.desc}>{data.sample_list[0].caption_english}</Text>
-            </View>
-            <Text style={styles.left}>Etc</Text>
-            <View style={{...styles.layout2, marginTop: mUtils.wScale(10), marginBottom: mUtils.wScale(30)}}>
-              <Text style={styles.desc}>{data.sample_list[0].etc}</Text>
-            </View>
-          </View>
+                  <View style={styles.emptyBar} />
+                  <View style={styles.layout}>
+                    <Text style={styles.left}>Sample name</Text>
+                    <Text style={{...styles.right}}>{item.sample_nm}</Text>
+                  </View>
+                  <View style={styles.layout}>
+                    <Text style={styles.left}>Season</Text>
+                    <Text style={{...styles.right}}>{data.season_text}</Text>
+                  </View>
+                  <View style={styles.layout}>
+                    <Text style={styles.left}>Gender</Text>
+                    <Text style={{...styles.right}}>{item.gender_text}</Text>
+                  </View>
+                  <View style={styles.layout}>
+                    <Text style={styles.left}>Category</Text>
+                    <Text style={{...styles.right}}>{item.category_middle_text}</Text>
+                  </View>
+                  <View style={styles.layout}>
+                    <Text style={styles.left}>Color</Text>
+                    <Text style={{...styles.right}}>{item.color_text}</Text>
+                  </View>
+                  <View style={styles.layout}>
+                    <Text style={styles.left}>Size</Text>
+                    <Text style={{...styles.right}}>{mUtils.get(item.size_text, '')}</Text>
+                  </View>
+                  <View style={styles.layout}>
+                    <Text style={styles.left}>Material</Text>
+                    <Text style={{...styles.right}}>{item.material_text}</Text>
+                  </View>
+                  <View style={styles.layout}>
+                    <Text style={styles.left}>Price</Text>
+                    <Text style={{...styles.right}}>{mUtils.numberWithCommas(item.price)}</Text>
+                  </View>
+                  <View style={styles.layout}>
+                    <Text style={styles.left}>In</Text>
+                    <FastImage resizeMode={'contain'} style={styles.checkImg} source={item.in_yn ? checkImg : noCheckImg} />
+                  </View>
+
+                  <Text style={styles.left}>Caption</Text>
+                  <View style={{...styles.layout1, marginTop: mUtils.wScale(10)}}>
+                    <Text style={styles.desc}>{item.caption_korean}</Text>
+                  </View>
+                  <View style={{...styles.layout1, marginTop: mUtils.wScale(6), marginBottom: mUtils.wScale(13)}}>
+                    <Text style={styles.desc}>{item.caption_english}</Text>
+                  </View>
+                  <Text style={styles.left}>Etc</Text>
+                  <View style={{...styles.layout2, marginTop: mUtils.wScale(10), marginBottom: mUtils.wScale(30)}}>
+                    <Text style={styles.desc}>{item.etc}</Text>
+                  </View>
+                </View>
+              </>
+            )
+          })}
         </ScrollView>
       </SafeAreaView>
     ) : (

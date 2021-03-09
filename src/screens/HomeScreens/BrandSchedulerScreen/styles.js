@@ -13,6 +13,9 @@ export default StyleSheet.create({
     fontSize: 20,
     textAlign: 'left',
     color: mConst.black,
+    marginHorizontal: mUtils.wScale(20),
+    marginTop: mUtils.wScale(20),
+    marginBottom: mUtils.wScale(30),
   },
   title: {
     fontFamily: 'Roboto-Medium',
