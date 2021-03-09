@@ -116,13 +116,13 @@ class HomeScreen extends PureComponent {
 
   getHome = async () => {
     const date = Math.floor(new Date().getTime() / 1000)
-    const userType = mConst.getUserType()
     try {
-      let response = await API.getHome({date: date, userType: userType})
+      let response = await API.getHome({date: date})
       console.log('getHome>>>', response)
       this.setState({data: response})
     } catch (error) {
       console.log('getHome>>>', error)
+      await API.postErrLog({error: JSON.stringify(error), desc: 'getHomeError'})
     }
   }
 
