@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     width: mConst.wWidth - mConst.wGapUnit * 3,
     height: mUtils.wScale(50),
     borderRadius: mUtils.wScale(5),
-    backgroundColor: mConst.lightBlue,
+    backgroundColor: mConst.getBaseColor(),
   },
   cancelButton: {
     justifyContent: 'center',
