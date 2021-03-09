@@ -50,7 +50,7 @@ class MyPageScreen extends PureComponent {
           <ScrollView contentContainerStyle={{flex: 1, paddingHorizontal: mUtils.wScale(20)}}>
             <View style={styles.topBox}>
               <View style={styles.img}>
-                <FastImage resizeMode={'contain'} style={styles.profileImg} source={info.img_url_adres} />
+                <FastImage resizeMode={'contain'} style={styles.profileImg} source={{uri: info.img_full_path}} />
               </View>
               <View style={{marginLeft: mUtils.wScale(10)}}>
                 <Text style={styles.name}>{info.brand_user_nm}</Text>
