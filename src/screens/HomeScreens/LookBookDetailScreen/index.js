@@ -51,7 +51,7 @@ class LookBookDetailScreen extends PureComponent {
     const {page, limit, list} = this.state
     try {
       let response = await API.getLookBookDetail({lookbook_no: lookbook_no, page: page, limit: limit})
-      console.log('getLookBookDetail>>>', response)
+      console.log('getLookBookDetail>>>', JSON.stringify(response))
       if (response.success) {
         if (response.list.length > 0) {
           this.setState({...this.state, list: list.concat(response.list), page: page + 1})
@@ -105,12 +105,11 @@ class LookBookDetailScreen extends PureComponent {
                       justifyContent: 'center',
                     }}
                   >
-                    <Text style={styles.title}>{item.title}</Text>
-                    <Text style={styles.desc1}>{item.desc}</Text>
-                    <Text style={styles.desc2}>{item.desc1}</Text>
-                    <Text style={styles.desc2}>{item.desc2}</Text>
-                    <Text style={styles.desc2}>{item.desc3}</Text>
-                    <Text style={styles.desc2}>{item.desc4}</Text>
+                    <Text style={styles.title}>{item.showroom_nm}</Text>
+                    {item.all_in_yn ? <Text style={styles.desc1}>ALL IN</Text> : null}
+                    {item.category_list.map((item, index) => {
+                      return <Text style={styles.desc2}>{item}</Text>
+                    })}
                   </View>
                 ) : null}
               </FastImage>
