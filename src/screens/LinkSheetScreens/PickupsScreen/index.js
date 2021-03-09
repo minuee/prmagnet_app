@@ -19,10 +19,8 @@ const goRightImage = require('../../../images/navi/go_right.png')
 const unfoldImage = require('../../../images/common/unfold.png')
 const model1Image = require('../../../images/sample/model_1.png')
 const model2Image = require('../../../images/sample/model_2.png')
-const circleCheckImage = require('../../../images/common/circle_check.png')
-const circleCheckOnImage = require('../../../images/common/circle_check_on.png')
 
-class LinkSheetDetailScreen extends PureComponent {
+class PickupsScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
@@ -32,10 +30,11 @@ class LinkSheetDetailScreen extends PureComponent {
       isvisible: {open: false, phone: '', name: ''},
       data: {},
       showList: [],
+      checkedList: [],
     }
   }
   componentDidMount() {
-    this.pushOption('Return', true)
+    this.pushOption('Pickups', true)
     // this.alert('수령 완료', '“스타일H김나현님께 Look #1 Knitwear 수령 완료"', [{onPress: () => null}, {onPress: () => null}])
     this.handleLoadData()
   }
@@ -48,9 +47,6 @@ class LinkSheetDetailScreen extends PureComponent {
     } catch (error) {
       console.log('픽업 스케쥴 상세 조회 실패', error)
     }
-  }
-  onSwipe = gesture => {
-    this.setState({swipe: gesture === 'left' ? true : false})
   }
   handleLongPress = (name, sampleNo) => {
     this.alert('상품 미수령 알림', `'${name}'님께 상품미수령 알림을 보내시겠습니까?`, [
@@ -67,11 +63,17 @@ class LinkSheetDetailScreen extends PureComponent {
   handleLongPressPhone = (name, phone) => {
     this.setState({isvisible: {open: true, name, phone}})
   }
-  handleOnSwipeCheck = () => {
-    this.setState(prevState => ({checked: !prevState.checked}))
+  handleCheckItem = (name, sampleName, sampleNo) => {
+    if (!this.state.checkedList.includes(sampleNo)) {
+      this.alert('수령완료', `"${name}님께 ${sampleName} 수령 완료"`, [
+        {
+          onPress: () => this.setState(prevstate => ({checkedList: prevstate.checkedList.concat(sampleNo)})),
+        },
+      ])
+    }
   }
   render() {
-    const {swipe, data, checked} = this.state
+    const {data, checkedList} = this.state
     const fromName = mUtils.get(data, 'send_user_nm')
     const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'phone_no'))
     const toName = mUtils.get(data, 'brand_user_nm')
@@ -139,7 +141,7 @@ class LinkSheetDetailScreen extends PureComponent {
               </Row>
               {_.map(mUtils.get(data, 'showroom_list', []), (item, index) => {
                 const samples = mUtils.get(item, 'individual_samples', [])
-                const roomName = mUtils.get(item, 'individual_samples[0].showroom_nm')
+                const roomName = mUtils.get(item, 'individual_samples.showroom_nm')
                 const rowSize = _.size(samples)
                 return (
                   <Row key={index}>
@@ -167,30 +169,21 @@ class LinkSheetDetailScreen extends PureComponent {
                       {_.map(samples, (subItem, subIndex) => {
                         return (
                           <LinkSheetUnit
+                            key={subIndex}
+                            checked={checkedList.includes(subItem.sample_no)}
                             name={fromName}
                             phone={fromPhone}
-                            index={subIndex}
                             onLongPress={() => this.handleLongPress(fromName, subItem.sample_no)}
                             onLongPressPhone={() => this.handleLongPressPhone(fromName, fromPhone)}
-                            color={mConst.bgBlue}
+                            onSwipeCheck={() => this.handleCheckItem(fromName, subItem.sample_nm, subItem.sample_no)}
+                            color={mConst.bgYellow}
                           />
                         )
                       })}
                     </Col>
                     <Col style={styles.col(rowSize * 2)} size={6}>
                       {_.map(samples, (subItem, subIndex) => {
-                        return (
-                          <LinkSheetUnit
-                            checked={checked}
-                            name={toName}
-                            phone={toPhone}
-                            index={subIndex}
-                            onLongPress={() => this.handleLongPress(toName, subItem.sample_no)}
-                            onLongPressPhone={() => this.handleLongPressPhone(toName, toPhone)}
-                            onSwipeCheck={this.handleOnSwipeCheck}
-                            color={mConst.bgKhaki}
-                          />
-                        )
+                        return <LinkSheetUnit readOnly key={subIndex} name={toName} phone={toPhone} color={mConst.bgOrange} />
                       })}
                     </Col>
                   </Row>
@@ -237,6 +230,8 @@ class LinkSheetDetailScreen extends PureComponent {
 }
 
 export default connect(
-  state => ({}),
+  state => ({
+    user: state.user,
+  }),
   dispatch => ({})
-)(LinkSheetDetailScreen)
+)(PickupsScreen)

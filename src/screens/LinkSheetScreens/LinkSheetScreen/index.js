@@ -78,38 +78,16 @@ class LinkSheetScreen extends PureComponent {
   handleChangeTitle = item => {
     this.setState({selectTitle: item}, () => this.handleLoadData())
   }
-  // 샘플 데이타
-  // {
-  //   "request_list": [
-  //     {
-  //       "receive_date": 1611100800,
-  //       "individual_schedules": [
-  //         {
-  //           "req_no": "20210219000074",
-  //           "brand_id": "BRAND_TEST001",
-  //           "receive_date": 1611100800,
-  //           "brand_user_nm": null,
-  //           "brand_nm": "테스트브랜드1",
-  //           "brand_logo_url_adres": "https://fpr-prod-file.s3-ap-northeast-2.amazonaws.com"
-  //         }
-  //       ]
-  //     }
-  //   ],
-  //   "brand_list": [
-  //     {
-  //       "brand_id": "BRAND_TEST001",
-  //       "brand_nm": "테스트브랜드1"
-  //     }
-  //   ],
-  //   "success": true
-  // }
-  // data: [
-  //   {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
-  //   {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
-  //   {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
-  //   {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
-  //   {brand: 'BAZAAR', name: '이진선 ed', img: require('../../../images/navi/brand_1.png')},
-  // ],
+  handleLinkSheetDetail = reqNo => {
+    const {selectTitle} = this.state
+    if (selectTitle === 'Send Out') {
+      this.pushTo('SendOutScreen', {reqNo})
+    } else if (selectTitle === 'Pickups') {
+      this.pushTo('PickupsScreen', {reqNo})
+    } else if (selectTitle === 'Return') {
+      this.pushTo('ReturnScreen', {reqNo})
+    }
+  }
   render() {
     const {start, end, brandId, dataList, brands, selectTitle} = this.state
     return (
@@ -171,11 +149,7 @@ class LinkSheetScreen extends PureComponent {
                 <View style={{...styles.layout, flexWrap: 'wrap', paddingHorizontal: mUtils.wScale(20)}}>
                   {_.map(item.individual_schedules, (subItem, subIndex) => {
                     return (
-                      <TouchableOpacity
-                        key={subIndex}
-                        style={{...styles.brandBox}}
-                        onPress={() => this.pushTo('LinkSheetDetailScreen', {reqNo: subItem.req_no})}
-                      >
+                      <TouchableOpacity key={subIndex} style={{...styles.brandBox}} onPress={() => this.handleLinkSheetDetail(subItem.req_no)}>
                         <View style={styles.box1}>
                           <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_url_adres}} />
                         </View>
@@ -190,33 +164,6 @@ class LinkSheetScreen extends PureComponent {
               </View>
             )
           })}
-          {/* <View style={{width: '100%', marginTop: mUtils.wScale(25)}}>
-            <TouchableOpacity style={{...styles.layout1, marginBottom: mUtils.wScale(15), paddingHorizontal: mUtils.wScale(20)}}>
-              <FastImage resizeMode={'contain'} style={styles.checkImg} source={noCheckImg} />
-              <Text style={{...styles.subDt}}>
-                8/2(SUN)
-                <Text style={{fontSize: 16}}>
-                  {' '}
-                  : <Text style={{fontSize: 16, color: '#7ea1b2'}}>8</Text>
-                </Text>
-              </Text>
-            </TouchableOpacity>
-            <View style={{...styles.layout, flexWrap: 'wrap', paddingHorizontal: mUtils.wScale(20)}}>
-              {data.map((item, index) => {
-                return (
-                  <TouchableOpacity style={{...styles.brandBox}} key={index}>
-                    <View style={styles.box1}>
-                      <FastImage resizeMode={'contain'} style={styles.brandImg} source={item.img} />
-                    </View>
-                    <View style={styles.box2}>
-                      <Text style={{...styles.name}}>{item.name}</Text>
-                      <Text style={{...styles.brand, marginTop: mUtils.wScale(5)}}>{item.brand}</Text>
-                    </View>
-                  </TouchableOpacity>
-                )
-              })}
-            </View>
-          </View> */}
         </ScrollView>
       </SafeAreaView>
     )

@@ -24,9 +24,23 @@ export default class LinkSheetUnit extends PureComponent {
   }
   render() {
     const {swiped} = this.state
-    const {name, phone, index, onLongPress, onLongPressPhone, onSwipeCheck, color, checked} = this.props
+    const {name, phone, onLongPress, onLongPressPhone, onSwipeCheck, color, checked, readOnly} = this.props
+    if (readOnly) {
+      return (
+        <>
+          <Row style={styles.row(color)}>
+            <Text style={styles.sText()} numberOfLines={1}>
+              {name}
+            </Text>
+          </Row>
+          <Row style={styles.row(mConst.white)}>
+            <Text style={styles.sText(mConst.darkGray)}>{phone}</Text>
+          </Row>
+        </>
+      )
+    }
     return (
-      <React.Fragment key={index}>
+      <>
         <Swiper onSwipeLeft={() => this.onSwipe('left')} onSwipeRight={() => this.onSwipe('right')}>
           {swiped || checked ? (
             <TouchableWithoutFeedback onPress={swiped ? onSwipeCheck : null}>
@@ -60,7 +74,7 @@ export default class LinkSheetUnit extends PureComponent {
             </Row>
           )}
         </Pressable>
-      </React.Fragment>
+      </>
     )
   }
 }

@@ -36,8 +36,10 @@ import ScheduleMemoScreen from './HomeScreens/ScheduleMemoScreen'
 import NoticeScreen from './HomeScreens/NoticeScreen'
 import SampleRequestsScreen from './HomeScreens/SampleRequestsScreen'
 import SampleRequestsListScreen from './HomeScreens/SampleRequestsListScreen'
-import LinkSheetScreen from './HomeScreens/LinkSheetScreen'
-import LinkSheetDetailScreen from './HomeScreens/LinkSheetDetailScreen'
+import LinkSheetScreen from './LinkSheetScreens/LinkSheetScreen'
+import SendOutScreen from './LinkSheetScreens/SendOutScreen'
+import PickupsScreen from './LinkSheetScreens/PickupsScreen'
+import ReturnScreen from './LinkSheetScreens/ReturnScreen'
 import MagazineSchedulerScreen from './HomeScreens/MagazineSchedulerScreen'
 import ByBrandsSearchScreen from './HomeScreens/ByBrandsSearchScreen'
 import SearchScreen from './HomeScreens/SearchScreen'
@@ -104,7 +106,9 @@ class RootScreen extends PureComponent {
         <MemberStack.Screen name="NoticeListScreen" component={NoticeListScreen} />
         <MemberStack.Screen name="ByBrandsSearchScreen" component={ByBrandsSearchScreen} />
         <MemberStack.Screen name="LinkSheetScreen" component={LinkSheetScreen} options={{headerShown: false}} />
-        <MemberStack.Screen name="LinkSheetDetailScreen" component={LinkSheetDetailScreen} />
+        <MemberStack.Screen name="SendOutScreen" component={SendOutScreen} />
+        <MemberStack.Screen name="PickupsScreen" component={PickupsScreen} />
+        <MemberStack.Screen name="ReturnScreen" component={ReturnScreen} />
         <MemberStack.Screen name="MagazineSchedulerScreen" component={MagazineSchedulerScreen} options={{headerShown: false}} />
         <MemberStack.Screen name="SampleRequestsListScreen" component={SampleRequestsListScreen} options={{headerShown: false}} />
         <MemberStack.Screen name="SampleRequestsScreen" component={SampleRequestsScreen} options={{headerShown: false}} />
