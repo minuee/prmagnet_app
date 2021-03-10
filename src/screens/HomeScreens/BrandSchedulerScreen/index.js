@@ -33,7 +33,7 @@ class BrandSchedulerScreen extends PureComponent {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <Header />
+        <Header pushTo={this.pushTo} />
 
         <Text style={styles.mainTitle}>Scheduler</Text>
 

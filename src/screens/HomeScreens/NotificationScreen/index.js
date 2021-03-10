@@ -16,6 +16,7 @@ import Loading from '../../common/Loading'
 const closeBtnImage = require('../../../images/navi/close.png')
 const notiSky = require('../../../images/navi/noti_sky.png')
 const notiBlack = require('../../../images/navi/noti_black.png')
+const userType = mConst.getUserType()
 
 class NotificationScreen extends PureComponent {
   constructor(props) {
@@ -29,9 +30,8 @@ class NotificationScreen extends PureComponent {
   }
 
   deleteAlarm = async notice_id => {
-    const userType = mConst.getUserType()
     try {
-      let response = await API.deleteAlarm({notice_id: notice_id, userType: userType})
+      let response = await API.deleteAlarm({notice_id: notice_id})
       console.log('deleteAlarm>>>', response)
       if (response.success) {
         this.getAlarmReset()
@@ -43,9 +43,8 @@ class NotificationScreen extends PureComponent {
 
   getAlarm = async () => {
     const {next_token, list} = this.state
-    const userType = mConst.getUserType()
     try {
-      let response = await API.getAlarm({next_token: next_token, userType: userType})
+      let response = await API.getAlarm({next_token: next_token})
       console.log('getAlarm>>>', response)
       if (response.success) {
         this.setState({list: list.concat(response.list), next_token: response.next_token, has_next: response.has_next})
@@ -56,9 +55,8 @@ class NotificationScreen extends PureComponent {
   }
 
   getAlarmReset = async () => {
-    const userType = mConst.getUserType()
     try {
-      let response = await API.getAlarm({next_token: '', userType: userType})
+      let response = await API.getAlarm({next_token: ''})
       console.log('getAlarm>>>', response)
       if (response.success) {
         this.setState(response)
@@ -91,12 +89,11 @@ class NotificationScreen extends PureComponent {
     return (
       <View style={styles.itemBox}>
         <View style={styles.items}>
-          <FastImage resizeMode={'contain'} style={styles.listImg} source={item.status ? notiSky : notiBlack} />
+          <FastImage resizeMode={'contain'} style={styles.listImg} source={userType === 'M' ? notiSky : notiBlack} />
           <View style={{marginTop: mUtils.wScale(5)}}>
             <Text style={styles.title}>{item.subj}</Text>
             <Text style={styles.desc}>{item.cntent}</Text>
             <Text style={styles.dt}>
-              {/*{item.dt} · {item.dt1}*/}
               {moment(item.send_dt * 1000)
                 .locale('ko')
                 .format('MMM Do')}{' '}
