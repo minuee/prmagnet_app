@@ -124,9 +124,10 @@ class LookBookDetailScreen extends PureComponent {
 
   render() {
     const {list, brandTitle} = this.state
+    const {user} = this.props
     return (
       <SafeAreaView style={styles.container}>
-        <Header />
+        <Header pushTo={this.pushTo} userType={user.userType} />
         <View style={styles.layout1}>
           <Text style={styles.mainTitle}>LookBook</Text>
           <TouchableOpacity
@@ -156,6 +157,8 @@ class LookBookDetailScreen extends PureComponent {
 }
 
 export default connect(
-  state => ({}),
+  state => ({
+    user: state.user,
+  }),
   dispatch => ({})
 )(LookBookDetailScreen)

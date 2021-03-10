@@ -100,9 +100,10 @@ class SampleRequestsListScreen extends PureComponent {
   }
 
   render() {
+    const {user} = this.props
     return (
       <SafeAreaView style={styles.container}>
-        <Header like pushTo={this.pushTo} />
+        <Header pushTo={this.pushTo} userType={user.userType} />
         <View style={styles.layout1}>
           <Text style={styles.mainTitle}>My Requests</Text>
           <TouchableOpacity style={styles.layout2} hitSlop={{top: 20, bottom: 20, left: 30, right: 30}}>
@@ -123,6 +124,8 @@ class SampleRequestsListScreen extends PureComponent {
 }
 
 export default connect(
-  state => ({}),
+  state => ({
+    user: state.user,
+  }),
   dispatch => ({})
 )(SampleRequestsListScreen)

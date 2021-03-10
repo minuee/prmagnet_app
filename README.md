@@ -57,7 +57,7 @@ React Native Tools
 # react-navigation 라이브러리 추가
 
 > yarn add @react-navigation/native
-> yarn add react-native-reanimated react-native-gesture-handler react-native-screens react-native-safe-area-context @react-native-community/masked-view
+> yarn add react-native-reanimated react-native-gesture-handler react-native-screens react-native-tab-view react-native-safe-area-context @react-native-community/masked-view
 > yarn add @react-navigation/stack
 
 # 기본 라이브러리 추가
