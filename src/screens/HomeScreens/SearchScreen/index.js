@@ -3,18 +3,18 @@ import {SafeAreaView, View, ScrollView, TouchableOpacity, TouchableWithoutFeedba
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import _ from 'lodash'
-import DropDown from '../../common/DropDown'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
-import {Grid, Col, Row} from 'react-native-easy-grid'
 import styles from './styles'
-import {multicastChannel} from 'redux-saga'
+import API from '../../../common/aws-api'
+import Loading from '../../common/Loading'
 
 const searchImage = require('../../../images/common/search.png')
 const modelImg = require('../../../images/sample/model_3.png')
+const userType = mConst.getUserType()
 
 class SearchScreen extends PureComponent {
   constructor(props) {
@@ -22,14 +22,68 @@ class SearchScreen extends PureComponent {
     cBind(this)
     this.state = {
       keyword: '',
+      loading: false,
+      brand: {
+        showroom: [],
+        lookbook: [],
+        scheduler: [],
+        count: 0,
+      },
+      magazine: {
+        showroom: [],
+        sample_request: [],
+        scheduler: [],
+        pickup: [],
+        count: 0,
+      },
     }
   }
+
+  mapList = list => {
+    return list.map((item, index) => {
+      return (
+        <View key={index} style={styles.layout}>
+          <FastImage resizeMode={'contain'} style={styles.modelImg} source={{uri: item.img_url_adres}} />
+          <View style={styles.layout1}>
+            <Text style={styles.brand}>{item.title}</Text>
+            <Text style={styles.dt}>{mUtils.getShowDate(item.reg_dt, 'YYYY-MM-DD')}</Text>
+          </View>
+        </View>
+      )
+    })
+  }
+
+  search = text => {
+    console.log('4545454545', text)
+    this.setState({keyword: text})
+    this.getAllSearch(text)
+  }
+
+  getAllSearch = async text => {
+    try {
+      let response = await API.getAllSearch({
+        search_text: text,
+      })
+      console.log('getAllSearch>>>', response)
+      if (userType === 'M') {
+        this.setState({magazine: response})
+      } else {
+        this.setState({brand: response})
+      }
+    } catch (error) {
+      console.log('getAllSearch>>>', error)
+      await API.postErrLog({error: JSON.stringify(error), desc: 'getAllSearch'})
+    }
+  }
+
   componentDidMount() {
     this.pushOption('Search')
+    this.getAllSearch('')
   }
 
   render() {
-    const {keyword} = this.state
+    const {keyword, brand, magazine} = this.state
+    console.log('67676767', brand, magazine)
     return (
       <SafeAreaView style={styles.container}>
         <TouchableWithoutFeedback onPress={() => this.keywordInput.focus()}>
@@ -43,7 +97,7 @@ class SearchScreen extends PureComponent {
                 style={styles.input}
                 placeholderTextColor={mConst.textPhColor}
                 value={keyword}
-                onChangeText={text => this.setState({keyword: text})}
+                onChangeText={text => this.search(text)}
                 placeholder="검색어를 입력해주세요."
                 returnKeyType={mConst.bAndroid ? 'default' : 'done'}
                 onSubmitEditing={null}
@@ -54,23 +108,34 @@ class SearchScreen extends PureComponent {
             </View>
           </View>
         </TouchableWithoutFeedback>
-        <View style={{paddingHorizontal: mUtils.wScale(20)}}>
-          <Text style={styles.result}>총 12건의 검색결과가 있습니다</Text>
-          <ScrollView style={styles.scroll}>
-            <Text style={styles.subTitle}>Digital Showroom (2)</Text>
-            <View style={styles.layout}>
-              <FastImage resizeMode={'contain'} style={styles.modelImg} source={modelImg} />
-              <View style={styles.layout1}>
-                <Text style={styles.brand}>GUCCI 20FW 602204 가죽 브라운 홀스빗 1955 숄더백</Text>
-                <Text style={styles.dt}>2020 F/W</Text>
-              </View>
-            </View>
-            <Text numberOfLines={2} style={styles.subTitle}>
-              Sample Requests (2)
-            </Text>
-            <Text style={styles.subTitle}>Scheduler (1)</Text>
-            <Text style={styles.subTitle}>Pickup (2)</Text>
-            <Text style={styles.subTitle}>Press Release (2)</Text>
+        <View style={{paddingHorizontal: mUtils.wScale(20), flex: 1}}>
+          <Text style={styles.result}>총 {userType === 'M' ? magazine.count : brand.count}건의 검색결과가 있습니다</Text>
+          <ScrollView style={styles.scroll} contentContainerStyle={{flexGrow: 1}}>
+            {userType === 'M' ? (
+              <>
+                <Text style={styles.subTitle}>Digital Showroom ({magazine.showroom.length})</Text>
+                {this.mapList(magazine.showroom)}
+                <Text numberOfLines={2} style={styles.subTitle}>
+                  Sample Requests ({magazine.sample_request.length})
+                </Text>
+                {this.mapList(magazine.sample_request)}
+                <Text style={styles.subTitle}>Scheduler ({magazine.scheduler.length})</Text>
+                {this.mapList(magazine.scheduler)}
+                <Text style={styles.subTitle}>Pickup ({magazine.pickup.length})</Text>
+                {this.mapList(magazine.pickup)}
+              </>
+            ) : (
+              <>
+                <Text style={styles.subTitle}>Digital Showroom ({brand.showroom.length})</Text>
+                {this.mapList(brand.showroom)}
+                <Text numberOfLines={2} style={styles.subTitle}>
+                  Lookbook ({brand.lookbook.length})
+                </Text>
+                {this.mapList(brand.lookbook)}
+                <Text style={styles.subTitle}>Scheduler ({brand.scheduler.length})</Text>
+                {this.mapList(brand.scheduler)}
+              </>
+            )}
           </ScrollView>
         </View>
       </SafeAreaView>
