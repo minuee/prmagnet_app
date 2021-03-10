@@ -452,9 +452,9 @@ const API = {
     }
     return Api.put(apiName, path, myInit)
   },
-  putNotice: ({recv_yn}) => {
+  putSampleRequestsConfirm: ({recv_yn}) => {
     var apiName = v1Api
-    var path = `${mConst.getApiPath()}/notify-control/notice`
+    var path = `${mConst.getApiPath()}/notify-control/request-confirm`
     var myInit = {
       body: {
         recv_yn: recv_yn,
@@ -462,9 +462,9 @@ const API = {
     }
     return Api.put(apiName, path, myInit)
   },
-  putSR: ({recv_yn}) => {
+  putNotReceive: ({recv_yn}) => {
     var apiName = v1Api
-    var path = `${mConst.getApiPath()}/notify-control/showroom`
+    var path = `${mConst.getApiPath()}/notify-control/sample-not-receive`
     var myInit = {
       body: {
         recv_yn: recv_yn,
@@ -472,9 +472,19 @@ const API = {
     }
     return Api.put(apiName, path, myInit)
   },
-  putPress: ({recv_yn}) => {
+  putSampleSend: ({recv_yn}) => {
     var apiName = v1Api
-    var path = `${mConst.getApiPath()}/notify-control/press`
+    var path = `${mConst.getApiPath()}/notify-control/sample-send`
+    var myInit = {
+      body: {
+        recv_yn: recv_yn,
+      },
+    }
+    return Api.put(apiName, path, myInit)
+  },
+  putBrandNotice: ({recv_yn}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/notify-control/brand-notice`
     var myInit = {
       body: {
         recv_yn: recv_yn,
@@ -495,7 +505,6 @@ const API = {
     return Api.put(apiName, path, myInit)
   },
   getSRDetail: showroom_no => {
-    console.log('>>>>', showroom_no)
     var apiName = v1Api
     var path = `${mConst.getApiPath()}/showroom/${showroom_no}`
     var init = {}
@@ -516,6 +525,16 @@ const API = {
       },
     }
     return Api.put(apiName, path, myInit)
+  },
+  getAllSearch: ({search_text}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/search`
+    var init = {
+      queryStringParameters: {
+        search_text: search_text,
+      },
+    }
+    return Api.get(apiName, path, init)
   },
 }
 

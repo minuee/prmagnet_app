@@ -14,16 +14,16 @@ import styles from './styles'
 import API from '../../../common/aws-api'
 
 const magazine = [
-  {title: '디지털 쇼룸', desc: '디지털 쇼룸의 알림을 받아보세요'},
-  {title: '샘플 요청', desc: '샘플 요청의 알림을 받아보세요'},
-  {title: 'PR GPS 소식', desc: 'PR GPS의 새로운 소식을 받아보세요'},
-  {title: '방해 금지 시간', desc: '특정 시간동안 알림을 받지않아요'},
-  {title: '보도자료', desc: '보도자료의 알림을 받아보세요 '},
+  {title: '브랜드 공지사항', desc: '공지사항 알림을 받아보세요'},
+  {title: '샘플 요청 확인', desc: '샘플 요청 확인 알림을 받아보세요'},
+  {title: '샘플 미수령', desc: '샘플 미수령 알림을 받아보세요'},
+  {title: '샘플 발송', desc: '샘플 발송 알림을 받지않아요'},
+  {title: '방해 금지 시간', desc: '특정 시간동안 알림을 받아보세요 '},
 ]
 
 const brand = [
   {title: '샘플 요청', desc: '샘플 요청의 알림을 받아보세요'},
-  {title: 'PR GPS 소식', desc: 'PR GPS의 새로운 소식을 받아보세요'},
+  {title: '샘플 미수령', desc: '샘플 미수령 알림을 받아보세요'},
   {title: '방해 금지 시간', desc: '특정 시간동안 알림을 받지않아요'},
 ]
 
@@ -47,30 +47,39 @@ class NotiSettingScreen extends PureComponent {
     }
   }
 
-  putNotice = async switchValue => {
+  putSampleRequestsConfirm = async switchValue => {
     try {
-      let response = await API.putNotice({recv_yn: switchValue})
-      console.log('putNotice>>>', response)
+      let response = await API.putSampleRequestsConfirm({recv_yn: switchValue})
+      console.log('putSampleRequestsConfirm>>>', response)
     } catch (error) {
-      console.log('putNotice>>>', error)
+      console.log('putSampleRequestsConfirm>>>', error)
     }
   }
 
-  putSR = async switchValue => {
+  putNotReceive = async switchValue => {
     try {
-      let response = await API.putSR({recv_yn: switchValue})
-      console.log('putSR>>>', response)
+      let response = await API.putNotReceive({recv_yn: switchValue})
+      console.log('putNotReceive>>>', response)
     } catch (error) {
-      console.log('putSR>>>', error)
+      console.log('putNotReceive>>>', error)
     }
   }
 
-  putPress = async switchValue => {
+  putSampleSend = async switchValue => {
     try {
-      let response = await API.putPress({recv_yn: switchValue})
-      console.log('putPress>>>', response)
+      let response = await API.putSampleSend({recv_yn: switchValue})
+      console.log('putSampleSend>>>', response)
     } catch (error) {
-      console.log('putPress>>>', error)
+      console.log('putSampleSend>>>', error)
+    }
+  }
+
+  putBrandNotice = async switchValue => {
+    try {
+      let response = await API.putBrandNotice({recv_yn: switchValue})
+      console.log('putBrandNotice>>>', response)
+    } catch (error) {
+      console.log('putBrandNotice>>>', error)
     }
   }
 
@@ -97,16 +106,24 @@ class NotiSettingScreen extends PureComponent {
     const copy = [...isEnabled]
     copy.splice(index, 1, switchValue)
     switch (item.title) {
-      case '디지털 쇼룸':
-        this.putSR(switchValue)
+      case '브랜드 공지사항':
+        this.putBrandNotice(switchValue)
         this.setState({isEnabled: copy})
         break
       case '샘플 요청':
         this.putSampleRequests(switchValue)
         this.setState({isEnabled: copy})
         break
-      case 'PR GPS 소식':
-        this.putNotice(switchValue)
+      case '샘플 요청 확인':
+        this.putSampleRequestsConfirm(switchValue)
+        this.setState({isEnabled: copy})
+        break
+      case '샘플 미수령':
+        this.putNotReceive(switchValue)
+        this.setState({isEnabled: copy})
+        break
+      case '샘플 발송':
+        this.putSampleSend(switchValue)
         this.setState({isEnabled: copy})
         break
       case '방해 금지 시간':
@@ -116,10 +133,6 @@ class NotiSettingScreen extends PureComponent {
         } else {
           this.setState({isEnabled: copy, isvisible: {open: true, in: index}})
         }
-        break
-      case '보도자료':
-        this.putPress(switchValue)
-        this.setState({isEnabled: copy})
         break
     }
   }
@@ -141,7 +154,6 @@ class NotiSettingScreen extends PureComponent {
   render() {
     const {isEnabled, isvisible, from, to, selected} = this.state
     const copy = [...isEnabled]
-    console.log('>>>>>', from, to)
     return (
       <>
         <SafeAreaView style={styles.container}>
