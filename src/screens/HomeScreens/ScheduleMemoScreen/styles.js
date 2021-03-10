@@ -45,7 +45,7 @@ export default StyleSheet.create({
     height: mUtils.wScale(270),
     backgroundColor: '#ffffff',
     borderStyle: 'solid',
-    borderWidth: 0.5,
+    borderWidth: 0.7,
     borderColor: '#dddddd',
     flexDirection: 'row',
     alignItems: 'center',
@@ -65,7 +65,7 @@ export default StyleSheet.create({
   },
   box: {
     width: '100%',
-    backgroundColor: '#7ea1b2',
+    backgroundColor: mConst.getBaseXColor(),
     paddingVertical: mUtils.wScale(20),
   },
   desc: {
@@ -75,7 +75,7 @@ export default StyleSheet.create({
     color: mConst.black,
   },
   moreImg: {
-    width: mUtils.wScale(10),
+    width: mUtils.wScale(12),
     height: mUtils.wScale(5.5),
   },
 })

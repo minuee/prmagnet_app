@@ -10,7 +10,6 @@ import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
-import {Grid, Col, Row} from 'react-native-easy-grid'
 import styles from './styles'
 import DropDown from '../../common/DropDown'
 
@@ -41,6 +40,7 @@ class ScheduleMemoScreen extends PureComponent {
       selectedTimeStamp: '',
       selected: '',
       day: '',
+      selectedColor: '',
     }
   }
   componentDidMount() {
@@ -60,18 +60,44 @@ class ScheduleMemoScreen extends PureComponent {
   }
 
   render() {
-    const {color1, color2, select, look, selectedDate, selected, drop, desc, day} = this.state
+    const {color1, color2, select, look, selectedDate, selected, drop, desc, day, selectedColor} = this.state
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
           <View style={styles.layout}>
             {color1.map((item, index) => {
-              return <TouchableOpacity key={index} style={{...styles.color, backgroundColor: item}} />
+              return (
+                <TouchableOpacity
+                  key={index}
+                  style={{
+                    ...styles.color,
+                    backgroundColor: item,
+                    borderWidth: selectedColor === item ? 3 : 0,
+                    borderColor: selectedColor === item ? 'rgba(0, 0, 0, 0.5)' : '',
+                  }}
+                  onPress={() => {
+                    this.setState({selectedColor: item})
+                  }}
+                />
+              )
             })}
           </View>
           <View style={styles.layout}>
             {color2.map((item, index) => {
-              return <TouchableOpacity key={index} style={{...styles.color, backgroundColor: item}} />
+              return (
+                <TouchableOpacity
+                  key={index}
+                  style={{
+                    ...styles.color,
+                    backgroundColor: item,
+                    borderWidth: selectedColor === item ? 3 : 0,
+                    borderColor: selectedColor === item ? 'rgba(0, 0, 0, 0.5)' : '',
+                  }}
+                  onPress={() => {
+                    this.setState({selectedColor: item})
+                  }}
+                />
+              )
             })}
           </View>
 
@@ -85,9 +111,7 @@ class ScheduleMemoScreen extends PureComponent {
                 this.setState({drop: !drop})
               }}
             >
-              <Text style={styles.select}>
-                {selectedDate}({day})
-              </Text>
+              <Text style={styles.select}>{selectedDate && day ? `${selectedDate} (${day})` : '0000.00.00 (요일)'}</Text>
               <FastImage resizeMode={'contain'} source={moreImg} style={styles.moreImg} />
             </TouchableOpacity>
           </View>
@@ -110,7 +134,7 @@ class ScheduleMemoScreen extends PureComponent {
                 alignSelf: 'center',
                 position: 'absolute',
                 zIndex: 1,
-                top: mUtils.wScale(235),
+                top: mUtils.wScale(215),
                 paddingHorizontal: mUtils.wScale(20),
                 width: '100%',
               }}
@@ -136,7 +160,19 @@ class ScheduleMemoScreen extends PureComponent {
             </View>
           ) : null}
         </ScrollView>
-        <TouchableOpacity style={styles.box}>
+        <TouchableOpacity
+          style={styles.box}
+          onPress={() => {
+            this.alert('메모 추가', '해당 메모를 추가하시겠습니까?', [
+              {
+                onPress: () => {
+                  this.goBack()
+                },
+              },
+              {onPress: () => null},
+            ])
+          }}
+        >
           <Text style={styles.bottom}>Confirm</Text>
         </TouchableOpacity>
       </SafeAreaView>
