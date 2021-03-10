@@ -73,7 +73,20 @@ React Native Tools
 
 > npx pod-install ios
 
-# 프로젝트 실행
+# 배포 설정 쉘 스크립트 권한 부여
 
-> yarn android
-> yarn ios
+> chmod 755 release.sh
+
+# 프로젝트 실행(에뮬레이터)
+
+> ./release.sh dev android;react-native run-android --appIdSuffix=debug --variant=debug'
+> ./release.sh dev;react-native run-ios --simulator="iPhone 12 Pro Max"
+
+# apk 생성 명령(releaseStaging/release)
+
+> ./release.sh stg android;react-native run-android --appIdSuffix=releaseStaging --variant=releaseStaging
+> ./release.sh android;cd android;./gradlew clean;cd ..;react-native run-android --variant=release
+
+# iOS 단말 실행
+
+> ./release.sh dev;react-native run-ios --device --configuration Debug
