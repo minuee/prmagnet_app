@@ -47,9 +47,10 @@ class MagazineSchedulerScreen extends PureComponent {
 
   render() {
     const {data} = this.state
+    const {user} = this.props
     return (
       <SafeAreaView style={styles.container}>
-        <Header like pushTo={this.pushTo} />
+        <Header pushTo={this.pushTo} userType={user.userType} />
         <View
           style={{
             ...styles.layout,
@@ -145,6 +146,8 @@ class MagazineSchedulerScreen extends PureComponent {
 }
 
 export default connect(
-  state => ({}),
+  state => ({
+    user: state.user,
+  }),
   dispatch => ({})
 )(MagazineSchedulerScreen)

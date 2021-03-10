@@ -90,9 +90,10 @@ class LinkSheetScreen extends PureComponent {
   }
   render() {
     const {start, end, brandId, dataList, brands, selectTitle} = this.state
+    const {user} = this.props
     return (
       <SafeAreaView style={styles.container}>
-        <Header />
+        <Header pushTo={this.pushTo} userType={user.userType} />
         <Menu>
           <MenuTrigger
             customStyles={{
@@ -171,6 +172,8 @@ class LinkSheetScreen extends PureComponent {
 }
 
 export default connect(
-  state => ({}),
+  state => ({
+    user: state.user,
+  }),
   dispatch => ({})
 )(LinkSheetScreen)

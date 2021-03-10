@@ -26,7 +26,6 @@ const crownImg = require('../../../images/navi/crown_1.png')
 const selectImg1 = require('../../../images/navi/select_1.png')
 const selectImg2 = require('../../../images/navi/select_2.png')
 
-const userType = mConst.getUserType()
 const arr = ['2020 F/W', '2190 F/S', '2018 F/S', '2017 S/S']
 
 class DigitalSRScreen extends PureComponent {
@@ -137,7 +136,7 @@ class DigitalSRScreen extends PureComponent {
       <View style={{width: '49%', height: mUtils.wScale(310)}}>
         <TouchableOpacity
           onPress={() => {
-            userType === 'M' ? this.selected(item) : this.pushTo('DigitalSRDetailScreen', {no: item.showroom_no})
+            mConst.getUserType() === 'M' ? this.selected(item) : this.pushTo('DigitalSRDetailScreen', {no: item.showroom_no})
           }}
           activeOpacity={0.5}
           style={{width: '100%', height: mUtils.wScale(275)}}
@@ -162,17 +161,16 @@ class DigitalSRScreen extends PureComponent {
   render() {
     const {data} = this.state
     const {notice, inquiryNum, season_year} = this.state
-    const userType = mConst.getUserType()
     return (
       <SafeAreaView style={styles.container}>
-        <Header pushTo={this.pushTo} userType={userType} />
+        <Header pushTo={this.pushTo} userType={mConst.getUserType()} />
         <View style={{paddingHorizontal: mUtils.wScale(20), flex: 1}}>
           <View style={{...styles.layout, justifyContent: 'space-between', marginTop: mUtils.wScale(25)}}>
             <View>
               <Text style={{...styles.mainTitle}}>Digital</Text>
               <Text style={styles.mainTitle1}>Showroom</Text>
             </View>
-            {userType === 'M' ? (
+            {mConst.getUserType() === 'M' ? (
               <TouchableOpacity style={{...styles.selectBox}}>
                 <Text style={styles.selectText}>Select</Text>
               </TouchableOpacity>
@@ -222,7 +220,7 @@ class DigitalSRScreen extends PureComponent {
                   </MenuOptions>
                 </Menu>
                 <View style={{...styles.layout}}>
-                  {userType === 'M' ? (
+                  {mConst.getUserType() === 'M' ? (
                     <TouchableOpacity
                       onPress={() => {
                         this.pushTo('FilterScreen')

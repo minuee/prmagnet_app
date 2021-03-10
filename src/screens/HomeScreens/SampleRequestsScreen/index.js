@@ -44,9 +44,10 @@ class SampleRequestsScreen extends PureComponent {
 
   render() {
     const {data, isvisible} = this.state
+    const {user} = this.props
     return (
       <SafeAreaView style={styles.container}>
-        <Header like pushTo={this.pushTo} />
+        <Header pushTo={this.pushTo} userType={user.userType} />
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{paddingHorizontal: mUtils.wScale(20)}}>
             <Text style={{...styles.mainTitle, marginTop: mUtils.wScale(25)}}>Sample</Text>
@@ -272,6 +273,8 @@ class SampleRequestsScreen extends PureComponent {
 }
 
 export default connect(
-  state => ({}),
+  state => ({
+    user: state.user,
+  }),
   dispatch => ({})
 )(SampleRequestsScreen)

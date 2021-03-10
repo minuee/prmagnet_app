@@ -150,9 +150,10 @@ class LookBookScreen extends PureComponent {
 
   render() {
     const {list} = this.state
+    const {user} = this.props
     return (
       <SafeAreaView style={styles.container}>
-        <Header />
+        <Header pushTo={this.pushTo} userType={user.userType} />
         <Text style={styles.mainTitle}>LookBook</Text>
         {list ? (
           <FlatList
@@ -173,6 +174,8 @@ class LookBookScreen extends PureComponent {
 }
 
 export default connect(
-  state => ({}),
+  state => ({
+    user: state.user,
+  }),
   dispatch => ({})
 )(LookBookScreen)
