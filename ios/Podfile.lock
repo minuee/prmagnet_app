@@ -208,7 +208,7 @@ PODS:
     - React-Core
   - react-native-netinfo (6.0.0):
     - React-Core
-  - react-native-safe-area-context (3.1.9):
+  - react-native-safe-area-context (3.2.0):
     - React-Core
   - react-native-splash-screen (3.2.0):
     - React
@@ -274,7 +274,7 @@ PODS:
     - React-Core (= 0.63.4)
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
-  - RNAWSCognito (4.5.12):
+  - RNAWSCognito (4.5.13):
     - React
   - RNCAsyncStorage (1.12.1):
     - React-Core
@@ -474,7 +474,7 @@ SPEC CHECKSUMS:
   react-native-date-picker: 242eec7af56cea5fb2706d5db5d3837060b3884b
   react-native-image-picker: 64d12e81f3d9dad0af107fe6536b295d51932ec0
   react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
-  react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
+  react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-webview: 6520e3e7b4933de76b95ef542c8d7115cf45b68e
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
@@ -487,7 +487,7 @@ SPEC CHECKSUMS:
   React-RCTText: 5c51df3f08cb9dedc6e790161195d12bac06101c
   React-RCTVibration: ae4f914cfe8de7d4de95ae1ea6cc8f6315d73d9d
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
-  RNAWSCognito: 33038dcfd16bd804d3d7de783aa2ab6525e87266
+  RNAWSCognito: c9c66de7fc54e8232a3ff9e1fdcadf072ba2886f
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNDeviceInfo: a9601119924a67d2479d3facf04cec7b658f44ed
