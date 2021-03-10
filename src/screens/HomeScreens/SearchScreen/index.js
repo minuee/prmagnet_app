@@ -27,14 +27,14 @@ class SearchScreen extends PureComponent {
         showroom: [],
         lookbook: [],
         scheduler: [],
-        count: 0,
+        net_count_app: 0,
       },
       magazine: {
         showroom: [],
         sample_request: [],
         scheduler: [],
         pickup: [],
-        count: 0,
+        net_count_app: 0,
       },
     }
   }
@@ -109,7 +109,7 @@ class SearchScreen extends PureComponent {
           </View>
         </TouchableWithoutFeedback>
         <View style={{paddingHorizontal: mUtils.wScale(20), flex: 1}}>
-          <Text style={styles.result}>총 {userType === 'M' ? magazine.count : brand.count}건의 검색결과가 있습니다</Text>
+          <Text style={styles.result}>총 {userType === 'M' ? magazine.net_count_app : brand.net_count_app}건의 검색결과가 있습니다</Text>
           <ScrollView style={styles.scroll} contentContainerStyle={{flexGrow: 1}}>
             {userType === 'M' ? (
               <>
