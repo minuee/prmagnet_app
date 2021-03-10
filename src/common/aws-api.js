@@ -269,7 +269,8 @@ const API = {
   },
   getPickupSchedule: ({start_date, fin_date, brand_id}) => {
     var apiName = v1Api
-    var path = `${mConst.getApiPath()}/pickup-schedule`
+    // var path = `${mConst.getApiPath()}/pickup-schedule` // TODO 임시 주석처리
+    var path = '/stylist/pickup-schedule' // TODO 테스트용
     var init = {
       queryStringParameters: {
         start_date,
@@ -281,7 +282,8 @@ const API = {
   },
   getSendoutSchedule: ({start_date, fin_date, brand_id}) => {
     var apiName = v1Api
-    var path = `${mConst.getApiPath()}/sendout-schedule`
+    // var path = `${mConst.getApiPath()}/sendout-schedule` // TODO 임시 주석처리
+    var path = '/stylist/sendout-schedule' // TODO 테스트용
     var init = {
       queryStringParameters: {
         start_date,
@@ -293,13 +295,15 @@ const API = {
   },
   getPickupDetail: req_no => {
     var apiName = v1Api
-    var path = `${mConst.getApiPath()}/pickup-detailed/${req_no}`
+    // var path = `${mConst.getApiPath()}/pickup-detailed/${req_no}` // TODO 임시 주석처리
+    var path = `/stylist/pickup-detailed/${req_no}` // TODO 테스트용
     var init = {}
     return Api.get(apiName, path, init)
   },
   getSendoutDetail: req_no => {
     var apiName = v1Api
-    var path = `${mConst.getApiPath()}/sendout-detailed/${req_no}`
+    // var path = `${mConst.getApiPath()}/sendout-detailed/${req_no}` // TODO 임시 주석처리
+    var path = `/stylist/sendout-detailed/${req_no}` // TODO 테스트용
     var init = {}
     return Api.get(apiName, path, init)
   },
