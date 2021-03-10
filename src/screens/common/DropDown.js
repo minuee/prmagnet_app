@@ -16,6 +16,7 @@ const CommonDropDown = props => {
   return (
     <ModalDropdown
       style={styles.dropdownWrapper}
+      containerStyle={{borderRadius: 100}}
       dropdownStyle={half ? styles.dropdownInnerHalfWrapper : styles.dropdownInnerWrapper}
       onSelect={onSelect}
       renderRow={name => (
@@ -37,38 +38,42 @@ const CommonDropDown = props => {
 const styles = StyleSheet.create({
   dropdownWrapper: {
     marginVertical: mUtils.wScale(15),
+    width: '100%',
   },
   dropdownInnerWrapper: {
     width: mConst.wGapUnit * 9,
   },
   dropdownTextWrapper: {
-    width: mConst.wGapUnit * 9,
-    height: mUtils.wScale(50),
+    width: '100%',
+    paddingVertical: mUtils.wScale(10),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: mConst.black,
-    borderRadius: 5,
-    paddingHorizontal: mUtils.wScale(15),
+    borderStyle: 'solid',
+    borderWidth: 0.7,
+    borderColor: '#dddddd',
+    paddingHorizontal: mUtils.wScale(10),
   },
   dropdownInnerHalfWrapper: {
     width: (mConst.wGapUnit * 9) / 2 - mUtils.wScale(6),
   },
   dropdownTextHalfWrapper: {
     width: (mConst.wGapUnit * 9) / 2 - mUtils.wScale(6),
-    height: mUtils.wScale(50),
+    paddingVertical: mUtils.wScale(10),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: mConst.black,
-    borderRadius: 5,
+    borderRadius: 0,
     paddingHorizontal: mUtils.wScale(15),
   },
   dropdownItemText: {
-    fontSize: 16,
-    lineHeight: 30,
+    fontFamily: 'Roboto-Light',
+    fontSize: 13,
+    textAlign: 'left',
+    color: '#555555',
   },
   dropdownPlaceholderText: {
     fontSize: 16,
@@ -80,8 +85,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dropdownIcon: {
-    width: mUtils.wScale(18),
-    height: mUtils.wScale(18),
+    width: mUtils.wScale(12),
+    height: mUtils.wScale(5.5),
   },
 })
 
