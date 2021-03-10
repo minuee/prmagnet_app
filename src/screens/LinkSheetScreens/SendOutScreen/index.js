@@ -19,19 +19,17 @@ const goRightImage = require('../../../images/navi/go_right.png')
 const unfoldImage = require('../../../images/common/unfold.png')
 const model1Image = require('../../../images/sample/model_1.png')
 const model2Image = require('../../../images/sample/model_2.png')
-const circleCheckImage = require('../../../images/common/circle_check.png')
-const circleCheckOnImage = require('../../../images/common/circle_check_on.png')
 
 class SendOutScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
     this.state = {
-      swipe: true,
       checked: false,
-      isvisible: {open: false, phone: '', name: ''},
+      allChecked: false,
       data: {},
-      showList: [],
+      checkedList: [],
+      isvisible: {open: false, phone: '', name: ''},
     }
   }
   componentDidMount() {
@@ -42,36 +40,32 @@ class SendOutScreen extends PureComponent {
   handleLoadData = async () => {
     const {reqNo} = this.params
     try {
-      const response = await API.getPickupDetail(reqNo)
+      const response = await API.getSendoutDetail(reqNo)
       this.setState({data: response})
-      console.log('픽업 스케쥴 상세 조회 성공', JSON.stringify(response))
+      console.log('Send Out 스케쥴 상세 조회 성공', JSON.stringify(response))
     } catch (error) {
-      console.log('픽업 스케쥴 상세 조회 실패', error)
+      console.log('Send Out 스케쥴 상세 조회 실패', error)
     }
-  }
-  onSwipe = gesture => {
-    this.setState({swipe: gesture === 'left' ? true : false})
-  }
-  handleLongPress = (name, sampleNo) => {
-    this.alert('상품 미수령 알림', `'${name}'님께 상품미수령 알림을 보내시겠습니까?`, [
-      {
-        onPress: () => {
-          setTimeout(() => {
-            this.alert('미수령 알림 전송 완료', '미수령 알림을 전송하였습니다.')
-          }, 100)
-        },
-      },
-      {},
-    ])
   }
   handleLongPressPhone = (name, phone) => {
     this.setState({isvisible: {open: true, name, phone}})
   }
-  handleOnSwipeCheck = () => {
-    this.setState(prevState => ({checked: !prevState.checked}))
+  handleCheckItem = (name, sampleName, sampleNo) => {
+    if (!this.state.checkedList.includes(sampleNo)) {
+      this.alert('발송완료', `${name}님께 ${sampleName} 발송 완료`, [
+        {
+          onPress: () => this.setState(prevstate => ({checkedList: prevstate.checkedList.concat(sampleNo)})),
+        },
+      ])
+    }
+  }
+  handleCheckItemAll = () => {
+    if (!this.state.allChecked) {
+      this.alert('전체 상품 발송 확인', '전체 상품을 발송 하셨습니까?', [{onPress: () => this.setState({allChecked: true})}, {}])
+    }
   }
   render() {
-    const {swipe, data, checked} = this.state
+    const {data, checkedList, allChecked} = this.state
     const fromName = mUtils.get(data, 'send_user_nm')
     const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'phone_no'))
     const toName = mUtils.get(data, 'brand_user_nm')
@@ -111,16 +105,33 @@ class SendOutScreen extends PureComponent {
                 </View>
               </View>
             </View>
-            <View style={styles.middleGroupWrapper}>
-              <View style={styles.middleSubWrapper(2)}>
-                <Text style={styles.middleText}>Pickup Date</Text>
-                <Text style={styles.middleDescText}>{mUtils.getShowDate(data.pickup_date)}</Text>
+            {mConst.getUserType() === 'B' ? (
+              <View style={styles.middleGroupWrapper}>
+                <View style={styles.middleSubWrapper(3)}>
+                  <Text style={styles.middleText}>Loaning Date</Text>
+                  <Text style={styles.middleDescText}>{mUtils.getShowDate(data.pickup_date)}</Text>
+                </View>
+                <View style={styles.middleSubWrapper(3)}>
+                  <Text style={styles.middleText}>Shooting Date</Text>
+                  <Text style={styles.middleDescText}>{mUtils.getShowDate(data.photo_date)}</Text>
+                </View>
+                <View style={styles.middleSubWrapper(3)}>
+                  <Text style={styles.middleText}>Returning Date</Text>
+                  <Text style={styles.middleDescText}>{mUtils.getShowDate(data.photo_date)}</Text>
+                </View>
               </View>
-              <View style={styles.middleSubWrapper(2)}>
-                <Text style={styles.middleText}>Shooting Date</Text>
-                <Text style={styles.middleDescText}>{mUtils.getShowDate(data.photo_date)}</Text>
+            ) : (
+              <View style={styles.middleGroupWrapper}>
+                <View style={styles.middleSubWrapper(2)}>
+                  <Text style={styles.middleText}>Pickup Date</Text>
+                  <Text style={styles.middleDescText}>{mUtils.getShowDate(data.pickup_date)}</Text>
+                </View>
+                <View style={styles.middleSubWrapper(2)}>
+                  <Text style={styles.middleText}>Shooting Date</Text>
+                  <Text style={styles.middleDescText}>{mUtils.getShowDate(data.photo_date)}</Text>
+                </View>
               </View>
-            </View>
+            )}
             <View style={styles.middleWrapper}>
               <Text style={styles.middleText}>Address</Text>
               <Text style={styles.middleDescText}>{mUtils.get(data, 'dlvy_adres_nm', '-')}</Text>
@@ -131,10 +142,10 @@ class SendOutScreen extends PureComponent {
                 <Col style={styles.col()} size={2}></Col>
                 <Col style={styles.col()} size={2}></Col>
                 <Col style={styles.col(1, true)} size={6}>
-                  <Text>From</Text>
+                  <Text>{mConst.getUserType() === 'B' ? 'From' : 'Shoot'}</Text>
                 </Col>
                 <Col style={styles.col(1, true)} size={6}>
-                  <Text>Shoot</Text>
+                  <Text>{mConst.getUserType() === 'B' ? 'Shoot' : 'To'}</Text>
                 </Col>
               </Row>
               {_.map(mUtils.get(data, 'showroom_list', []), (item, index) => {
@@ -167,12 +178,15 @@ class SendOutScreen extends PureComponent {
                       {_.map(samples, (subItem, subIndex) => {
                         return (
                           <LinkSheetUnit
+                            key={subIndex}
+                            readOnly={mConst.getUserType() !== 'B'}
+                            checked={checkedList.includes(subItem.sample_no) || allChecked}
                             name={fromName}
                             phone={fromPhone}
-                            index={subIndex}
-                            onLongPress={() => this.handleLongPress(fromName, subItem.sample_no)}
+                            onLongPress={() => null}
                             onLongPressPhone={() => this.handleLongPressPhone(fromName, fromPhone)}
-                            color={mConst.bgBlue}
+                            onSwipeCheck={() => this.handleCheckItem(fromName, subItem.sample_nm, subItem.sample_no)}
+                            color={mConst.getUserType() === 'B' ? '#e1c668' : '#d78979'}
                           />
                         )
                       })}
@@ -181,14 +195,15 @@ class SendOutScreen extends PureComponent {
                       {_.map(samples, (subItem, subIndex) => {
                         return (
                           <LinkSheetUnit
-                            checked={checked}
+                            key={subIndex}
+                            readOnly={mConst.getUserType() === 'B'}
+                            checked={checkedList.includes(subItem.sample_no) || allChecked}
                             name={toName}
                             phone={toPhone}
-                            index={subIndex}
-                            onLongPress={() => this.handleLongPress(toName, subItem.sample_no)}
+                            onLongPress={() => null}
                             onLongPressPhone={() => this.handleLongPressPhone(toName, toPhone)}
-                            onSwipeCheck={this.handleOnSwipeCheck}
-                            color={mConst.bgKhaki}
+                            onSwipeCheck={() => this.handleCheckItem(toName, subItem.sample_nm, subItem.sample_no)}
+                            color={mConst.getUserType() === 'B' ? '#7ea1b2' : '#b8c18c'}
                           />
                         )
                       })}
@@ -198,13 +213,8 @@ class SendOutScreen extends PureComponent {
               })}
             </Grid>
           </ScrollView>
-          <TouchableOpacity
-            onPress={() => {
-              this.alert('수령 완료', '“스타일H김나현님께 Look #1 Knitwear 수령 완료"')
-            }}
-            style={styles.bottom}
-          >
-            <Text style={styles.bottomText}>All Picked Up</Text>
+          <TouchableOpacity onPress={this.handleCheckItemAll} style={styles.bottom}>
+            <Text style={styles.bottomText}>All Sent Out</Text>
           </TouchableOpacity>
           <Modal style={styles.modal} isVisible={this.state.isvisible.open} useNativeDriver={true}>
             <View style={styles.modalView}>
@@ -237,6 +247,8 @@ class SendOutScreen extends PureComponent {
 }
 
 export default connect(
-  state => ({}),
+  state => ({
+    user: state.user,
+  }),
   dispatch => ({})
 )(SendOutScreen)

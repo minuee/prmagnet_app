@@ -25,12 +25,11 @@ class PickupsScreen extends PureComponent {
     super(props)
     cBind(this)
     this.state = {
-      swipe: true,
       checked: false,
-      isvisible: {open: false, phone: '', name: ''},
+      allChecked: false,
       data: {},
-      showList: [],
       checkedList: [],
+      isvisible: {open: false, phone: '', name: ''},
     }
   }
   componentDidMount() {
@@ -65,15 +64,20 @@ class PickupsScreen extends PureComponent {
   }
   handleCheckItem = (name, sampleName, sampleNo) => {
     if (!this.state.checkedList.includes(sampleNo)) {
-      this.alert('수령완료', `"${name}님께 ${sampleName} 수령 완료"`, [
+      this.alert('수령완료', `${name}님께 ${sampleName} 수령 완료`, [
         {
           onPress: () => this.setState(prevstate => ({checkedList: prevstate.checkedList.concat(sampleNo)})),
         },
       ])
     }
   }
+  handleCheckItemAll = () => {
+    if (!this.state.allChecked) {
+      this.alert('전체 상품 수령 확인', '전체 상품을 수령 하셨습니까?', [{onPress: () => this.setState({allChecked: true})}, {}])
+    }
+  }
   render() {
-    const {data, checkedList} = this.state
+    const {data, checkedList, allChecked} = this.state
     const fromName = mUtils.get(data, 'send_user_nm')
     const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'phone_no'))
     const toName = mUtils.get(data, 'brand_user_nm')
@@ -170,7 +174,7 @@ class PickupsScreen extends PureComponent {
                         return (
                           <LinkSheetUnit
                             key={subIndex}
-                            checked={checkedList.includes(subItem.sample_no)}
+                            checked={checkedList.includes(subItem.sample_no) || allChecked}
                             name={fromName}
                             phone={fromPhone}
                             onLongPress={() => this.handleLongPress(fromName, subItem.sample_no)}
@@ -191,12 +195,7 @@ class PickupsScreen extends PureComponent {
               })}
             </Grid>
           </ScrollView>
-          <TouchableOpacity
-            onPress={() => {
-              this.alert('수령 완료', '“스타일H김나현님께 Look #1 Knitwear 수령 완료"')
-            }}
-            style={styles.bottom}
-          >
+          <TouchableOpacity onPress={this.handleCheckItemAll} style={styles.bottom}>
             <Text style={styles.bottomText}>All Picked Up</Text>
           </TouchableOpacity>
           <Modal style={styles.modal} isVisible={this.state.isvisible.open} useNativeDriver={true}>
