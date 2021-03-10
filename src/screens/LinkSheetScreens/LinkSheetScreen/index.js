@@ -23,7 +23,8 @@ class LinkSheetScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
-    const titles = mConst.getUserType() === 'B' ? ['Send Out', 'Return'] : ['Pickups', 'Send Out']
+    // const titles = mConst.getUserType() === 'B' ? ['Send Out', 'Return'] : ['Pickups', 'Send Out'] // TODO 임시 주석처리
+    const titles = ['Pickups', 'Send Out'] // TODO 테스트용
     this.state = {
       start: 1611100800, // mUtils.getToday(), // TODO 테스트 데이타 관계로 일단 임시 값으로 설정
       end: mUtils.getNextWeek(),

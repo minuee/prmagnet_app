@@ -15,7 +15,6 @@ import CustomBottomTabBar from './common/CustomBottomTabBar'
 import StartScreen from './HomeScreens/StartScreen'
 import FilterScreen from './HomeScreens/FilterScreen'
 import LoginScreen from './common/LoginScreen'
-import MenuScreen from './common/MenuScreen'
 import HomeScreen from './HomeScreens/HomeScreen'
 import HomeDetailScreen from './HomeScreens/HomeDetailScreen'
 import SelectScheduleScreen from './HomeScreens/SelectScheduleScreen'
@@ -96,7 +95,7 @@ class RootScreen extends PureComponent {
     const MemberStack = createStackNavigator()
     return (
       <MemberStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'HomeScreen'}>
-        <MemberStack.Screen name="HomeScreen" component={this.MenuDrawer} options={{headerShown: false, gestureEnabled: false}} />
+        <MemberStack.Screen name="HomeScreen" component={this.TabStack} options={{headerShown: false, gestureEnabled: false}} />
         <MemberStack.Screen name="HomeDetailScreen" component={HomeDetailScreen} />
         {/* 개발 편의를 위한 임시 화면 start --------- */}
         <MemberStack.Screen name="DevNavigationScreen" component={DevNavigationScreen} />
@@ -237,19 +236,6 @@ class RootScreen extends PureComponent {
           )}
         />
       </TabNavi.Navigator>
-    )
-  }
-  MenuDrawer = () => {
-    const MenuDrawer = createDrawerNavigator()
-    return (
-      <MenuDrawer.Navigator
-        initialRouteName="HomeScreen"
-        drawerStyle={{width: '100%', backgroundColor: '#ffffff'}}
-        screenOptions={basicScreenOptions(false, true)}
-        drawerContent={props => <MenuScreen {...props} />}
-      >
-        <MenuDrawer.Screen name="HomeScreen" component={this.TabStack} />
-      </MenuDrawer.Navigator>
     )
   }
   render() {
