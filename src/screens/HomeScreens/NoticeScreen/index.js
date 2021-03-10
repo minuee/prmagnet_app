@@ -3,7 +3,6 @@ import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity, Pressable, I
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import _ from 'lodash'
-import DropDown from '../../common/DropDown'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'

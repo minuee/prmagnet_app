@@ -24,10 +24,10 @@ class AccountSettingScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
-    this.state = {isvisible: false}
+    this.state = {isvisible: false, img: ''}
   }
 
-  putProfile = async url => {
+  putProfile = async (url, uri) => {
     const {info} = this.props.route.params
     try {
       let response = await API.putProfile({
@@ -40,7 +40,9 @@ class AccountSettingScreen extends PureComponent {
         img_url_adres: `public/${url}`,
       })
       console.log('putProfile>>>', response)
-      this.goBack()
+      //this.goBack()
+      console.log('????', uri)
+      this.setState({img: uri})
     } catch (error) {
       console.log('putProfile>>>', error)
     }
@@ -114,7 +116,7 @@ class AccountSettingScreen extends PureComponent {
         //loadingFunction
       )
       console.log(data.key)
-      this.putProfile(data.key)
+      this.putProfile(data.key, image.uri)
     } catch (error) {
       console.log('putImageFunction>>>', error)
     }
@@ -143,9 +145,9 @@ class AccountSettingScreen extends PureComponent {
   }
 
   render() {
-    const {isvisible} = this.state
+    const {isvisible, img} = this.state
     const {info} = this.props.route.params
-    console.log('info', info)
+    console.log('info', img)
     return (
       <>
         <SafeAreaView style={styles.container}>
@@ -156,7 +158,7 @@ class AccountSettingScreen extends PureComponent {
                 this.setState({isvisible: true})
               }}
             >
-              <FastImage resizeMode={'contain'} style={styles.profileImg} source={{uri: info.img_full_path}} />
+              <FastImage resizeMode={'contain'} style={styles.profileImg} source={{uri: img ? img : info.img_full_path}} />
               <FastImage resizeMode={'contain'} style={styles.cameraImg} source={cameraImg} />
             </TouchableOpacity>
             <View style={styles.top}>
