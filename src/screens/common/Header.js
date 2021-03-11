@@ -26,7 +26,7 @@ export default class CommonHeader extends PureComponent {
     return (
       <View style={styles.upperWrapper}>
         <TouchableWithoutFeedback onPress={() => this.keywordInput.focus()}>
-          <View style={styles.inputTextWrapper(like)}>
+          <View style={styles.inputTextWrapper(mUserType === 'M')}>
             <TouchableOpacity style={styles.inputIconWrapper} onPress={null}>
               <FastImage source={searchImage} style={styles.inputIcon} />
             </TouchableOpacity>
@@ -39,7 +39,7 @@ export default class CommonHeader extends PureComponent {
               <TextInput
                 editable={false}
                 ref={comp => (this.keywordInput = comp)}
-                style={styles.input(like)}
+                style={styles.input(mUserType === 'M')}
                 placeholderTextColor={mConst.textPhColor}
                 value={keyword}
                 onChangeText={text => this.setState({keyword: text})}
@@ -57,7 +57,7 @@ export default class CommonHeader extends PureComponent {
           </View>
         </TouchableWithoutFeedback>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          {like && (
+          {mUserType === 'M' && (
             <TouchableOpacity style={styles.inputIconWrapper} onPress={null}>
               <FastImage resizeMode={'contain'} source={like2Image} style={styles.inputIcon} />
             </TouchableOpacity>
@@ -84,11 +84,11 @@ const styles = StyleSheet.create({
     marginVertical: mConst.bAndroid ? mUtils.wScale(10) : mUtils.wScale(5),
   },
   inputTextWrapper: threeIcons => ({
-    width: mConst.wWidth - mConst.wGapUnit * (threeIcons ? 3.3 : 2.8),
+    width: mConst.wWidth - mConst.wGapUnit * (threeIcons ? 3.5 : 2.8),
     height: mUtils.wScale(40),
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: StyleSheet.hairlineWidth,
+    //borderWidth: StyleSheet.hairlineWidth,
     borderColor: mConst.black,
     borderRadius: mUtils.wScale(5),
     paddingHorizontal: mUtils.wScale(5),
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     marginLeft: 0,
   },
   inputIcon: {
-    width: mUtils.wScale(18),
-    height: mUtils.wScale(18),
+    width: mUtils.wScale(20),
+    height: mUtils.wScale(20),
   },
 })
