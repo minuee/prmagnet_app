@@ -68,6 +68,14 @@ export default StyleSheet.create({
     left: 6,
     zIndex: 1,
   },
+  likeImg: {
+    width: mUtils.wScale(18),
+    height: mUtils.wScale(18),
+    position: 'absolute',
+    top: 6,
+    right: 6,
+    zIndex: 1,
+  },
   notiImg: {
     width: mUtils.wScale(12),
     height: mUtils.wScale(12),
@@ -104,7 +112,6 @@ export default StyleSheet.create({
   select: {
     width: '100%',
     height: '100%',
-    backgroundColor: 'rgba(126, 161, 178, 0.8)',
     position: 'absolute',
     zIndex: 1,
     alignItems: 'center',
@@ -124,6 +131,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    backgroundColor: mConst.white,
   },
   bottomText1: {
     fontFamily: 'Roboto-Light',
@@ -147,13 +155,19 @@ export default StyleSheet.create({
     fontFamily: 'Roboto-Medium',
     fontSize: 12,
     textAlign: 'center',
-    color: mConst.white,
   },
   menuText: {
     fontFamily: 'Roboto-Regular',
     fontSize: 18,
     textAlign: 'left',
     color: '#070708',
+  },
+  brandText: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 14,
+    textAlign: 'left',
+    color: mConst.black,
+    marginBottom: mUtils.wScale(4),
   },
   bottomButton: {
     borderRadius: mUtils.wScale(7),
@@ -163,9 +177,10 @@ export default StyleSheet.create({
   },
   selectBox: {
     borderRadius: mUtils.wScale(1),
-    backgroundColor: mConst.black,
     paddingHorizontal: mUtils.wScale(10),
     paddingVertical: mUtils.wScale(7),
+    borderWidth: 0.7,
+    borderColor: mConst.borderGray,
   },
   menuOptions: {
     marginTop: mUtils.wScale(20),
