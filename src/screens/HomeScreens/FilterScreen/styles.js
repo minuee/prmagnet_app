@@ -44,12 +44,12 @@ export default StyleSheet.create({
     backgroundColor: mConst.getBaseColor(),
   },
   sectionText: {
+    fontFamily: 'Roboto-Medium',
     fontSize: 15,
-    fontWeight: '500',
   },
   sectionTextOn: {
+    fontFamily: 'Roboto-Medium',
     fontSize: 15,
-    fontWeight: '500',
     color: mConst.white,
   },
   itemWrapper: {
@@ -74,5 +74,26 @@ export default StyleSheet.create({
   foldImage: {
     width: mUtils.wScale(40 / 3),
     height: mUtils.wScale(22 / 3),
+  },
+  moreImg: {
+    width: mUtils.wScale(13),
+    height: mUtils.wScale(13),
+  },
+  brandText: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 14,
+    textAlign: 'left',
+    color: mConst.black,
+  },
+  layout: {
+    height: mUtils.wScale(50),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingLeft: mUtils.wScale(12),
+    paddingRight: mUtils.wScale(24),
+    borderTopWidth: 1,
+    borderColor: mConst.borderGray,
+    borderBottomWidth: 1,
   },
 })
