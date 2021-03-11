@@ -120,6 +120,13 @@ const API = {
 
     return Api.get(apiName, path, init)
   },
+  getBrandSearchCompanyAZ: () => {
+    var apiName = v1Cdn
+    var path = '/cdn/brand/search-company/a-z'
+    var init = {}
+
+    return Api.get(apiName, path, init)
+  },
   getSearchTeamMember: ({search_type, brand_id, mgzn_id, compy_nm}) => {
     var apiName = v1Cdn
     var path = '/cdn/search-team-member'
@@ -393,6 +400,7 @@ const API = {
         limit: limit,
         season_year: season_year,
         season_cd_id: season_cd_id,
+        brand_id: null,
       },
     }
     return Api.get(apiName, path, init)
@@ -531,6 +539,16 @@ const API = {
     return Api.put(apiName, path, myInit)
   },
   getAllSearch: ({search_text}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/search`
+    var init = {
+      queryStringParameters: {
+        search_text: search_text,
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
+  getMagazineNotice: ({search_text}) => {
     var apiName = v1Api
     var path = `${mConst.getApiPath()}/search`
     var init = {
