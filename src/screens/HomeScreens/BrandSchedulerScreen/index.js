@@ -31,7 +31,6 @@ class BrandSchedulerScreen extends PureComponent {
     this.state = {}
   }
   render() {
-    const {user} = this.props
     return (
       <SafeAreaView style={styles.container}>
         <Header pushTo={this.pushTo} />
@@ -128,8 +127,6 @@ class BrandSchedulerScreen extends PureComponent {
 }
 
 export default connect(
-  state => ({
-    user: state.user,
-  }),
+  state => ({}),
   dispatch => ({})
 )(BrandSchedulerScreen)
