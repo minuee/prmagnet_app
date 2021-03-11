@@ -12,6 +12,7 @@ import cBind, {callOnce} from '../../../common/navigation'
 import API from '../../../common/aws-api'
 import Text from '../../common/Text'
 import LinkSheetUnit from '../../common/LinkSheetUnit'
+import Loading from '../../common/Loading'
 import styles from './styles'
 
 const goLeftImage = require('../../../images/navi/go_left.png')
@@ -30,6 +31,7 @@ class PickupsScreen extends PureComponent {
       data: {},
       checkedList: [],
       isvisible: {open: false, phone: '', name: ''},
+      loading: true,
     }
   }
   componentDidMount() {
@@ -41,9 +43,10 @@ class PickupsScreen extends PureComponent {
     const {reqNo} = this.params
     try {
       const response = await API.getPickupDetail(reqNo)
-      this.setState({data: response})
+      this.setState({data: response, loading: false})
       console.log('픽업 스케쥴 상세 조회 성공', JSON.stringify(response))
     } catch (error) {
+      this.setState({loading: false})
       console.log('픽업 스케쥴 상세 조회 실패', error)
     }
   }
@@ -77,153 +80,152 @@ class PickupsScreen extends PureComponent {
     }
   }
   render() {
-    const {data, checkedList, allChecked} = this.state
+    const {data, checkedList, allChecked, loading} = this.state
     const fromName = mUtils.get(data, 'send_user_nm')
     const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'phone_no'))
     const toName = mUtils.get(data, 'brand_user_nm')
     const toPhone = mUtils.phoneFormat(mUtils.get(data, 'brand_phone_no'))
+    if (loading) return <Loading />
     return (
-      <>
-        <SafeAreaView style={styles.container}>
-          <ScrollView contentContainerStyle={{paddingVertical: 10}}>
-            {/* {this.closeBackOption(closeBtnImage, 'FILTER', null)} */}
-            <View style={styles.titleWrapper}>
-              <FastImage source={goLeftImage} style={styles.goImage} />
-              <View style={styles.titleSubWrapper}>
-                <Text style={styles.titleSubText}>
-                  {fromName}-&gt;{toName}
-                </Text>
-                <FastImage source={unfoldImage} style={styles.unfoldImage} />
-              </View>
-              <FastImage source={goRightImage} style={styles.goImage} />
+      <SafeAreaView style={styles.container}>
+        <ScrollView contentContainerStyle={{paddingVertical: 10}}>
+          {/* {this.closeBackOption(closeBtnImage, 'FILTER', null)} */}
+          <View style={styles.titleWrapper}>
+            <FastImage source={goLeftImage} style={styles.goImage} />
+            <View style={styles.titleSubWrapper}>
+              <Text style={styles.titleSubText}>
+                {fromName}-&gt;{toName}
+              </Text>
+              <FastImage source={unfoldImage} style={styles.unfoldImage} />
             </View>
-            <View style={styles.middleWrapper}>
-              <Text style={styles.middleText}>Magazine</Text>
-              <Text style={styles.middleDescText}>{mUtils.get(data, 'brand_nm', '-')}</Text>
-            </View>
-            <View style={styles.middleGroupWrapper}>
-              <View style={styles.middleSubWrapper()}>
-                <Text style={styles.middleText}>Editor/Stylist</Text>
-                <View style={styles.middleDescWrapper}>
-                  <Text style={styles.middleDescTextBold}>{fromName}</Text>
-                  <Text style={styles.middleDescText}> {fromPhone}</Text>
-                </View>
-              </View>
-              <View style={styles.middleSubWrapper()}>
-                <Text style={styles.middleText}>Assistant</Text>
-                <View style={styles.middleDescWrapper}>
-                  <Text style={styles.middleDescTextBold}>{mUtils.get(data, 'assi_user_nm', '-')}</Text>
-                  <Text style={styles.middleDescText}> {mUtils.phoneFormat(mUtils.get(data, 'assi_phone_no'))}</Text>
-                </View>
+            <FastImage source={goRightImage} style={styles.goImage} />
+          </View>
+          <View style={styles.middleWrapper}>
+            <Text style={styles.middleText}>Magazine</Text>
+            <Text style={styles.middleDescText}>{mUtils.get(data, 'brand_nm', '-')}</Text>
+          </View>
+          <View style={styles.middleGroupWrapper}>
+            <View style={styles.middleSubWrapper()}>
+              <Text style={styles.middleText}>Editor/Stylist</Text>
+              <View style={styles.middleDescWrapper}>
+                <Text style={styles.middleDescTextBold}>{fromName}</Text>
+                <Text style={styles.middleDescText}> {fromPhone}</Text>
               </View>
             </View>
-            <View style={styles.middleGroupWrapper}>
-              <View style={styles.middleSubWrapper(2)}>
-                <Text style={styles.middleText}>Pickup Date</Text>
-                <Text style={styles.middleDescText}>{mUtils.getShowDate(data.pickup_date)}</Text>
-              </View>
-              <View style={styles.middleSubWrapper(2)}>
-                <Text style={styles.middleText}>Shooting Date</Text>
-                <Text style={styles.middleDescText}>{mUtils.getShowDate(data.photo_date)}</Text>
+            <View style={styles.middleSubWrapper()}>
+              <Text style={styles.middleText}>Assistant</Text>
+              <View style={styles.middleDescWrapper}>
+                <Text style={styles.middleDescTextBold}>{mUtils.get(data, 'assi_user_nm', '-')}</Text>
+                <Text style={styles.middleDescText}> {mUtils.phoneFormat(mUtils.get(data, 'assi_phone_no'))}</Text>
               </View>
             </View>
-            <View style={styles.middleWrapper}>
-              <Text style={styles.middleText}>Address</Text>
-              <Text style={styles.middleDescText}>{mUtils.get(data, 'dlvy_adres_nm', '-')}</Text>
+          </View>
+          <View style={styles.middleGroupWrapper}>
+            <View style={styles.middleSubWrapper(2)}>
+              <Text style={styles.middleText}>Pickup Date</Text>
+              <Text style={styles.middleDescText}>{mUtils.getShowDate(data.pickup_date)}</Text>
             </View>
-            <Grid style={styles.grid}>
-              <Row>
-                <Col style={styles.col()} size={1}></Col>
-                <Col style={styles.col()} size={2}></Col>
-                <Col style={styles.col()} size={2}></Col>
-                <Col style={styles.col(1, true)} size={6}>
-                  <Text>From</Text>
-                </Col>
-                <Col style={styles.col(1, true)} size={6}>
-                  <Text>Shoot</Text>
-                </Col>
-              </Row>
-              {_.map(mUtils.get(data, 'showroom_list', []), (item, index) => {
-                const samples = mUtils.get(item, 'individual_samples', [])
-                const roomName = mUtils.get(item, 'individual_samples.showroom_nm')
-                const rowSize = _.size(samples)
-                return (
-                  <Row key={index}>
-                    <Col style={styles.col(rowSize * 2, true)} size={1}>
-                      <Text style={styles.sText()}>{roomName}</Text>
-                    </Col>
-                    <Col style={styles.col(rowSize * 2)} size={2}>
-                      {_.map(samples, (subItem, subIndex) => {
-                        return (
-                          <React.Fragment key={subIndex}>
-                            <Row style={styles.row()}>
-                              <Text style={styles.sText()}>{mUtils.get(subItem, 'sample_category')}</Text>
-                            </Row>
-                            <Row style={styles.row()}>
-                              <Text style={styles.sText(9)}>{mUtils.moneyFormat(mUtils.get(subItem, 'price', 0))}</Text>
-                            </Row>
-                          </React.Fragment>
-                        )
-                      })}
-                    </Col>
-                    <Col style={styles.col(rowSize * 2, true)} size={2}>
-                      <FastImage source={model2Image} style={styles.modelImage} />
-                    </Col>
-                    <Col style={styles.col(rowSize * 2)} size={6}>
-                      {_.map(samples, (subItem, subIndex) => {
-                        return (
-                          <LinkSheetUnit
-                            key={subIndex}
-                            checked={checkedList.includes(subItem.sample_no) || allChecked}
-                            name={fromName}
-                            phone={fromPhone}
-                            onLongPress={() => this.handleLongPress(fromName, subItem.sample_no)}
-                            onLongPressPhone={() => this.handleLongPressPhone(fromName, fromPhone)}
-                            onSwipeCheck={() => this.handleCheckItem(fromName, subItem.sample_nm, subItem.sample_no)}
-                            color={mConst.bgYellow}
-                          />
-                        )
-                      })}
-                    </Col>
-                    <Col style={styles.col(rowSize * 2)} size={6}>
-                      {_.map(samples, (subItem, subIndex) => {
-                        return <LinkSheetUnit readOnly key={subIndex} name={toName} phone={toPhone} color={mConst.bgOrange} />
-                      })}
-                    </Col>
-                  </Row>
-                )
-              })}
-            </Grid>
-          </ScrollView>
-          <TouchableOpacity onPress={this.handleCheckItemAll} style={styles.bottom}>
-            <Text style={styles.bottomText}>All Picked Up</Text>
-          </TouchableOpacity>
-          <Modal style={styles.modal} isVisible={this.state.isvisible.open} useNativeDriver={true}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalName}>{this.state.isvisible.name}</Text>
-              <Text style={styles.modalPhone}>{this.state.isvisible.phone}</Text>
+            <View style={styles.middleSubWrapper(2)}>
+              <Text style={styles.middleText}>Shooting Date</Text>
+              <Text style={styles.middleDescText}>{mUtils.getShowDate(data.photo_date)}</Text>
             </View>
-            <View style={styles.layout}>
-              <TouchableOpacity
-                style={styles.modalButton}
-                onPress={() => {
-                  this.setState({isvisible: {open: false, phone: '', name: ''}})
-                }}
-              >
-                <Text style={styles.modalText}>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.modalButton}
-                onPress={async () => {
-                  Linking.openURL(`tel:${this.state.isvisible.phone}`)
-                }}
-              >
-                <Text style={styles.modalText}>Call</Text>
-              </TouchableOpacity>
-            </View>
-          </Modal>
-        </SafeAreaView>
-      </>
+          </View>
+          <View style={styles.middleWrapper}>
+            <Text style={styles.middleText}>Address</Text>
+            <Text style={styles.middleDescText}>{mUtils.get(data, 'dlvy_adres_nm', '-')}</Text>
+          </View>
+          <Grid style={styles.grid}>
+            <Row>
+              <Col style={styles.col()} size={1}></Col>
+              <Col style={styles.col()} size={2}></Col>
+              <Col style={styles.col()} size={2}></Col>
+              <Col style={styles.col(1, true)} size={6}>
+                <Text>From</Text>
+              </Col>
+              <Col style={styles.col(1, true)} size={6}>
+                <Text>Shoot</Text>
+              </Col>
+            </Row>
+            {_.map(mUtils.get(data, 'showroom_list', []), (item, index) => {
+              const samples = mUtils.get(item, 'individual_samples', [])
+              const roomName = mUtils.get(item, 'individual_samples.showroom_nm')
+              const rowSize = _.size(samples)
+              return (
+                <Row key={index}>
+                  <Col style={styles.col(rowSize * 2, true)} size={1}>
+                    <Text style={styles.sText()}>{roomName}</Text>
+                  </Col>
+                  <Col style={styles.col(rowSize * 2)} size={2}>
+                    {_.map(samples, (subItem, subIndex) => {
+                      return (
+                        <React.Fragment key={subIndex}>
+                          <Row style={styles.row()}>
+                            <Text style={styles.sText()}>{mUtils.get(subItem, 'sample_category')}</Text>
+                          </Row>
+                          <Row style={styles.row()}>
+                            <Text style={styles.sText(9)}>{mUtils.moneyFormat(mUtils.get(subItem, 'price', 0))}</Text>
+                          </Row>
+                        </React.Fragment>
+                      )
+                    })}
+                  </Col>
+                  <Col style={styles.col(rowSize * 2, true)} size={2}>
+                    <FastImage source={model2Image} style={styles.modelImage} />
+                  </Col>
+                  <Col style={styles.col(rowSize * 2)} size={6}>
+                    {_.map(samples, (subItem, subIndex) => {
+                      return (
+                        <LinkSheetUnit
+                          key={subIndex}
+                          checked={checkedList.includes(subItem.sample_no) || allChecked}
+                          name={fromName}
+                          phone={fromPhone}
+                          onLongPress={() => this.handleLongPress(fromName, subItem.sample_no)}
+                          onLongPressPhone={() => this.handleLongPressPhone(fromName, fromPhone)}
+                          onSwipeCheck={() => this.handleCheckItem(fromName, subItem.sample_nm, subItem.sample_no)}
+                          color={mConst.bgYellow}
+                        />
+                      )
+                    })}
+                  </Col>
+                  <Col style={styles.col(rowSize * 2)} size={6}>
+                    {_.map(samples, (subItem, subIndex) => {
+                      return <LinkSheetUnit readOnly key={subIndex} name={toName} phone={toPhone} color={mConst.bgOrange} />
+                    })}
+                  </Col>
+                </Row>
+              )
+            })}
+          </Grid>
+        </ScrollView>
+        <TouchableOpacity onPress={this.handleCheckItemAll} style={styles.bottom}>
+          <Text style={styles.bottomText}>All Picked Up</Text>
+        </TouchableOpacity>
+        <Modal style={styles.modal} isVisible={this.state.isvisible.open} useNativeDriver={true}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalName}>{this.state.isvisible.name}</Text>
+            <Text style={styles.modalPhone}>{this.state.isvisible.phone}</Text>
+          </View>
+          <View style={styles.layout}>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => {
+                this.setState({isvisible: {open: false, phone: '', name: ''}})
+              }}
+            >
+              <Text style={styles.modalText}>Cancel</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={async () => {
+                Linking.openURL(`tel:${this.state.isvisible.phone}`)
+              }}
+            >
+              <Text style={styles.modalText}>Call</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+      </SafeAreaView>
     )
   }
 }
