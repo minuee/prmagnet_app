@@ -14,6 +14,7 @@ import ColorGroup from '../../common/ColorGroup'
 import MaterialGroup from '../../common/MaterialGroup'
 import BrandGroup from '../../common/BrandGroup'
 import styles from './styles'
+import API from '../../../common/aws-api'
 
 const genders = ['여성', '남성', '유니섹스']
 const sections = ['Brands', 'Category', 'Availability', 'Color', 'Size', 'Sample', 'Still Life Image', 'Material']
@@ -53,11 +54,13 @@ const colors = [
   ['multi', '멀티컬러'],
 ]
 const materials = ['카프스킨', '램 스킨', '코든', '스웨이드', '벨벳', '데님', '린넨', '쉬폰', '가죽', '퍼', 'Others']
-const brands = ['A BATHING APE', 'A COLD WALL', 'A.BELL', 'A FRANCE', 'A.L.C', 'BATHING APE', 'CHANEL', 'GUCCI', 'LOUISVUITTON']
+//const brands = ['A BATHING APE', 'A COLD WALL', 'A.BELL', 'A FRANCE', 'A.L.C', 'BATHING APE', 'CHANEL', 'GUCCI', 'LOUISVUITTON']
 const closeBtnImage = require('../../../images/navi/close.png')
 const foldImage = require('../../../images/common/fold.png')
 const unfoldImage = require('../../../images/common/unfold.png')
 const selectedImage = require('../../../images/common/selected.png')
+const moreImg = require('../../../images/navi/more_2.png')
+const moreImgOn = require('../../../images/navi/more_2_1.png')
 
 class FilterScreen extends PureComponent {
   constructor(props) {
@@ -65,11 +68,14 @@ class FilterScreen extends PureComponent {
     cBind(this)
     this.state = {
       gender: genders[0],
-      section: sections[0],
+      section: mConst.getUserType() === 'M' ? sections[0] : sections[1],
+      brandDrop: false,
+      brands: [],
     }
   }
   componentDidMount() {
     this.modalOption('FILTER')
+    this.getBrandSearchCompanyAZ()
   }
   handleSelectGender = gender => {
     this.setState({gender})
@@ -77,8 +83,21 @@ class FilterScreen extends PureComponent {
   handleSelectSection = section => {
     this.setState({section})
   }
+
+  getBrandSearchCompanyAZ = async () => {
+    try {
+      let response = await API.getBrandSearchCompanyAZ()
+      console.log('getBrandSearchCompanyAZ>>>', JSON.stringify(response))
+      this.setState({brands: response.list})
+    } catch (error) {
+      console.log('getBrandSearchCompanyAZ>>>', error)
+      await API.postErrLog({error: JSON.stringify(error), desc: 'getBrandSearchCompanyAZError'})
+    }
+  }
+
   render() {
-    const {gender, section} = this.state
+    const {gender, section, brandDrop, brands} = this.state
+    const userType = mConst.getUserType()
     return (
       <>
         <SafeAreaView style={styles.container}>
@@ -101,12 +120,12 @@ class FilterScreen extends PureComponent {
               </Row>
               <Row>
                 <Col size={35}>
-                  {_.map(sections, (item, index) => {
+                  {_.map(userType === 'M' ? sections : sections.filter(e => e !== 'Brands'), (item, index) => {
                     const selected = item === section
                     return (
                       <TouchableOpacity key={index} onPress={() => this.handleSelectSection(item)}>
                         <Row style={selected ? styles.sectionWrapperOn : styles.sectionWrapper}>
-                          <Text style={selected ? styles.colorText : styles.sectionText}>{item}</Text>
+                          <Text style={selected ? styles.sectionTextOn : styles.sectionText}>{item}</Text>
                         </Row>
                       </TouchableOpacity>
                     )
@@ -116,7 +135,24 @@ class FilterScreen extends PureComponent {
                   {section === 'Category' && _.map(categories, (item, index) => <CategoryGroup key={index} data={item} />)}
                   {section === 'Color' && <ColorGroup data={colors} />}
                   {section === 'Material' && <MaterialGroup data={materials} />}
-                  {section === 'Brands' && <BrandGroup data={brands} />}
+                  {section === 'Brands' && (
+                    <Col>
+                      <TouchableOpacity
+                        style={styles.layout}
+                        onPress={() => {
+                          this.setState({brandDrop: !brandDrop})
+                        }}
+                      >
+                        <Text style={styles.brandText}>Brand</Text>
+                        {brandDrop ? (
+                          <FastImage resizeMode={'contain'} source={moreImgOn} style={styles.moreImg} />
+                        ) : (
+                          <FastImage resizeMode={'contain'} source={moreImg} style={styles.moreImg} />
+                        )}
+                      </TouchableOpacity>
+                      {brandDrop && <BrandGroup data={brands} />}
+                    </Col>
+                  )}
                   {['Availability', 'Size', 'Sample', 'Still Life Image'].includes(section) && <Text>"{section}" : 서비스 준비중입니다.</Text>}
                 </Col>
               </Row>
