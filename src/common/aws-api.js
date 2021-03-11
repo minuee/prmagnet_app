@@ -4,12 +4,12 @@ import _ from 'lodash'
 import {login} from './aws-auth'
 import mConst from './constants'
 
-var projectName = 'fpr' // 각 프로젝트 단축명
-var projectEnv = 'prod' // 각 프로젝트 환경 // dev, test, prod
+const projectName = 'fpr' // 각 프로젝트 단축명
+const projectEnv = 'prod' // 각 프로젝트 환경 // dev, test, prod
 
-var v1Noneauth = `${projectName}-${projectEnv}-noneauth-v1`
-var v1Api = `${projectName}-${projectEnv}-api-v1`
-var v1Cdn = `${projectName}-${projectEnv}-cdn-v1`
+const v1Noneauth = `${projectName}-${projectEnv}-noneauth-v1`
+const v1Api = `${projectName}-${projectEnv}-api-v1`
+const v1Cdn = `${projectName}-${projectEnv}-cdn-v1`
 
 const API = {
   //------------------------------------------
@@ -27,9 +27,9 @@ const API = {
     },
     loadingFunction
   ) => {
-    var apiName = v1Noneauth // 인증 유, 인증 무 api 구분은 이부분이 다르다.
-    var path = '/test_test_test' // test_test_test는 무조건 테스트 api로써 반드시 작동한다.
-    var myInit = {
+    const apiName = v1Noneauth // 인증 유, 인증 무 api 구분은 이부분이 다르다.
+    const path = '/test_test_test' // test_test_test는 무조건 테스트 api로써 반드시 작동한다.
+    const myInit = {
       headers: {}, // OPTIONAL
       // body: {  // post나 put일경우 사용한다.
       //
@@ -53,9 +53,9 @@ const API = {
     },
     loadingFunction
   ) => {
-    var apiName = v1Api // 인증 유, 인증 무 api 구분은 이부분이 다르다.
-    var path = '/test_test_test'
-    var myInit = {
+    const apiName = v1Api // 인증 유, 인증 무 api 구분은 이부분이 다르다.
+    const path = '/test_test_test'
+    const myInit = {
       headers: {}, // OPTIONAL
       // body: {  // post나 put일경우 사용한다.
       //
@@ -79,9 +79,9 @@ const API = {
     },
     loadingFunction
   ) => {
-    var apiName = v1Cdn // 인증 유, 인증 무 api 구분은 이부분이 다르다.
-    var path = '/test_test_test'
-    var myInit = {
+    const apiName = v1Cdn // 인증 유, 인증 무 api 구분은 이부분이 다르다.
+    const path = '/test_test_test'
+    const myInit = {
       headers: {}, // OPTIONAL
       // body: {  // post나 put일경우 사용한다.
       //
@@ -107,23 +107,23 @@ const API = {
     login(data, rest)
   },
   getBrandPosition: () => {
-    var apiName = v1Cdn
-    var path = '/cdn/brand/position'
-    var init = {}
+    const apiName = v1Cdn
+    const path = '/cdn/brand/position'
+    const init = {}
 
     return Api.get(apiName, path, init)
   },
   getBrandSearchCompany: () => {
-    var apiName = v1Cdn
-    var path = '/cdn/brand/search-company'
-    var init = {}
+    const apiName = v1Cdn
+    const path = '/cdn/brand/search-company'
+    const init = {}
 
     return Api.get(apiName, path, init)
   },
   getSearchTeamMember: ({search_type, brand_id, mgzn_id, compy_nm}) => {
-    var apiName = v1Cdn
-    var path = '/cdn/search-team-member'
-    var init = {
+    const apiName = v1Cdn
+    const path = '/cdn/search-team-member'
+    const init = {
       queryStringParameters: {
         search_type,
         brand_id,
@@ -134,23 +134,23 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getPrivacyPolicy: () => {
-    var apiName = v1Cdn
-    var path = '/cdn/privacy-policy'
-    var init = {}
+    const apiName = v1Cdn
+    const path = '/cdn/privacy-policy'
+    const init = {}
 
     return Api.get(apiName, path, init)
   },
   getTos: () => {
-    var apiName = v1Cdn
-    var path = '/cdn/tos'
-    var init = {}
+    const apiName = v1Cdn
+    const path = '/cdn/tos'
+    const init = {}
 
     return Api.get(apiName, path, init)
   },
   getMobileAuthSend: ({mobile_no}) => {
-    var apiName = v1Cdn
-    var path = '/cdn/mobile-auth-send'
-    var init = {
+    const apiName = v1Cdn
+    const path = '/cdn/mobile-auth-send'
+    const init = {
       body: {
         mobile_no,
       },
@@ -158,9 +158,9 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getMoblieAuthCheck: ({mobile_no, auth_no}) => {
-    var apiName = v1Cdn
-    var path = '/cdn/mobile-auth-check'
-    var init = {
+    const apiName = v1Cdn
+    const path = '/cdn/mobile-auth-check'
+    const init = {
       queryStringParameters: {
         mobile_no,
         auth_no,
@@ -169,30 +169,30 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getMagazineSearchCompany: () => {
-    var apiName = v1Cdn
-    var path = '/cdn/magazine/search-company'
-    var init = {}
+    const apiName = v1Cdn
+    const path = '/cdn/magazine/search-company'
+    const init = {}
 
     return Api.get(apiName, path, init)
   },
   getMagazinePosition: () => {
-    var apiName = v1Cdn
-    var path = '/cdn/magazine/position'
-    var init = {}
+    const apiName = v1Cdn
+    const path = '/cdn/magazine/position'
+    const init = {}
 
     return Api.get(apiName, path, init)
   },
   getStylistPosition: () => {
-    var apiName = v1Cdn
-    var path = '/cdn/stylist/position'
-    var init = {}
+    const apiName = v1Cdn
+    const path = '/cdn/stylist/position'
+    const init = {}
 
     return Api.get(apiName, path, init)
   },
   postErrLog: ({error, desc}) => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/log`
-    var myInit = {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/log`
+    const myInit = {
       body: {
         error: error,
         desc: desc,
@@ -201,23 +201,23 @@ const API = {
     return Api.post(apiName, path, myInit)
   },
   getUserType: () => {
-    var apiName = v1Api
-    var path = '/api/user-type'
-    var init = {}
+    const apiName = v1Api
+    const path = '/api/user-type'
+    const init = {}
 
     return Api.get(apiName, path, init)
   },
   getUserInfo: () => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/my-info`
-    var init = {}
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/my-info`
+    const init = {}
 
     return Api.get(apiName, path, init)
   },
   postQna: ({subject, content}) => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/brand/qna`
-    var myInit = {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/brand/qna`
+    const myInit = {
       body: {
         subject: subject,
         content: content,
@@ -226,9 +226,9 @@ const API = {
     return Api.post(apiName, path, myInit)
   },
   getQnaList: ({page, limit, search_text}) => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/qna-list`
-    var init = {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/qna-list`
+    const init = {
       queryStringParameters: {
         page: page,
         limit: limit,
@@ -238,9 +238,9 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getQnaDetail: ({sys_inqry_no}) => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/qna/${sys_inqry_no}`
-    var init = {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/qna/${sys_inqry_no}`
+    const init = {
       queryStringParameters: {
         sys_inqry_no: sys_inqry_no,
       },
@@ -248,9 +248,9 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getAlarm: ({next_token}) => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/alarm`
-    var init = {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/alarm`
+    const init = {
       queryStringParameters: {
         next_token: next_token,
       },
@@ -258,20 +258,78 @@ const API = {
     return Api.get(apiName, path, init)
   },
   deleteAlarm: ({notice_id}) => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/alarm-delete`
-    var init = {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/alarm-delete`
+    const init = {
       queryStringParameters: {
         notice_id: notice_id,
       },
     }
     return Api.del(apiName, path, init)
   },
+  getFavShowroom: () => {
+    const apiName = v1Api
+    // const path = `${mConst.getApiPath()}/fav-show` // TODO 임시 주석처리
+    const path = '/stylist/fav-show' // TODO 테스트용
+    const init = {}
+    return Api.get(apiName, path, init)
+  },
+  getFavPress: () => {
+    const apiName = v1Api
+    // const path = `${mConst.getApiPath()}/fav-press` // TODO 임시 주석처리
+    const path = '/stylist/fav-press' // TODO 테스트용
+    const init = {}
+    return Api.get(apiName, path, init)
+  },
+  addFavShowroom: ({showroom_no}) => {
+    const apiName = v1Api
+    // const path = `${mConst.getApiPath()}/fav-show` // TODO 임시 주석처리
+    const path = '/stylist/fav-show' // TODO 테스트용
+    const myInit = {
+      body: {
+        showroom_no,
+      },
+    }
+    return Api.post(apiName, path, myInit)
+  },
+  addFavPress: ({brand_press_no}) => {
+    const apiName = v1Api
+    // const path = `${mConst.getApiPath()}/fav-press` // TODO 임시 주석처리
+    const path = '/stylist/fav-press' // TODO 테스트용
+    const myInit = {
+      body: {
+        brand_press_no,
+      },
+    }
+    return Api.post(apiName, path, myInit)
+  },
+  deleteFavShowroom: ({showroom_no}) => {
+    const apiName = v1Api
+    // const path = `${mConst.getApiPath()}/fav-show` // TODO 임시 주석처리
+    const path = '/stylist/fav-show' // TODO 테스트용
+    const myInit = {
+      body: {
+        showroom_no,
+      },
+    }
+    return Api.put(apiName, path, myInit)
+  },
+  deleteFavPress: ({brand_press_no}) => {
+    const apiName = v1Api
+    // const path = `${mConst.getApiPath()}/fav-press` // TODO 임시 주석처리
+    const path = '/stylist/fav-press' // TODO 테스트용
+    const myInit = {
+      body: {
+        brand_press_no,
+      },
+    }
+    return Api.put(apiName, path, myInit)
+  },
   getPickupSchedule: ({start_date, fin_date, brand_id}) => {
-    var apiName = v1Api
-    // var path = `${mConst.getApiPath()}/pickup-schedule` // TODO 임시 주석처리
-    var path = '/stylist/pickup-schedule' // TODO 테스트용
-    var init = {
+    const apiName = v1Api
+    // const path = `${mConst.getApiPath()}/pickup-schedule` // TODO 임시 주석처리
+    const path = '/stylist/pickup-schedule' // TODO 테스트용
+    const init = {
       queryStringParameters: {
         start_date,
         fin_date,
@@ -281,10 +339,10 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getSendoutSchedule: ({start_date, fin_date, brand_id}) => {
-    var apiName = v1Api
-    // var path = `${mConst.getApiPath()}/sendout-schedule` // TODO 임시 주석처리
-    var path = '/stylist/sendout-schedule' // TODO 테스트용
-    var init = {
+    const apiName = v1Api
+    // const path = `${mConst.getApiPath()}/sendout-schedule` // TODO 임시 주석처리
+    const path = '/stylist/sendout-schedule' // TODO 테스트용
+    const init = {
       queryStringParameters: {
         start_date,
         fin_date,
@@ -294,23 +352,23 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getPickupDetail: req_no => {
-    var apiName = v1Api
-    // var path = `${mConst.getApiPath()}/pickup-detailed/${req_no}` // TODO 임시 주석처리
-    var path = `/stylist/pickup-detailed/${req_no}` // TODO 테스트용
-    var init = {}
+    const apiName = v1Api
+    // const path = `${mConst.getApiPath()}/pickup-detailed/${req_no}` // TODO 임시 주석처리
+    const path = `/stylist/pickup-detailed/${req_no}` // TODO 테스트용
+    const init = {}
     return Api.get(apiName, path, init)
   },
   getSendoutDetail: req_no => {
-    var apiName = v1Api
-    // var path = `${mConst.getApiPath()}/sendout-detailed/${req_no}` // TODO 임시 주석처리
-    var path = `/stylist/sendout-detailed/${req_no}` // TODO 테스트용
-    var init = {}
+    const apiName = v1Api
+    // const path = `${mConst.getApiPath()}/sendout-detailed/${req_no}` // TODO 임시 주석처리
+    const path = `/stylist/sendout-detailed/${req_no}` // TODO 테스트용
+    const init = {}
     return Api.get(apiName, path, init)
   },
   getLookBook: ({page, limit, search_text}) => {
-    var apiName = v1Api
-    var path = '/brand/lookbook-list'
-    var init = {
+    const apiName = v1Api
+    const path = '/brand/lookbook-list'
+    const init = {
       queryStringParameters: {
         page: page,
         limit: limit,
@@ -320,9 +378,9 @@ const API = {
     return Api.get(apiName, path, init)
   },
   putLookBook: ({lookbook_no_list}) => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/lookbook-delete`
-    var myInit = {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/lookbook-delete`
+    const myInit = {
       body: {
         lookbook_no_list: lookbook_no_list,
       },
@@ -331,10 +389,10 @@ const API = {
   },
   getShare: ({lookbook_no, lookbook_nm}) => {
     console.log('>>>', lookbook_no)
-    var apiName = v1Api
-    var path = `/brand/lookbook/${lookbook_no}/share-uuid`
+    const apiName = v1Api
+    const path = `/brand/lookbook/${lookbook_no}/share-uuid`
     console.log('???', path)
-    var init = {
+    const init = {
       queryStringParameters: {
         lookbook_nm: lookbook_nm,
       },
@@ -342,9 +400,9 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getLookBookDetail: ({lookbook_no, page, limit}) => {
-    var apiName = v1Api
-    var path = `/brand/lookbook-showroom-list/${lookbook_no}`
-    var init = {
+    const apiName = v1Api
+    const path = `/brand/lookbook-showroom-list/${lookbook_no}`
+    const init = {
       queryStringParameters: {
         lookbook_no: lookbook_no,
         page: page,
@@ -354,9 +412,9 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getHome: ({date}) => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/home`
-    var init = {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/home`
+    const init = {
       queryStringParameters: {
         date: date,
       },
@@ -364,9 +422,9 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getHomeNR: ({next_token}) => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/home/new-request`
-    var init = {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/home/new-request`
+    const init = {
       queryStringParameters: {
         next_token: next_token,
       },
@@ -374,9 +432,9 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getHomeTR: ({date, next_token}) => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/home/today-request`
-    var init = {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/home/today-request`
+    const init = {
       queryStringParameters: {
         date: date,
         next_token: next_token,
@@ -385,9 +443,9 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getDigitalSR: ({page, limit, season_year, season_cd_id}) => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/showroom-list`
-    var init = {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/showroom-list`
+    const init = {
       queryStringParameters: {
         page: page,
         limit: limit,
@@ -398,27 +456,27 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getNotice: () => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/notice`
-    var init = {}
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/notice`
+    const init = {}
     return Api.get(apiName, path, init)
   },
   getInquiryNum: () => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/inquiry-number`
-    var init = {}
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/inquiry-number`
+    const init = {}
     return Api.get(apiName, path, init)
   },
   getSRInquiry: () => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/showroom-inquiry`
-    var init = {}
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/showroom-inquiry`
+    const init = {}
     return Api.get(apiName, path, init)
   },
   postNotice: ({notice}) => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/notice`
-    var myInit = {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/notice`
+    const myInit = {
       body: {
         notice_contents: notice,
       },
@@ -426,9 +484,9 @@ const API = {
     return Api.post(apiName, path, myInit)
   },
   postInquiryNum: ({inquiryNum}) => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/inquiry-number`
-    var myInit = {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/inquiry-number`
+    const myInit = {
       body: {
         inquiry_number: inquiryNum,
       },
@@ -436,9 +494,9 @@ const API = {
     return Api.post(apiName, path, myInit)
   },
   postSRInquiry: ({SRInquiryNum, email}) => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/showroom-inquiry`
-    var myInit = {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/showroom-inquiry`
+    const myInit = {
       body: {
         showroom_inquiry_contact: SRInquiryNum,
         showroom_inquiry_email: email,
@@ -447,9 +505,9 @@ const API = {
     return Api.post(apiName, path, myInit)
   },
   putSampleRequests: ({recv_yn}) => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/notify-control/sample-request`
-    var myInit = {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/notify-control/sample-request`
+    const myInit = {
       body: {
         recv_yn: recv_yn,
       },
@@ -457,9 +515,9 @@ const API = {
     return Api.put(apiName, path, myInit)
   },
   putSampleRequestsConfirm: ({recv_yn}) => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/notify-control/request-confirm`
-    var myInit = {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/notify-control/request-confirm`
+    const myInit = {
       body: {
         recv_yn: recv_yn,
       },
@@ -467,9 +525,9 @@ const API = {
     return Api.put(apiName, path, myInit)
   },
   putNotReceive: ({recv_yn}) => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/notify-control/sample-not-receive`
-    var myInit = {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/notify-control/sample-not-receive`
+    const myInit = {
       body: {
         recv_yn: recv_yn,
       },
@@ -477,9 +535,9 @@ const API = {
     return Api.put(apiName, path, myInit)
   },
   putSampleSend: ({recv_yn}) => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/notify-control/sample-send`
-    var myInit = {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/notify-control/sample-send`
+    const myInit = {
       body: {
         recv_yn: recv_yn,
       },
@@ -487,9 +545,9 @@ const API = {
     return Api.put(apiName, path, myInit)
   },
   putBrandNotice: ({recv_yn}) => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/notify-control/brand-notice`
-    var myInit = {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/notify-control/brand-notice`
+    const myInit = {
       body: {
         recv_yn: recv_yn,
       },
@@ -497,9 +555,9 @@ const API = {
     return Api.put(apiName, path, myInit)
   },
   putNotDis: ({mode_on, begin_dt, end_dt}) => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/notify-control/not-disturb-mode`
-    var myInit = {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/notify-control/not-disturb-mode`
+    const myInit = {
       body: {
         mode_on: mode_on,
         begin_dt: begin_dt,
@@ -509,15 +567,15 @@ const API = {
     return Api.put(apiName, path, myInit)
   },
   getSRDetail: showroom_no => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/showroom/${showroom_no}`
-    var init = {}
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/showroom/${showroom_no}`
+    const init = {}
     return Api.get(apiName, path, init)
   },
   putProfile: ({user_nm, post_no, adres, brand_pos_cd, phone_no, team_user_id, img_url_adres}) => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/my-profile`
-    var myInit = {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/my-profile`
+    const myInit = {
       body: {
         user_nm: user_nm,
         post_no: post_no,
@@ -531,9 +589,9 @@ const API = {
     return Api.put(apiName, path, myInit)
   },
   getAllSearch: ({search_text}) => {
-    var apiName = v1Api
-    var path = `${mConst.getApiPath()}/search`
-    var init = {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/search`
+    const init = {
       queryStringParameters: {
         search_text: search_text,
       },
