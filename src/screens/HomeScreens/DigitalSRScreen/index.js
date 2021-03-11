@@ -14,7 +14,6 @@ import styles from './styles'
 import API from '../../../common/aws-api'
 import Loading from '../../common/Loading'
 
-const modelImg = require('../../../images/sample/model_1.png')
 const newImg = require('../../../images/navi/new_1.png')
 const notiImg = require('../../../images/navi/noti_1.png')
 const telImg = require('../../../images/navi/tel_1.png')
@@ -25,8 +24,8 @@ const moreImg = require('../../../images/navi/more_4.png')
 const crownImg = require('../../../images/navi/crown_1.png')
 const selectImg1 = require('../../../images/navi/select_1.png')
 const selectImg2 = require('../../../images/navi/select_2.png')
-
-const arr = ['2020 F/W', '2190 F/S', '2018 F/S', '2017 S/S']
+const likeImg = require('../../../images/navi/like_2_1.png')
+const likeImgOn = require('../../../images/navi/like_2.png')
 
 class DigitalSRScreen extends PureComponent {
   constructor(props) {
@@ -35,6 +34,7 @@ class DigitalSRScreen extends PureComponent {
     this.state = {
       data: '',
       select: [],
+      selectOnOff: false,
       isvisible: false,
       page: 1,
       limit: 10,
@@ -45,7 +45,6 @@ class DigitalSRScreen extends PureComponent {
   }
 
   handleLoadMore = () => {
-    console.log('1111')
     this.getDigitalSR()
   }
 
@@ -62,7 +61,7 @@ class DigitalSRScreen extends PureComponent {
   }
 
   getDigitalSR = async () => {
-    const {data, page, limit, season_year, season_cd_id} = this.state
+    const {data, page, limit, season_year} = this.state
     try {
       let response = await API.getDigitalSR({page: page, limit: limit, season_year: season_year.season_year, season_cd_id: season_year.season_cd_id})
       console.log('getDigitalSR>>>', response)
@@ -132,11 +131,12 @@ class DigitalSRScreen extends PureComponent {
   }
 
   renderItem = ({item}) => {
+    const {selectOnOff, select} = this.state
     return (
       <View style={{width: '49%', height: mUtils.wScale(310)}}>
         <TouchableOpacity
           onPress={() => {
-            mConst.getUserType() === 'M' ? this.selected(item) : this.pushTo('DigitalSRDetailScreen', {no: item.showroom_no})
+            selectOnOff ? this.selected(item) : this.pushTo('DigitalSRDetailScreen', {no: item.showroom_no})
           }}
           activeOpacity={0.5}
           style={{width: '100%', height: mUtils.wScale(275)}}
@@ -147,11 +147,23 @@ class DigitalSRScreen extends PureComponent {
           ) : item.is_new ? (
             <FastImage resizeMode={'contain'} style={styles.newImg} source={newImg} />
           ) : null}
-          {this.state.select.includes(item) ? (
-            <View style={styles.select}>
-              <FastImage resizeMode={'contain'} style={styles.selectImg} source={selectImg2} />
-            </View>
-          ) : null}
+
+          {item?.is_fav ? (
+            <FastImage resizeMode={'contain'} style={styles.likeImg} source={likeImgOn} />
+          ) : (
+            <FastImage resizeMode={'contain'} style={styles.likeImg} source={likeImg} />
+          )}
+
+          {selectOnOff &&
+            (select.includes(item) ? (
+              <View style={{...styles.select, backgroundColor: 'rgba(126, 161, 178, 0.8)'}}>
+                <FastImage resizeMode={'contain'} style={styles.selectImg} source={selectImg2} />
+              </View>
+            ) : (
+              <View style={{...styles.select, backgroundColor: 'rgba(0, 0, 0, 0.5)'}}>
+                <FastImage resizeMode={'contain'} style={styles.selectImg} source={selectImg1} />
+              </View>
+            ))}
         </TouchableOpacity>
         <Text style={styles.title}>{item.showroom_nm}</Text>
       </View>
@@ -160,21 +172,27 @@ class DigitalSRScreen extends PureComponent {
 
   render() {
     const {data} = this.state
-    const {notice, inquiryNum, season_year} = this.state
+    const {notice, inquiryNum, season_year, selectOnOff, isvisible} = this.state
+    const userType = mConst.getUserType()
     return (
       <SafeAreaView style={styles.container}>
-        <Header pushTo={this.pushTo} userType={mConst.getUserType()} />
+        <Header pushTo={this.pushTo} userType={userType} />
         <View style={{paddingHorizontal: mUtils.wScale(20), flex: 1}}>
           <View style={{...styles.layout, justifyContent: 'space-between', marginTop: mUtils.wScale(25)}}>
             <View>
               <Text style={{...styles.mainTitle}}>Digital</Text>
               <Text style={styles.mainTitle1}>Showroom</Text>
             </View>
-            {mConst.getUserType() === 'M' ? (
-              <TouchableOpacity style={{...styles.selectBox}}>
-                <Text style={styles.selectText}>Select</Text>
+            {userType === 'M' && (
+              <TouchableOpacity
+                style={{...styles.selectBox, backgroundColor: selectOnOff ? mConst.black : mConst.white}}
+                onPress={() => {
+                  this.setState({selectOnOff: !selectOnOff, select: []})
+                }}
+              >
+                <Text style={{...styles.selectText, color: selectOnOff ? mConst.white : mConst.black}}>Select</Text>
               </TouchableOpacity>
-            ) : null}
+            )}
           </View>
           <View style={{...styles.layout, marginTop: mUtils.wScale(10)}}>
             <FastImage resizeMode={'contain'} style={styles.notiImg} source={notiImg} />
@@ -187,40 +205,43 @@ class DigitalSRScreen extends PureComponent {
           {data ? (
             <>
               <View style={{...styles.layout, justifyContent: 'space-between', paddingTop: mUtils.wScale(20), paddingBottom: mUtils.wScale(15)}}>
-                <Menu>
-                  <MenuTrigger
-                    customStyles={{
-                      TriggerTouchableComponent: TouchableOpacity,
-                    }}
-                  >
-                    <View style={{...styles.layout}}>
-                      <Text style={styles.season}>
-                        {season_year.season_year} {season_year.season_simple_text}
-                      </Text>
-                      <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
-                    </View>
-                  </MenuTrigger>
-                  <MenuOptions optionsContainerStyle={styles.menuOptions}>
-                    {data.season_list.map((item, index) => {
-                      return (
-                        <MenuOption
-                          key={index}
-                          style={styles.menuOption}
-                          onSelect={() => {
-                            this.setState({season_year: item})
-                            this.getDigitalSRReset(item.season_year, item.season_cd_id)
-                          }}
-                        >
-                          <Text style={styles.menuText}>
-                            {item.season_year} {item.season_simple_text}
-                          </Text>
-                        </MenuOption>
-                      )
-                    })}
-                  </MenuOptions>
-                </Menu>
+                <View>
+                  {userType === 'M' && <Text style={styles.brandText}>GUCCI</Text>}
+                  <Menu>
+                    <MenuTrigger
+                      customStyles={{
+                        TriggerTouchableComponent: TouchableOpacity,
+                      }}
+                    >
+                      <View style={{...styles.layout}}>
+                        <Text style={styles.season}>
+                          {season_year.season_year} {season_year.season_simple_text}
+                        </Text>
+                        <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                      </View>
+                    </MenuTrigger>
+                    <MenuOptions optionsContainerStyle={styles.menuOptions}>
+                      {data.season_list.map((item, index) => {
+                        return (
+                          <MenuOption
+                            key={index}
+                            style={styles.menuOption}
+                            onSelect={() => {
+                              this.setState({season_year: item})
+                              this.getDigitalSRReset(item.season_year, item.season_cd_id)
+                            }}
+                          >
+                            <Text style={styles.menuText}>
+                              {item.season_year} {item.season_simple_text}
+                            </Text>
+                          </MenuOption>
+                        )
+                      })}
+                    </MenuOptions>
+                  </Menu>
+                </View>
                 <View style={{...styles.layout}}>
-                  {mConst.getUserType() === 'M' ? (
+                  {userType === 'M' ? (
                     <TouchableOpacity
                       onPress={() => {
                         this.pushTo('FilterScreen')
@@ -274,7 +295,7 @@ class DigitalSRScreen extends PureComponent {
             <Loading />
           )}
         </View>
-        {this.state.isvisible ? (
+        {isvisible ? (
           <View style={styles.bottomSheet}>
             <View style={{flexDirection: 'row'}}>
               <View>
