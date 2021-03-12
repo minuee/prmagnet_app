@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {KeyboardAvoidingView, SafeAreaView, View, TouchableWithoutFeedback, TouchableOpacity, TextInput} from 'react-native'
+import {KeyboardAvoidingView, SafeAreaView, View, TouchableWithoutFeedback, TouchableOpacity, TextInput, Linking} from 'react-native'
 import {connect} from 'react-redux'
 import {sha256} from 'react-native-sha256'
 import _ from 'lodash'
@@ -59,6 +59,15 @@ class LoginScreen extends PureComponent {
       },
     })
   })
+  handleJoin = callOnce(async () => {
+    await Linking.openURL('http://fpr-prod-web.s3-website.ap-northeast-2.amazonaws.com/join')
+  })
+  handleFindId = callOnce(async () => {
+    await Linking.openURL('http://fpr-prod-web.s3-website.ap-northeast-2.amazonaws.com')
+  })
+  handleFindPw = callOnce(async () => {
+    await Linking.openURL('http://fpr-prod-web.s3-website.ap-northeast-2.amazonaws.com')
+  })
   render() {
     const {email, pw} = this.state
     return (
@@ -112,17 +121,17 @@ class LoginScreen extends PureComponent {
             <TouchableOpacity style={styles.loginButtonWrapper} onPress={this.handleLogin}>
               <Text style={styles.loginButtonText}>로그인</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.joinButtonWrapper} onPress={this.notReady}>
+            <TouchableOpacity style={styles.joinButtonWrapper} onPress={this.handleJoin}>
               <Text style={styles.joinButtonText}>회원가입</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.lowerWrapper}>
             <View style={styles.lowerSubWrapper}>
-              <TouchableOpacity style={styles.itemTextWrapper} onPress={this.notReady}>
+              <TouchableOpacity style={styles.itemTextWrapper} onPress={this.handleFindId}>
                 <Text style={styles.itemText}>아이디 찾기</Text>
               </TouchableOpacity>
               <Text style={styles.fence}>|</Text>
-              <TouchableOpacity style={styles.itemTextWrapper} onPress={this.notReady}>
+              <TouchableOpacity style={styles.itemTextWrapper} onPress={this.handleFindPw}>
                 <Text style={styles.itemText}>비밀번호 찾기</Text>
               </TouchableOpacity>
             </View>
