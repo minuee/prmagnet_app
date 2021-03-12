@@ -58,7 +58,7 @@ export default class CommonHeader extends PureComponent {
         </TouchableWithoutFeedback>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           {mUserType === 'M' && (
-            <TouchableOpacity style={styles.inputIconWrapper} onPress={null}>
+            <TouchableOpacity style={styles.inputIconWrapper} onPress={() => pushTo('FavoritesScreen')}>
               <FastImage resizeMode={'contain'} source={like2Image} style={styles.inputIcon} />
             </TouchableOpacity>
           )}
