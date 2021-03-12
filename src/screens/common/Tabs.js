@@ -45,11 +45,11 @@ export default class Tabs extends PureComponent {
     const tabBorderWidth = 1.5
     return (
       <View style={{width: mConst.wWidth, backgroundColor: 'white'}}>
-        <View style={{flexDirection: 'row', alignItems: 'center', borderColor: '#cccccc', borderTopWidth: tabBorderWidth}}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Animated.View
             style={{
               position: 'absolute',
-              top: -tabBorderWidth,
+              bottom: -tabBorderWidth,
               height: tabBorderWidth,
               width: tabTotalWidth / tabCount,
               backgroundColor: mConst.getBaseColor(),
@@ -58,7 +58,7 @@ export default class Tabs extends PureComponent {
           />
           {data.map((item, index) => (
             <TouchableWithoutFeedback key={index + 'key'} onPress={() => this.selectTab(index)} onLayout={this.tabLayout}>
-              <View style={{flex: 1, alignItems: 'center', padding: mUtils.wScale(25), backgroundColor: tabIndex === index ? 'white' : '#f6f6f6'}}>
+              <View style={{flex: 1, alignItems: 'center', padding: mUtils.wScale(25), backgroundColor: mConst.white}}>
                 <Text style={{fontSize: 17, fontWeight: 'bold', color: tabIndex === index ? mConst.textBaseColor : '#7d7d7d'}}>{item}</Text>
               </View>
             </TouchableWithoutFeedback>
