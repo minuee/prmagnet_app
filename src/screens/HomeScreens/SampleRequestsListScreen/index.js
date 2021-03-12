@@ -5,14 +5,14 @@ import FastImage from 'react-native-fast-image'
 import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-menu'
 import Header from '../../common/Header'
 import _ from 'lodash'
+import API from '../../../common/aws-api'
+import Loading from '../../common/Loading'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
-import {Grid, Col, Row} from 'react-native-easy-grid'
 import styles from './styles'
-import {multicastChannel} from 'redux-saga'
 
 const moreImage1 = require('../../../images/navi/more_1.png')
 const moreImage3 = require('../../../images/navi/more_3.png')
@@ -22,12 +22,45 @@ class SampleRequestsListScreen extends PureComponent {
     super(props)
     cBind(this)
     this.state = {
-      data: [
-        {title: 'GUCCI', filming_dt: '2020-08-05', request_dt: '2020-08-05', status: 'Pending'},
-        {title: 'GUCCI', filming_dt: '2020-08-05', request_dt: '2020-08-05', status: 'Pending'},
-        {title: 'GUCCI', filming_dt: '2020-08-05', request_dt: '2020-08-05', status: 'Pending'},
-      ],
+      list: [],
+      page: 1,
+      limit: 10,
+      search_text: '',
     }
+  }
+
+  getMagazineSample = async () => {
+    const {list, page, limit, search_text} = this.state
+    try {
+      let response = await API.getMagazineSample({
+        page: page,
+        limit: limit,
+        search_text: search_text,
+      })
+      console.log('getMagazineSample>>>', response)
+      if (response.success) {
+        if (response.list.length > 0) {
+          this.setState({list: list.concat(response.list), page: page + 1})
+        }
+      }
+    } catch (error) {
+      console.log('getMagazineSample>>>', error)
+    }
+  }
+
+  handleLoadMore = async () => {
+    this.getMagazineSample()
+  }
+
+  componentDidMount() {
+    this.onFocus(this.handleOnFocus)
+  }
+  componentWillUnmount() {
+    this.removeFocus()
+  }
+
+  handleOnFocus = () => {
+    this.getMagazineSample()
   }
 
   renderItem = ({item}) => {
@@ -35,7 +68,7 @@ class SampleRequestsListScreen extends PureComponent {
       <>
         <TouchableOpacity style={styles.layout3}>
           <View style={styles.layout4}>
-            <Text style={styles.title}>{item.title}</Text>
+            <Text style={styles.title}>{item.brand_nm}</Text>
             <Menu>
               <MenuTrigger
                 customStyles={{
@@ -82,15 +115,17 @@ class SampleRequestsListScreen extends PureComponent {
             <View>
               <Text style={{...styles.dt}}>
                 Filming date{'  '}
-                <Text style={{color: '#555555', fontFamily: 'Roboto-Regular'}}>{item.filming_dt}</Text>
+                <Text style={{color: '#555555', fontFamily: 'Roboto-Regular'}}>
+                  {mUtils.getShowDate(item.expected_photograph_date, 'YYYY-MM-DD')}
+                </Text>
               </Text>
               <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
                 Request date{'  '}
-                <Text style={{color: '#555555', fontFamily: 'Roboto-Regular'}}>{item.request_dt}</Text>
+                <Text style={{color: '#555555', fontFamily: 'Roboto-Regular'}}>{mUtils.getShowDate(item.request_date, 'YYYY-MM-DD')}</Text>
               </Text>
             </View>
             <View style={styles.smallBox}>
-              <Text style={styles.status}>{item.status}</Text>
+              <Text style={styles.status}>{item.req_status_nm}</Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -101,23 +136,26 @@ class SampleRequestsListScreen extends PureComponent {
 
   render() {
     const {user} = this.props
+    const {list} = this.state
     return (
       <SafeAreaView style={styles.container}>
         <Header pushTo={this.pushTo} userType={user.userType} />
         <View style={styles.layout1}>
           <Text style={styles.mainTitle}>My Requests</Text>
-          <TouchableOpacity style={styles.layout2} hitSlop={{top: 20, bottom: 20, left: 30, right: 30}}>
-            <Text style={styles.rightSmall}>Latest</Text>
-            <FastImage resizeMode={'contain'} style={styles.latestImg} source={moreImage3} />
-          </TouchableOpacity>
         </View>
-        <FlatList
-          bounces={false}
-          style={styles.list}
-          data={this.state.data}
-          renderItem={this.renderItem}
-          keyExtractor={item => `${item.dt}_${Math.random()}`}
-        />
+        {list ? (
+          <FlatList
+            bounces={false}
+            style={styles.list}
+            data={list}
+            renderItem={this.renderItem}
+            keyExtractor={item => `${item.req_no}_${Math.random()}`}
+            onEndReached={this.handleLoadMore}
+            onEndReachedThreshold={1}
+          />
+        ) : (
+          <Loading />
+        )}
       </SafeAreaView>
     )
   }

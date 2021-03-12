@@ -41,51 +41,142 @@ class DigitalSRScreen extends PureComponent {
       season_year: {season_year: '', season_cd_id: ''},
       notice: '',
       inquiryNum: '',
+      brand_id: '',
+      gender_cd_id: '',
+      available_start_dt: '',
+      available_end_dt: '',
+      category_list: [],
+      color_list: [],
+      size_list: [],
+      material_list: [],
+      loading: true,
     }
   }
 
   handleLoadMore = () => {
-    this.getDigitalSR()
+    this.postDigitalSR()
   }
 
   selected = item => {
     const {select} = this.state
     if (select.includes(item)) {
-      let copy = [...select]
-      let idx = copy.indexOf(item)
-      copy.splice(idx, 1)
-      this.setState({select: copy})
+      this.setState(state => {
+        const list = state.select.filter((e, j) => select.indexOf(item) !== j)
+        return {select: list}
+      })
     } else {
       this.setState({select: select.concat(item)})
     }
   }
 
-  getDigitalSR = async () => {
-    const {data, page, limit, season_year} = this.state
+  postDigitalSR = async () => {
+    const {
+      data,
+      page,
+      limit,
+      season_year,
+      brand_id,
+      available_start_dt,
+      available_end_dt,
+      category_list,
+      color_list,
+      size_list,
+      material_list,
+    } = this.state
+    const userType = mConst.getUserType()
     try {
-      let response = await API.getDigitalSR({page: page, limit: limit, season_year: season_year.season_year, season_cd_id: season_year.season_cd_id})
-      console.log('getDigitalSR>>>', response)
+      let response = await API.postDigitalSR({
+        page: page,
+        limit: limit,
+        season_year: season_year.season_year,
+        season_cd_id: season_year.season_cd_id,
+        brand_id: brand_id,
+        available_start_dt: available_start_dt,
+        available_end_dt: available_end_dt,
+        category_list: category_list,
+        color_list: color_list,
+        size_list: size_list,
+        material_list: material_list,
+      })
+      console.log('postDigitalSR>>>', response)
       if (response.success) {
         if (page === 1) {
-          this.setState({data: response, season_year: response.season_list[0], page: page + 1})
+          if (userType === 'B') {
+            this.setState({
+              data: response,
+              season_year: response.season_list[0],
+              page: page + 1,
+              notice: response.brand_notice.notice,
+              inquiryNum: response.brand_notice.inquiry_number,
+            })
+          } else {
+            this.setState({data: response, season_year: response.season_list[0], page: page + 1})
+          }
         } else if (response.list.length > 0) {
-          this.setState({data: {...data, list: data.list.concat(response.list)}, page: page + 1})
+          if (userType === 'B') {
+            this.setState({data: {...data, list: data.list.concat(response.list)}, page: page + 1})
+          } else {
+            this.setState({
+              data: {...data, list: data.list.concat(response.list)},
+              page: page + 1,
+              notice: response.brand_notice.notice,
+              inquiryNum: response.brand_notice.inquiry_number,
+            })
+          }
         }
       }
     } catch (error) {
-      console.log('getDigitalSR>>>', error)
+      console.log('postDigitalSR>>>', error)
     }
   }
 
-  getDigitalSRReset = async (year, id) => {
+  postDigitalSRReset = async () => {
+    const {season_year, brand_id, available_start_dt, available_end_dt, category_list, color_list, size_list, material_list} = this.state
+    const userType = mConst.getUserType()
+    this.setState({loading: false})
     try {
-      let response = await API.getDigitalSR({page: 1, limit: 10, season_year: year, season_cd_id: id})
-      console.log('getDigitalSRReset>>>', response)
+      let response = await API.postDigitalSR({
+        page: 1,
+        limit: 10,
+        season_year: season_year.season_year,
+        season_cd_id: season_year.season_cd_id,
+        brand_id: brand_id,
+        available_start_dt: available_start_dt,
+        available_end_dt: available_end_dt,
+        category_list: category_list,
+        color_list: color_list,
+        size_list: size_list,
+        material_list: material_list,
+      })
+      console.log('postDigitalSRReset>>>', response)
       if (response.success) {
-        this.setState({data: response, page: 2})
+        if (userType === 'B') {
+          this.setState({data: response, page: 2, loading: true})
+        } else {
+          this.setState({
+            data: response,
+            page: 2,
+            loading: true,
+            notice: response.brand_notice.notice,
+            inquiryNum: response.brand_notice.inquiry_number,
+          })
+        }
       }
     } catch (error) {
-      console.log('getDigitalSRReset>>>', error)
+      console.log('postDigitalSRReset>>>', error)
+    }
+  }
+
+  getBrandNoti = async () => {
+    const {brand_id} = this.state
+    try {
+      let response = await API.getBrandNoti({
+        brand_id: brand_id,
+      })
+      console.log('getBrandNoti>>>', response)
+      this.setState({notice: response.notice_contents})
+    } catch (error) {
+      console.log('getBrandNoti>>>', error)
     }
   }
 
@@ -117,16 +208,28 @@ class DigitalSRScreen extends PureComponent {
   }
 
   handleOnFocus = () => {
-    this.getNotice()
-    this.getInquiryNum()
-    this.getDigitalSR()
+    const userType = mConst.getUserType()
+    console.log('>>>>>', userType)
+    if (userType === 'B') {
+      this.getNotice()
+      this.getInquiryNum()
+    }
+    this.postDigitalSR()
+    if (this.state.select.length === 0) {
+      this.setState({selectOnOff: false})
+    }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
+    const {season_year} = this.state
     if (this.state.select.length === 0) {
       this.setState({...this.state, isvisible: false})
     } else {
       this.setState({...this.state, isvisible: true})
+    }
+    console.log(':::::::', prevState)
+    if (prevState.season_year.season_cd_id !== season_year.season_cd_id) {
+      this.postDigitalSRReset()
     }
   }
 
@@ -172,7 +275,7 @@ class DigitalSRScreen extends PureComponent {
 
   render() {
     const {data} = this.state
-    const {notice, inquiryNum, season_year, selectOnOff, isvisible} = this.state
+    const {notice, inquiryNum, season_year, selectOnOff, isvisible, loading, select} = this.state
     const userType = mConst.getUserType()
     return (
       <SafeAreaView style={styles.container}>
@@ -202,7 +305,7 @@ class DigitalSRScreen extends PureComponent {
             <FastImage resizeMode={'contain'} style={styles.telImg} source={telImg} />
             <Text style={styles.tel}>{mUtils.phoneFormat(inquiryNum)}</Text>
           </View>
-          {data ? (
+          {data && loading ? (
             <>
               <View style={{...styles.layout, justifyContent: 'space-between', paddingTop: mUtils.wScale(20), paddingBottom: mUtils.wScale(15)}}>
                 <View>
@@ -228,7 +331,6 @@ class DigitalSRScreen extends PureComponent {
                             style={styles.menuOption}
                             onSelect={() => {
                               this.setState({season_year: item})
-                              this.getDigitalSRReset(item.season_year, item.season_cd_id)
                             }}
                           >
                             <Text style={styles.menuText}>
@@ -304,7 +406,12 @@ class DigitalSRScreen extends PureComponent {
               </View>
               <Text style={{...styles.bottomText2, marginLeft: mUtils.wScale(3)}}>{this.state.select.length}</Text>
             </View>
-            <TouchableOpacity style={styles.bottomButton}>
+            <TouchableOpacity
+              style={styles.bottomButton}
+              onPress={() => {
+                this.pushTo('SampleRequestsScreen', {modelList: select, delSelect: this.selected})
+              }}
+            >
               <Text style={{...styles.bottomText3}}>Request Samples</Text>
             </TouchableOpacity>
           </View>

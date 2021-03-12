@@ -54,7 +54,7 @@ class LookBookDetailScreen extends PureComponent {
       console.log('getLookBookDetail>>>', JSON.stringify(response))
       if (response.success) {
         if (response.list.length > 0) {
-          this.setState({...this.state, list: list.concat(response.list), page: page + 1})
+          this.setState({list: list.concat(response.list), page: page + 1})
         }
       }
     } catch (error) {

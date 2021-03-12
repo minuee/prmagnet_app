@@ -86,7 +86,7 @@ export default StyleSheet.create({
     marginVertical: mUtils.wScale(30),
   },
   bottomButton: {
-    width: '50%',
+    width: '100%',
     paddingVertical: mUtils.wScale(18),
   },
   layout: {
@@ -118,7 +118,7 @@ export default StyleSheet.create({
     borderWidth: 0.5,
     borderColor: mConst.borderGray,
     fontFamily: 'Roboto-Regular',
-    fontSize: 14,
+    fontSize: 12,
     textAlign: 'left',
     color: '#555555',
     paddingHorizontal: mUtils.wScale(8),
@@ -148,5 +148,28 @@ export default StyleSheet.create({
   checkImg2: {
     width: mUtils.wScale(12),
     height: mUtils.wScale(12),
+  },
+  select: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    zIndex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  selectImg: {
+    width: mUtils.wScale(45),
+    height: mUtils.wScale(45),
+    marginBottom: mUtils.wScale(10),
+  },
+  delImg: {
+    width: mUtils.wScale(20),
+    height: mUtils.wScale(20),
+  },
+  del: {
+    position: 'absolute',
+    zIndex: 1,
+    right: 5,
+    top: 5,
   },
 })

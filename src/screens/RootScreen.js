@@ -110,8 +110,7 @@ class RootScreen extends PureComponent {
         <MemberStack.Screen name="PickupsScreen" component={PickupsScreen} />
         <MemberStack.Screen name="ReturnScreen" component={ReturnScreen} />
         <MemberStack.Screen name="MagazineSchedulerScreen" component={MagazineSchedulerScreen} options={{headerShown: false}} />
-        <MemberStack.Screen name="SampleRequestsListScreen" component={SampleRequestsListScreen} options={{headerShown: false}} />
-        <MemberStack.Screen name="SampleRequestsScreen" component={SampleRequestsScreen} options={{headerShown: false}} />
+        <MemberStack.Screen name="SampleRequestsScreen" component={SampleRequestsScreen} />
         <MemberStack.Screen name="NoticeScreen" component={NoticeScreen} />
         <MemberStack.Screen name="ScheduleMemoScreen" component={ScheduleMemoScreen} />
         <MemberStack.Screen name="BrandSchedulerScreen" component={BrandSchedulerScreen} options={{headerShown: false}} />
@@ -193,8 +192,8 @@ class RootScreen extends PureComponent {
           children={() => (
             <TabLookStack.Navigator>
               <TabLookStack.Screen
-                name={two ? 'SampleRequestsScreen' : 'LookBookScreen'}
-                component={two ? SampleRequestsScreen : LookBookScreen}
+                name={two ? 'SampleRequestsListScreen' : 'LookBookScreen'}
+                component={two ? SampleRequestsListScreen : LookBookScreen}
                 options={{headerShown: false}}
               />
             </TabLookStack.Navigator>

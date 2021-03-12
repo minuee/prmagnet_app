@@ -4,16 +4,18 @@ import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import Modal from 'react-native-modal'
 import Postcode from 'react-native-daum-postcode'
-import Header from '../../common/Header'
-import _ from 'lodash'
+import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-menu'
+import {Calendar, LocaleConfig} from 'react-native-calendars'
+import moment from 'moment'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
-import {Grid, Col, Row} from 'react-native-easy-grid'
 import styles from './styles'
-import {multicastChannel} from 'redux-saga'
+import Header from '../../common/Header'
+import API from '../../../common/aws-api'
+import Loading from '../../common/Loading'
 
 const modelImg = require('../../../images/sample/model_1.png')
 const moreImg = require('../../../images/navi/more_2.png')
@@ -23,47 +25,123 @@ const noCheckImg = require('../../../images/navi/no_check_1.png')
 const plusImg = require('../../../images/navi/plus_2.png')
 const checkImg2 = require('../../../images/navi/check_2.png')
 const checkImg3 = require('../../../images/navi/check_3.png')
+const selectImg2 = require('../../../images/navi/select_2.png')
+const delImg = require('../../../images/navi/del_1.png')
 const yesNo = ['Yes', 'No']
 
+LocaleConfig.locales['en'] = {
+  monthNames: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
+  monthNamesShort: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+  dayNamesShort: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+  today: 'Today',
+}
+LocaleConfig.defaultLocale = 'en'
+
+const _format = 'YYYY-MM-DD'
+const _today = moment().format(_format)
+const _maxDate = moment().add(15, 'days').format(_format)
+
 class SampleRequestsScreen extends PureComponent {
+  initialState = {
+    [_today]: {disabled: true},
+  }
+
   constructor(props) {
     super(props)
     cBind(this)
     this.state = {
-      data: [
-        {img: modelImg, title: 'Look #1'},
-        {img: modelImg, title: 'Look #2'},
-        {img: modelImg, title: 'Look #3'},
-        {img: modelImg, title: 'Look #4'},
-      ],
       selected: [],
       yesNo: '',
-      isvisible: false,
+      payPictorial: false,
+      payPictorialDesc: '',
+      shDate: '',
+      pkDate: '',
+      rtDate: '',
+      destination: '',
+      destination1: '',
+      shNote: '',
+      concept: '',
+      shTime: '',
+      celebrity: [],
+      fashionModel: [],
+      todayConnect: false,
+      numberPage: '',
+      togetherBrand: '',
+      message: '',
+      _markedDates: {},
     }
   }
 
+  delModel = (item, index) => {
+    const {delSelect} = this.props.route.params
+    this.setState(state => {
+      const result = state.selected.filter((e, j) => index !== j)
+      if (result.length === 0) {
+        this.goBack()
+      }
+      return {selected: result}
+    })
+    delSelect(item)
+  }
+
+  onDaySelect = day => {
+    const _selectedDay = moment(day.dateString).format(_format)
+    let selected = true
+    console.log('>>>>>', this.state._markedDates)
+    console.log('??????', Object.keys(this.state._markedDates).length)
+    if (Object.keys(this.state._markedDates).length < 3) {
+      if (this.state._markedDates[_selectedDay]) {
+        selected = !this.state._markedDates[_selectedDay].selected
+      }
+      const updatedMarkedDates = {...this.state._markedDates, ...{[_selectedDay]: {selected}}}
+      this.setState({_markedDates: updatedMarkedDates})
+    }
+  }
+
+  componentDidMount() {
+    const {modelList} = this.props.route.params
+    this.pushOption('Sample Request')
+    this.setState({selected: modelList})
+  }
+
   render() {
-    const {data, isvisible} = this.state
+    const {selected, drop, shDate, pkDate, rtDate} = this.state
     const {user} = this.props
     return (
       <SafeAreaView style={styles.container}>
-        <Header pushTo={this.pushTo} userType={user.userType} />
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{paddingHorizontal: mUtils.wScale(20)}}>
             <Text style={{...styles.mainTitle, marginTop: mUtils.wScale(25)}}>Sample</Text>
             <Text style={styles.mainTitle1}>Requests</Text>
             <Text style={{...styles.subTitle, marginTop: mUtils.wScale(30)}}>
-              Request product : <Text style={{color: '#7ea1b2'}}>4</Text>
+              Request product : <Text style={{color: '#7ea1b2'}}>{selected.length}</Text>
             </Text>
           </View>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{marginLeft: mUtils.wScale(20), marginTop: mUtils.wScale(16)}}>
-            {data.map((item, index) => {
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            style={{marginLeft: mUtils.wScale(20), marginTop: mUtils.wScale(16)}}
+            contentContainerStyle={{paddingRight: mUtils.wScale(20)}}
+          >
+            {selected.map((item, index) => {
               return (
                 <View key={index} style={{marginRight: mUtils.wScale(5), alignItems: 'center'}}>
-                  <TouchableOpacity>
-                    <FastImage resizeMode={'contain'} style={styles.modelImg} source={item.img} />
-                  </TouchableOpacity>
-                  <Text style={{...styles.modelTitle, marginTop: mUtils.wScale(8)}}>{item.title}</Text>
+                  <View>
+                    <FastImage resizeMode={'contain'} style={styles.modelImg} source={{uri: item.image_url}} />
+                    <View style={{...styles.select, backgroundColor: 'rgba(126, 161, 178, 0.8)'}}>
+                      <FastImage resizeMode={'contain'} style={styles.selectImg} source={selectImg2} />
+                    </View>
+                    <TouchableOpacity
+                      style={styles.del}
+                      onPress={() => {
+                        this.delModel(item, index)
+                      }}
+                    >
+                      <FastImage resizeMode={'contain'} style={styles.delImg} source={delImg} />
+                    </TouchableOpacity>
+                  </View>
+                  <Text style={{...styles.modelTitle, marginTop: mUtils.wScale(8)}}>{item.showroom_nm}</Text>
                 </View>
               )
             })}
@@ -81,68 +159,109 @@ class SampleRequestsScreen extends PureComponent {
             >
               <View style={{width: '49%'}}>
                 <Text style={styles.smallTitle}>Magazine</Text>
-                <TouchableOpacity style={{...styles.box1, justifyContent: 'space-between'}}>
+                <View style={{...styles.box1}}>
                   <Text style={styles.boxText}>RTW</Text>
-                  <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
-                </TouchableOpacity>
+                </View>
               </View>
               <View style={{width: '49%'}}>
                 <Text style={styles.smallTitle}>Editor/Stylist</Text>
-                <TextInput style={{...styles.inputBox}} placeholder={'이름'} placeholderTextColor={mConst.borderGray} />
+                <View style={{...styles.box1}}>
+                  <Text style={styles.boxText}>이름</Text>
+                </View>
               </View>
             </View>
             <Text style={styles.smallTitle}>
               Contact <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
             </Text>
             <View style={{...styles.layout, justifyContent: 'space-between'}}>
-              <TouchableOpacity style={{...styles.box1, width: '49%', justifyContent: 'space-between'}}>
-                <Text style={styles.boxText}>김미경as</Text>
-                <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
-              </TouchableOpacity>
-              <TextInput style={{...styles.inputBox, width: '49%'}} placeholder={'연락처'} placeholderTextColor={mConst.borderGray} />
-            </View>
-            <View
-              style={{
-                ...styles.layout,
-                justifyContent: 'space-between',
-                paddingTop: mUtils.wScale(20),
-                paddingBottom: mUtils.wScale(18),
-              }}
-            >
-              <View style={{width: '32%'}}>
-                <Text style={styles.smallTitle}>Shooting Date</Text>
-                <TouchableOpacity style={{...styles.box1, justifyContent: 'space-between'}}>
-                  <Text style={styles.boxText}>8/4(토)</Text>
-                  <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
-                </TouchableOpacity>
-              </View>
-              <View style={{width: '32%'}}>
-                <Text style={styles.smallTitle}>Pickup Date</Text>
-                <TouchableOpacity style={{...styles.box1, justifyContent: 'space-between'}}>
-                  <Text style={styles.boxText}>8/3(금)</Text>
-                  <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
-                </TouchableOpacity>
-              </View>
-              <View style={{width: '32%'}}>
-                <Text style={styles.smallTitle}>Returning Date</Text>
-                <TouchableOpacity style={{...styles.box1, justifyContent: 'space-between'}}>
-                  <Text style={styles.boxText}>8/6 (월)</Text>
-                  <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
-                </TouchableOpacity>
+              <Menu style={{width: '49%'}}>
+                <MenuTrigger
+                  customStyles={{
+                    TriggerTouchableComponent: TouchableOpacity,
+                  }}
+                >
+                  <View style={{...styles.box1, justifyContent: 'space-between'}}>
+                    <Text style={styles.boxText}>김미경as</Text>
+                    <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                  </View>
+                </MenuTrigger>
+                <MenuOptions optionsContainerStyle={{marginTop: mUtils.wScale(35), width: mUtils.wScale(184)}}>
+                  <MenuOption>
+                    <Text>Delete</Text>
+                  </MenuOption>
+                </MenuOptions>
+              </Menu>
+
+              <View style={{...styles.box1, width: '49%'}}>
+                <Text style={styles.boxText}>이름</Text>
               </View>
             </View>
-            <Text style={styles.smallTitle}>Shipping destination</Text>
-            <View style={{...styles.box2, width: '100%'}}>
-              <Text style={styles.boxText}>강남대로 135-5295</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  this.setState({...this.state, isvisible: true})
+            <>
+              <View
+                style={{
+                  ...styles.layout,
+                  justifyContent: 'space-between',
+                  paddingTop: mUtils.wScale(20),
+                  paddingBottom: mUtils.wScale(18),
                 }}
-                style={{...styles.postBox}}
               >
-                <Text style={styles.postCode}>우편번호</Text>
-              </TouchableOpacity>
-            </View>
+                <View style={{width: '32%'}}>
+                  <Text style={styles.smallTitle}>Shooting Date</Text>
+                  <TouchableOpacity
+                    style={{...styles.box1, justifyContent: 'space-between'}}
+                    onPress={() => {
+                      this.setState({drop: !drop})
+                    }}
+                  >
+                    <Text style={styles.boxText}>8/4(토)</Text>
+                    <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                  </TouchableOpacity>
+                </View>
+                <View style={{width: '32%'}}>
+                  <Text style={styles.smallTitle}>Pickup Date</Text>
+                  <TouchableOpacity style={{...styles.box1, justifyContent: 'space-between'}}>
+                    <Text style={styles.boxText}>8/3(금)</Text>
+                    <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                  </TouchableOpacity>
+                </View>
+                <View style={{width: '32%'}}>
+                  <Text style={styles.smallTitle}>Returning Date</Text>
+                  <TouchableOpacity style={{...styles.box1, justifyContent: 'space-between'}}>
+                    <Text style={styles.boxText}>8/6 (월)</Text>
+                    <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              {drop ? (
+                <View
+                  style={{
+                    alignSelf: 'center',
+                    position: 'absolute',
+                    zIndex: 1,
+                    top: mUtils.wScale(215),
+                    paddingHorizontal: mUtils.wScale(20),
+                    width: '100%',
+                  }}
+                >
+                  <Calendar
+                    minDate={Date()}
+                    monthFormat={'yyyy MMMM'}
+                    style={{
+                      width: '100%',
+                      borderWidth: 1,
+                      borderColor: '#dddddd',
+                    }}
+                    maxDate={_maxDate}
+                    // hideArrows={true}
+
+                    onDayPress={this.onDaySelect}
+                    markedDates={this.state._markedDates}
+                  />
+                </View>
+              ) : null}
+            </>
+            <Text style={styles.smallTitle}>Shipping destination</Text>
+            <TextInput style={{...styles.inputBox, marginTop: mUtils.wScale(6)}} />
             <TextInput style={{...styles.inputBox, marginTop: mUtils.wScale(6), marginBottom: mUtils.wScale(18)}} />
             <Text style={styles.smallTitle}>Shipping Notes</Text>
             <TextInput
@@ -241,32 +360,10 @@ class SampleRequestsScreen extends PureComponent {
               textAlignVertical={'top'}
             />
           </View>
-          <View style={styles.layout}>
-            <TouchableOpacity style={{...styles.bottomButton, backgroundColor: mConst.borderGray}}>
-              <Text style={{...styles.buttonText, color: mConst.black}}>Temporary Save</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={{...styles.bottomButton, backgroundColor: mConst.black}}>
-              <Text style={{...styles.buttonText, color: mConst.white}}>Sample Request</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity style={{...styles.bottomButton, backgroundColor: mConst.black}}>
+            <Text style={{...styles.buttonText, color: mConst.white}}>Sample Request</Text>
+          </TouchableOpacity>
         </ScrollView>
-        <Modal
-          isVisible={isvisible}
-          useNativeDriver={true}
-          onBackButtonPress={() => this.setState({...this.state, isvisible: false})}
-          onBackdropPress={() => this.setState({...this.state, isvisible: false})}
-        >
-          <View style={{height: '80%', width: '100%'}}>
-            <Postcode
-              style={{flex: 1}}
-              jsOptions={{animated: false}}
-              onSelected={re => {
-                console.log('postcode>>>>', re)
-                //this.setState({...this.state, isvisible: false})
-              }}
-            />
-          </View>
-        </Modal>
       </SafeAreaView>
     )
   }

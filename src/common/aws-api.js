@@ -264,12 +264,13 @@ const API = {
     }
     return Api.get(apiName, path, init)
   },
-  deleteAlarm: ({notice_id}) => {
+  deleteAlarm: ({notice_id, notifi_type}) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/alarm-delete`
     const init = {
       queryStringParameters: {
         notice_id: notice_id,
+        notifi_type: notifi_type,
       },
     }
     return Api.del(apiName, path, init)
@@ -449,19 +450,37 @@ const API = {
     }
     return Api.get(apiName, path, init)
   },
-  getDigitalSR: ({page, limit, season_year, season_cd_id}) => {
+  postDigitalSR: ({
+    page,
+    limit,
+    season_year,
+    season_cd_id,
+    brand_id,
+    available_start_dt,
+    available_end_dt,
+    category_list,
+    color_list,
+    size_list,
+    material_list,
+  }) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/showroom-list`
     const init = {
-      queryStringParameters: {
+      body: {
         page: page,
         limit: limit,
         season_year: season_year,
         season_cd_id: season_cd_id,
-        brand_id: null,
+        brand_id: brand_id,
+        available_start_dt: available_start_dt,
+        available_end_dt: available_end_dt,
+        category_list: category_list,
+        color_list: color_list,
+        size_list: size_list,
+        material_list: material_list,
       },
     }
-    return Api.get(apiName, path, init)
+    return Api.post(apiName, path, init)
   },
   getNotice: () => {
     const apiName = v1Api
@@ -611,6 +630,28 @@ const API = {
     var path = `${mConst.getApiPath()}/search`
     var init = {
       queryStringParameters: {
+        search_text: search_text,
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
+  getBrandNoti: ({brand_id}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/brand-notice`
+    var init = {
+      queryStringParameters: {
+        brand_id: brand_id,
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
+  getMagazineSample: ({page, limit, search_text}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/showroom-request-list`
+    var init = {
+      queryStringParameters: {
+        page: page,
+        limit: limit,
         search_text: search_text,
       },
     }

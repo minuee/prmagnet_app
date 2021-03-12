@@ -29,12 +29,17 @@ class NotificationScreen extends PureComponent {
     }
   }
 
-  deleteAlarm = async notice_id => {
+  deleteAlarm = async (notice_id, i, notifi_type) => {
     try {
-      let response = await API.deleteAlarm({notice_id: notice_id})
+      let response = await API.deleteAlarm({notice_id: notice_id, notifi_type: notifi_type})
       console.log('deleteAlarm>>>', response)
       if (response.success) {
-        this.getAlarmReset()
+        this.setState(state => {
+          const resetList = state.list.filter((item, j) => i !== j)
+          return {
+            list: resetList,
+          }
+        })
       }
     } catch (error) {
       console.log('deleteAlarm>>>', error)
@@ -48,18 +53,6 @@ class NotificationScreen extends PureComponent {
       console.log('getAlarm>>>', response)
       if (response.success) {
         this.setState({list: list.concat(response.list), next_token: response.next_token, has_next: response.has_next})
-      }
-    } catch (error) {
-      console.log('getAlarm>>>', error)
-    }
-  }
-
-  getAlarmReset = async () => {
-    try {
-      let response = await API.getAlarm({next_token: ''})
-      console.log('getAlarm>>>', response)
-      if (response.success) {
-        this.setState(response)
       }
     } catch (error) {
       console.log('getAlarm>>>', error)
@@ -85,7 +78,7 @@ class NotificationScreen extends PureComponent {
     this.getAlarm()
   }
 
-  renderItem = ({item}) => {
+  renderItem = ({item, index}) => {
     return (
       <View style={styles.itemBox}>
         <View style={styles.items}>
@@ -107,7 +100,7 @@ class NotificationScreen extends PureComponent {
         <TouchableOpacity
           hitSlop={{top: 35, bottom: 35, left: 40, right: 40}}
           onPress={() => {
-            this.deleteAlarm(item.notice_id)
+            this.deleteAlarm(item.notice_id, index, item.notifi_type)
           }}
         >
           <FastImage resizeMode={'contain'} style={styles.closeImg} source={closeBtnImage} />

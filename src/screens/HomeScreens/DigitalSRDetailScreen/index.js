@@ -54,6 +54,7 @@ class DigitalSRDetailScreen extends PureComponent {
             return (
               <>
                 <Swiper
+                  key={index}
                   loop={false}
                   height={mUtils.wScale(500)}
                   style={{height: mUtils.wScale(500), flex: 0}}
