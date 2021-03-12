@@ -23,8 +23,24 @@ class FavoritesScreen extends PureComponent {
     this.state = {
       favShowroom: [],
       favPress: [],
+      // favShowroom: [ // TODO 테스트 데이타 주석 처리
+      //   {
+      //     img: require('../../../images/sample/model_1.png'),
+      //     like: true,
+      //     title: 'Look #1',
+      //   },
+      //   {img: require('../../../images/sample/model_1.png'), new: false, title: 'Look #2'},
+      // ],
+      // favPress: [
+      //   {img: require('../../../images/sample/model_1.png'), new: false, title: 'Look #2'},
+      //   {
+      //     img: require('../../../images/sample/model_1.png'),
+      //     like: true,
+      //     title: 'Look #1',
+      //   },
+      // ],
       tabIndex: 0,
-      loading: true,
+      loading: false,
     }
   }
   componentDidMount() {
@@ -73,7 +89,7 @@ class FavoritesScreen extends PureComponent {
                       <View style={{width: '49%', height: mUtils.wScale(310)}}>
                         <TouchableOpacity activeOpacity={0.5} style={{width: '100%', height: mUtils.wScale(275)}}>
                           <FastImage resizeMode={'contain'} style={styles.modelImg} source={modelImg} />
-                          {item.like ? <FastImage resizeMode={'contain'} style={styles.likeImg} source={likeImg} /> : null}
+                          <FastImage resizeMode={'contain'} style={styles.likeImg} source={likeImg} />
                         </TouchableOpacity>
                         <Text style={styles.title}>{item.title}</Text>
                       </View>
@@ -95,7 +111,7 @@ class FavoritesScreen extends PureComponent {
                       <View style={{width: '49%', height: mUtils.wScale(310)}}>
                         <TouchableOpacity activeOpacity={0.5} style={{width: '100%', height: mUtils.wScale(275)}}>
                           <FastImage resizeMode={'contain'} style={styles.modelImg} source={modelImg} />
-                          {item.like ? <FastImage resizeMode={'contain'} style={styles.likeImg} source={likeImg} /> : null}
+                          <FastImage resizeMode={'contain'} style={styles.likeImg} source={likeImg} />
                         </TouchableOpacity>
                         <Text style={styles.title}>{item.title}</Text>
                       </View>
