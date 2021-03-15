@@ -172,4 +172,13 @@ export default StyleSheet.create({
     right: 5,
     top: 5,
   },
+  contactText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 14,
+    textAlign: 'left',
+    color: '#555555',
+  },
+  contactList: {
+    padding: mUtils.wScale(10),
+  },
 })

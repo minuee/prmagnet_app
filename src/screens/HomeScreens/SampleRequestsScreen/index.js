@@ -51,6 +51,7 @@ class SampleRequestsScreen extends PureComponent {
     super(props)
     cBind(this)
     this.state = {
+      defaultInfo: '',
       selected: [],
       yesNo: '',
       payPictorial: false,
@@ -70,6 +71,8 @@ class SampleRequestsScreen extends PureComponent {
       togetherBrand: '',
       message: '',
       _markedDates: {},
+      selectContact: '',
+      selectContact1: '',
     }
   }
 
@@ -99,16 +102,39 @@ class SampleRequestsScreen extends PureComponent {
     }
   }
 
+  postSRRequest = async () => {
+    const {modelList, brandId} = this.props.route.params
+    let arr = modelList.map((item, index) => item.showroom_no)
+    try {
+      let response = await API.postSRRequest({
+        showroom_list: arr,
+        brand_id: brandId,
+      })
+      console.log('postSRRequest>>>>', response)
+      this.setState({defaultInfo: response})
+    } catch (error) {
+      console.log('postSRRequest>>>', error)
+    }
+  }
+
   componentDidMount() {
     const {modelList} = this.props.route.params
     this.pushOption('Sample Request')
     this.setState({selected: modelList})
+    this.onFocus(this.handleOnFocus)
+  }
+  componentWillUnmount() {
+    this.removeFocus()
+  }
+
+  handleOnFocus = () => {
+    this.postSRRequest()
   }
 
   render() {
-    const {selected, drop, shDate, pkDate, rtDate} = this.state
+    const {selected, drop, shDate, pkDate, rtDate, defaultInfo, selectContact, selectContact1} = this.state
     const {user} = this.props
-    return (
+    return defaultInfo ? (
       <SafeAreaView style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{paddingHorizontal: mUtils.wScale(20)}}>
@@ -160,13 +186,13 @@ class SampleRequestsScreen extends PureComponent {
               <View style={{width: '49%'}}>
                 <Text style={styles.smallTitle}>Magazine</Text>
                 <View style={{...styles.box1}}>
-                  <Text style={styles.boxText}>RTW</Text>
+                  <Text style={styles.boxText}>{defaultInfo.mgzn_nm}</Text>
                 </View>
               </View>
               <View style={{width: '49%'}}>
                 <Text style={styles.smallTitle}>Editor/Stylist</Text>
                 <View style={{...styles.box1}}>
-                  <Text style={styles.boxText}>이름</Text>
+                  <Text style={styles.boxText}>{defaultInfo.user_nm}</Text>
                 </View>
               </View>
             </View>
@@ -181,19 +207,26 @@ class SampleRequestsScreen extends PureComponent {
                   }}
                 >
                   <View style={{...styles.box1, justifyContent: 'space-between'}}>
-                    <Text style={styles.boxText}>김미경as</Text>
+                    <Text style={styles.boxText}>{selectContact ? selectContact : 'Editor/Stylist'}</Text>
                     <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
                   </View>
                 </MenuTrigger>
                 <MenuOptions optionsContainerStyle={{marginTop: mUtils.wScale(35), width: mUtils.wScale(184)}}>
-                  <MenuOption>
-                    <Text>Delete</Text>
-                  </MenuOption>
+                  {defaultInfo.contact_info.map((item, index) => {
+                    return (
+                      <MenuOption
+                        style={styles.contactList}
+                        onSelect={() => this.setState({selectContact: item.mgzn_user_nm, selectContact1: item.phone_no})}
+                      >
+                        <Text style={styles.contactText}>{`${item.mgzn_user_nm}(${mUtils.allNumber(item.phone_no)})`}</Text>
+                      </MenuOption>
+                    )
+                  })}
                 </MenuOptions>
               </Menu>
 
               <View style={{...styles.box1, width: '49%'}}>
-                <Text style={styles.boxText}>이름</Text>
+                <Text style={styles.boxText}>{selectContact1 ? mUtils.allNumber(selectContact1) : '연락처'}</Text>
               </View>
             </View>
             <>
@@ -365,6 +398,8 @@ class SampleRequestsScreen extends PureComponent {
           </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
+    ) : (
+      <Loading />
     )
   }
 }
