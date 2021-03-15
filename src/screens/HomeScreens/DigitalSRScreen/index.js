@@ -309,7 +309,7 @@ class DigitalSRScreen extends PureComponent {
             <>
               <View style={{...styles.layout, justifyContent: 'space-between', paddingTop: mUtils.wScale(20), paddingBottom: mUtils.wScale(15)}}>
                 <View>
-                  {userType === 'M' && <Text style={styles.brandText}>GUCCI</Text>}
+                  {userType === 'M' && <Text style={styles.brandText}>{data.current_brand_info.brand_nm}</Text>}
                   <Menu>
                     <MenuTrigger
                       customStyles={{
@@ -409,7 +409,7 @@ class DigitalSRScreen extends PureComponent {
             <TouchableOpacity
               style={styles.bottomButton}
               onPress={() => {
-                this.pushTo('SampleRequestsScreen', {modelList: select, delSelect: this.selected})
+                this.pushTo('SampleRequestsScreen', {modelList: select, delSelect: this.selected, brandId: data.current_brand_info.brand_id})
               }}
             >
               <Text style={{...styles.bottomText3}}>Request Samples</Text>
