@@ -657,6 +657,17 @@ const API = {
     }
     return Api.get(apiName, path, init)
   },
+  postSRRequest: ({showroom_list, brand_id}) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/showroom-request`
+    const myInit = {
+      body: {
+        showroom_list: showroom_list,
+        brand_id: brand_id,
+      },
+    }
+    return Api.post(apiName, path, myInit)
+  },
 }
 
 export default API
