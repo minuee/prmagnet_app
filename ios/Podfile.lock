@@ -222,7 +222,7 @@ PODS:
   - React-jsinspector (0.64.0)
   - react-native-date-picker (3.2.10):
     - React-Core
-  - react-native-image-picker (3.2.1):
+  - react-native-image-picker (3.3.2):
     - React-Core
   - react-native-netinfo (6.0.0):
     - React-Core
@@ -500,7 +500,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 06a9c77b56902ae7ffcdd7a4905f664adc5d237b
   React-jsinspector: 0ae35a37b20d5e031eb020a69cc5afdbd6406301
   react-native-date-picker: 242eec7af56cea5fb2706d5db5d3837060b3884b
-  react-native-image-picker: 64d12e81f3d9dad0af107fe6536b295d51932ec0
+  react-native-image-picker: b42940647478bf106ad3c491d6f5d9d40916d865
   react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865

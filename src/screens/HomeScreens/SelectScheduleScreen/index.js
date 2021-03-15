@@ -78,10 +78,9 @@ class SelectScheduleScreen extends PureComponent {
     period[dateString] = {
       color: '#999999',
       endingDay: true,
-      customContainerStyle: {
-        borderTopRightRadius: 16,
-        borderBottomRightRadius: 16,
-      },
+      // customContainerStyle: {
+      //   borderRadius: 16,
+      // },
     }
     return period
   }
@@ -145,7 +144,15 @@ class SelectScheduleScreen extends PureComponent {
                 onDayPress={this.setDay}
                 markingType="period"
                 markedDates={period}
+                monthFormat={'MM'}
                 style={styles.calder}
+                theme={{
+                  dayTextColor: 'black',
+                  monthTextColor: 'black',
+                  textDayFontWeight: 'bold',
+                  textMonthFontWeight: 'bold',
+                  textMonthFontSize: 25,
+                }}
               />
             </Row>
             <Row style={styles.bottom}>
