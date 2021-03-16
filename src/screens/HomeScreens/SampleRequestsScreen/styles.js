@@ -97,6 +97,16 @@ export default StyleSheet.create({
   },
   layout: {
     flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  layout1: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: mUtils.wScale(35),
+    //backgroundColor: 'red',
+  },
+  layout2: {
+    flexDirection: 'row',
     alignItems: 'center',
   },
   box1: {
@@ -125,6 +135,14 @@ export default StyleSheet.create({
     borderColor: mConst.borderGray,
     fontFamily: 'Roboto-Regular',
     fontSize: 12,
+    textAlign: 'left',
+    color: '#555555',
+    paddingHorizontal: mUtils.wScale(8),
+    paddingVertical: Platform.OS === 'ios' ? mUtils.wScale(7) : mUtils.wScale(1.2),
+  },
+  inputBox1: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 14,
     textAlign: 'left',
     color: '#555555',
     paddingHorizontal: mUtils.wScale(8),

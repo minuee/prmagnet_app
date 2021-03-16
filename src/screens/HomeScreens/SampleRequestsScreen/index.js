@@ -23,6 +23,7 @@ const starImg = require('../../../images/navi/star_1.png')
 const checkImg = require('../../../images/navi/check_1.png')
 const noCheckImg = require('../../../images/navi/no_check_1.png')
 const plusImg = require('../../../images/navi/plus_2.png')
+const minusImg = require('../../../images/navi/minus_1.png')
 const checkImg2 = require('../../../images/navi/check_2.png')
 const checkImg3 = require('../../../images/navi/check_3.png')
 const selectImg2 = require('../../../images/navi/select_2.png')
@@ -80,13 +81,14 @@ class SampleRequestsScreen extends PureComponent {
       startTime: '',
       endTime: '',
       destination: '',
+      destination1: '',
       shippingNote: '',
       concept: '',
-      celebrity: [],
-      fashionModel: [],
+      celebrity: [''],
+      fashionModel: [''],
       payPictorialDesc: '',
       locateShoot: '',
-      todayConnect: false,
+      todayConnect: 'No',
       numberPage: '',
       togetherBrand: '',
       message: '',
@@ -107,6 +109,7 @@ class SampleRequestsScreen extends PureComponent {
       startTime,
       endTime,
       destination,
+      destination1,
       shippingNote,
       concept,
       celebrity,
@@ -119,14 +122,16 @@ class SampleRequestsScreen extends PureComponent {
       message,
     } = this.state
     const {brandId} = this.props.route.params
+    let list = selected.map((item, index) => item.showroom_no)
+    console.log('>>>>>', selected)
     try {
       let response = await API.postSRRequestSend({
         brand_id: brandId,
-        duty_recpt_dt: pkDate,
-        photogrf_dt: shDate,
+        duty_recpt_dt: pkDate.timestamp,
+        photogrf_dt: shDate.timestamp,
         begin_dt: startTime,
         end_dt: endTime,
-        return_prearnge_dt: rtDate,
+        return_prearnge_dt: rtDate.timestamp,
         photogrf_concept: concept,
         model_list: fashionModel,
         celeb_list: celebrity,
@@ -135,9 +140,9 @@ class SampleRequestsScreen extends PureComponent {
         etc_brand: togetherBrand,
         today_connect: todayConnect,
         add_req_cntent: message,
-        dlvy_adres_nm: destination,
+        dlvy_adres_nm: destination ? destination : destination1,
         dlvy_atent_matter: shippingNote,
-        showroom_list: selected,
+        showroom_list: list,
         contact_user_id: selectContact.user_id,
         loc_value: locateShoot,
       })
@@ -210,6 +215,7 @@ class SampleRequestsScreen extends PureComponent {
       startTime,
       endTime,
       destination,
+      destination1,
       shippingNote,
       concept,
       celebrity,
@@ -267,7 +273,7 @@ class SampleRequestsScreen extends PureComponent {
             <Text style={{...styles.subTitle}}>Request Information</Text>
             <View
               style={{
-                ...styles.layout,
+                ...styles.layout2,
                 justifyContent: 'space-between',
                 paddingTop: mUtils.wScale(20),
                 paddingBottom: mUtils.wScale(18),
@@ -289,7 +295,7 @@ class SampleRequestsScreen extends PureComponent {
             <Text style={styles.smallTitle}>
               Contact <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
             </Text>
-            <View style={{...styles.layout, justifyContent: 'space-between'}}>
+            <View style={{...styles.layout2, justifyContent: 'space-between'}}>
               <Menu style={{width: '49%'}}>
                 <MenuTrigger
                   customStyles={{
@@ -319,7 +325,7 @@ class SampleRequestsScreen extends PureComponent {
             <>
               <View
                 style={{
-                  ...styles.layout,
+                  ...styles.layout2,
                   justifyContent: 'space-between',
                   paddingTop: mUtils.wScale(20),
                   paddingBottom: mUtils.wScale(18),
@@ -391,8 +397,64 @@ class SampleRequestsScreen extends PureComponent {
                 </View>
               ) : null}
             </>
+            <View
+              style={{
+                ...styles.layout2,
+                justifyContent: 'space-between',
+                paddingBottom: mUtils.wScale(20),
+              }}
+            >
+              <View style={{width: '49%'}}>
+                <Text style={styles.smallTitle}>Start Time</Text>
+                <Menu>
+                  <MenuTrigger
+                    customStyles={{
+                      TriggerTouchableComponent: TouchableOpacity,
+                    }}
+                  >
+                    <View style={{...styles.box1, justifyContent: 'space-between'}}>
+                      <Text style={styles.boxText}>{startTime ? `${startTime}:00` : '00:00'}</Text>
+                      <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                    </View>
+                  </MenuTrigger>
+                  <MenuOptions optionsContainerStyle={{marginTop: mUtils.wScale(35), width: mUtils.wScale(184)}}>
+                    {time.map((item, index) => {
+                      return (
+                        <MenuOption key={index} style={styles.contactList} onSelect={() => this.setState({startTime: item})}>
+                          <Text style={styles.contactText}>{item}:00</Text>
+                        </MenuOption>
+                      )
+                    })}
+                  </MenuOptions>
+                </Menu>
+              </View>
+              <View style={{width: '49%'}}>
+                <Text style={styles.smallTitle}>End Time</Text>
+                <Menu>
+                  <MenuTrigger
+                    customStyles={{
+                      TriggerTouchableComponent: TouchableOpacity,
+                    }}
+                  >
+                    <View style={{...styles.box1, justifyContent: 'space-between'}}>
+                      <Text style={styles.boxText}>{endTime ? `${endTime}:00` : '00:00'}</Text>
+                      <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                    </View>
+                  </MenuTrigger>
+                  <MenuOptions optionsContainerStyle={{marginTop: mUtils.wScale(35), width: mUtils.wScale(184)}}>
+                    {time.map((item, index) => {
+                      return (
+                        <MenuOption key={index} style={styles.contactList} onSelect={() => this.setState({endTime: item})}>
+                          <Text style={styles.contactText}>{item}:00</Text>
+                        </MenuOption>
+                      )
+                    })}
+                  </MenuOptions>
+                </Menu>
+              </View>
+            </View>
             <Text style={styles.smallTitle}>Shipping destination</Text>
-            <View style={{...styles.layout, justifyContent: 'space-between'}}>
+            <View style={{...styles.layout2, justifyContent: 'space-between'}}>
               <Menu style={{width: '100%'}}>
                 <MenuTrigger
                   customStyles={{
@@ -415,16 +477,29 @@ class SampleRequestsScreen extends PureComponent {
                 </MenuOptions>
               </Menu>
             </View>
-            <TextInput style={{...styles.inputBox, marginTop: mUtils.wScale(6), marginBottom: mUtils.wScale(18)}} />
+            {!destination && (
+              <TextInput
+                style={{...styles.inputBox, marginTop: mUtils.wScale(6), marginBottom: mUtils.wScale(18)}}
+                value={destination1}
+                onChangeText={text => {
+                  this.setState({destination1: text})
+                }}
+              />
+            )}
+
             <Text style={styles.smallTitle}>Shipping Notes</Text>
             <TextInput
               style={{...styles.inputBox, height: mUtils.wScale(75), marginTop: mUtils.wScale(6)}}
               multiline={true}
               textAlignVertical={'top'}
+              value={shippingNote}
+              onChangeText={text => {
+                this.setState({shippingNote: text})
+              }}
             />
             <View
               style={{
-                ...styles.layout,
+                ...styles.layout2,
                 justifyContent: 'space-between',
                 paddingTop: mUtils.wScale(20),
                 paddingBottom: mUtils.wScale(18),
@@ -432,62 +507,149 @@ class SampleRequestsScreen extends PureComponent {
             >
               <View style={{width: '100%'}}>
                 <Text style={styles.smallTitle}>촬영컨셉</Text>
-                <TextInput style={{...styles.inputBox}} placeholder={'컨셉'} placeholderTextColor={mConst.borderGray} />
+                <TextInput
+                  style={{...styles.inputBox}}
+                  placeholder={'컨셉'}
+                  placeholderTextColor={mConst.borderGray}
+                  onChangeText={text => {
+                    this.setState({concept: text})
+                  }}
+                />
               </View>
             </View>
             <Text style={styles.smallTitle}>
               Model <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
             </Text>
             <View style={{...styles.layout, justifyContent: 'space-between', width: '100%'}}>
-              <View style={{...styles.layout}}>
-                <FastImage resizeMode={'contain'} style={styles.checkImg} source={checkImg} />
+              <View style={{...styles.layout1}}>
+                <FastImage resizeMode={'contain'} style={styles.checkImg} source={celebrity[0] ? checkImg : noCheckImg} />
                 <Text style={{...styles.smallTitle, marginBottom: 0, marginLeft: mUtils.wScale(5)}}>Celebrity</Text>
               </View>
-              <View style={{...styles.box2, width: '65%'}}>
-                <Text style={styles.boxText}>아이린</Text>
-                <TouchableOpacity>
-                  <FastImage resizeMode={'contain'} style={styles.plusImg} source={plusImg} />
-                </TouchableOpacity>
+              <View style={{width: '65%'}}>
+                {celebrity.map((item, index) => {
+                  return (
+                    <View style={{...styles.box2}} key={index}>
+                      <TextInput
+                        style={{...styles.inputBox1}}
+                        placeholder={'이름'}
+                        placeholderTextColor={mConst.borderGray}
+                        value={item}
+                        onChangeText={text => {
+                          let tmp = [...celebrity]
+                          tmp[index] = text
+                          this.setState({celebrity: tmp})
+                        }}
+                      />
+                      {index === 0 ? (
+                        <TouchableOpacity
+                          onPress={() => {
+                            this.setState({celebrity: [...celebrity, '']})
+                          }}
+                        >
+                          <FastImage resizeMode={'contain'} style={styles.plusImg} source={plusImg} />
+                        </TouchableOpacity>
+                      ) : (
+                        <TouchableOpacity
+                          onPress={() => {
+                            let result = celebrity.filter((e, i) => i !== index)
+                            this.setState({celebrity: result})
+                          }}
+                        >
+                          <FastImage resizeMode={'contain'} style={styles.plusImg} source={minusImg} />
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                  )
+                })}
               </View>
             </View>
             <View
-              style={{...styles.layout, justifyContent: 'space-between', width: '100%', marginTop: mUtils.wScale(5), marginBottom: mUtils.wScale(18)}}
+              style={{
+                ...styles.layout,
+                justifyContent: 'space-between',
+                width: '100%',
+                marginTop: mUtils.wScale(5),
+                marginBottom: mUtils.wScale(18),
+              }}
             >
-              <View style={{...styles.layout}}>
-                <FastImage resizeMode={'contain'} style={styles.checkImg} source={noCheckImg} />
+              <View style={{...styles.layout1}}>
+                <FastImage resizeMode={'contain'} style={styles.checkImg} source={fashionModel[0] ? checkImg : noCheckImg} />
                 <Text style={{...styles.smallTitle, marginBottom: 0, marginLeft: mUtils.wScale(5)}}>Fashion Model</Text>
               </View>
-              <View style={{...styles.box2, width: '65%'}}>
-                <Text style={styles.boxText}></Text>
-                <TouchableOpacity>
-                  <FastImage resizeMode={'contain'} style={styles.plusImg} source={plusImg} />
-                </TouchableOpacity>
+              <View style={{width: '65%'}}>
+                {fashionModel.map((item, index) => {
+                  return (
+                    <View style={{...styles.box2}}>
+                      <TextInput
+                        style={{...styles.inputBox1}}
+                        placeholder={'이름'}
+                        placeholderTextColor={mConst.borderGray}
+                        value={item}
+                        onChangeText={text => {
+                          let tmp = [...fashionModel]
+                          tmp[index] = text
+                          this.setState({fashionModel: tmp})
+                        }}
+                      />
+                      {index === 0 ? (
+                        <TouchableOpacity
+                          onPress={() => {
+                            this.setState({fashionModel: [...fashionModel, '']})
+                          }}
+                        >
+                          <FastImage resizeMode={'contain'} style={styles.plusImg} source={plusImg} />
+                        </TouchableOpacity>
+                      ) : (
+                        <TouchableOpacity
+                          onPress={() => {
+                            let result = fashionModel.filter((e, i) => i !== index)
+                            this.setState({fashionModel: result})
+                          }}
+                        >
+                          <FastImage resizeMode={'contain'} style={styles.plusImg} source={minusImg} />
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                  )
+                })}
               </View>
             </View>
             <Text style={styles.smallTitle}>
               유가화보 <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
             </Text>
-            <View style={{...styles.layout, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
-              <FastImage resizeMode={'contain'} style={styles.checkImg} source={noCheckImg} />
-              <TextInput style={{...styles.inputBox, width: '95%'}} placeholder={'Brand Name'} placeholderTextColor={mConst.borderGray} />
+            <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
+              <FastImage resizeMode={'contain'} style={styles.checkImg} source={payPictorialDesc ? checkImg : noCheckImg} />
+              <TextInput
+                style={{...styles.inputBox, width: '95%'}}
+                placeholder={'Brand Name'}
+                placeholderTextColor={mConst.borderGray}
+                value={payPictorialDesc}
+                onChangeText={text => {
+                  this.setState({payPictorialDesc: text})
+                }}
+              />
             </View>
             <Text style={styles.smallTitle}>당일연결 희망/ 가능 여부</Text>
             <View
-              style={{...styles.layout, width: '100%', justifyContent: 'space-between', marginBottom: mUtils.wScale(18), marginTop: mUtils.wScale(3)}}
+              style={{
+                ...styles.layout2,
+                width: '100%',
+                justifyContent: 'space-between',
+                marginBottom: mUtils.wScale(18),
+                marginTop: mUtils.wScale(3),
+              }}
             >
               {yesNo.map((item, index) => {
                 return (
                   <TouchableOpacity
                     key={index}
                     onPress={() => {
-                      this.setState({...this.state, yesNo: item})
+                      this.setState({todayConnect: item})
                     }}
-                    style={{...styles.yesNoBox, borderColor: this.state.yesNo === item ? mConst.black : mConst.borderGray}}
+                    style={{...styles.yesNoBox, borderColor: todayConnect === item ? mConst.black : mConst.borderGray}}
                   >
-                    <FastImage resizeMode={'contain'} style={styles.checkImg2} source={this.state.yesNo === item ? checkImg2 : checkImg3} />
-                    <Text
-                      style={{...styles.yesNo, marginLeft: mUtils.wScale(5), color: this.state.yesNo === item ? mConst.black : mConst.borderGray}}
-                    >
+                    <FastImage resizeMode={'contain'} style={styles.checkImg2} source={todayConnect === item ? checkImg2 : checkImg3} />
+                    <Text style={{...styles.yesNo, marginLeft: mUtils.wScale(5), color: todayConnect === item ? mConst.black : mConst.borderGray}}>
                       {item}
                     </Text>
                   </TouchableOpacity>
@@ -499,21 +661,38 @@ class SampleRequestsScreen extends PureComponent {
               style={{...styles.inputBox, marginTop: mUtils.wScale(3), marginBottom: mUtils.wScale(18)}}
               placeholder={'Number of pages'}
               placeholderTextColor={mConst.borderGray}
+              value={numberPage}
+              onChangeText={text => {
+                this.setState({numberPage: text})
+              }}
             />
             <Text style={styles.smallTitle}>함께 들어가는 브랜드</Text>
             <TextInput
               style={{...styles.inputBox, marginTop: mUtils.wScale(3), marginBottom: mUtils.wScale(18)}}
               placeholder={'Different brand'}
               placeholderTextColor={mConst.borderGray}
+              value={togetherBrand}
+              onChangeText={text => {
+                this.setState({togetherBrand: text})
+              }}
             />
             <Text style={styles.smallTitle}>Message</Text>
             <TextInput
               style={{...styles.inputBox, height: mUtils.wScale(75), marginTop: mUtils.wScale(3), marginBottom: mUtils.wScale(18)}}
               multiline={true}
               textAlignVertical={'top'}
+              value={message}
+              onChangeText={text => {
+                this.setState({message: text})
+              }}
             />
           </View>
-          <TouchableOpacity style={{...styles.bottomButton, backgroundColor: mConst.black}}>
+          <TouchableOpacity
+            style={{...styles.bottomButton, backgroundColor: mConst.black}}
+            onPress={() => {
+              this.postSRRequestSend()
+            }}
+          >
             <Text style={{...styles.buttonText, color: mConst.white}}>Sample Request</Text>
           </TouchableOpacity>
         </ScrollView>
