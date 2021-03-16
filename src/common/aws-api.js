@@ -668,6 +668,54 @@ const API = {
     }
     return Api.post(apiName, path, myInit)
   },
+  postSRRequestSend: ({
+    brand_id,
+    duty_recpt_dt,
+    photogrf_dt,
+    begin_dt,
+    end_dt,
+    return_prearnge_dt,
+    photogrf_concept,
+    model_list,
+    celeb_list,
+    picalbm_cntent,
+    page_cnt,
+    etc_brand,
+    today_connect,
+    add_req_cntent,
+    dlvy_adres_nm,
+    dlvy_atent_matter,
+    showroom_list,
+    contact_user_id,
+    loc_value,
+  }) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/showroom-request-send`
+    const myInit = {
+      body: {
+        brand_id: brand_id,
+        duty_recpt_dt: duty_recpt_dt,
+        photogrf_dt: photogrf_dt,
+        begin_dt: begin_dt,
+        end_dt: end_dt,
+        return_prearnge_dt: return_prearnge_dt,
+        photogrf_concept: photogrf_concept,
+        model_list: model_list,
+        celeb_list: celeb_list,
+        picalbm_cntent: picalbm_cntent,
+        page_cnt: page_cnt,
+        etc_brand: etc_brand,
+        today_connect: today_connect,
+        add_req_cntent: add_req_cntent,
+        dlvy_adres_nm: dlvy_adres_nm,
+        dlvy_atent_matter: dlvy_atent_matter,
+        showroom_list: showroom_list,
+        contact_user_id: contact_user_id,
+        loc_value: loc_value,
+      },
+    }
+    return Api.post(apiName, path, myInit)
+  },
 }
 
 export default API

@@ -38,41 +38,112 @@ LocaleConfig.locales['en'] = {
 }
 LocaleConfig.defaultLocale = 'en'
 
-const _format = 'YYYY-MM-DD'
-const _today = moment().format(_format)
-const _maxDate = moment().add(15, 'days').format(_format)
+const time = [
+  '00',
+  '01',
+  '02',
+  '03',
+  '04',
+  '05',
+  '06',
+  '07',
+  '08',
+  '09',
+  '10',
+  '11',
+  '12',
+  '13',
+  '14',
+  '15',
+  '16',
+  '17',
+  '18',
+  '19',
+  '20',
+  '21',
+  '22',
+  '23',
+]
 
 class SampleRequestsScreen extends PureComponent {
-  initialState = {
-    [_today]: {disabled: true},
-  }
-
   constructor(props) {
     super(props)
     cBind(this)
     this.state = {
-      defaultInfo: '',
       selected: [],
-      yesNo: '',
-      payPictorial: false,
-      payPictorialDesc: '',
+      defaultInfo: '',
+      selectContact: '',
+      selectContact1: '',
       shDate: '',
       pkDate: '',
       rtDate: '',
+      startTime: '',
+      endTime: '',
       destination: '',
-      destination1: '',
-      shNote: '',
+      shippingNote: '',
       concept: '',
-      shTime: '',
       celebrity: [],
       fashionModel: [],
+      payPictorialDesc: '',
+      locateShoot: '',
       todayConnect: false,
       numberPage: '',
       togetherBrand: '',
       message: '',
-      _markedDates: {},
-      selectContact: '',
-      selectContact1: '',
+      drop: false,
+      drop1: false,
+      drop2: false,
+    }
+  }
+
+  postSRRequestSend = async () => {
+    const {
+      selected,
+      defaultInfo,
+      selectContact,
+      shDate,
+      pkDate,
+      rtDate,
+      startTime,
+      endTime,
+      destination,
+      shippingNote,
+      concept,
+      celebrity,
+      fashionModel,
+      payPictorialDesc,
+      locateShoot,
+      todayConnect,
+      numberPage,
+      togetherBrand,
+      message,
+    } = this.state
+    const {brandId} = this.props.route.params
+    try {
+      let response = await API.postSRRequestSend({
+        brand_id: brandId,
+        duty_recpt_dt: pkDate,
+        photogrf_dt: shDate,
+        begin_dt: startTime,
+        end_dt: endTime,
+        return_prearnge_dt: rtDate,
+        photogrf_concept: concept,
+        model_list: fashionModel,
+        celeb_list: celebrity,
+        picalbm_cntent: payPictorialDesc,
+        page_cnt: numberPage,
+        etc_brand: togetherBrand,
+        today_connect: todayConnect,
+        add_req_cntent: message,
+        dlvy_adres_nm: destination,
+        dlvy_atent_matter: shippingNote,
+        showroom_list: selected,
+        contact_user_id: selectContact.user_id,
+        loc_value: locateShoot,
+      })
+      console.log('postSRRequestSend>>>>', response)
+    } catch (error) {
+      console.log('postSRRequestSend>>>>', error)
     }
   }
 
@@ -89,16 +160,13 @@ class SampleRequestsScreen extends PureComponent {
   }
 
   onDaySelect = day => {
-    const _selectedDay = moment(day.dateString).format(_format)
-    let selected = true
-    console.log('>>>>>', this.state._markedDates)
-    console.log('??????', Object.keys(this.state._markedDates).length)
-    if (Object.keys(this.state._markedDates).length < 3) {
-      if (this.state._markedDates[_selectedDay]) {
-        selected = !this.state._markedDates[_selectedDay].selected
-      }
-      const updatedMarkedDates = {...this.state._markedDates, ...{[_selectedDay]: {selected}}}
-      this.setState({_markedDates: updatedMarkedDates})
+    const {drop, drop1, drop2} = this.state
+    if (drop) {
+      this.setState({shDate: day, drop: false})
+    } else if (drop1) {
+      this.setState({pkDate: day, drop1: false})
+    } else if (drop2) {
+      this.setState({rtDate: day, drop2: false})
     }
   }
 
@@ -132,8 +200,30 @@ class SampleRequestsScreen extends PureComponent {
   }
 
   render() {
-    const {selected, drop, shDate, pkDate, rtDate, defaultInfo, selectContact, selectContact1} = this.state
-    const {user} = this.props
+    const {
+      selected,
+      defaultInfo,
+      selectContact,
+      shDate,
+      pkDate,
+      rtDate,
+      startTime,
+      endTime,
+      destination,
+      shippingNote,
+      concept,
+      celebrity,
+      fashionModel,
+      payPictorialDesc,
+      locateShoot,
+      todayConnect,
+      numberPage,
+      togetherBrand,
+      message,
+      drop,
+      drop1,
+      drop2,
+    } = this.state
     return defaultInfo ? (
       <SafeAreaView style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -207,17 +297,14 @@ class SampleRequestsScreen extends PureComponent {
                   }}
                 >
                   <View style={{...styles.box1, justifyContent: 'space-between'}}>
-                    <Text style={styles.boxText}>{selectContact ? selectContact : 'Editor/Stylist'}</Text>
+                    <Text style={styles.boxText}>{selectContact ? selectContact.mgzn_user_nm : 'Editor/Stylist'}</Text>
                     <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
                   </View>
                 </MenuTrigger>
                 <MenuOptions optionsContainerStyle={{marginTop: mUtils.wScale(35), width: mUtils.wScale(184)}}>
                   {defaultInfo.contact_info.map((item, index) => {
                     return (
-                      <MenuOption
-                        style={styles.contactList}
-                        onSelect={() => this.setState({selectContact: item.mgzn_user_nm, selectContact1: item.phone_no})}
-                      >
+                      <MenuOption key={index} style={styles.contactList} onSelect={() => this.setState({selectContact: item})}>
                         <Text style={styles.contactText}>{`${item.mgzn_user_nm}(${mUtils.allNumber(item.phone_no)})`}</Text>
                       </MenuOption>
                     )
@@ -226,7 +313,7 @@ class SampleRequestsScreen extends PureComponent {
               </Menu>
 
               <View style={{...styles.box1, width: '49%'}}>
-                <Text style={styles.boxText}>{selectContact1 ? mUtils.allNumber(selectContact1) : '연락처'}</Text>
+                <Text style={styles.boxText}>{selectContact ? mUtils.allNumber(selectContact.phone_no) : '연락처'}</Text>
               </View>
             </View>
             <>
@@ -243,39 +330,46 @@ class SampleRequestsScreen extends PureComponent {
                   <TouchableOpacity
                     style={{...styles.box1, justifyContent: 'space-between'}}
                     onPress={() => {
-                      this.setState({drop: !drop})
+                      this.setState({drop: !drop, drop1: false, drop2: false})
                     }}
                   >
-                    <Text style={styles.boxText}>8/4(토)</Text>
+                    <Text style={styles.boxText}>
+                      {shDate ? `${shDate.month}/${shDate.day}(${moment(shDate.timestamp).format('ddd')})` : '0/0(일)'}
+                    </Text>
                     <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
                   </TouchableOpacity>
                 </View>
                 <View style={{width: '32%'}}>
                   <Text style={styles.smallTitle}>Pickup Date</Text>
-                  <TouchableOpacity style={{...styles.box1, justifyContent: 'space-between'}}>
-                    <Text style={styles.boxText}>8/3(금)</Text>
+                  <TouchableOpacity
+                    style={{...styles.box1, justifyContent: 'space-between'}}
+                    onPress={() => {
+                      this.setState({drop1: !drop1, drop: false, drop2: false})
+                    }}
+                  >
+                    <Text style={styles.boxText}>
+                      {pkDate ? `${pkDate.month}/${pkDate.day}(${moment(pkDate.timestamp).format('ddd')})` : '0/0(일)'}
+                    </Text>
                     <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
                   </TouchableOpacity>
                 </View>
                 <View style={{width: '32%'}}>
                   <Text style={styles.smallTitle}>Returning Date</Text>
-                  <TouchableOpacity style={{...styles.box1, justifyContent: 'space-between'}}>
-                    <Text style={styles.boxText}>8/6 (월)</Text>
+                  <TouchableOpacity
+                    style={{...styles.box1, justifyContent: 'space-between'}}
+                    onPress={() => {
+                      this.setState({drop2: !drop2, drop: false, drop1: false})
+                    }}
+                  >
+                    <Text style={styles.boxText}>
+                      {rtDate ? `${rtDate.month}/${rtDate.day}(${moment(rtDate.timestamp).format('ddd')})` : '0/0(일)'}
+                    </Text>
                     <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
                   </TouchableOpacity>
                 </View>
               </View>
-              {drop ? (
-                <View
-                  style={{
-                    alignSelf: 'center',
-                    position: 'absolute',
-                    zIndex: 1,
-                    top: mUtils.wScale(215),
-                    paddingHorizontal: mUtils.wScale(20),
-                    width: '100%',
-                  }}
-                >
+              {drop || drop1 || drop2 ? (
+                <View style={styles.calendar}>
                   <Calendar
                     minDate={Date()}
                     monthFormat={'yyyy MMMM'}
@@ -284,17 +378,43 @@ class SampleRequestsScreen extends PureComponent {
                       borderWidth: 1,
                       borderColor: '#dddddd',
                     }}
-                    maxDate={_maxDate}
-                    // hideArrows={true}
-
                     onDayPress={this.onDaySelect}
-                    markedDates={this.state._markedDates}
+                    //markedDates={{
+                    //  [dateSelect]: {
+                    //    selected: true,
+                    //    disableTouchEvent: true,
+                    //    selectedColor: '#108ee9',
+                    //    selectedTextColor: '#ffffff',
+                    //  },
+                    //}}
                   />
                 </View>
               ) : null}
             </>
             <Text style={styles.smallTitle}>Shipping destination</Text>
-            <TextInput style={{...styles.inputBox, marginTop: mUtils.wScale(6)}} />
+            <View style={{...styles.layout, justifyContent: 'space-between'}}>
+              <Menu style={{width: '100%'}}>
+                <MenuTrigger
+                  customStyles={{
+                    TriggerTouchableComponent: TouchableOpacity,
+                  }}
+                >
+                  <View style={{...styles.box1, justifyContent: 'space-between'}}>
+                    <Text style={styles.boxText1}>{destination ? destination : 'Last delivery address(직접입력)'}</Text>
+                    <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                  </View>
+                </MenuTrigger>
+                <MenuOptions optionsContainerStyle={{marginTop: mUtils.wScale(35), width: mUtils.wScale(370)}}>
+                  {defaultInfo.user.map((item, index) => {
+                    return (
+                      <MenuOption key={index} style={styles.contactList} onSelect={() => this.setState({destination: item.dlvy_adres_nm})}>
+                        <Text style={styles.contactText}>{item.dlvy_adres_nm}</Text>
+                      </MenuOption>
+                    )
+                  })}
+                </MenuOptions>
+              </Menu>
+            </View>
             <TextInput style={{...styles.inputBox, marginTop: mUtils.wScale(6), marginBottom: mUtils.wScale(18)}} />
             <Text style={styles.smallTitle}>Shipping Notes</Text>
             <TextInput
@@ -310,13 +430,9 @@ class SampleRequestsScreen extends PureComponent {
                 paddingBottom: mUtils.wScale(18),
               }}
             >
-              <View style={{width: '49%'}}>
+              <View style={{width: '100%'}}>
                 <Text style={styles.smallTitle}>촬영컨셉</Text>
                 <TextInput style={{...styles.inputBox}} placeholder={'컨셉'} placeholderTextColor={mConst.borderGray} />
-              </View>
-              <View style={{width: '49%'}}>
-                <Text style={styles.smallTitle}>Shooting time</Text>
-                <TextInput style={{...styles.inputBox}} placeholder={'시간'} placeholderTextColor={mConst.borderGray} />
               </View>
             </View>
             <Text style={styles.smallTitle}>
@@ -329,7 +445,9 @@ class SampleRequestsScreen extends PureComponent {
               </View>
               <View style={{...styles.box2, width: '65%'}}>
                 <Text style={styles.boxText}>아이린</Text>
-                <FastImage resizeMode={'contain'} style={styles.plusImg} source={plusImg} />
+                <TouchableOpacity>
+                  <FastImage resizeMode={'contain'} style={styles.plusImg} source={plusImg} />
+                </TouchableOpacity>
               </View>
             </View>
             <View
@@ -341,7 +459,9 @@ class SampleRequestsScreen extends PureComponent {
               </View>
               <View style={{...styles.box2, width: '65%'}}>
                 <Text style={styles.boxText}></Text>
-                <FastImage resizeMode={'contain'} style={styles.plusImg} source={plusImg} />
+                <TouchableOpacity>
+                  <FastImage resizeMode={'contain'} style={styles.plusImg} source={plusImg} />
+                </TouchableOpacity>
               </View>
             </View>
             <Text style={styles.smallTitle}>

@@ -51,6 +51,12 @@ export default StyleSheet.create({
     textAlign: 'left',
     color: '#555555',
   },
+  boxText1: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 14,
+    textAlign: 'left',
+    color: '#999999',
+  },
   postCode: {
     fontFamily: 'NotoSansKR-Medium',
     fontSize: 12,
@@ -180,5 +186,12 @@ export default StyleSheet.create({
   },
   contactList: {
     padding: mUtils.wScale(10),
+  },
+  calendar: {
+    alignSelf: 'center',
+    position: 'absolute',
+    zIndex: 1,
+    top: mUtils.wScale(247),
+    width: '100%',
   },
 })
