@@ -82,7 +82,6 @@ class PickupsScreen extends PureComponent {
   render() {
     const {data, checkedList, allChecked, loading} = this.state
     const fromName = mUtils.get(data, 'main_user_nm')
-    const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'phone_no'))
     const toName = mUtils.get(data, 'brand_user_nm')
     const toPhone = mUtils.phoneFormat(mUtils.get(data, 'brand_phone_no'))
     if (loading) return <Loading />
@@ -109,7 +108,6 @@ class PickupsScreen extends PureComponent {
               <Text style={styles.middleText}>Editor/Stylist</Text>
               <View style={styles.middleDescWrapper}>
                 <Text style={styles.middleDescTextBold}>{fromName}</Text>
-                <Text style={styles.middleDescText}> {fromPhone}</Text>
               </View>
             </View>
             <View style={styles.middleSubWrapper()}>
@@ -179,9 +177,7 @@ class PickupsScreen extends PureComponent {
                           key={subIndex}
                           checked={checkedList.includes(subItem.sample_no) || allChecked}
                           name={fromName}
-                          phone={fromPhone}
                           onLongPress={() => this.handleLongPress(fromName, subItem.sample_no)}
-                          onLongPressPhone={() => this.handleLongPressPhone(fromName, fromPhone)}
                           onSwipeCheck={() => this.handleCheckItem(fromName, subItem.sample_nm, subItem.sample_no)}
                           color={mConst.bgYellow}
                         />
