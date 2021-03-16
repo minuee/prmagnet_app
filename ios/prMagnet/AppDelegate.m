@@ -1,5 +1,6 @@
 #import "AppDelegate.h"
 #import "RNSplashScreen.h"
+#import <Firebase.h>
 #import <CodePush/CodePush.h>
 
 #import <React/RCTBridge.h>
@@ -43,6 +44,7 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  [FIRApp configure];
   [RNSplashScreen show];
 
   return YES;
