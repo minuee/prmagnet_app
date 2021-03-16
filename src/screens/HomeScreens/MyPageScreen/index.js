@@ -92,6 +92,22 @@ class MyPageScreen extends PureComponent {
             >
               <Text style={styles.text1}>공지사항</Text>
             </TouchableOpacity>
+            <TouchableOpacity
+              style={{paddingTop: mUtils.wScale(40)}}
+              onPress={() => {
+                navigation.navigate('TermsScreen')
+              }}
+            >
+              <Text style={styles.text1}>이용약관</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{paddingTop: mUtils.wScale(40)}}
+              onPress={() => {
+                navigation.navigate('PersonalScreen')
+              }}
+            >
+              <Text style={styles.text1}>개인정보 처리방침</Text>
+            </TouchableOpacity>
             <View style={styles.version}>
               <Text style={styles.text1}>버전 정보</Text>
               <Text style={styles.text2}>{DeviceInfo.getVersion()}</Text>
