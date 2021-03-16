@@ -1,7 +1,9 @@
+import messaging from '@react-native-firebase/messaging'
 import moment from 'moment'
 import _ from 'lodash'
 
 import mConst from './constants'
+import mStorage from './storage'
 
 const EMAIL_FORMAT = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,}$/i
 const PASSWORD_RULE = /^(?=.*[a-zA-Z])(?=.*[!@#$%^~*+=-])(?=.*[0-9]).{8,16}$/i
@@ -390,6 +392,37 @@ const utils = {
       .replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/, '$1-$2-$3')
       .replace('--', '-')
     return result
+  },
+  async getFcmToken() {
+    const getToken = async () => {
+      if (mConst.bIos) {
+        // On iOS, if your app wants to receive remote messages from FCM (via APNs)
+        await messaging().registerDeviceForRemoteMessages()
+      }
+      let newFcmToken = await messaging().getToken()
+      if (newFcmToken) {
+        await mStorage.saveFcmToken(newFcmToken)
+      }
+      return newFcmToken
+    }
+    let fcmToken = await mStorage.loadFcmToken()
+    if (!fcmToken) {
+      let authStatus = await messaging().hasPermission()
+      if (authStatus !== messaging.AuthorizationStatus.AUTHORIZED && authStatus !== messaging.AuthorizationStatus.PROVISIONAL) {
+        await messaging().requestPermission()
+      }
+      authStatus = await messaging().hasPermission()
+      if (authStatus === messaging.AuthorizationStatus.AUTHORIZED || authStatus === messaging.AuthorizationStatus.PROVISIONAL) {
+        fcmToken = await getToken()
+      } else {
+        fcmToken = 'DEFAULT_FCM_TOKEN'
+      }
+    }
+    console.log('fcmToken:', fcmToken)
+    return fcmToken
+  },
+  async getFcmEnabled() {
+    return await messaging().hasPermission()
   },
 }
 

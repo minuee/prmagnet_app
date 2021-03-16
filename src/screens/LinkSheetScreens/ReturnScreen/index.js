@@ -81,7 +81,6 @@ class ReturnScreen extends PureComponent {
   render() {
     const {data, checkedList, allChecked, loading} = this.state
     const fromName = mUtils.get(data, 'main_user_nm')
-    const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'phone_no'))
     const toName = mUtils.get(data, 'brand_user_nm')
     const toPhone = mUtils.phoneFormat(mUtils.get(data, 'brand_phone_no'))
     if (loading) return <Loading />
@@ -108,7 +107,6 @@ class ReturnScreen extends PureComponent {
               <Text style={styles.middleText}>Editor/Stylist</Text>
               <View style={styles.middleDescWrapper}>
                 <Text style={styles.middleDescTextBold}>{fromName}</Text>
-                <Text style={styles.middleDescText}> {fromPhone}</Text>
               </View>
             </View>
             <View style={styles.middleSubWrapper()}>
@@ -173,7 +171,7 @@ class ReturnScreen extends PureComponent {
                   </Col>
                   <Col style={styles.col(rowSize * 2)} size={6}>
                     {_.map(samples, (subItem, subIndex) => {
-                      return <LinkSheetUnit readOnly key={subIndex} name={fromName} phone={fromPhone} color={mConst.bgBlue} />
+                      return <LinkSheetUnit readOnly key={subIndex} name={fromName} color={mConst.bgBlue} />
                     })}
                   </Col>
                   <Col style={styles.col(rowSize * 2)} size={6}>
