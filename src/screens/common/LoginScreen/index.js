@@ -34,6 +34,7 @@ class LoginScreen extends PureComponent {
     const {email, pw} = this.state
     const {loginSuccess, loginFailure, userTypeSuccess} = this.props
     const hash = await sha256(pw.toString())
+    const pushKey = await mUtils.getFcmToken()
     const data = {
       email,
       pw, // : hash, //TODO 추후 암호화 적용

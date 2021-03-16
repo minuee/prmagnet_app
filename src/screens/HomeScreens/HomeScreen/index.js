@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react'
 import {AppState, SafeAreaView, View, TouchableWithoutFeedback, TouchableOpacity, TextInput, FlatList, ScrollView} from 'react-native'
 import {connect} from 'react-redux'
+import messaging from '@react-native-firebase/messaging'
 import FastImage from 'react-native-fast-image'
 import 'moment/locale/ko'
 import _ from 'lodash'
@@ -129,16 +130,38 @@ class HomeScreen extends PureComponent {
   componentDidMount() {
     const {user} = this.props
     global.mUserType = user.userType
+    // FCM 설정(PUSH 권한 요청)
+    this.setupFcm()
     this.onFocus(this.handleOnFocus)
   }
   componentWillUnmount() {
     this.removeFocus()
   }
-
   handleOnFocus = () => {
     this.getHome()
   }
-
+  setupFcm = async () => {
+    const fcmToken = await mUtils.getFcmToken()
+    if (fcmToken) {
+      const handleDataMessage = msg => {
+        this.alert(_.get(msg, 'data.title'), _.get(msg, 'data.body'))
+      }
+      messaging().onMessage(message => {
+        console.log('fcm-msg:', message)
+        if (_.isEmpty(message.data)) {
+          this.alert(_.get(message, 'notification.title'), _.get(message, 'notification.body'))
+        } else {
+          handleDataMessage(message)
+        }
+      })
+      messaging().setBackgroundMessageHandler(message => {
+        console.log('fcm-bg-msg:', message)
+        if (!_.isEmpty(message.data)) {
+          handleDataMessage(message)
+        }
+      })
+    }
+  }
   render() {
     const {user} = this.props
     const {data} = this.state
