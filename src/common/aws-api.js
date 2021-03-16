@@ -106,6 +106,16 @@ const API = {
   login: (data, rest) => {
     login(data, rest)
   },
+  setPushToken: ({token_value}) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/push-token`
+    const myInit = {
+      body: {
+        token_value,
+      },
+    }
+    return Api.post(apiName, path, myInit)
+  },
   getBrandPosition: () => {
     const apiName = v1Cdn
     const path = '/cdn/brand/position'

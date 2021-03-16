@@ -50,6 +50,7 @@ class LoginScreen extends PureComponent {
           userTypeSuccess(resUserType)
           loginSuccess(response)
         })
+        await API.setPushToken({token_value: pushKey})
         console.log('###로그인 성공:', response)
         // console.log('로그인 시 props 확인 : ', this.props)
       },
