@@ -3229,7 +3229,7 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-6.0.0.tgz#2a4d7190b508dd0c2293656c9c1aa068f6f60a71"
   integrity sha512-Z9M8VGcF2IZVOo2x+oUStvpCW/8HjIRi4+iQCu5n+PhC7OqCQX58KYAzdBr///alIfRXiu6oMb+lK+rXQH1FvQ==
 
-"@react-native-firebase/app@^11.1.0":
+"@react-native-firebase/app@11.1.0":
   version "11.1.0"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-11.1.0.tgz#08802784d68038c83568ea02a910ed1d64432535"
   integrity sha512-jZrPjwFxUaayugU5sqk98VYejwkRzhS+eaiHOegdSGbHMMcUBR5vIl7HuEjtvwfd5u6dvJWnstHk237fvwwFZQ==
@@ -3237,7 +3237,7 @@
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
 
-"@react-native-firebase/messaging@^11.1.0":
+"@react-native-firebase/messaging@11.1.0":
   version "11.1.0"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-11.1.0.tgz#301fee72f4d3489feeb436ec6d9e67a9e4f6e16a"
   integrity sha512-Mx6z/Rl7JaJs1by1f5FhjG6Yf9vud63PdiX8ha+C7rR39y7qZyQZHucPUU70dqwH5w/pYwaYFRSR3MXke0Kmfw==
