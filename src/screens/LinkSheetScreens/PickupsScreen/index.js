@@ -81,7 +81,7 @@ class PickupsScreen extends PureComponent {
   }
   render() {
     const {data, checkedList, allChecked, loading} = this.state
-    const fromName = mUtils.get(data, 'send_user_nm')
+    const fromName = mUtils.get(data, 'main_user_nm')
     const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'phone_no'))
     const toName = mUtils.get(data, 'brand_user_nm')
     const toPhone = mUtils.phoneFormat(mUtils.get(data, 'brand_phone_no'))
@@ -102,7 +102,7 @@ class PickupsScreen extends PureComponent {
           </View>
           <View style={styles.middleWrapper}>
             <Text style={styles.middleText}>Magazine</Text>
-            <Text style={styles.middleDescText}>{mUtils.get(data, 'brand_nm', '-')}</Text>
+            <Text style={styles.middleDescText}>{mUtils.get(data, 'posi_compy_nm', '-')}</Text>
           </View>
           <View style={styles.middleGroupWrapper}>
             <View style={styles.middleSubWrapper()}>
