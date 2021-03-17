@@ -46,6 +46,7 @@ import NoticeListScreen from './HomeScreens/NoticeListScreen'
 import NoticeDetailScreen from './HomeScreens/NoticeDetailScreen'
 import TermsScreen from './HomeScreens/TermsScreen'
 import PersonalScreen from './HomeScreens/PersonalScreen'
+import SampleRequestsDetailScreen from './HomeScreens/SampleRequestsDetailScreen'
 
 import DevNavigationScreen from './HomeScreens/DevNavigationScreen'
 
@@ -103,6 +104,7 @@ class RootScreen extends PureComponent {
         <MemberStack.Screen name="DevNavigationScreen" component={DevNavigationScreen} />
         <MemberStack.Screen name="LoginScreen" component={LoginScreen} />
         {/* 개발 편의를 위한 임시 화면 end --------- */}
+        <MemberStack.Screen name="SampleRequestsDetailScreen" component={SampleRequestsDetailScreen} />
         <MemberStack.Screen name="PersonalScreen" component={PersonalScreen} />
         <MemberStack.Screen name="TermsScreen" component={TermsScreen} />
         <MemberStack.Screen name="SearchScreen" component={SearchScreen} />

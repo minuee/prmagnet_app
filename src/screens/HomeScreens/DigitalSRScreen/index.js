@@ -409,7 +409,12 @@ class DigitalSRScreen extends PureComponent {
             <TouchableOpacity
               style={styles.bottomButton}
               onPress={() => {
-                this.pushTo('SampleRequestsScreen', {modelList: select, delSelect: this.selected, brandId: data.current_brand_info.brand_id})
+                this.pushTo('SampleRequestsScreen', {
+                  modelList: select,
+                  delSelect: this.selected,
+                  brandId: data.current_brand_info.brand_id,
+                  type: true,
+                })
               }}
             >
               <Text style={{...styles.bottomText3}}>Request Samples</Text>

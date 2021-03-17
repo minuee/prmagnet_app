@@ -7,6 +7,7 @@ import Postcode from 'react-native-daum-postcode'
 import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-menu'
 import {Calendar, LocaleConfig} from 'react-native-calendars'
 import moment from 'moment'
+import ModalDropdown from 'react-native-modal-dropdown'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -28,7 +29,10 @@ const checkImg2 = require('../../../images/navi/check_2.png')
 const checkImg3 = require('../../../images/navi/check_3.png')
 const selectImg2 = require('../../../images/navi/select_2.png')
 const delImg = require('../../../images/navi/del_1.png')
-const yesNo = ['Yes', 'No']
+const yesNo = [
+  {boolean: true, text: 'Yes'},
+  {boolean: false, text: 'No'},
+]
 
 LocaleConfig.locales['en'] = {
   monthNames: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
@@ -81,7 +85,6 @@ class SampleRequestsScreen extends PureComponent {
       startTime: '',
       endTime: '',
       destination: '',
-      destination1: '',
       shippingNote: '',
       concept: '',
       celebrity: [''],
@@ -109,7 +112,6 @@ class SampleRequestsScreen extends PureComponent {
       startTime,
       endTime,
       destination,
-      destination1,
       shippingNote,
       concept,
       celebrity,
@@ -127,11 +129,11 @@ class SampleRequestsScreen extends PureComponent {
     try {
       let response = await API.postSRRequestSend({
         brand_id: brandId,
-        duty_recpt_dt: pkDate.timestamp,
-        photogrf_dt: shDate.timestamp,
+        duty_recpt_dt: String(Math.floor(Number(pkDate.timestamp / 1000))),
+        photogrf_dt: String(Math.floor(Number(shDate.timestamp) / 1000)),
         begin_dt: startTime,
         end_dt: endTime,
-        return_prearnge_dt: rtDate.timestamp,
+        return_prearnge_dt: String(Math.floor(Number(rtDate.timestamp) / 1000)),
         photogrf_concept: concept,
         model_list: fashionModel,
         celeb_list: celebrity,
@@ -140,28 +142,90 @@ class SampleRequestsScreen extends PureComponent {
         etc_brand: togetherBrand,
         today_connect: todayConnect,
         add_req_cntent: message,
-        dlvy_adres_nm: destination ? destination : destination1,
+        dlvy_adres_nm: destination,
         dlvy_atent_matter: shippingNote,
         showroom_list: list,
         contact_user_id: selectContact.user_id,
         loc_value: locateShoot,
       })
       console.log('postSRRequestSend>>>>', response)
+      if (response.success) {
+        this.goBack()
+      }
     } catch (error) {
       console.log('postSRRequestSend>>>>', error)
     }
   }
 
+  editSRRequestSend = async () => {
+    const {
+      selected,
+      selectContact,
+      shDate,
+      pkDate,
+      rtDate,
+      startTime,
+      endTime,
+      destination,
+      shippingNote,
+      concept,
+      celebrity,
+      fashionModel,
+      payPictorialDesc,
+      locateShoot,
+      todayConnect,
+      numberPage,
+      togetherBrand,
+      message,
+    } = this.state
+    const {no} = this.props.route.params
+    let list = selected.map((item, index) => item.showroom_no)
+    console.log('>>>>>', selected)
+    try {
+      let response = await API.editSRRequestSend({
+        req_no: no,
+        duty_recpt_dt: String(Math.floor(Number(pkDate.timestamp / 1000))),
+        photogrf_dt: String(Math.floor(Number(shDate.timestamp) / 1000)),
+        begin_dt: startTime,
+        end_dt: endTime,
+        return_prearnge_dt: String(Math.floor(Number(rtDate.timestamp) / 1000)),
+        photogrf_concept: concept,
+        model_list: fashionModel,
+        celeb_list: celebrity,
+        picalbm_cntent: payPictorialDesc,
+        page_cnt: numberPage,
+        etc_brand: togetherBrand,
+        today_connect: todayConnect,
+        add_req_cntent: message,
+        dlvy_adres_nm: destination,
+        dlvy_atent_matter: shippingNote,
+        showroom_list: list,
+        contact_user_id: selectContact.user_id,
+        loc_value: locateShoot,
+      })
+      console.log('editSRRequestSend>>>>', response)
+      if (response.success) {
+        this.goBack()
+      }
+    } catch (error) {
+      console.log('editSRRequestSend>>>>', error)
+    }
+  }
+
   delModel = (item, index) => {
-    const {delSelect} = this.props.route.params
+    const {delSelect, type} = this.props.route.params
     this.setState(state => {
       const result = state.selected.filter((e, j) => index !== j)
-      if (result.length === 0) {
-        this.goBack()
+      if (type) {
+        if (result.length === 0) {
+          this.goBack()
+        }
       }
       return {selected: result}
     })
-    delSelect(item)
+    if (type) {
+      delSelect(item)
+    }
   }
 
   onDaySelect = day => {
@@ -176,11 +240,9 @@ class SampleRequestsScreen extends PureComponent {
   }
 
   postSRRequest = async () => {
-    const {modelList, brandId} = this.props.route.params
-    let arr = modelList.map((item, index) => item.showroom_no)
+    const {brandId, type, no} = this.props.route.params
     try {
       let response = await API.postSRRequest({
-        showroom_list: arr,
         brand_id: brandId,
       })
       console.log('postSRRequest>>>>', response)
@@ -190,10 +252,60 @@ class SampleRequestsScreen extends PureComponent {
     }
   }
 
+  getSampleRequests = async () => {
+    const {brandId, type, no} = this.props.route.params
+    try {
+      let response = await API.getSampleRequests({
+        req_no: no,
+      })
+      console.log('getSampleRequests>>>>', response)
+      this.setState({
+        selected: response.showroom_list,
+        selectContact: {
+          user_id: response.contact_user_id,
+          mgzn_user_nm: response.contact_username,
+          phone_no: response.contact_phone_no,
+        },
+        shDate: {
+          month: moment(response.shooting_date * 1000).format('MM'),
+          day: moment(response.shooting_date * 1000).format('DD'),
+          timestamp: response.shooting_date * 1000,
+        },
+        pkDate: {
+          month: moment(response.pickup_date * 1000).format('MM'),
+          day: moment(response.pickup_date * 1000).format('DD'),
+          timestamp: response.pickup_date * 1000,
+        },
+        rtDate: {
+          month: moment(response.returning_date * 1000).format('MM'),
+          day: moment(response.returning_date * 1000).format('DD'),
+          timestamp: response.returning_date * 1000,
+        },
+        startTime: response.shooting_start_time,
+        endTime: response.shooting_end_time,
+        destination: response.dlvy_adres_nm,
+        shippingNote: response.dlvy_atent_matter,
+        concept: response.photogrf_concept,
+        celebrity: response.celeb_list,
+        fashionModel: response.model_list,
+        payPictorialDesc: response.yukahwabo_content,
+        locateShoot: response.loc_value,
+        todayConnect: response.today_connect,
+        numberPage: response.page_cnt,
+        togetherBrand: response.etc_brand_info,
+        message: response.message,
+      })
+    } catch (error) {
+      console.log('getSampleRequests>>>>', error)
+    }
+  }
+
   componentDidMount() {
-    const {modelList} = this.props.route.params
+    const {modelList, type} = this.props.route.params
     this.pushOption('Sample Request')
-    this.setState({selected: modelList})
+    if (type) {
+      this.setState({selected: modelList})
+    }
     this.onFocus(this.handleOnFocus)
   }
   componentWillUnmount() {
@@ -202,6 +314,7 @@ class SampleRequestsScreen extends PureComponent {
 
   handleOnFocus = () => {
     this.postSRRequest()
+    this.getSampleRequests()
   }
 
   render() {
@@ -215,7 +328,6 @@ class SampleRequestsScreen extends PureComponent {
       startTime,
       endTime,
       destination,
-      destination1,
       shippingNote,
       concept,
       celebrity,
@@ -230,12 +342,13 @@ class SampleRequestsScreen extends PureComponent {
       drop1,
       drop2,
     } = this.state
+    const {type} = this.props.route.params
     return defaultInfo ? (
       <SafeAreaView style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{paddingHorizontal: mUtils.wScale(20)}}>
-            <Text style={{...styles.mainTitle, marginTop: mUtils.wScale(25)}}>Sample</Text>
-            <Text style={styles.mainTitle1}>Requests</Text>
+            <Text style={{...styles.mainTitle, marginTop: mUtils.wScale(25)}}>{type ? 'Sample' : 'My'}</Text>
+            <Text style={styles.mainTitle1}>Requests {!type && 'Edit'}</Text>
             <Text style={{...styles.subTitle, marginTop: mUtils.wScale(30)}}>
               Request product : <Text style={{color: '#7ea1b2'}}>{selected.length}</Text>
             </Text>
@@ -254,14 +367,16 @@ class SampleRequestsScreen extends PureComponent {
                     <View style={{...styles.select, backgroundColor: 'rgba(126, 161, 178, 0.8)'}}>
                       <FastImage resizeMode={'contain'} style={styles.selectImg} source={selectImg2} />
                     </View>
-                    <TouchableOpacity
-                      style={styles.del}
-                      onPress={() => {
-                        this.delModel(item, index)
-                      }}
-                    >
-                      <FastImage resizeMode={'contain'} style={styles.delImg} source={delImg} />
-                    </TouchableOpacity>
+                    {selected.length === 1 && !type ? null : (
+                      <TouchableOpacity
+                        style={styles.del}
+                        onPress={() => {
+                          this.delModel(item, index)
+                        }}
+                      >
+                        <FastImage resizeMode={'contain'} style={styles.delImg} source={delImg} />
+                      </TouchableOpacity>
+                    )}
                   </View>
                   <Text style={{...styles.modelTitle, marginTop: mUtils.wScale(8)}}>{item.showroom_nm}</Text>
                 </View>
@@ -296,27 +411,22 @@ class SampleRequestsScreen extends PureComponent {
               Contact <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
             </Text>
             <View style={{...styles.layout2, justifyContent: 'space-between'}}>
-              <Menu style={{width: '49%'}}>
-                <MenuTrigger
-                  customStyles={{
-                    TriggerTouchableComponent: TouchableOpacity,
-                  }}
-                >
-                  <View style={{...styles.box1, justifyContent: 'space-between'}}>
-                    <Text style={styles.boxText}>{selectContact ? selectContact.mgzn_user_nm : 'Editor/Stylist'}</Text>
-                    <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+              <ModalDropdown
+                style={{width: '49%'}}
+                dropdownStyle={{width: '44%'}}
+                onSelect={(i, v) => this.setState({selectContact: v})}
+                options={defaultInfo.contact_info}
+                renderRow={item => (
+                  <View style={styles.contactList}>
+                    <Text style={styles.contactText}>{`${item.mgzn_user_nm}(${mUtils.allNumber(item.phone_no)})`}</Text>
                   </View>
-                </MenuTrigger>
-                <MenuOptions optionsContainerStyle={{marginTop: mUtils.wScale(35), width: mUtils.wScale(184)}}>
-                  {defaultInfo.contact_info.map((item, index) => {
-                    return (
-                      <MenuOption key={index} style={styles.contactList} onSelect={() => this.setState({selectContact: item})}>
-                        <Text style={styles.contactText}>{`${item.mgzn_user_nm}(${mUtils.allNumber(item.phone_no)})`}</Text>
-                      </MenuOption>
-                    )
-                  })}
-                </MenuOptions>
-              </Menu>
+                )}
+              >
+                <View style={{...styles.box1, justifyContent: 'space-between'}}>
+                  <Text style={styles.boxText}>{selectContact ? selectContact.mgzn_user_nm : 'Editor/Stylist'}</Text>
+                  <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                </View>
+              </ModalDropdown>
 
               <View style={{...styles.box1, width: '49%'}}>
                 <Text style={styles.boxText}>{selectContact ? mUtils.allNumber(selectContact.phone_no) : '연락처'}</Text>
@@ -406,86 +516,67 @@ class SampleRequestsScreen extends PureComponent {
             >
               <View style={{width: '49%'}}>
                 <Text style={styles.smallTitle}>Start Time</Text>
-                <Menu>
-                  <MenuTrigger
-                    customStyles={{
-                      TriggerTouchableComponent: TouchableOpacity,
-                    }}
-                  >
-                    <View style={{...styles.box1, justifyContent: 'space-between'}}>
-                      <Text style={styles.boxText}>{startTime ? `${startTime}:00` : '00:00'}</Text>
-                      <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                <ModalDropdown
+                  dropdownStyle={{width: '44%'}}
+                  onSelect={(i, v) => this.setState({startTime: v})}
+                  renderRow={item => (
+                    <View style={styles.contactList}>
+                      <Text style={styles.contactText}>{item}:00</Text>
                     </View>
-                  </MenuTrigger>
-                  <MenuOptions optionsContainerStyle={{marginTop: mUtils.wScale(35), width: mUtils.wScale(184)}}>
-                    {time.map((item, index) => {
-                      return (
-                        <MenuOption key={index} style={styles.contactList} onSelect={() => this.setState({startTime: item})}>
-                          <Text style={styles.contactText}>{item}:00</Text>
-                        </MenuOption>
-                      )
-                    })}
-                  </MenuOptions>
-                </Menu>
+                  )}
+                  options={time}
+                >
+                  <View style={{...styles.box1, justifyContent: 'space-between'}}>
+                    <Text style={styles.boxText}>{startTime ? `${startTime}:00` : '00:00'}</Text>
+                    <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                  </View>
+                </ModalDropdown>
               </View>
               <View style={{width: '49%'}}>
                 <Text style={styles.smallTitle}>End Time</Text>
-                <Menu>
-                  <MenuTrigger
-                    customStyles={{
-                      TriggerTouchableComponent: TouchableOpacity,
-                    }}
-                  >
-                    <View style={{...styles.box1, justifyContent: 'space-between'}}>
-                      <Text style={styles.boxText}>{endTime ? `${endTime}:00` : '00:00'}</Text>
-                      <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                <ModalDropdown
+                  dropdownStyle={{width: '44%'}}
+                  onSelect={(i, v) => this.setState({endTime: v})}
+                  renderRow={item => (
+                    <View style={styles.contactList}>
+                      <Text style={styles.contactText}>{item}:00</Text>
                     </View>
-                  </MenuTrigger>
-                  <MenuOptions optionsContainerStyle={{marginTop: mUtils.wScale(35), width: mUtils.wScale(184)}}>
-                    {time.map((item, index) => {
-                      return (
-                        <MenuOption key={index} style={styles.contactList} onSelect={() => this.setState({endTime: item})}>
-                          <Text style={styles.contactText}>{item}:00</Text>
-                        </MenuOption>
-                      )
-                    })}
-                  </MenuOptions>
-                </Menu>
+                  )}
+                  options={time}
+                >
+                  <View style={{...styles.box1, justifyContent: 'space-between'}}>
+                    <Text style={styles.boxText}>{endTime ? `${endTime}:00` : '00:00'}</Text>
+                    <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                  </View>
+                </ModalDropdown>
               </View>
             </View>
             <Text style={styles.smallTitle}>Shipping destination</Text>
             <View style={{...styles.layout2, justifyContent: 'space-between'}}>
-              <Menu style={{width: '100%'}}>
-                <MenuTrigger
-                  customStyles={{
-                    TriggerTouchableComponent: TouchableOpacity,
-                  }}
-                >
-                  <View style={{...styles.box1, justifyContent: 'space-between'}}>
-                    <Text style={styles.boxText1}>{destination ? destination : 'Last delivery address(직접입력)'}</Text>
-                    <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+              <ModalDropdown
+                style={{width: '100%'}}
+                dropdownStyle={{width: '91%'}}
+                onSelect={(i, v) => this.setState({destination: v.dlvy_adres_nm})}
+                renderRow={item => (
+                  <View style={styles.contactList}>
+                    <Text style={styles.contactText}>{item.dlvy_adres_nm}</Text>
                   </View>
-                </MenuTrigger>
-                <MenuOptions optionsContainerStyle={{marginTop: mUtils.wScale(35), width: mUtils.wScale(370)}}>
-                  {defaultInfo.user.map((item, index) => {
-                    return (
-                      <MenuOption key={index} style={styles.contactList} onSelect={() => this.setState({destination: item.dlvy_adres_nm})}>
-                        <Text style={styles.contactText}>{item.dlvy_adres_nm}</Text>
-                      </MenuOption>
-                    )
-                  })}
-                </MenuOptions>
-              </Menu>
+                )}
+                options={defaultInfo.user}
+              >
+                <View style={{...styles.box1, justifyContent: 'space-between'}}>
+                  <Text style={styles.boxText1}>Last delivery address</Text>
+                  <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                </View>
+              </ModalDropdown>
             </View>
-            {!destination && (
-              <TextInput
-                style={{...styles.inputBox, marginTop: mUtils.wScale(6), marginBottom: mUtils.wScale(18)}}
-                value={destination1}
-                onChangeText={text => {
-                  this.setState({destination1: text})
-                }}
-              />
-            )}
+            <TextInput
+              style={{...styles.inputBox, marginTop: mUtils.wScale(6), marginBottom: mUtils.wScale(18)}}
+              value={destination}
+              onChangeText={text => {
+                this.setState({destination: text})
+              }}
+            />
 
             <Text style={styles.smallTitle}>Shipping Notes</Text>
             <TextInput
@@ -511,6 +602,7 @@ class SampleRequestsScreen extends PureComponent {
                   style={{...styles.inputBox}}
                   placeholder={'컨셉'}
                   placeholderTextColor={mConst.borderGray}
+                  value={concept}
                   onChangeText={text => {
                     this.setState({concept: text})
                   }}
@@ -629,6 +721,19 @@ class SampleRequestsScreen extends PureComponent {
                 }}
               />
             </View>
+            <Text style={styles.smallTitle}>로케촬영</Text>
+            <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
+              <FastImage resizeMode={'contain'} style={styles.checkImg} source={locateShoot ? checkImg : noCheckImg} />
+              <TextInput
+                style={{...styles.inputBox, width: '95%'}}
+                placeholder={'촬영지 입력'}
+                placeholderTextColor={mConst.borderGray}
+                value={locateShoot}
+                onChangeText={text => {
+                  this.setState({locateShoot: text})
+                }}
+              />
+            </View>
             <Text style={styles.smallTitle}>당일연결 희망/ 가능 여부</Text>
             <View
               style={{
@@ -644,13 +749,15 @@ class SampleRequestsScreen extends PureComponent {
                   <TouchableOpacity
                     key={index}
                     onPress={() => {
-                      this.setState({todayConnect: item})
+                      this.setState({todayConnect: item.boolean})
                     }}
-                    style={{...styles.yesNoBox, borderColor: todayConnect === item ? mConst.black : mConst.borderGray}}
+                    style={{...styles.yesNoBox, borderColor: todayConnect === item.boolean ? mConst.black : mConst.borderGray}}
                   >
-                    <FastImage resizeMode={'contain'} style={styles.checkImg2} source={todayConnect === item ? checkImg2 : checkImg3} />
-                    <Text style={{...styles.yesNo, marginLeft: mUtils.wScale(5), color: todayConnect === item ? mConst.black : mConst.borderGray}}>
-                      {item}
+                    <FastImage resizeMode={'contain'} style={styles.checkImg2} source={todayConnect === item.boolean ? checkImg2 : checkImg3} />
+                    <Text
+                      style={{...styles.yesNo, marginLeft: mUtils.wScale(5), color: todayConnect === item.boolean ? mConst.black : mConst.borderGray}}
+                    >
+                      {item.text}
                     </Text>
                   </TouchableOpacity>
                 )
@@ -690,7 +797,11 @@ class SampleRequestsScreen extends PureComponent {
           <TouchableOpacity
             style={{...styles.bottomButton, backgroundColor: mConst.black}}
             onPress={() => {
-              this.postSRRequestSend()
+              if (type) {
+                this.postSRRequestSend()
+              } else {
+                this.editSRRequestSend()
+              }
             }}
           >
             <Text style={{...styles.buttonText, color: mConst.white}}>Sample Request</Text>

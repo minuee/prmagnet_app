@@ -29,6 +29,31 @@ class SampleRequestsListScreen extends PureComponent {
     }
   }
 
+  deleteMyRequests = async (no, index) => {
+    try {
+      let response = await API.deleteMyRequests({
+        req_no: [no],
+      })
+      console.log('deleteMyRequests>>>>', response)
+      setTimeout(() => {
+        this.alert('요청삭제 완료', '요청이 삭제되었습니다.', [
+          {
+            onPress: () =>
+              this.setState(state => {
+                const result = state.list.filter((item, i) => i !== index)
+                console.log('>>>>>>>>>>>', result)
+                return {
+                  list: result,
+                }
+              }),
+          },
+        ])
+      }, 100)
+    } catch (error) {
+      console.log('deleteMyRequests>>>', error)
+    }
+  }
+
   getMagazineSample = async () => {
     const {list, page, limit, search_text} = this.state
     try {
@@ -48,6 +73,25 @@ class SampleRequestsListScreen extends PureComponent {
     }
   }
 
+  getMagazineSampleReset = async () => {
+    const {list, page, limit, search_text} = this.state
+    try {
+      let response = await API.getMagazineSample({
+        page: 1,
+        limit: limit,
+        search_text: search_text,
+      })
+      console.log('getMagazineSampleReset>>>', response)
+      if (response.success) {
+        if (response.list.length > 0) {
+          this.setState({list: list.concat(response.list), page: 2})
+        }
+      }
+    } catch (error) {
+      console.log('getMagazineSampleReset>>>', error)
+    }
+  }
+
   handleLoadMore = async () => {
     this.getMagazineSample()
   }
@@ -60,13 +104,18 @@ class SampleRequestsListScreen extends PureComponent {
   }
 
   handleOnFocus = () => {
-    this.getMagazineSample()
+    this.getMagazineSampleReset()
   }
 
-  renderItem = ({item}) => {
+  renderItem = ({item, index}) => {
     return (
       <>
-        <TouchableOpacity style={styles.layout3}>
+        <TouchableOpacity
+          style={styles.layout3}
+          onPress={() => {
+            this.pushTo('SampleRequestsDetailScreen', {no: item.req_no})
+          }}
+        >
           <View style={styles.layout4}>
             <Text style={styles.title}>{item.brand_nm}</Text>
             <Menu>
@@ -87,7 +136,9 @@ class SampleRequestsListScreen extends PureComponent {
               <MenuOptions optionsContainerStyle={{marginTop: mUtils.wScale(35)}}>
                 <MenuOption
                   style={{paddingTop: mUtils.wScale(17), paddingBottom: mUtils.wScale(12), paddingHorizontal: mUtils.wScale(15)}}
-                  onSelect={() => {}}
+                  onSelect={() => {
+                    this.pushTo('SampleRequestsScreen', {type: false, brandId: item.brand_id, no: item.req_no})
+                  }}
                 >
                   <Text style={styles.delete}>Edit</Text>
                 </MenuOption>
@@ -97,9 +148,7 @@ class SampleRequestsListScreen extends PureComponent {
                     this.alert('샘플요청 삭제', '선택하신 샘플을 삭제 하시겠습니까?', [
                       {
                         onPress: () => {
-                          setTimeout(() => {
-                            this.alert('요청삭제 완료', '요청이 삭제되었습니다.', [{onPress: () => null}])
-                          }, 100)
+                          this.deleteMyRequests(item.req_no, index)
                         },
                       },
                       {onPress: () => null},
