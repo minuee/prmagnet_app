@@ -12,6 +12,8 @@ import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
 import Header from '../../common/Header'
 import styles from './styles'
+import API from '../../../common/aws-api'
+import Loading from '../../common/Loading'
 
 const moreImg = require('../../../images/navi/more_4.png')
 const fixImg = require('../../../images/navi/fix_1.png')
@@ -28,99 +30,177 @@ class BrandSchedulerScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
-    this.state = {}
+    this.state = {
+      data: '',
+      //start: String(Math.floor(Number(new Date().getTime() / 1000))),
+      start: 1611100800,
+      //end: String(Math.floor(Number(new Date().getTime() / 1000))),
+      end: 1611100800,
+      toggle: [],
+    }
   }
+
+  getSchedular = async () => {
+    const {start, end} = this.state
+    console.log('>>>>>>>', start, end)
+    try {
+      let response = await API.getSchedular({
+        min_date: start,
+        max_date: end,
+      })
+      console.log('getSchedular>>>>', JSON.stringify(response))
+      this.setState({data: response})
+    } catch (error) {
+      console.log('getSchedular>>>>', error)
+    }
+  }
+
+  componentDidMount() {
+    this.onFocus(this.handleOnFocus)
+  }
+  componentWillUnmount() {
+    this.removeFocus()
+  }
+
+  handleOnFocus = () => {
+    this.getSchedular()
+  }
+
   render() {
+    const {data, toggle, start, end} = this.state
     return (
       <SafeAreaView style={styles.container}>
         <Header pushTo={this.pushTo} />
-
         <Text style={styles.mainTitle}>Scheduler</Text>
-
-        <View style={{...styles.layout, paddingHorizontal: mUtils.wScale(20), marginBottom: mUtils.wScale(10)}}>
-          <TouchableOpacity style={styles.layout1}>
-            <Text style={styles.dateSeason}>2020 F/W</Text>
-            <FastImage resizeMode={'contain'} style={styles.moreImg2} source={moreImg} />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <FastImage resizeMode={'contain'} style={styles.fixImg} source={fixImg} />
-          </TouchableOpacity>
-        </View>
-        <View style={{...styles.layout, backgroundColor: '#f6f6f6', paddingHorizontal: mUtils.wScale(20), paddingVertical: mUtils.wScale(10)}}>
-          <View style={styles.layout1}>
-            <FastImage resizeMode={'contain'} style={styles.schedulerImg} source={schedulerImg} />
-            <Text style={styles.date}>8/2(SUN)</Text>
-          </View>
-          <TouchableOpacity>
-            <Text style={styles.change}>변경</Text>
-          </TouchableOpacity>
-        </View>
-        <ScrollView style={{paddingHorizontal: mUtils.wScale(20), paddingVertical: mUtils.wScale(25)}}>
-          <View style={{...styles.layout4}}>
-            <View style={{width: '49%'}}>
-              <FastImage resizeMode={'cover'} style={styles.modelImg} source={modelImg} />
-              <Text style={{...styles.title, marginVertical: mUtils.wScale(10)}}>Look #1</Text>
-              <View style={{...styles.layout3}}>
-                <Text style={styles.smallTitle}>Look #1</Text>
-                <Text style={{...styles.smallDesc}}>수선중</Text>
+        {data ? (
+          <>
+            <View style={{...styles.layout, backgroundColor: '#f6f6f6', paddingHorizontal: mUtils.wScale(20), paddingVertical: mUtils.wScale(10)}}>
+              <View style={styles.layout1}>
+                <FastImage resizeMode={'contain'} style={styles.schedulerImg} source={schedulerImg} />
+                <Text style={styles.date}>8/2(SUN)</Text>
               </View>
-            </View>
-            <View style={{width: '49%'}}>
-              <Pressable
-                onLongPress={() => {
-                  this.alert('메모 삭제', '해당 메모를 삭제하시겠습니까?', [
-                    {
-                      onPress: () => {
-                        setTimeout(() => {
-                          this.alert('삭제 완료', '메모를 삭제 하였습니다.', [{onPress: () => null}])
-                        }, 100)
-                      },
-                    },
-                    {onPress: () => null},
-                  ])
+              <TouchableOpacity
+                onPress={() => {
+                  this.pushTo('SelectScheduleScreen')
                 }}
-                style={({pressed}) => [
-                  {
-                    opacity: pressed ? 0.3 : 1,
-                  },
-                  styles.layout5,
-                ]}
               >
-                <View style={styles.layout6}>
-                  <Text style={styles.title}>VOGUE</Text>
-                  <View style={styles.layout}>
-                    <FastImage resizeMode={'contain'} style={styles.dollarImg1} source={dollarImg1} />
-                    <FastImage resizeMode={'contain'} style={styles.airplaneImg} source={airplaneImg} />
-                  </View>
-                </View>
-                <View style={styles.layout7}>
-                  <Text style={{...styles.name}}>이진선 ed</Text>
-                  <Text style={{...styles.brandDate, marginTop: mUtils.wScale(3)}}>VOGUE / 2020-08-02</Text>
-                  <Text style={{...styles.desc, marginTop: mUtils.wScale(8)}}>
-                    박현구 스튜디오{'\n'}
-                    강남구 신사동 542-7 B1
-                  </Text>
-
-                  <Text style={{...styles.desc, marginTop: mUtils.wScale(3)}}>
-                    김지영 as{'\n'}
-                    010-7104-5568
-                  </Text>
-                </View>
-              </Pressable>
-              <TouchableOpacity>
-                <FastImage resizeMode={'contain'} style={styles.plusImg} source={plusImg} />
+                <Text style={styles.change}>변경</Text>
               </TouchableOpacity>
             </View>
-          </View>
-        </ScrollView>
-        <TouchableOpacity
-          style={{...styles.layout8}}
-          onPress={() => {
-            this.pushTo('ScheduleMemoScreen')
-          }}
-        >
-          <FastImage resizeMode={'contain'} style={styles.memoImg} source={memoImg} />
-        </TouchableOpacity>
+            <ScrollView style={{paddingHorizontal: mUtils.wScale(20), paddingVertical: mUtils.wScale(25)}}>
+              {data.list.map((item, index) => {
+                return (
+                  <View key={index} style={{...styles.layout4}}>
+                    <View style={{width: '49%'}}>
+                      <FastImage resizeMode={'cover'} style={styles.modelImg} source={{uri: item.image_list[0]}} />
+                      <Text style={{...styles.title, marginVertical: mUtils.wScale(10)}}>{item.showroom_nm}</Text>
+                      {item.memo_list &&
+                        item.memo_list.map((item2, index2) => {
+                          return (
+                            <TouchableOpacity
+                              style={{...styles.layout3, borderColor: item2.color ? item2.color : mConst.borderGray}}
+                              onPress={() => {
+                                this.pushTo('ScheduleMemoScreen', {type: true})
+                              }}
+                            >
+                              <Text style={styles.smallTitle}>{item.showroom_nm}</Text>
+                              <Text style={{...styles.smallDesc}}>{item2.content}</Text>
+                            </TouchableOpacity>
+                          )
+                        })}
+                    </View>
+                    <View style={{width: '49%'}}>
+                      {item.req_list.length > 0 && (
+                        <View style={styles.layout5}>
+                          <View style={styles.layout6}>
+                            <Text style={styles.title}>{data.list[index].req_list[0].company_name}</Text>
+                            <View style={styles.layout}>
+                              <FastImage resizeMode={'contain'} style={styles.dollarImg1} source={dollarImg1} />
+                              {data.list[index].req_list[0].loc_yn && (
+                                <FastImage resizeMode={'contain'} style={styles.airplaneImg} source={airplaneImg} />
+                              )}
+                            </View>
+                          </View>
+                          <View style={styles.layout7}>
+                            <Text style={{...styles.name}}>{data.list[index].req_list[0].req_user_nm}</Text>
+                            <Text style={{...styles.brandDate, marginTop: mUtils.wScale(3)}}>
+                              {data.list[index].req_list[0].company_name} / {mUtils.getShowDate(data.list[index].req_list[0].req_dt, 'YYYY-MM-DD')}
+                            </Text>
+                            <Text style={{...styles.desc, marginTop: mUtils.wScale(8)}}>{data.list[index].req_list[0].address}</Text>
+
+                            <Text style={{...styles.desc, marginTop: mUtils.wScale(3)}}>
+                              {data.list[index].req_list[0].contact_user_nm}
+                              {'\n'}
+                              {mUtils.allNumber(mUtils.get(data.list[index].req_list[0].contact_user_phone))}
+                            </Text>
+                          </View>
+                        </View>
+                      )}
+                      {toggle.includes(item.showroom_no) &&
+                        item.req_list
+                          .filter((e, i) => i !== 0)
+                          .map((item1, index1) => {
+                            return (
+                              <View style={{...styles.layout5, marginTop: mUtils.wScale(10)}}>
+                                <View style={styles.layout6}>
+                                  <Text style={styles.title}>{item1.company_name}</Text>
+                                  <View style={styles.layout}>
+                                    <FastImage resizeMode={'contain'} style={styles.dollarImg1} source={dollarImg1} />
+                                    <FastImage resizeMode={'contain'} style={styles.airplaneImg} source={airplaneImg} />
+                                  </View>
+                                </View>
+                                <View style={styles.layout7}>
+                                  <Text style={{...styles.name}}>{item1.req_user_nm}</Text>
+                                  <Text style={{...styles.brandDate, marginTop: mUtils.wScale(3)}}>
+                                    {item1.company_name} / {mUtils.getShowDate(item1.req_dt, 'YYYY-MM-DD')}
+                                  </Text>
+                                  <Text style={{...styles.desc, marginTop: mUtils.wScale(8)}}>{item1.address}</Text>
+
+                                  <Text style={{...styles.desc, marginTop: mUtils.wScale(3)}}>
+                                    {item1.contact_user_nm}
+                                    {'\n'}
+                                    {mUtils.allNumber(mUtils.get(item1.contact_user_phone))}
+                                  </Text>
+                                </View>
+                              </View>
+                            )
+                          })}
+                      {item.req_list.length - 1 !== 0 && !toggle.includes(item.showroom_no) && (
+                        <TouchableOpacity
+                          style={styles.plusButton}
+                          onPress={() => {
+                            this.setState(state => {
+                              if (!state.toggle.includes(item.showroom_no)) {
+                                return {
+                                  toggle: toggle.concat(item.showroom_no),
+                                }
+                              }
+                            })
+                          }}
+                        >
+                          <FastImage resizeMode={'contain'} style={styles.plusImg} source={plusImg} />
+                          <View style={styles.smallCount}>
+                            <Text style={styles.smallText}>{item.req_list.length - 1}</Text>
+                          </View>
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                  </View>
+                )
+              })}
+            </ScrollView>
+            <TouchableOpacity
+              style={{...styles.layout8}}
+              onPress={() => {
+                this.pushTo('ScheduleMemoScreen', {type: false})
+              }}
+            >
+              <FastImage resizeMode={'contain'} style={styles.memoImg} source={memoImg} />
+            </TouchableOpacity>
+          </>
+        ) : (
+          <Loading />
+        )}
       </SafeAreaView>
     )
   }

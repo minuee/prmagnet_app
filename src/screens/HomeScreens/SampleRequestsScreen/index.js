@@ -301,8 +301,8 @@ class SampleRequestsScreen extends PureComponent {
   }
 
   componentDidMount() {
-    const {modelList, type} = this.props.route.params
-    this.pushOption('Sample Request')
+    const {modelList, type, brandName} = this.props.route.params
+    this.pushOption(brandName ? brandName : 'Sample Request')
     if (type) {
       this.setState({selected: modelList})
     }

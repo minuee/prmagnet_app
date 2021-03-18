@@ -102,6 +102,8 @@ class DigitalSRScreen extends PureComponent {
       if (response.success) {
         if (page === 1) {
           if (userType === 'B') {
+            this.setState({data: response, season_year: response.season_list[0], page: page + 1})
+          } else {
             this.setState({
               data: response,
               season_year: response.season_list[0],
@@ -109,8 +111,6 @@ class DigitalSRScreen extends PureComponent {
               notice: response.brand_notice.notice,
               inquiryNum: response.brand_notice.inquiry_number,
             })
-          } else {
-            this.setState({data: response, season_year: response.season_list[0], page: page + 1})
           }
         } else if (response.list.length > 0) {
           if (userType === 'B') {
@@ -414,6 +414,7 @@ class DigitalSRScreen extends PureComponent {
                   delSelect: this.selected,
                   brandId: data.current_brand_info.brand_id,
                   type: true,
+                  brandName: '',
                 })
               }}
             >

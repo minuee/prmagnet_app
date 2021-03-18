@@ -64,8 +64,7 @@ export default StyleSheet.create({
     height: mUtils.wScale(59),
   },
   box: {
-    width: '100%',
-    backgroundColor: mConst.getBaseXColor(),
+    backgroundColor: mConst.getBaseColor(),
     paddingVertical: mUtils.wScale(20),
   },
   desc: {
@@ -77,5 +76,17 @@ export default StyleSheet.create({
   moreImg: {
     width: mUtils.wScale(12),
     height: mUtils.wScale(5.5),
+  },
+  leftButton: {
+    width: '30%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: mConst.borderGray,
+    paddingVertical: mUtils.wScale(20),
+  },
+  leftText: {
+    fontFamily: 'Roboto-Bold',
+    fontSize: 16,
+    color: '#070708',
   },
 })

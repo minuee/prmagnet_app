@@ -61,6 +61,7 @@ class ScheduleMemoScreen extends PureComponent {
 
   render() {
     const {color1, color2, select, look, selectedDate, selected, drop, desc, day, selectedColor} = this.state
+    const {type} = this.props.route.params
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
@@ -160,21 +161,43 @@ class ScheduleMemoScreen extends PureComponent {
             </View>
           ) : null}
         </ScrollView>
-        <TouchableOpacity
-          style={styles.box}
-          onPress={() => {
-            this.alert('메모 추가', '해당 메모를 추가하시겠습니까?', [
-              {
-                onPress: () => {
-                  this.goBack()
+        <View style={styles.layout}>
+          {type && (
+            <TouchableOpacity
+              style={styles.leftButton}
+              onPress={() => {
+                this.alert('메모 삭제', '해당 메모를 삭제하시겠습니까?', [
+                  {
+                    onPress: () => {
+                      setTimeout(() => {
+                        this.alert('삭제 완료', '메모를 삭제 하였습니다.', [{onPress: () => this.goBack()}])
+                      }, 100)
+                    },
+                  },
+                  {onPress: () => null},
+                ])
+              }}
+            >
+              <Text style={styles.leftText}>Delete</Text>
+            </TouchableOpacity>
+          )}
+
+          <TouchableOpacity
+            style={{...styles.box, width: type ? '70%' : '100%'}}
+            onPress={() => {
+              this.alert('메모 추가', '해당 메모를 추가하시겠습니까?', [
+                {
+                  onPress: () => {
+                    this.goBack()
+                  },
                 },
-              },
-              {onPress: () => null},
-            ])
-          }}
-        >
-          <Text style={styles.bottom}>Confirm</Text>
-        </TouchableOpacity>
+                {onPress: () => null},
+              ])
+            }}
+          >
+            <Text style={styles.bottom}>Confirm</Text>
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
     )
   }

@@ -794,6 +794,17 @@ const API = {
     }
     return Api.post(apiName, path, myInit)
   },
+  getSchedular: ({min_date, max_date}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/my-schedule`
+    var init = {
+      queryStringParameters: {
+        min_date: min_date,
+        max_date: max_date,
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
 }
 
 export default API

@@ -137,7 +137,7 @@ class SampleRequestsListScreen extends PureComponent {
                 <MenuOption
                   style={{paddingTop: mUtils.wScale(17), paddingBottom: mUtils.wScale(12), paddingHorizontal: mUtils.wScale(15)}}
                   onSelect={() => {
-                    this.pushTo('SampleRequestsScreen', {type: false, brandId: item.brand_id, no: item.req_no})
+                    this.pushTo('SampleRequestsScreen', {type: false, brandId: item.brand_id, no: item.req_no, brandName: item.brand_nm})
                   }}
                 >
                   <Text style={styles.delete}>Edit</Text>

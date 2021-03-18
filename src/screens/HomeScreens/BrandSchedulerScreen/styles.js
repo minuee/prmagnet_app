@@ -52,12 +52,14 @@ export default StyleSheet.create({
     fontSize: 11,
     textAlign: 'left',
     color: mConst.black,
+    marginTop: mUtils.wScale(8),
   },
   smallDesc: {
     fontFamily: 'NotoSansKR-Regular',
     fontSize: 11,
     textAlign: 'left',
     color: mConst.black,
+    marginTop: mUtils.wScale(3),
   },
   name: {
     fontFamily: 'NotoSansKR-Medium',
@@ -99,18 +101,17 @@ export default StyleSheet.create({
   },
   layout3: {
     width: '100%',
+    height: mUtils.wScale(54.5),
     borderRadius: mUtils.wScale(5),
     backgroundColor: mConst.white,
     borderStyle: 'solid',
     borderWidth: 1,
-    borderColor: mConst.borderGray,
-    paddingHorizontal: mUtils.wScale(7),
-    paddingTop: mUtils.wScale(4),
-    paddingBottom: mUtils.wScale(10),
+    paddingHorizontal: mUtils.wScale(8),
   },
   layout4: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: mUtils.wScale(37.5),
   },
   layout5: {
     width: '100%',
@@ -136,7 +137,7 @@ export default StyleSheet.create({
   },
   layout8: {
     position: 'absolute',
-    bottom: 50,
+    bottom: 11,
     right: 20,
   },
   moreImg1: {
@@ -152,6 +153,8 @@ export default StyleSheet.create({
   fixImg: {
     width: mUtils.wScale(17),
     height: mUtils.wScale(17),
+    marginRight: mUtils.wScale(20),
+    marginBottom: mUtils.wScale(10),
   },
   schedulerImg: {
     width: mUtils.wScale(15),
@@ -174,11 +177,34 @@ export default StyleSheet.create({
   plusImg: {
     width: mUtils.wScale(35),
     height: mUtils.wScale(35),
-    marginTop: mUtils.wScale(15),
+  },
+  plusButton: {
+    width: mUtils.wScale(45),
+    height: mUtils.wScale(45),
+    marginTop: mUtils.wScale(10),
     alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   memoImg: {
     width: mUtils.wScale(60),
     height: mUtils.wScale(60),
+  },
+  smallCount: {
+    width: mUtils.wScale(16),
+    height: mUtils.wScale(16),
+    backgroundColor: '#7ea1b2',
+    borderRadius: mUtils.wScale(50),
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    right: 0,
+    top: 0,
+  },
+  smallText: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 9,
+    textAlign: 'center',
+    color: '#ffffff',
   },
 })
