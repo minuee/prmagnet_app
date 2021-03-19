@@ -20,14 +20,14 @@ const getMobileHtml = contents => `
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PRMagnet 이용약관</title>
+    <title>PRMagnet 개인정보 처리방침</title>
   </head>
 <body style="margin: 0; padding: 2em">${contents}
 </body>
 </html>
 `
 
-class TermsScreen extends PureComponent {
+class PrivacyScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
@@ -38,10 +38,10 @@ class TermsScreen extends PureComponent {
   }
 
   async componentDidMount() {
-    this.pushOption('이용약관')
+    this.pushOption('개인정보 처리방침')
     try {
-      const response = await API.getTos()
-      this.setState({data: _.get(response, 'tos', ''), loading: false})
+      const response = await API.getPrivacyPolicy()
+      this.setState({data: _.get(response, 'privacy_policy', ''), loading: false})
       console.log('TOS:', JSON.stringify(response))
     } catch (error) {
       this.setState({loading: false})
@@ -61,4 +61,4 @@ class TermsScreen extends PureComponent {
 export default connect(
   state => ({}),
   dispatch => ({})
-)(TermsScreen)
+)(PrivacyScreen)
