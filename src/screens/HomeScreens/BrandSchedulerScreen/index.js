@@ -32,10 +32,10 @@ class BrandSchedulerScreen extends PureComponent {
     cBind(this)
     this.state = {
       data: '',
-      //start: String(Math.floor(Number(new Date().getTime() / 1000))),
-      start: 1611100800,
-      //end: String(Math.floor(Number(new Date().getTime() / 1000))),
-      end: 1611100800,
+      start: String(Math.floor(Number(new Date().getTime() / 1000))),
+      //start: 1611100800,
+      end: String(Math.floor(Number(new Date().getTime() / 1000))),
+      //end: 1611100800,
       toggle: [],
     }
   }
@@ -77,11 +77,18 @@ class BrandSchedulerScreen extends PureComponent {
             <View style={{...styles.layout, backgroundColor: '#f6f6f6', paddingHorizontal: mUtils.wScale(20), paddingVertical: mUtils.wScale(10)}}>
               <View style={styles.layout1}>
                 <FastImage resizeMode={'contain'} style={styles.schedulerImg} source={schedulerImg} />
-                <Text style={styles.date}>8/2(SUN)</Text>
+                <Text style={styles.date}>
+                  {start === end
+                    ? `${mUtils.getShowDate(start, 'M/DD')}(${mUtils.getShowDate(start, 'ddd')})`
+                    : `${mUtils.getShowDate(start, 'M/DD')}(${mUtils.getShowDate(start, 'ddd')}) ~ ${mUtils.getShowDate(
+                        end,
+                        'M/DD'
+                      )}(${mUtils.getShowDate(end, 'ddd')})`}
+                </Text>
               </View>
               <TouchableOpacity
                 onPress={() => {
-                  this.pushTo('SelectScheduleScreen')
+                  this.pushTo('SelectScheduleScreen', {start, end, caller: 'BrandSchedulerScreen'})
                 }}
               >
                 <Text style={styles.change}>변경</Text>
@@ -98,6 +105,7 @@ class BrandSchedulerScreen extends PureComponent {
                         item.memo_list.map((item2, index2) => {
                           return (
                             <TouchableOpacity
+                              key={index2}
                               style={{...styles.layout3, borderColor: item2.color ? item2.color : mConst.borderGray}}
                               onPress={() => {
                                 this.pushTo('ScheduleMemoScreen', {type: true})
@@ -141,7 +149,7 @@ class BrandSchedulerScreen extends PureComponent {
                           .filter((e, i) => i !== 0)
                           .map((item1, index1) => {
                             return (
-                              <View style={{...styles.layout5, marginTop: mUtils.wScale(10)}}>
+                              <View key={index1} style={{...styles.layout5, marginTop: mUtils.wScale(10)}}>
                                 <View style={{...styles.layout6, backgroundColor: item1.mgzn_color}}>
                                   <Text style={styles.title}>{item1.company_name}</Text>
                                   <View style={styles.layout}>
