@@ -103,7 +103,7 @@ class MyPageScreen extends PureComponent {
             <TouchableOpacity
               style={{paddingTop: mUtils.wScale(40)}}
               onPress={() => {
-                navigation.navigate('PersonalScreen')
+                navigation.navigate('PrivacyScreen')
               }}
             >
               <Text style={styles.text1}>개인정보 처리방침</Text>
