@@ -124,7 +124,6 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#c18c8c',
     borderTopLeftRadius: mUtils.wScale(4),
     borderTopRightRadius: mUtils.wScale(4),
     paddingHorizontal: mUtils.wScale(6),

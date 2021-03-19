@@ -112,7 +112,7 @@ class BrandSchedulerScreen extends PureComponent {
                     <View style={{width: '49%'}}>
                       {item.req_list.length > 0 && (
                         <View style={styles.layout5}>
-                          <View style={styles.layout6}>
+                          <View style={{...styles.layout6, backgroundColor: data.list[index].req_list[0].mgzn_color}}>
                             <Text style={styles.title}>{data.list[index].req_list[0].company_name}</Text>
                             <View style={styles.layout}>
                               <FastImage resizeMode={'contain'} style={styles.dollarImg1} source={dollarImg1} />
@@ -142,7 +142,7 @@ class BrandSchedulerScreen extends PureComponent {
                           .map((item1, index1) => {
                             return (
                               <View style={{...styles.layout5, marginTop: mUtils.wScale(10)}}>
-                                <View style={styles.layout6}>
+                                <View style={{...styles.layout6, backgroundColor: item1.mgzn_color}}>
                                   <Text style={styles.title}>{item1.company_name}</Text>
                                   <View style={styles.layout}>
                                     <FastImage resizeMode={'contain'} style={styles.dollarImg1} source={dollarImg1} />
