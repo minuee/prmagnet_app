@@ -164,6 +164,7 @@ export default StyleSheet.create({
   checkImg: {
     width: mUtils.wScale(12),
     height: mUtils.wScale(12),
+    marginRight: mUtils.wScale(5),
   },
   plusImg: {
     width: mUtils.wScale(35),
@@ -211,5 +212,11 @@ export default StyleSheet.create({
     zIndex: 1,
     top: mUtils.wScale(247),
     width: '100%',
+  },
+  text1: {
+    fontFamily: 'NotoSansKR-Medium',
+    fontSize: 14,
+    textAlign: 'left',
+    color: '#000000',
   },
 })

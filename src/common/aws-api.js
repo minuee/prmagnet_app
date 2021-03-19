@@ -687,7 +687,6 @@ const API = {
     photogrf_concept,
     model_list,
     celeb_list,
-    picalbm_cntent,
     page_cnt,
     etc_brand,
     today_connect,
@@ -697,6 +696,8 @@ const API = {
     showroom_list,
     contact_user_id,
     loc_value,
+    own_paid_pictorial_content,
+    other_paid_pictorial_content,
   }) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/showroom-request-send`
@@ -711,7 +712,6 @@ const API = {
         photogrf_concept: photogrf_concept,
         model_list: model_list,
         celeb_list: celeb_list,
-        picalbm_cntent: picalbm_cntent,
         page_cnt: page_cnt,
         etc_brand: etc_brand,
         today_connect: today_connect,
@@ -721,6 +721,8 @@ const API = {
         showroom_list: showroom_list,
         contact_user_id: contact_user_id,
         loc_value: loc_value,
+        own_paid_pictorial_content: own_paid_pictorial_content,
+        other_paid_pictorial_content: other_paid_pictorial_content,
       },
     }
     return Api.post(apiName, path, myInit)
@@ -756,7 +758,6 @@ const API = {
     photogrf_concept,
     model_list,
     celeb_list,
-    picalbm_cntent,
     page_cnt,
     etc_brand,
     today_connect,
@@ -766,6 +767,8 @@ const API = {
     showroom_list,
     contact_user_id,
     loc_value,
+    own_paid_pictorial_content,
+    other_paid_pictorial_content,
   }) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/showroom-request-update`
@@ -780,7 +783,6 @@ const API = {
         photogrf_concept: photogrf_concept,
         model_list: model_list,
         celeb_list: celeb_list,
-        picalbm_cntent: picalbm_cntent,
         page_cnt: page_cnt,
         etc_brand: etc_brand,
         today_connect: today_connect,
@@ -790,6 +792,8 @@ const API = {
         showroom_list: showroom_list,
         contact_user_id: contact_user_id,
         loc_value: loc_value,
+        own_paid_pictorial_content: own_paid_pictorial_content,
+        other_paid_pictorial_content: other_paid_pictorial_content,
       },
     }
     return Api.post(apiName, path, myInit)

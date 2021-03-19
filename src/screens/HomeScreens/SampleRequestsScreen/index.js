@@ -89,7 +89,8 @@ class SampleRequestsScreen extends PureComponent {
       concept: '',
       celebrity: [''],
       fashionModel: [''],
-      payPictorialDesc: '',
+      myPay: '',
+      otherPay: '',
       locateShoot: '',
       todayConnect: 'No',
       numberPage: '',
@@ -116,12 +117,13 @@ class SampleRequestsScreen extends PureComponent {
       concept,
       celebrity,
       fashionModel,
-      payPictorialDesc,
       locateShoot,
       todayConnect,
       numberPage,
       togetherBrand,
       message,
+      myPay,
+      otherPay,
     } = this.state
     const {brandId} = this.props.route.params
     let list = selected.map((item, index) => item.showroom_no)
@@ -137,7 +139,6 @@ class SampleRequestsScreen extends PureComponent {
         photogrf_concept: concept,
         model_list: fashionModel,
         celeb_list: celebrity,
-        picalbm_cntent: payPictorialDesc,
         page_cnt: numberPage,
         etc_brand: togetherBrand,
         today_connect: todayConnect,
@@ -147,6 +148,8 @@ class SampleRequestsScreen extends PureComponent {
         showroom_list: list,
         contact_user_id: selectContact.user_id,
         loc_value: locateShoot,
+        own_paid_pictorial_content: myPay,
+        other_paid_pictorial_content: otherPay,
       })
       console.log('postSRRequestSend>>>>', response)
       if (response.success) {
@@ -171,12 +174,13 @@ class SampleRequestsScreen extends PureComponent {
       concept,
       celebrity,
       fashionModel,
-      payPictorialDesc,
       locateShoot,
       todayConnect,
       numberPage,
       togetherBrand,
       message,
+      myPay,
+      otherPay,
     } = this.state
     const {no} = this.props.route.params
     let list = selected.map((item, index) => item.showroom_no)
@@ -192,7 +196,6 @@ class SampleRequestsScreen extends PureComponent {
         photogrf_concept: concept,
         model_list: fashionModel,
         celeb_list: celebrity,
-        picalbm_cntent: payPictorialDesc,
         page_cnt: numberPage,
         etc_brand: togetherBrand,
         today_connect: todayConnect,
@@ -202,6 +205,8 @@ class SampleRequestsScreen extends PureComponent {
         showroom_list: list,
         contact_user_id: selectContact.user_id,
         loc_value: locateShoot,
+        own_paid_pictorial_content: myPay,
+        other_paid_pictorial_content: otherPay,
       })
       console.log('editSRRequestSend>>>>', response)
       if (response.success) {
@@ -288,12 +293,13 @@ class SampleRequestsScreen extends PureComponent {
         concept: response.photogrf_concept,
         celebrity: response.celeb_list,
         fashionModel: response.model_list,
-        payPictorialDesc: response.yukahwabo_content,
         locateShoot: response.loc_value,
         todayConnect: response.today_connect,
         numberPage: response.page_cnt,
         togetherBrand: response.etc_brand_info,
         message: response.message,
+        myPay: response.own_paid_pictorial_content,
+        otherPay: response.other_paid_pictorial_content,
       })
     } catch (error) {
       console.log('getSampleRequests>>>>', error)
@@ -313,8 +319,11 @@ class SampleRequestsScreen extends PureComponent {
   }
 
   handleOnFocus = () => {
+    const {modelList, type, brandName} = this.props.route.params
     this.postSRRequest()
-    this.getSampleRequests()
+    if (!type) {
+      this.getSampleRequests()
+    }
   }
 
   render() {
@@ -332,7 +341,6 @@ class SampleRequestsScreen extends PureComponent {
       concept,
       celebrity,
       fashionModel,
-      payPictorialDesc,
       locateShoot,
       todayConnect,
       numberPage,
@@ -341,6 +349,8 @@ class SampleRequestsScreen extends PureComponent {
       drop,
       drop1,
       drop2,
+      myPay,
+      otherPay,
     } = this.state
     const {type} = this.props.route.params
     return defaultInfo ? (
@@ -615,14 +625,14 @@ class SampleRequestsScreen extends PureComponent {
             <View style={{...styles.layout, justifyContent: 'space-between', width: '100%'}}>
               <View style={{...styles.layout1}}>
                 <FastImage resizeMode={'contain'} style={styles.checkImg} source={celebrity[0] ? checkImg : noCheckImg} />
-                <Text style={{...styles.smallTitle, marginBottom: 0, marginLeft: mUtils.wScale(5)}}>Celebrity</Text>
+                <Text style={{...styles.smallTitle, marginBottom: 0}}>Celebrity</Text>
               </View>
               <View style={{width: '65%'}}>
                 {celebrity.map((item, index) => {
                   return (
                     <View style={{...styles.box2}} key={index}>
                       <TextInput
-                        style={{...styles.inputBox1}}
+                        style={{...styles.inputBox1, width: '70%'}}
                         placeholder={'이름'}
                         placeholderTextColor={mConst.borderGray}
                         value={item}
@@ -666,14 +676,14 @@ class SampleRequestsScreen extends PureComponent {
             >
               <View style={{...styles.layout1}}>
                 <FastImage resizeMode={'contain'} style={styles.checkImg} source={fashionModel[0] ? checkImg : noCheckImg} />
-                <Text style={{...styles.smallTitle, marginBottom: 0, marginLeft: mUtils.wScale(5)}}>Fashion Model</Text>
+                <Text style={{...styles.smallTitle, marginBottom: 0}}>Fashion Model</Text>
               </View>
               <View style={{width: '65%'}}>
                 {fashionModel.map((item, index) => {
                   return (
                     <View style={{...styles.box2}}>
                       <TextInput
-                        style={{...styles.inputBox1}}
+                        style={{...styles.inputBox1, width: '70%'}}
                         placeholder={'이름'}
                         placeholderTextColor={mConst.borderGray}
                         value={item}
@@ -707,25 +717,47 @@ class SampleRequestsScreen extends PureComponent {
               </View>
             </View>
             <Text style={styles.smallTitle}>
-              유가화보 <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
+              Paid editorial <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
             </Text>
             <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
-              <FastImage resizeMode={'contain'} style={styles.checkImg} source={payPictorialDesc ? checkImg : noCheckImg} />
+              <View style={styles.layout2}>
+                <FastImage resizeMode={'contain'} style={styles.checkImg} source={myPay ? checkImg : noCheckImg} />
+                <Text style={styles.text1}>자사유가</Text>
+              </View>
+
               <TextInput
-                style={{...styles.inputBox, width: '95%'}}
-                placeholder={'Brand Name'}
+                style={{...styles.inputBox, width: '65%'}}
+                placeholder={'Brand'}
                 placeholderTextColor={mConst.borderGray}
-                value={payPictorialDesc}
+                value={myPay}
                 onChangeText={text => {
-                  this.setState({payPictorialDesc: text})
+                  this.setState({myPay: text, otherPay: ''})
                 }}
               />
             </View>
-            <Text style={styles.smallTitle}>로케촬영</Text>
             <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
-              <FastImage resizeMode={'contain'} style={styles.checkImg} source={locateShoot ? checkImg : noCheckImg} />
+              <View style={styles.layout2}>
+                <FastImage resizeMode={'contain'} style={styles.checkImg} source={otherPay ? checkImg : noCheckImg} />
+                <Text style={styles.text1}>타사유가</Text>
+              </View>
               <TextInput
-                style={{...styles.inputBox, width: '95%'}}
+                style={{...styles.inputBox, width: '65%'}}
+                placeholder={'Brand'}
+                placeholderTextColor={mConst.borderGray}
+                value={otherPay}
+                onChangeText={text => {
+                  this.setState({otherPay: text, myPay: ''})
+                }}
+              />
+            </View>
+            <Text style={styles.smallTitle}>Location shooting</Text>
+            <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
+              <View style={styles.layout2}>
+                <FastImage resizeMode={'contain'} style={styles.checkImg} source={locateShoot ? checkImg : noCheckImg} />
+                <Text style={styles.text1}>로케촬영</Text>
+              </View>
+              <TextInput
+                style={{...styles.inputBox, width: '65%'}}
                 placeholder={'촬영지 입력'}
                 placeholderTextColor={mConst.borderGray}
                 value={locateShoot}

@@ -336,7 +336,7 @@ class SampleRequestsDetailScreen extends PureComponent {
             <View style={{...styles.layout, justifyContent: 'space-between', width: '100%'}}>
               <View style={{...styles.layout1}}>
                 <FastImage resizeMode={'contain'} style={styles.checkImg} source={data.celeb_list.length > 0 ? checkImg : noCheckImg} />
-                <Text style={{...styles.smallTitle, marginBottom: 0, marginLeft: mUtils.wScale(5)}}>Celebrity</Text>
+                <Text style={{...styles.smallTitle, marginBottom: 0}}>Celebrity</Text>
               </View>
               <View style={{width: '65%'}}>
                 {data.celeb_list.map((item, index) => {
@@ -369,7 +369,7 @@ class SampleRequestsDetailScreen extends PureComponent {
             >
               <View style={{...styles.layout1}}>
                 <FastImage resizeMode={'contain'} style={styles.checkImg} source={data.model_list.length > 0 ? checkImg : noCheckImg} />
-                <Text style={{...styles.smallTitle, marginBottom: 0, marginLeft: mUtils.wScale(5)}}>Fashion Model</Text>
+                <Text style={{...styles.smallTitle, marginBottom: 0}}>Fashion Model</Text>
               </View>
               <View style={{width: '65%'}}>
                 {data.model_list.map((item, index) => {
@@ -392,15 +392,33 @@ class SampleRequestsDetailScreen extends PureComponent {
               </View>
             </View>
             <Text style={styles.smallTitle}>
-              유가화보 <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
+              Paid editorial <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
             </Text>
             <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
-              <FastImage resizeMode={'contain'} style={styles.checkImg} source={data.yukahwabo_content ? checkImg : noCheckImg} />
+              <View style={styles.layout2}>
+                <FastImage resizeMode={'contain'} style={styles.checkImg} source={data.own_paid_pictorial_content ? checkImg : noCheckImg} />
+                <Text style={styles.text1}>자사유가</Text>
+              </View>
               <TextInput
-                style={{...styles.inputBox, width: '95%'}}
+                style={{...styles.inputBox, width: '65%'}}
                 placeholder={'Brand Name'}
                 placeholderTextColor={mConst.borderGray}
-                value={data.yukahwabo_content}
+                value={data.own_paid_pictorial_content}
+                onChangeText={text => {
+                  this.setState({payPictorialDesc: text})
+                }}
+              />
+            </View>
+            <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
+              <View style={styles.layout2}>
+                <FastImage resizeMode={'contain'} style={styles.checkImg} source={data.other_paid_pictorial_content ? checkImg : noCheckImg} />
+                <Text style={styles.text1}>타사유가</Text>
+              </View>
+              <TextInput
+                style={{...styles.inputBox, width: '65%'}}
+                placeholder={'Brand Name'}
+                placeholderTextColor={mConst.borderGray}
+                value={data.other_paid_pictorial_content}
                 onChangeText={text => {
                   this.setState({payPictorialDesc: text})
                 }}
