@@ -84,6 +84,7 @@ export default StyleSheet.create({
     borderColor: mConst.borderGray,
     paddingHorizontal: mUtils.wScale(8),
     paddingVertical: mUtils.wScale(8),
+    width: '20%',
   },
   emptyBar: {
     width: '100%',

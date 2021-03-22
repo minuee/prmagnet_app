@@ -40,19 +40,23 @@ class BrandSchedulerScreen extends PureComponent {
     }
   }
 
-  getSchedular = async () => {
-    const {start, end} = this.state
-    console.log('>>>>>>>', start, end)
+  getSchedular = async params => {
+    const {start, end} = _.get(this.props, 'route.params', {})
     try {
       let response = await API.getSchedular({
-        min_date: start,
-        max_date: end,
+        min_date: params ? params.start : this.state.start,
+        max_date: params ? params.end : this.state.end,
       })
       console.log('getSchedular>>>>', JSON.stringify(response))
-      this.setState({data: response})
+      this.setState({data: response, start: params ? params.start : this.state.start, end: params ? params.end : this.state.end})
     } catch (error) {
       console.log('getSchedular>>>>', error)
     }
+  }
+
+  changeSchedule = () => {
+    const {start, end} = this.state
+    this.pushTo('SelectScheduleScreen', {get: this.getSchedular, start, end, caller: 'ScheduleTab'})
   }
 
   componentDidMount() {
@@ -68,6 +72,7 @@ class BrandSchedulerScreen extends PureComponent {
 
   render() {
     const {data, toggle, start, end} = this.state
+    //const {start, end} = _.get(this.props, 'route.params', {})
     return (
       <SafeAreaView style={styles.container}>
         <Header pushTo={this.pushTo} />
@@ -78,17 +83,13 @@ class BrandSchedulerScreen extends PureComponent {
               <View style={styles.layout1}>
                 <FastImage resizeMode={'contain'} style={styles.schedulerImg} source={schedulerImg} />
                 <Text style={styles.date}>
-                  {start === end
-                    ? `${mUtils.getShowDate(start, 'M/DD')}(${mUtils.getShowDate(start, 'ddd')})`
-                    : `${mUtils.getShowDate(start, 'M/DD')}(${mUtils.getShowDate(start, 'ddd')}) ~ ${mUtils.getShowDate(
-                        end,
-                        'M/DD'
-                      )}(${mUtils.getShowDate(end, 'ddd')})`}
+                  {mUtils.getShowDate(this.state.start, 'M/DD')}({mUtils.getShowDate(this.state.start, 'ddd')}) ~{' '}
+                  {mUtils.getShowDate(this.state.end, 'M/DD')}({mUtils.getShowDate(this.state.end, 'ddd')})
                 </Text>
               </View>
               <TouchableOpacity
                 onPress={() => {
-                  this.pushTo('SelectScheduleScreen', {start, end, caller: 'BrandSchedulerScreen'})
+                  this.changeSchedule()
                 }}
               >
                 <Text style={styles.change}>변경</Text>

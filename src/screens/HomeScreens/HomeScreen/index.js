@@ -52,7 +52,7 @@ class HomeScreen extends PureComponent {
             backgroundColor: 'rgba(126, 161, 178, 0.2)',
           }}
         >
-          {_.get(data, 'new_request', [])
+          {_.get(data, userType === 'M' ? 'cnfirm_request' : 'new_request', [])
             .slice(0, 6)
             .map((item, index) => {
               return (

@@ -85,6 +85,7 @@ class SampleRequestsScreen extends PureComponent {
       startTime: '',
       endTime: '',
       destination: '',
+      destinationDetail: '',
       shippingNote: '',
       concept: '',
       celebrity: [''],
@@ -99,6 +100,7 @@ class SampleRequestsScreen extends PureComponent {
       drop: false,
       drop1: false,
       drop2: false,
+      isvisible: false,
     }
   }
 
@@ -113,6 +115,7 @@ class SampleRequestsScreen extends PureComponent {
       startTime,
       endTime,
       destination,
+      destinationDetail,
       shippingNote,
       concept,
       celebrity,
@@ -144,6 +147,7 @@ class SampleRequestsScreen extends PureComponent {
         today_connect: todayConnect,
         add_req_cntent: message,
         dlvy_adres_nm: destination,
+        adres_detail: destinationDetail,
         dlvy_atent_matter: shippingNote,
         showroom_list: list,
         contact_user_id: selectContact.user_id,
@@ -170,6 +174,7 @@ class SampleRequestsScreen extends PureComponent {
       startTime,
       endTime,
       destination,
+      destinationDetail,
       shippingNote,
       concept,
       celebrity,
@@ -201,6 +206,7 @@ class SampleRequestsScreen extends PureComponent {
         today_connect: todayConnect,
         add_req_cntent: message,
         dlvy_adres_nm: destination,
+        adres_detail: destinationDetail,
         dlvy_atent_matter: shippingNote,
         showroom_list: list,
         contact_user_id: selectContact.user_id,
@@ -289,6 +295,7 @@ class SampleRequestsScreen extends PureComponent {
         startTime: response.shooting_start_time,
         endTime: response.shooting_end_time,
         destination: response.dlvy_adres_nm,
+        destinationDetail: response.adres_detail,
         shippingNote: response.dlvy_atent_matter,
         concept: response.photogrf_concept,
         celebrity: response.celeb_list,
@@ -337,6 +344,7 @@ class SampleRequestsScreen extends PureComponent {
       startTime,
       endTime,
       destination,
+      destinationDetail,
       shippingNote,
       concept,
       celebrity,
@@ -351,6 +359,7 @@ class SampleRequestsScreen extends PureComponent {
       drop2,
       myPay,
       otherPay,
+      isvisible,
     } = this.state
     const {type} = this.props.route.params
     return defaultInfo ? (
@@ -566,10 +575,11 @@ class SampleRequestsScreen extends PureComponent {
               <ModalDropdown
                 style={{width: '100%'}}
                 dropdownStyle={{width: '91%'}}
-                onSelect={(i, v) => this.setState({destination: v.dlvy_adres_nm})}
+                onSelect={(i, v) => this.setState({destination: v.dlvy_adres_nm, destinationDetail: v.adres_detail})}
                 renderRow={item => (
                   <View style={styles.contactList}>
                     <Text style={styles.contactText}>{item.dlvy_adres_nm}</Text>
+                    <Text style={styles.contactText}>{item.adres_detail}</Text>
                   </View>
                 )}
                 options={defaultInfo.user}
@@ -580,11 +590,28 @@ class SampleRequestsScreen extends PureComponent {
                 </View>
               </ModalDropdown>
             </View>
+            <View style={{...styles.layout2, marginTop: mUtils.wScale(6)}}>
+              <TextInput
+                style={{...styles.inputBox, width: '80%'}}
+                value={destination}
+                onChangeText={text => {
+                  this.setState({destination: text})
+                }}
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  this.setState({isvisible: true})
+                }}
+                style={styles.postBox}
+              >
+                <Text style={styles.postCode}>주소검색</Text>
+              </TouchableOpacity>
+            </View>
             <TextInput
               style={{...styles.inputBox, marginTop: mUtils.wScale(6), marginBottom: mUtils.wScale(18)}}
-              value={destination}
+              value={destinationDetail}
               onChangeText={text => {
-                this.setState({destination: text})
+                this.setState({destinationDetail: text})
               }}
             />
 
@@ -839,6 +866,22 @@ class SampleRequestsScreen extends PureComponent {
             <Text style={{...styles.buttonText, color: mConst.white}}>Sample Request</Text>
           </TouchableOpacity>
         </ScrollView>
+        <Modal
+          isVisible={isvisible}
+          useNativeDriver={true}
+          onBackButtonPress={() => this.setState({isvisible: false})}
+          onBackdropPress={() => this.setState({isvisible: false})}
+        >
+          <View style={{height: '80%', width: '100%'}}>
+            <Postcode
+              style={{flex: 1}}
+              jsOptions={{animated: false}}
+              onSelected={data => {
+                this.setState({destination: data.address, isvisible: false})
+              }}
+            />
+          </View>
+        </Modal>
       </SafeAreaView>
     ) : (
       <Loading />

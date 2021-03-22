@@ -291,13 +291,8 @@ class SampleRequestsDetailScreen extends PureComponent {
               </View>
             </View>
             <Text style={styles.smallTitle}>Shipping destination</Text>
-            <TextInput
-              style={{...styles.inputBox, marginBottom: mUtils.wScale(18)}}
-              value={data.dlvy_adres_nm}
-              onChangeText={text => {
-                this.setState({destination: text})
-              }}
-            />
+            <TextInput style={{...styles.inputBox}} value={data.dlvy_adres_nm} />
+            <TextInput style={{...styles.inputBox, marginBottom: mUtils.wScale(18)}} value={data.adres_detail} />
 
             <Text style={styles.smallTitle}>Shipping Notes</Text>
             <TextInput
