@@ -692,6 +692,7 @@ const API = {
     today_connect,
     add_req_cntent,
     dlvy_adres_nm,
+    adres_detail,
     dlvy_atent_matter,
     showroom_list,
     contact_user_id,
@@ -717,6 +718,7 @@ const API = {
         today_connect: today_connect,
         add_req_cntent: add_req_cntent,
         dlvy_adres_nm: dlvy_adres_nm,
+        adres_detail: adres_detail,
         dlvy_atent_matter: dlvy_atent_matter,
         showroom_list: showroom_list,
         contact_user_id: contact_user_id,
@@ -763,6 +765,7 @@ const API = {
     today_connect,
     add_req_cntent,
     dlvy_adres_nm,
+    adres_detail,
     dlvy_atent_matter,
     showroom_list,
     contact_user_id,
@@ -788,6 +791,7 @@ const API = {
         today_connect: today_connect,
         add_req_cntent: add_req_cntent,
         dlvy_adres_nm: dlvy_adres_nm,
+        adres_detail: adres_detail,
         dlvy_atent_matter: dlvy_atent_matter,
         showroom_list: showroom_list,
         contact_user_id: contact_user_id,
@@ -801,6 +805,28 @@ const API = {
   getSchedular: ({min_date, max_date}) => {
     var apiName = v1Api
     var path = `${mConst.getApiPath()}/my-schedule`
+    var init = {
+      queryStringParameters: {
+        min_date: min_date,
+        max_date: max_date,
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
+  getMagazineSchedular: ({min_date, max_date}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/my-schedule-date`
+    var init = {
+      queryStringParameters: {
+        min_date: min_date,
+        max_date: max_date,
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
+  getBrandMagazineSchedular: ({min_date, max_date}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/my-schedule-brand`
     var init = {
       queryStringParameters: {
         min_date: min_date,
