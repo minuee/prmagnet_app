@@ -90,4 +90,11 @@ export default StyleSheet.create({
     textAlign: 'left',
     color: '#555555',
   },
+  text1: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 14,
+    textAlign: 'left',
+    color: '#000000',
+    marginBottom: mUtils.wScale(20),
+  },
 })
