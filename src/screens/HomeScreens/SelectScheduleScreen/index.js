@@ -123,7 +123,13 @@ class SelectScheduleScreen extends PureComponent {
       this.alert('', '날짜 설정이 필요합니다')
       return
     }
-    this.pushTo(caller, {start: mUtils.getDayValue(start.year, start.month, start.day), end: mUtils.getDayValue(end.year, end.month, end.day, true)})
+    console.log('>>>>>?!?!?!?!?!', this.params)
+    this.params.get({
+      start: mUtils.getDayValue(start.year, start.month, start.day),
+      end: mUtils.getDayValue(end.year, end.month, end.day, true),
+    })
+    this.goBack()
+    //this.pushTo(caller, {start: mUtils.getDayValue(start.year, start.month, start.day), end: mUtils.getDayValue(end.year, end.month, end.day, true)})
   }
   render() {
     const {period} = this.state

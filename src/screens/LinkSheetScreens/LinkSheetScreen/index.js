@@ -44,13 +44,20 @@ class LinkSheetScreen extends PureComponent {
   componentWillUnmount() {
     this.removeFocus()
   }
-  handleOnFocus = () => {
+  handleOnFocus = params => {
     this.setState({loading: true}, () => {
       const {brandId} = this.state
       const {start, end} = _.get(this.props, 'route.params', {}) // onFocus에서는 이렇게 불러와야 함 navigation.js 33번째 줄 참조
-      if (start && end) {
-        this.handleLoadData(start, end, brandId)
-        this.setState({start, end})
+      console.log('>>', params.start, params.end)
+      //if (start && end) {
+      //  this.handleLoadData(start, end, brandId)
+      //  this.setState({start, end})
+      //} else {
+      //  this.handleLoadData(this.state.start, this.state.end, brandId)
+      //}
+      if (params.start && params.end) {
+        this.handleLoadData(params.start, params.end, brandId)
+        this.setState({start: params.start, end: params.end})
       } else {
         this.handleLoadData(this.state.start, this.state.end, brandId)
       }
@@ -80,7 +87,8 @@ class LinkSheetScreen extends PureComponent {
   }
   handleChangeSchedule = () => {
     const {start, end} = this.state
-    this.pushTo('SelectScheduleScreen', {start, end, caller: 'LinkSheetScreen'})
+    console.log('>>>>>>', start, end)
+    this.pushTo('SelectScheduleScreen', {get: this.handleOnFocus, start, end, caller: 'LinkSheetScreen'})
   }
   handleChangeTitle = item => {
     this.setState({selectTitle: item}, () => this.handleLoadData())
