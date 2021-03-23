@@ -25,7 +25,7 @@ export default class BrandGroup extends PureComponent {
     super(props)
     this.state = {
       favoriteItems: [],
-      selectedItems: [],
+      selectedItems: '',
       select: '1',
       searchText: '',
       searchResult: [],
@@ -58,12 +58,7 @@ export default class BrandGroup extends PureComponent {
     })
   }
   toggleSelectItem = val => {
-    this.setState(prevstate => {
-      const selectedItems = prevstate.selectedItems.includes(val)
-        ? prevstate.selectedItems.filter(item => item !== val)
-        : prevstate.selectedItems.concat(val)
-      return {selectedItems}
-    })
+    val !== this.state.selectedItems ? this.setState({selectedItems: val}) : this.setState({selectedItems: ''})
   }
   render() {
     const {favoriteItems, selectedItems, select} = this.state
@@ -96,9 +91,11 @@ export default class BrandGroup extends PureComponent {
                       <TouchableOpacity key={index} onPress={() => this.toggleFavoriteItem(item)} style={styles.touch}>
                         <FastImage resizeMode={'contain'} source={heartOnImage} style={styles.heartImage} />
                       </TouchableOpacity>
-                      <Text style={styles.itemText}>{item}</Text>
+                      <Text style={styles.itemText}>{item.brand_nm}</Text>
                     </View>
-                    {selectedItems.includes(item) && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
+                    {selectedItems.brand_nm === item.brand_nm && (
+                      <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />
+                    )}
                   </Row>
                 </TouchableOpacity>
               )
@@ -106,18 +103,18 @@ export default class BrandGroup extends PureComponent {
 
             {_.map(data, (item, index) => {
               return _.map(
-                _.filter(item.each_list, e => !favoriteItems.includes(e.brand_nm)),
+                _.filter(item.each_list, e => !favoriteItems.includes(e)),
                 (item1, index1) => {
                   return (
-                    <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item1.brand_nm)}>
+                    <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item1)}>
                       <Row style={styles.itemWrapper}>
                         <View style={styles.itemSubWrapper}>
-                          <TouchableOpacity key={index} onPress={() => this.toggleFavoriteItem(item1.brand_nm)} style={styles.touch}>
+                          <TouchableOpacity key={index} onPress={() => this.toggleFavoriteItem(item1)} style={styles.touch}>
                             <FastImage resizeMode={'contain'} source={heartImage} style={styles.heartImage} />
                           </TouchableOpacity>
                           <Text style={styles.itemText}>{item1.brand_nm}</Text>
                         </View>
-                        {selectedItems.includes(item1.brand_nm) && (
+                        {selectedItems.brand_nm === item1.brand_nm && (
                           <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />
                         )}
                       </Row>
@@ -161,7 +158,7 @@ export default class BrandGroup extends PureComponent {
                       </TouchableOpacity>
                       <Text style={styles.itemText}>{item}</Text>
                     </View>
-                    {selectedItems.includes(item) && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
+                    {selectedItems === item && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
                   </Row>
                 </TouchableOpacity>
               )
@@ -179,9 +176,7 @@ export default class BrandGroup extends PureComponent {
                         </TouchableOpacity>
                         <Text style={styles.itemText}>{item.brand_nm}</Text>
                       </View>
-                      {selectedItems.includes(item.brand_nm) && (
-                        <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />
-                      )}
+                      {selectedItems === item.brand_nm && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
                     </Row>
                   </TouchableOpacity>
                 )

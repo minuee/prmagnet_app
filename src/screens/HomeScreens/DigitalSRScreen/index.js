@@ -60,14 +60,63 @@ class DigitalSRScreen extends PureComponent {
       })
       console.log('postFavShowroom>>>>>', response)
       if (response.success) {
-        this.postDigitalSRReset()
+        //this.postDigitalSRReset()
+        this.setState(state => {
+          const list = state.data.list.map((item, index) => {
+            if (no === item.showroom_no) {
+              return {
+                ...item,
+                is_fav: item.is_fav ? false : true,
+              }
+            } else {
+              return {
+                ...item,
+              }
+            }
+          })
+          return {
+            data: {...this.state.data, list: list},
+          }
+        })
       }
     } catch (error) {
       console.log('postFavShowroom>>>>>', error)
     }
   }
 
+  deleteFavShowroom = async no => {
+    try {
+      let response = await API.deleteFavShowroom({
+        showroom_no: no,
+      })
+      console.log('deleteFavShowroom>>>>>', response)
+      if (response.success) {
+        //this.postDigitalSRReset()
+        this.setState(state => {
+          const list = state.data.list.map((item, index) => {
+            if (no === item.showroom_no) {
+              return {
+                ...item,
+                is_fav: item.is_fav ? false : true,
+              }
+            } else {
+              return {
+                ...item,
+              }
+            }
+          })
+          return {
+            data: {...this.state.data, list: list},
+          }
+        })
+      }
+    } catch (error) {
+      console.log('deleteFavShowroom>>>>>', error)
+    }
+  }
+
   handleLoadMore = () => {
+    console.log('?!?!?!?!?!!?', this.state.page)
     this.postDigitalSR()
   }
 
@@ -127,16 +176,7 @@ class DigitalSRScreen extends PureComponent {
             })
           }
         } else if (response.list.length > 0) {
-          if (userType === 'B') {
-            this.setState({data: {...data, list: data.list.concat(response.list)}, page: page + 1})
-          } else {
-            this.setState({
-              data: {...data, list: data.list.concat(response.list)},
-              page: page + 1,
-              notice: response.brand_notice.notice,
-              inquiryNum: response.brand_notice.inquiry_number,
-            })
-          }
+          this.setState({data: {...data, list: data.list.concat(response.list)}, page: page + 1})
         }
       }
     } catch (error) {
@@ -234,18 +274,17 @@ class DigitalSRScreen extends PureComponent {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const {season_year} = this.state
-    if (this.state.select.length === 0) {
-      this.setState({...this.state, isvisible: false})
-    } else {
-      this.setState({...this.state, isvisible: true})
-    }
-    console.log(':::::::', prevState)
-    if (prevState.season_year.season_cd_id !== season_year.season_cd_id) {
-      this.postDigitalSRReset()
-    }
-  }
+  //componentDidUpdate(prevProps, prevState) {
+  //  const {season_year} = this.state
+  //  if (this.state.select.length === 0) {
+  //    this.setState({...this.state, isvisible: false})
+  //  } else {
+  //    this.setState({...this.state, isvisible: true})
+  //  }
+  //  if (season_year.season_cd_id !== '' && prevState.season_year.season_cd_id !== season_year.season_cd_id) {
+  //    this.postDigitalSRReset()
+  //  }
+  //}
 
   renderItem = ({item}) => {
     const {selectOnOff, select} = this.state
@@ -269,7 +308,7 @@ class DigitalSRScreen extends PureComponent {
             <TouchableOpacity
               style={styles.likeTouch}
               onPress={() => {
-                this.postFavShowroom(item.showroom_no)
+                this.deleteFavShowroom(item.showroom_no)
               }}
             >
               <FastImage resizeMode={'contain'} style={styles.likeImg} source={likeImgOn} />
