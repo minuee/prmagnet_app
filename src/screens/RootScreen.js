@@ -49,6 +49,7 @@ import PrivacyScreen from './HomeScreens/PrivacyScreen'
 import SampleRequestsDetailScreen from './HomeScreens/SampleRequestsDetailScreen'
 
 import DevNavigationScreen from './HomeScreens/DevNavigationScreen'
+import {Platform} from 'react-native'
 
 // 스크린 기본 설정
 const basicScreenOptions = (headerShown = true, gestureEnabled = mConst.bIos) => ({
@@ -142,7 +143,7 @@ class RootScreen extends PureComponent {
     const iconStyle = (width = 96) => ({
       width: (42 * width) / 155,
       height: 42,
-      marginTop: 8,
+      marginTop: Platform.OS === 'ios' ? 8 : 3,
     })
     const TabNavi = createBottomTabNavigator()
     const TabHomeStack = createStackNavigator()

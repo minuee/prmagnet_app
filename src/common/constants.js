@@ -65,6 +65,6 @@ export default {
   statusHeight: StatusBar.currentHeight,
   navigationBarHeight: Platform.OS === 'ios' ? 60 : 56,
   bottomSpace: isIphoneX() ? getBottomSpace() : 0,
-  bottomTabHeight: 50 + (isIphoneX() ? getBottomSpace() : 0),
+  bottomTabHeight: 58.8 + (isIphoneX() ? getBottomSpace() : 0),
   lf: '\n',
 }
