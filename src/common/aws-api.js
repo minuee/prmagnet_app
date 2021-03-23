@@ -137,6 +137,17 @@ const API = {
 
     return Api.get(apiName, path, init)
   },
+  getBrandSearch: search_text => {
+    var apiName = v1Cdn
+    var path = '/cdn/brand/search-company'
+    var init = {
+      queryStringParameters: {
+        search_text: search_text,
+      },
+    }
+
+    return Api.get(apiName, path, init)
+  },
   getSearchTeamMember: ({search_type, brand_id, mgzn_id, compy_nm}) => {
     const apiName = v1Cdn
     const path = '/cdn/search-team-member'
@@ -287,15 +298,15 @@ const API = {
   },
   getFavShowroom: () => {
     const apiName = v1Api
-    // const path = `${mConst.getApiPath()}/fav-show` // TODO 임시 주석처리
-    const path = '/stylist/fav-show' // TODO 테스트용
+    const path = `${mConst.getApiPath()}/fav-show` // TODO 임시 주석처리
+    //const path = '/stylist/fav-show' // TODO 테스트용
     const init = {}
     return Api.get(apiName, path, init)
   },
   getFavPress: () => {
     const apiName = v1Api
-    // const path = `${mConst.getApiPath()}/fav-press` // TODO 임시 주석처리
-    const path = '/stylist/fav-press' // TODO 테스트용
+    const path = `${mConst.getApiPath()}/fav-press` // TODO 임시 주석처리
+    //const path = '/stylist/fav-press' // TODO 테스트용
     const init = {}
     return Api.get(apiName, path, init)
   },
@@ -323,8 +334,9 @@ const API = {
   },
   deleteFavShowroom: ({showroom_no}) => {
     const apiName = v1Api
-    // const path = `${mConst.getApiPath()}/fav-show` // TODO 임시 주석처리
-    const path = '/stylist/fav-show' // TODO 테스트용
+    const path = `${mConst.getApiPath()}/fav-show/${showroom_no}` // TODO 임시 주석처리
+    //const path = '/stylist/fav-show' // TODO 테스트용
+    console.log('>>>>>>>', path)
     const myInit = {
       body: {
         showroom_no,
@@ -342,6 +354,18 @@ const API = {
       },
     }
     return Api.put(apiName, path, myInit)
+  },
+  postFavShowroom: ({showroom_no}) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/fav-show/${showroom_no}` // TODO 임시 주석처리
+    //const path = '/stylist/fav-show' // TODO 테스트용
+    console.log('>>>>>>>', path)
+    const myInit = {
+      body: {
+        showroom_no: showroom_no,
+      },
+    }
+    return Api.post(apiName, path, myInit)
   },
   getPickupSchedule: ({start_date, fin_date, brand_id}) => {
     const apiName = v1Api

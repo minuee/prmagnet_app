@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {TouchableOpacity, View, StyleSheet} from 'react-native'
+import {TouchableOpacity, View, StyleSheet, TextInput} from 'react-native'
 import {Row} from 'react-native-easy-grid'
 import FastImage from 'react-native-fast-image'
 import _ from 'lodash'
@@ -7,13 +7,18 @@ import _ from 'lodash'
 import mConst from '../../common/constants'
 import mUtils from '../../common/utils'
 import Text from './Text'
+import API from '../../common/aws-api'
 
 const heartImage = require('../../images/common/heart.png')
 const heartOnImage = require('../../images/common/heart_on.png')
 const selectedImage = require('../../images/common/selected.png')
 const circleImg1 = require('../../images/navi/circle_1.png')
 const circleImg2 = require('../../images/navi/circle_2.png')
-const arr = ['A-Z 순', '검색하기']
+const searchImg = require('../../images/common/search.png')
+const arr = [
+  {id: '1', name: 'A-Z 순'},
+  {id: '2', name: '검색하기'},
+]
 
 export default class BrandGroup extends PureComponent {
   constructor(props) {
@@ -21,7 +26,27 @@ export default class BrandGroup extends PureComponent {
     this.state = {
       favoriteItems: [],
       selectedItems: [],
-      select: 'A-Z 순',
+      select: '1',
+      searchText: '',
+      searchResult: [],
+    }
+  }
+  searchBrand = text => {
+    this.setState({searchText: text})
+    this.getBrandSearch(text)
+  }
+  getBrandSearch = async search => {
+    if (search) {
+      try {
+        let response = await API.getBrandSearch(search)
+        console.log('getBrandSearch>>>', response)
+        this.setState({searchResult: response.list})
+      } catch (error) {
+        console.log('getBrandSearch>>>', JSON.stringify(error))
+        await API.postErrLog({error: error, desc: 'getBrandSearch'})
+      }
+    } else {
+      this.setState({searchResult: []})
     }
   }
   toggleFavoriteItem = val => {
@@ -42,7 +67,7 @@ export default class BrandGroup extends PureComponent {
   }
   render() {
     const {favoriteItems, selectedItems, select} = this.state
-    const {data} = this.props
+    const {data, search} = this.props
     return (
       <View style={styles.layout}>
         <Row style={styles.top}>
@@ -50,55 +75,120 @@ export default class BrandGroup extends PureComponent {
             return (
               <TouchableOpacity
                 onPress={() => {
-                  this.setState({select: item})
+                  this.setState({select: item.id, selectedItems: [], favoriteItems: []})
                 }}
                 key={index}
                 style={{...styles.layout1}}
               >
-                <FastImage resizeMode={'contain'} style={styles.circle} source={select === item ? circleImg1 : circleImg2} />
-                <Text style={{...styles.topText, color: select === item ? '#555555' : '#999999'}}>{item}</Text>
+                <FastImage resizeMode={'contain'} style={styles.circle} source={select === item.id ? circleImg1 : circleImg2} />
+                <Text style={{...styles.topText, color: select === item.id ? '#555555' : '#999999'}}>{item.name}</Text>
               </TouchableOpacity>
             )
           })}
         </Row>
-        {_.map(favoriteItems, (item, index) => {
-          return (
-            <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item)}>
-              <Row style={styles.itemWrapper}>
-                <View style={styles.itemSubWrapper}>
-                  <TouchableOpacity key={index} onPress={() => this.toggleFavoriteItem(item)} style={styles.touch}>
-                    <FastImage resizeMode={'contain'} source={heartOnImage} style={styles.heartImage} />
-                  </TouchableOpacity>
-                  <Text style={styles.itemText}>{item}</Text>
-                </View>
-                {selectedItems.includes(item) && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
-              </Row>
-            </TouchableOpacity>
-          )
-        })}
-
-        {_.map(data, (item, index) => {
-          return _.map(
-            _.filter(item.each_list, e => !favoriteItems.includes(e.brand_nm)),
-            (item1, index1) => {
+        {select === '1' ? (
+          <>
+            {_.map(favoriteItems, (item, index) => {
               return (
-                <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item1.brand_nm)}>
+                <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item)}>
                   <Row style={styles.itemWrapper}>
                     <View style={styles.itemSubWrapper}>
-                      <TouchableOpacity key={index} onPress={() => this.toggleFavoriteItem(item1.brand_nm)} style={styles.touch}>
-                        <FastImage resizeMode={'contain'} source={heartImage} style={styles.heartImage} />
+                      <TouchableOpacity key={index} onPress={() => this.toggleFavoriteItem(item)} style={styles.touch}>
+                        <FastImage resizeMode={'contain'} source={heartOnImage} style={styles.heartImage} />
                       </TouchableOpacity>
-                      <Text style={styles.itemText}>{item1.brand_nm}</Text>
+                      <Text style={styles.itemText}>{item}</Text>
                     </View>
-                    {selectedItems.includes(item1.brand_nm) && (
-                      <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />
-                    )}
+                    {selectedItems.includes(item) && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
                   </Row>
                 </TouchableOpacity>
               )
-            }
-          )
-        })}
+            })}
+
+            {_.map(data, (item, index) => {
+              return _.map(
+                _.filter(item.each_list, e => !favoriteItems.includes(e.brand_nm)),
+                (item1, index1) => {
+                  return (
+                    <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item1.brand_nm)}>
+                      <Row style={styles.itemWrapper}>
+                        <View style={styles.itemSubWrapper}>
+                          <TouchableOpacity key={index} onPress={() => this.toggleFavoriteItem(item1.brand_nm)} style={styles.touch}>
+                            <FastImage resizeMode={'contain'} source={heartImage} style={styles.heartImage} />
+                          </TouchableOpacity>
+                          <Text style={styles.itemText}>{item1.brand_nm}</Text>
+                        </View>
+                        {selectedItems.includes(item1.brand_nm) && (
+                          <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />
+                        )}
+                      </Row>
+                    </TouchableOpacity>
+                  )
+                }
+              )
+            })}
+          </>
+        ) : (
+          <>
+            <View style={{paddingHorizontal: mUtils.wScale(15), paddingVertical: mUtils.wScale(15)}}>
+              <View
+                style={{
+                  ...styles.itemSubWrapper,
+                  backgroundColor: 'rgba(241, 242, 234, 0.74)',
+                  paddingHorizontal: mUtils.wScale(8),
+                  borderRadius: mUtils.wScale(7),
+                }}
+              >
+                <FastImage resizeMode={'contain'} source={searchImg} style={styles.searchImg} />
+                <TextInput
+                  style={styles.inputStyle}
+                  placeholder={'브랜드명을 입력해주세요.'}
+                  placeholderTextColor={'rgba(0, 0, 0, 0.2)'}
+                  value={this.state.searchText}
+                  onChangeText={text => {
+                    this.searchBrand(text)
+                  }}
+                />
+              </View>
+            </View>
+
+            {_.map(favoriteItems, (item, index) => {
+              return (
+                <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item)}>
+                  <Row style={styles.itemWrapper}>
+                    <View style={styles.itemSubWrapper}>
+                      <TouchableOpacity key={index} onPress={() => this.toggleFavoriteItem(item)} style={styles.touch}>
+                        <FastImage resizeMode={'contain'} source={heartOnImage} style={styles.heartImage} />
+                      </TouchableOpacity>
+                      <Text style={styles.itemText}>{item}</Text>
+                    </View>
+                    {selectedItems.includes(item) && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
+                  </Row>
+                </TouchableOpacity>
+              )
+            })}
+
+            {_.map(
+              this.state.searchResult.filter((e, i) => !favoriteItems.includes(e.brand_nm)),
+              (item, index) => {
+                return (
+                  <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item.brand_nm)}>
+                    <Row style={styles.itemWrapper}>
+                      <View style={styles.itemSubWrapper}>
+                        <TouchableOpacity key={index} onPress={() => this.toggleFavoriteItem(item.brand_nm)} style={styles.touch}>
+                          <FastImage resizeMode={'contain'} source={heartImage} style={styles.heartImage} />
+                        </TouchableOpacity>
+                        <Text style={styles.itemText}>{item.brand_nm}</Text>
+                      </View>
+                      {selectedItems.includes(item.brand_nm) && (
+                        <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />
+                      )}
+                    </Row>
+                  </TouchableOpacity>
+                )
+              }
+            )}
+          </>
+        )}
       </View>
     )
   }
@@ -159,5 +249,17 @@ const styles = StyleSheet.create({
     paddingLeft: mUtils.wScale(12),
     height: mUtils.wScale(50),
     backgroundColor: '#f6f6f6',
+  },
+  inputStyle: {
+    textAlign: 'left',
+    color: '#000000',
+    width: '100%',
+    paddingVertical: Platform.OS === 'ios' ? mUtils.wScale(9) : mUtils.wScale(3.2),
+    paddingLeft: mUtils.wScale(7),
+    fontSize: 11,
+  },
+  searchImg: {
+    width: mUtils.wScale(18),
+    height: mUtils.wScale(18),
   },
 })

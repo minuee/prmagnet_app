@@ -71,6 +71,7 @@ class FilterScreen extends PureComponent {
       section: mConst.getUserType() === 'M' ? sections[0] : sections[1],
       brandDrop: false,
       brands: [],
+      search: [],
     }
   }
   componentDidMount() {
@@ -93,6 +94,25 @@ class FilterScreen extends PureComponent {
       console.log('getBrandSearchCompanyAZ>>>', error)
       await API.postErrLog({error: JSON.stringify(error), desc: 'getBrandSearchCompanyAZError'})
     }
+  }
+
+  getBrandSearch = async search => {
+    if (search) {
+      try {
+        let response = await API.getBrandSearch(search)
+        console.log('getBrandSearch>>>', response)
+        this.setState({search: response.list})
+      } catch (error) {
+        console.log('getBrandSearch>>>', JSON.stringify(error))
+        await API.postErrLog({error: error, desc: 'getBrandSearch'})
+      }
+    } else {
+      this.setState({search: []})
+    }
+  }
+
+  searchResult = text => {
+    this.setState({search: text})
   }
 
   render() {
@@ -150,7 +170,7 @@ class FilterScreen extends PureComponent {
                           <FastImage resizeMode={'contain'} source={moreImg} style={styles.moreImg} />
                         )}
                       </TouchableOpacity>
-                      {brandDrop && <BrandGroup data={brands} />}
+                      {brandDrop && <BrandGroup data={brands} search={this.searchResult} />}
                     </Col>
                   )}
                   {['Availability', 'Size', 'Sample', 'Still Life Image'].includes(section) && <Text>"{section}" : 서비스 준비중입니다.</Text>}
