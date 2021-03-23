@@ -43,6 +43,28 @@ class FavoritesScreen extends PureComponent {
       loading: false,
     }
   }
+
+  deleteFavShowroom = async no => {
+    const {favShowroom} = this.state
+    try {
+      let response = await API.deleteFavShowroom({
+        showroom_no: no,
+      })
+      console.log('deleteFavShowroom>>>>>', response)
+      if (response.success) {
+        this.setState(state => {
+          const list = state.favShowroom.filter((e, i) => e.showroom_no !== no)
+          return {
+            favShowroom: list,
+          }
+        })
+        //this.handleOnFocus()
+      }
+    } catch (error) {
+      console.log('deleteFavShowroom>>>>>', error)
+    }
+  }
+
   componentDidMount() {
     this.pushOption('Favorites')
     this.onFocus(this.handleOnFocus)
@@ -60,48 +82,60 @@ class FavoritesScreen extends PureComponent {
         this.setState({loading: false})
         console.log('쇼룸 즐겨찾기 조회 실패', error)
       }
-      try {
-        const response = await API.getFavPress()
-        this.setState({favPress: _.get(response, 'list', []), loading: false})
-        console.log('프레스 즐겨찾기 조회 성공', JSON.stringify(response))
-      } catch (error) {
-        this.setState({loading: false})
-        console.log('프레스 즐겨찾기 조회 실패', error)
-      }
+      //try {
+      //  const response = await API.getFavPress()
+      //  this.setState({favPress: _.get(response, 'list', []), loading: false})
+      //  console.log('프레스 즐겨찾기 조회 성공', JSON.stringify(response))
+      //} catch (error) {
+      //  this.setState({loading: false})
+      //  console.log('프레스 즐겨찾기 조회 실패', error)
+      //}
     })
   }
   render() {
     const {tabIndex, loading} = this.state
     return (
       <SafeAreaView style={styles.container}>
-        <Tabs type="text" data={['Digital Showroom', 'Press Release']} getIndex={index => this.setState({tabIndex: index})} />
+        {/*<Tabs type="text" data={['Digital Showroom', 'Press Release']} getIndex={index => this.setState({tabIndex: index})} />*/}
         {loading ? (
           <Loading />
         ) : (
           <>
-            {tabIndex === 0 ? (
-              <View style={{paddingHorizontal: mUtils.wScale(20)}}>
-                <FlatList
-                  bounces={false}
-                  data={this.state.favShowroom}
-                  renderItem={({item}) => {
-                    return (
-                      <View style={{width: '49%', height: mUtils.wScale(310)}}>
-                        <TouchableOpacity activeOpacity={0.5} style={{width: '100%', height: mUtils.wScale(275)}}>
-                          <FastImage resizeMode={'contain'} style={styles.modelImg} source={modelImg} />
+            {/*{tabIndex === 0 ? (*/}
+            <View style={{paddingHorizontal: mUtils.wScale(20)}}>
+              <FlatList
+                bounces={false}
+                data={this.state.favShowroom}
+                renderItem={({item}) => {
+                  return (
+                    <View style={{width: '49%', height: mUtils.wScale(310), marginBottom: mUtils.wScale(20)}}>
+                      <TouchableOpacity
+                        onPress={() => this.pushTo('DigitalSRDetailScreen', {no: item.showroom_no})}
+                        activeOpacity={0.5}
+                        style={{width: '100%', height: mUtils.wScale(275)}}
+                      >
+                        <FastImage resizeMode={'contain'} style={styles.modelImg} source={{uri: item.img_url_adres}} />
+                        <TouchableOpacity
+                          style={styles.likeTouch}
+                          onPress={() => {
+                            this.deleteFavShowroom(item.showroom_no)
+                          }}
+                        >
                           <FastImage resizeMode={'contain'} style={styles.likeImg} source={likeImg} />
                         </TouchableOpacity>
-                        <Text style={styles.title}>{item.title}</Text>
-                      </View>
-                    )
-                  }}
-                  keyExtractor={item => `${item.title}_${Math.random()}`}
-                  contentContainerStyle={{paddingVertical: mUtils.wScale(15)}}
-                  columnWrapperStyle={{justifyContent: 'space-between'}}
-                  numColumns={2}
-                />
-              </View>
-            ) : (
+                      </TouchableOpacity>
+                      <Text style={styles.title}>{item.showroom_nm}</Text>
+                    </View>
+                  )
+                }}
+                keyExtractor={item => `${item.title}_${Math.random()}`}
+                contentContainerStyle={{paddingVertical: mUtils.wScale(15)}}
+                columnWrapperStyle={{justifyContent: 'space-between'}}
+                numColumns={2}
+                showsVerticalScrollIndicator={false}
+              />
+            </View>
+            {/*) : (
               <View style={{paddingHorizontal: mUtils.wScale(20)}}>
                 <FlatList
                   bounces={false}
@@ -123,7 +157,7 @@ class FavoritesScreen extends PureComponent {
                   numColumns={2}
                 />
               </View>
-            )}
+            )}*/}
           </>
         )}
       </SafeAreaView>

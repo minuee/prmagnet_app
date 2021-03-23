@@ -53,6 +53,20 @@ class DigitalSRScreen extends PureComponent {
     }
   }
 
+  postFavShowroom = async no => {
+    try {
+      let response = await API.postFavShowroom({
+        showroom_no: no,
+      })
+      console.log('postFavShowroom>>>>>', response)
+      if (response.success) {
+        this.postDigitalSRReset()
+      }
+    } catch (error) {
+      console.log('postFavShowroom>>>>>', error)
+    }
+  }
+
   handleLoadMore = () => {
     this.postDigitalSR()
   }
@@ -252,9 +266,23 @@ class DigitalSRScreen extends PureComponent {
           ) : null}
 
           {item?.is_fav ? (
-            <FastImage resizeMode={'contain'} style={styles.likeImg} source={likeImgOn} />
+            <TouchableOpacity
+              style={styles.likeTouch}
+              onPress={() => {
+                this.postFavShowroom(item.showroom_no)
+              }}
+            >
+              <FastImage resizeMode={'contain'} style={styles.likeImg} source={likeImgOn} />
+            </TouchableOpacity>
           ) : (
-            <FastImage resizeMode={'contain'} style={styles.likeImg} source={likeImg} />
+            <TouchableOpacity
+              style={styles.likeTouch}
+              onPress={() => {
+                this.postFavShowroom(item.showroom_no)
+              }}
+            >
+              <FastImage resizeMode={'contain'} style={styles.likeImg} source={likeImg} />
+            </TouchableOpacity>
           )}
 
           {selectOnOff &&

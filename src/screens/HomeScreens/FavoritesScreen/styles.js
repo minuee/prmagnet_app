@@ -19,12 +19,17 @@ export default StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  likeImg: {
-    width: mUtils.wScale(25),
-    height: mUtils.wScale(25),
+  likeTouch: {
     position: 'absolute',
     top: 6,
     right: 6,
     zIndex: 1,
+    width: mUtils.wScale(30),
+    height: mUtils.wScale(30),
+    alignItems: 'flex-end',
+  },
+  likeImg: {
+    width: mUtils.wScale(18),
+    height: mUtils.wScale(18),
   },
 })

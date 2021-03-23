@@ -68,13 +68,18 @@ export default StyleSheet.create({
     left: 6,
     zIndex: 1,
   },
-  likeImg: {
-    width: mUtils.wScale(18),
-    height: mUtils.wScale(18),
+  likeTouch: {
     position: 'absolute',
     top: 6,
     right: 6,
     zIndex: 1,
+    width: mUtils.wScale(30),
+    height: mUtils.wScale(30),
+    alignItems: 'flex-end',
+  },
+  likeImg: {
+    width: mUtils.wScale(18),
+    height: mUtils.wScale(18),
   },
   notiImg: {
     width: mUtils.wScale(12),
