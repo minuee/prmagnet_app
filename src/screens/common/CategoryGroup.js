@@ -50,7 +50,7 @@ export default class CategoryGroup extends PureComponent {
             return (
               <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item)}>
                 <Row style={styles.itemWrapper}>
-                  <Text style={styles.itemText}>ㄴ {item}</Text>
+                  <Text style={styles.itemText}>{item}</Text>
                   {selectedItems.includes(item) && <FastImage source={selectedImage} style={styles.selectedImage} />}
                 </Row>
               </TouchableOpacity>

@@ -189,7 +189,6 @@ class SampleRequestsScreen extends PureComponent {
     } = this.state
     const {no} = this.props.route.params
     let list = selected.map((item, index) => item.showroom_no)
-    console.log('>>>>>', selected)
     try {
       let response = await API.editSRRequestSend({
         req_no: no,
@@ -386,7 +385,7 @@ class SampleRequestsScreen extends PureComponent {
                     <View style={{...styles.select, backgroundColor: 'rgba(126, 161, 178, 0.8)'}}>
                       <FastImage resizeMode={'contain'} style={styles.selectImg} source={selectImg2} />
                     </View>
-                    {selected.length === 1 && !type ? null : (
+                    {selected.length !== 1 && (
                       <TouchableOpacity
                         style={styles.del}
                         onPress={() => {

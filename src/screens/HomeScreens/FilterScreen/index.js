@@ -72,7 +72,16 @@ class FilterScreen extends PureComponent {
       brandDrop: false,
       brands: [],
       search: [],
+      selectBrand: '',
     }
+  }
+  goFilter = () => {
+    console.log('>>>>>>', this.params.setFilter)
+    const {selectBrand} = this.state
+    this.params.setFilter({
+      brand_id: selectBrand,
+    })
+    this.goBack()
   }
   componentDidMount() {
     this.modalOption('FILTER')
@@ -83,6 +92,10 @@ class FilterScreen extends PureComponent {
   }
   handleSelectSection = section => {
     this.setState({section})
+  }
+
+  selectBrand = brand => {
+    this.setState({selectBrand: brand})
   }
 
   getBrandSearchCompanyAZ = async () => {
@@ -170,7 +183,7 @@ class FilterScreen extends PureComponent {
                           <FastImage resizeMode={'contain'} source={moreImg} style={styles.moreImg} />
                         )}
                       </TouchableOpacity>
-                      {brandDrop && <BrandGroup data={brands} search={this.searchResult} />}
+                      {brandDrop && <BrandGroup data={brands} search={this.searchResult} brand={this.selectBrand} />}
                     </Col>
                   )}
                   {['Availability', 'Size', 'Sample', 'Still Life Image'].includes(section) && <Text>"{section}" : 서비스 준비중입니다.</Text>}
@@ -178,6 +191,14 @@ class FilterScreen extends PureComponent {
               </Row>
             </Grid>
           </ScrollView>
+          <Row style={styles.bottom}>
+            <TouchableOpacity style={styles.leftButton}>
+              <Text style={styles.leftText}>Reset</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.rightButton} onPress={() => this.goFilter()}>
+              <Text style={styles.rightText}>Confirm</Text>
+            </TouchableOpacity>
+          </Row>
         </SafeAreaView>
       </>
     )

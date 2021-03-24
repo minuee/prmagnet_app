@@ -53,6 +53,18 @@ class DigitalSRScreen extends PureComponent {
     }
   }
 
+  setFilter = list => {
+    console.log('??????', list)
+    this.setState(
+      {
+        brand_id: list.brand_id,
+      },
+      () => {
+        this.postDigitalSRReset()
+      }
+    )
+  }
+
   postFavShowroom = async no => {
     try {
       let response = await API.postFavShowroom({
@@ -116,7 +128,6 @@ class DigitalSRScreen extends PureComponent {
   }
 
   handleLoadMore = () => {
-    console.log('?!?!?!?!?!!?', this.state.page)
     this.postDigitalSR()
   }
 
@@ -165,11 +176,15 @@ class DigitalSRScreen extends PureComponent {
       if (response.success) {
         if (page === 1) {
           if (userType === 'B') {
-            this.setState({data: response, season_year: response.season_list[0], page: page + 1})
+            this.setState({
+              data: response,
+              season_year: response.season_list.length > 0 ? response.season_list[0] : {season_year: '', season_cd_id: ''},
+              page: page + 1,
+            })
           } else {
             this.setState({
               data: response,
-              season_year: response.season_list[0],
+              season_year: response.season_list.length > 0 ? response.season_list[0] : {season_year: '', season_cd_id: ''},
               page: page + 1,
               notice: response.brand_notice.notice,
               inquiryNum: response.brand_notice.inquiry_number,
@@ -205,12 +220,18 @@ class DigitalSRScreen extends PureComponent {
       console.log('postDigitalSRReset>>>', response)
       if (response.success) {
         if (userType === 'B') {
-          this.setState({data: response, page: 2, loading: true})
+          this.setState({
+            data: response,
+            page: 2,
+            season_year: response.season_list.length > 0 ? response.season_list[0] : {season_year: '', season_cd_id: ''},
+            loading: true,
+          })
         } else {
           this.setState({
             data: response,
             page: 2,
             loading: true,
+            season_year: response.season_list.length > 0 ? response.season_list[0] : {season_year: '', season_cd_id: ''},
             notice: response.brand_notice.notice,
             inquiryNum: response.brand_notice.inquiry_number,
           })
@@ -218,19 +239,6 @@ class DigitalSRScreen extends PureComponent {
       }
     } catch (error) {
       console.log('postDigitalSRReset>>>', error)
-    }
-  }
-
-  getBrandNoti = async () => {
-    const {brand_id} = this.state
-    try {
-      let response = await API.getBrandNoti({
-        brand_id: brand_id,
-      })
-      console.log('getBrandNoti>>>', response)
-      this.setState({notice: response.notice_contents})
-    } catch (error) {
-      console.log('getBrandNoti>>>', error)
     }
   }
 
@@ -263,28 +271,13 @@ class DigitalSRScreen extends PureComponent {
 
   handleOnFocus = () => {
     const userType = mConst.getUserType()
-    console.log('>>>>>', userType)
     if (userType === 'B') {
       this.getNotice()
       this.getInquiryNum()
     }
-    this.postDigitalSR()
-    if (this.state.select.length === 0) {
-      this.setState({selectOnOff: false})
-    }
+    this.postDigitalSRReset()
+    this.setState({selectOnOff: false, select: []})
   }
-
-  //componentDidUpdate(prevProps, prevState) {
-  //  const {season_year} = this.state
-  //  if (this.state.select.length === 0) {
-  //    this.setState({...this.state, isvisible: false})
-  //  } else {
-  //    this.setState({...this.state, isvisible: true})
-  //  }
-  //  if (season_year.season_cd_id !== '' && prevState.season_year.season_cd_id !== season_year.season_cd_id) {
-  //    this.postDigitalSRReset()
-  //  }
-  //}
 
   renderItem = ({item}) => {
     const {selectOnOff, select} = this.state
@@ -397,7 +390,9 @@ class DigitalSRScreen extends PureComponent {
                             key={index}
                             style={styles.menuOption}
                             onSelect={() => {
-                              this.setState({season_year: item})
+                              this.setState({season_year: item}, () => {
+                                this.postDigitalSRReset()
+                              })
                             }}
                           >
                             <Text style={styles.menuText}>
@@ -413,7 +408,7 @@ class DigitalSRScreen extends PureComponent {
                   {userType === 'M' ? (
                     <TouchableOpacity
                       onPress={() => {
-                        this.pushTo('FilterScreen')
+                        this.pushTo('FilterScreen', {setFilter: this.setFilter})
                       }}
                     >
                       <FastImage resizeMode={'contain'} style={styles.fixImg} source={fixImg} />
@@ -464,7 +459,7 @@ class DigitalSRScreen extends PureComponent {
             <Loading />
           )}
         </View>
-        {isvisible ? (
+        {selectOnOff && (
           <View style={styles.bottomSheet}>
             <View style={{flexDirection: 'row'}}>
               <View>
@@ -488,7 +483,7 @@ class DigitalSRScreen extends PureComponent {
               <Text style={{...styles.bottomText3}}>Request Samples</Text>
             </TouchableOpacity>
           </View>
-        ) : null}
+        )}
       </SafeAreaView>
     )
   }

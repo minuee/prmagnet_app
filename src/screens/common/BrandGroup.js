@@ -58,7 +58,9 @@ export default class BrandGroup extends PureComponent {
     })
   }
   toggleSelectItem = val => {
-    val !== this.state.selectedItems ? this.setState({selectedItems: val}) : this.setState({selectedItems: ''})
+    console.log('@@@@@', val)
+    const {brand} = this.props
+    val !== this.state.selectedItems ? (this.setState({selectedItems: val}), brand(val)) : (this.setState({selectedItems: ''}), brand(''))
   }
   render() {
     const {favoriteItems, selectedItems, select} = this.state
@@ -85,7 +87,7 @@ export default class BrandGroup extends PureComponent {
           <>
             {_.map(favoriteItems, (item, index) => {
               return (
-                <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item)}>
+                <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item.brand_id)}>
                   <Row style={styles.itemWrapper}>
                     <View style={styles.itemSubWrapper}>
                       <TouchableOpacity key={index} onPress={() => this.toggleFavoriteItem(item)} style={styles.touch}>
@@ -93,9 +95,7 @@ export default class BrandGroup extends PureComponent {
                       </TouchableOpacity>
                       <Text style={styles.itemText}>{item.brand_nm}</Text>
                     </View>
-                    {selectedItems.brand_nm === item.brand_nm && (
-                      <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />
-                    )}
+                    {selectedItems === item.brand_id && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
                   </Row>
                 </TouchableOpacity>
               )
@@ -106,7 +106,7 @@ export default class BrandGroup extends PureComponent {
                 _.filter(item.each_list, e => !favoriteItems.includes(e)),
                 (item1, index1) => {
                   return (
-                    <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item1)}>
+                    <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item1.brand_id)}>
                       <Row style={styles.itemWrapper}>
                         <View style={styles.itemSubWrapper}>
                           <TouchableOpacity key={index} onPress={() => this.toggleFavoriteItem(item1)} style={styles.touch}>
@@ -114,9 +114,7 @@ export default class BrandGroup extends PureComponent {
                           </TouchableOpacity>
                           <Text style={styles.itemText}>{item1.brand_nm}</Text>
                         </View>
-                        {selectedItems.brand_nm === item1.brand_nm && (
-                          <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />
-                        )}
+                        {selectedItems === item1.brand_id && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
                       </Row>
                     </TouchableOpacity>
                   )
@@ -150,7 +148,7 @@ export default class BrandGroup extends PureComponent {
 
             {_.map(favoriteItems, (item, index) => {
               return (
-                <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item)}>
+                <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item.brand_id)}>
                   <Row style={styles.itemWrapper}>
                     <View style={styles.itemSubWrapper}>
                       <TouchableOpacity key={index} onPress={() => this.toggleFavoriteItem(item)} style={styles.touch}>
@@ -158,7 +156,7 @@ export default class BrandGroup extends PureComponent {
                       </TouchableOpacity>
                       <Text style={styles.itemText}>{item}</Text>
                     </View>
-                    {selectedItems === item && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
+                    {selectedItems === item.brand_id && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
                   </Row>
                 </TouchableOpacity>
               )
@@ -168,7 +166,7 @@ export default class BrandGroup extends PureComponent {
               this.state.searchResult.filter((e, i) => !favoriteItems.includes(e.brand_nm)),
               (item, index) => {
                 return (
-                  <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item.brand_nm)}>
+                  <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item.brand_id)}>
                     <Row style={styles.itemWrapper}>
                       <View style={styles.itemSubWrapper}>
                         <TouchableOpacity key={index} onPress={() => this.toggleFavoriteItem(item.brand_nm)} style={styles.touch}>
@@ -176,7 +174,7 @@ export default class BrandGroup extends PureComponent {
                         </TouchableOpacity>
                         <Text style={styles.itemText}>{item.brand_nm}</Text>
                       </View>
-                      {selectedItems === item.brand_nm && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
+                      {selectedItems === item.brand_id && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
                     </Row>
                   </TouchableOpacity>
                 )

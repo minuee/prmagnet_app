@@ -96,4 +96,30 @@ export default StyleSheet.create({
     borderColor: mConst.borderGray,
     borderBottomWidth: 1,
   },
+  bottom: {
+    width: mConst.wWidth,
+    height: mUtils.wScale(50),
+  },
+  leftButton: {
+    width: '30%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: mConst.borderGray,
+  },
+  leftText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#070708',
+  },
+  rightButton: {
+    width: '70%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: mConst.getBaseColor(),
+  },
+  rightText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: mConst.white,
+  },
 })
