@@ -14,7 +14,7 @@ const WeekHead = props => {
       {weekNames.map((n, i) => {
         return (
           <View key={i} style={{width: mConst.wWidth / 7, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white'}}>
-            <Text style={{color: i === 0 ? 'red' : i === 6 ? 'blue' : null, fontSize: 15}}>{n}</Text>
+            <Text style={{color: i === 0 ? 'red' : i === 6 ? 'blue' : 'black', fontSize: 15}}>{n}</Text>
           </View>
         )
       })}
