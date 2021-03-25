@@ -69,19 +69,19 @@ class LinkSheetScreen extends PureComponent {
       try {
         const response = await API.getPickupSchedule({start_date: start, fin_date: end, brand_id: brandId})
         this.setState({dataList: _.get(response, 'request_list', []), brands: _.get(response, 'brand_list', []), loading: false})
-        console.log('픽업 스케쥴 조회 성공', JSON.stringify(response))
+        console.log('Pickup 스케쥴 조회 성공', JSON.stringify(response))
       } catch (error) {
         this.setState({loading: false})
-        console.log('픽업 스케쥴 조회 실패', error)
+        console.log('Pickup 스케쥴 조회 실패', error)
       }
     } else if (selectTitle === 'Send Out') {
       try {
         const response = await API.getSendoutSchedule({start_date: start, fin_date: end, brand_id: brandId})
         this.setState({dataList: _.get(response, 'request_list', []), brands: _.get(response, 'brand_list', []), loading: false})
-        console.log('픽업 스케쥴 조회 성공', JSON.stringify(response))
+        console.log('Sendout 스케쥴 조회 성공', JSON.stringify(response))
       } catch (error) {
         this.setState({loading: false})
-        console.log('픽업 스케쥴 조회 실패', error)
+        console.log('Sendout 스케쥴 조회 실패', error)
       }
     }
   }
