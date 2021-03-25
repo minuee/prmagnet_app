@@ -12,6 +12,7 @@ import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
 import styles from './styles'
 import DropDown from '../../common/DropDown'
+import API from '../../../common/aws-api'
 
 const moreImg = require('../../../images/navi/more_3.png')
 
@@ -31,9 +32,9 @@ class ScheduleMemoScreen extends PureComponent {
     this.state = {
       color1: ['#c18c8c', '#c1a68c', '#b8c18c', '#8cc1a7', '#8cc1c1', '#8cafc1', '#908cc1'],
       color2: ['#af8cc1', '#e1c668', '#c1c3c3', '#b0a581', '#e1af7b', '#d78979', '#e6e667'],
-      look: ['LOOK #1', 'LOOK #2', 'LOOK #3', 'LOOK #4', 'LOOK #5', 'LOOK #6', 'LOOK #7', 'LOOK #8', 'LOOK #9', 'LOOK #10', 'Apply All Looks'],
+      look: [],
       drop: false,
-      select: 'LOOK #1',
+      select: '',
       desc: '',
       drop: false,
       selectedDate: '',
@@ -43,11 +44,54 @@ class ScheduleMemoScreen extends PureComponent {
       selectedColor: '',
     }
   }
+
+  getShowRoomList = async date => {
+    try {
+      let response = await API.getShowRoomList({
+        date: date,
+      })
+      console.log('getShowRoomList>>>', response)
+      this.setState({
+        look: response.list,
+      })
+    } catch (error) {
+      console.log('getShowRoomList>>>', error)
+    }
+  }
+
+  getMemo = async () => {
+    const {no, date} = this.params
+    try {
+      let response = await API.getMemo({
+        showroom_no: no,
+        date: date,
+      })
+      console.log('getMemo>>>>>>', response)
+      //this.setState({desc: response.content, color: response.selectedColor, selectedTimeStamp: })
+    } catch (error) {
+      console.log('getMemo>>>>>>', error)
+    }
+  }
+
   componentDidMount() {
+    const {no, date} = this.params
+    let day = Math.floor(new Date().getTime() / 1000)
     this.modalOption('')
+    this.onFocus(this.handleOnFocus)
+    this.setState({
+      selectedDate: moment(day.timestamp).format('YYYY.MM.DD'),
+      selectedTimeStamp: day.timestamp / 1000,
+      day: moment(day.timestamp).format('dd'),
+    })
+  }
+  componentWillUnmount() {
+    this.removeFocus()
+  }
+  handleOnFocus = () => {
+    //this.getSampleRequests()
   }
   onSelect = (idx, value) => {
-    this.setState({...this.state, select: value})
+    this.setState({select: value})
   }
 
   onDayPress = day => {
@@ -57,6 +101,7 @@ class ScheduleMemoScreen extends PureComponent {
       day: moment(day.timestamp).format('dd'),
       drop: false,
     })
+    this.getShowRoomList(day.timestamp / 1000)
   }
 
   render() {
@@ -101,11 +146,7 @@ class ScheduleMemoScreen extends PureComponent {
               )
             })}
           </View>
-
-          <View style={{paddingHorizontal: mUtils.wScale(20)}}>
-            <DropDown options={look} value={select} onSelect={this.onSelect} />
-          </View>
-          <View style={{paddingHorizontal: mUtils.wScale(20)}}>
+          <View style={{paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(20)}}>
             <TouchableOpacity
               style={{...styles.layout2}}
               onPress={() => {
@@ -116,7 +157,11 @@ class ScheduleMemoScreen extends PureComponent {
               <FastImage resizeMode={'contain'} source={moreImg} style={styles.moreImg} />
             </TouchableOpacity>
           </View>
-          <View style={{paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(10)}}>
+          <View style={{paddingHorizontal: mUtils.wScale(20)}}>
+            <DropDown options={look} value={select} onSelect={this.onSelect} />
+          </View>
+
+          <View style={{paddingHorizontal: mUtils.wScale(20)}}>
             <TextInput
               style={styles.layout3}
               multiline={true}
@@ -135,13 +180,12 @@ class ScheduleMemoScreen extends PureComponent {
                 alignSelf: 'center',
                 position: 'absolute',
                 zIndex: 1,
-                top: mUtils.wScale(215),
+                top: mUtils.wScale(175),
                 paddingHorizontal: mUtils.wScale(20),
                 width: '100%',
               }}
             >
               <Calendar
-                minDate={Date()}
                 monthFormat={'yyyy MMMM'}
                 style={{
                   width: '100%',

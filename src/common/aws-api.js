@@ -859,6 +859,28 @@ const API = {
     }
     return Api.get(apiName, path, init)
   },
+  getMemo: ({showroom_no, date}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/memo`
+    var init = {
+      queryStringParameters: {
+        showroom_no: showroom_no,
+        date: date,
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
+  getShowRoomList: ({date}) => {
+    console.log('>>>>', date)
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/showroom-list/for-memo`
+    var init = {
+      queryStringParameters: {
+        date: date,
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
 }
 
 export default API

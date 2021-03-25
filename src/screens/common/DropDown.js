@@ -21,14 +21,14 @@ const CommonDropDown = props => {
       onSelect={onSelect}
       renderRow={name => (
         <View style={styles.dropdownItemWrapper}>
-          <Text style={styles.dropdownItemText}>{name}</Text>
+          <Text style={styles.dropdownItemText}>{name.showroom_nm}</Text>
         </View>
       )}
       renderSeparator={() => null}
       options={options}
     >
       <View style={half ? styles.dropdownTextHalfWrapper : styles.dropdownTextWrapper}>
-        {value ? <Text style={styles.dropdownItemText}>{value}</Text> : <Text style={styles.dropdownPlaceholderText}>{placeholder}</Text>}
+        {value ? <Text style={styles.dropdownItemText}>{value.showroom_nm}</Text> : <Text style={styles.dropdownPlaceholderText}>{placeholder}</Text>}
         <FastImage resizeMode={'contain'} source={moreImg} style={styles.dropdownIcon} />
       </View>
     </ModalDropdown>

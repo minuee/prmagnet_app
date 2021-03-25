@@ -107,6 +107,7 @@ export default StyleSheet.create({
     borderStyle: 'solid',
     borderWidth: 1,
     paddingHorizontal: mUtils.wScale(8),
+    marginBottom: mUtils.wScale(5),
   },
   layout4: {
     flexDirection: 'row',
