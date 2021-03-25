@@ -11,7 +11,7 @@ import Text from '../../common/Text'
 import CalendarList from '../../common/CalendarList'
 import styles from './styles'
 
-class CalTestScreen extends PureComponent {
+class SelectScheduleScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
@@ -21,8 +21,12 @@ class CalTestScreen extends PureComponent {
       markedDates: [],
     }
   }
-  async componentDidMount() {
+  componentDidMount() {
     this.modalOption('Select schedule')
+    const {start, end} = this.params
+    if (start && end) {
+      this.setState({start: new Date(start * 1000), end: new Date(end * 1000)})
+    }
   }
   onDayPress = dt => {
     const {start, end} = this.state
@@ -84,4 +88,4 @@ class CalTestScreen extends PureComponent {
   }
 }
 
-export default CalTestScreen
+export default SelectScheduleScreen
