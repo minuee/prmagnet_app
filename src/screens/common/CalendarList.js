@@ -80,17 +80,20 @@ const Day = props => {
 class CalendarList extends PureComponent {
   constructor(props) {
     super(props)
-    this.state = {min: '', max: '', start: '', end: '', markedDates: [], dates: []}
-  }
-  componentDidMount() {
-    const {minDate, maxDate, start, end, markedDates} = this.props
-    const min = minDate ? moment(minDate) : moment()
-    const max = maxDate ? moment(maxDate) : min.clone().add({month: 14})
+    const min = props.minDate ? moment(props.minDate) : moment()
+    const max = props.maxDate ? moment(props.maxDate) : min.clone().add({month: 14})
     const dates = [min]
     for (let i = min.clone().add(1, 'month'); i.isBefore(max); i = i.clone().add(1, 'month')) {
       dates.push(i)
     }
-    this.setState({min, max, start, end, markedDates, dates})
+    this.state = {
+      min,
+      max,
+      start: props.start,
+      end: props.end,
+      markedDates: [],
+      dates,
+    }
   }
   checkMarkedDates = dt => {
     const {markedDates} = this.state
@@ -127,36 +130,33 @@ class CalendarList extends PureComponent {
           {Array(7)
             .fill(0)
             .map((n, i) => {
-              const strStartDt = moment(start).format('YYYY-MM-DD')
-              const strEndDt = moment(end).format('YYYY-MM-DD')
               const current = today
                 .clone()
                 .week(week)
                 .startOf('week')
                 .add(n + i, 'day')
-              const isGrayed = current.format('MM') === today.format('MM') ? '' : 'prev'
-              const isSelected = current.format('YYYY-MM-DD') === strStartDt || current.format('YYYY-MM-DD') === strEndDt ? true : false
+              const isStart = current.isSame(start, 'day')
+              const isEnd = current.isSame(end, 'day')
+              const isSelected = isStart || isEnd
               let isOver = ''
-              const unAvailable = markedDates.filter(v => v === current.format('YYYY-MM-DD')).length
-              if (isSelected && (_.isEmpty(start) || _.isEmpty(end) || strStartDt === strEndDt)) {
+              // const unAvailable = markedDates.filter(v => v === current.format('YYYY-MM-DD')).length
+              if (isSelected && (_.isEmpty(start) || _.isEmpty(end) || start.isSame(end, 'day'))) {
                 isOver = 'selected'
-              } else if (current.format('YYYY-MM-DD') === strStartDt) {
+              } else if (isStart) {
+                // console.log('###strStartDt:', current.format('L'))
                 isOver = 'start'
-              } else if (current.format('YYYY-MM-DD') === strEndDt) {
+              } else if (isEnd) {
+                // console.log('###strEndDt:', current.format('L'))
                 isOver = 'end'
-              } else if (current.isAfter(moment(start)) && current.isBefore(moment(end))) {
+              } else if (current.isAfter(start) && current.isBefore(end)) {
                 isOver = 'on'
               }
               // console.log('WEEK : ', week)
-              if (isGrayed === 'prev') return <DayBack key={i} />
+              if (!current.isSame(today, 'month')) return <DayBack key={i} />
               return (
                 <DayBack key={i} over={isOver}>
-                  <Day
-                    type={isGrayed}
-                    onPress={isGrayed === 'prev' ? () => onDayPress('none') : () => onDayPress(current)}
-                    selected={isSelected}
-                    unAvail={unAvailable > 0 ? true : false}
-                  >
+                  {/* <Day type={null} onPress={() => onDayPress(current)} selected={isSelected} unAvail={unAvailable > 0 ? true : false}> */}
+                  <Day type={null} onPress={() => onDayPress(current)} selected={isSelected}>
                     {current.format('D')}
                   </Day>
                   {/* {unAvailable > 0 && <DayUnAvailableChk />} */}
