@@ -463,23 +463,26 @@ const API = {
     }
     return Api.get(apiName, path, init)
   },
-  getHomeNR: ({next_token}) => {
+  getHomeNR: ({page, limit}) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/home/new-request`
     const init = {
       queryStringParameters: {
-        next_token: next_token,
+        page: page,
+        limit: limit,
       },
     }
     return Api.get(apiName, path, init)
   },
-  getHomeTR: ({date, next_token}) => {
+  getHomeTR: ({date, page, limit}) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/home/today-request`
     const init = {
       queryStringParameters: {
         date: date,
-        next_token: next_token,
+        page: page,
+        limit,
+        limit,
       },
     }
     return Api.get(apiName, path, init)
@@ -880,6 +883,43 @@ const API = {
       },
     }
     return Api.get(apiName, path, init)
+  },
+  postMemo: ({showroom_no, date, color, content}) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/memo`
+    const myInit = {
+      body: {
+        showroom_no: showroom_no,
+        date: date,
+        color: color,
+        content: content,
+      },
+    }
+    return Api.post(apiName, path, myInit)
+  },
+  putMemo: ({memo_no, showroom_no, date, color, content}) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/memo/${memo_no}`
+    const myInit = {
+      body: {
+        memo_no: memo_no,
+        showroom_no: showroom_no,
+        date: date,
+        color: color,
+        content: content,
+      },
+    }
+    return Api.put(apiName, path, myInit)
+  },
+  delMemo: ({memo_no}) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/memo/${memo_no}`
+    const myInit = {
+      body: {
+        memo_no: memo_no,
+      },
+    }
+    return Api.del(apiName, path, myInit)
   },
 }
 

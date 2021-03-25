@@ -281,6 +281,7 @@ class DigitalSRScreen extends PureComponent {
 
   renderItem = ({item}) => {
     const {selectOnOff, select} = this.state
+    const userType = mConst.getUserType()
     return (
       <View style={{width: '49%', height: mUtils.wScale(310)}}>
         <TouchableOpacity
@@ -297,25 +298,26 @@ class DigitalSRScreen extends PureComponent {
             <FastImage resizeMode={'contain'} style={styles.newImg} source={newImg} />
           ) : null}
 
-          {item?.is_fav ? (
-            <TouchableOpacity
-              style={styles.likeTouch}
-              onPress={() => {
-                this.deleteFavShowroom(item.showroom_no)
-              }}
-            >
-              <FastImage resizeMode={'contain'} style={styles.likeImg} source={likeImgOn} />
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              style={styles.likeTouch}
-              onPress={() => {
-                this.postFavShowroom(item.showroom_no)
-              }}
-            >
-              <FastImage resizeMode={'contain'} style={styles.likeImg} source={likeImg} />
-            </TouchableOpacity>
-          )}
+          {userType === 'M' &&
+            (item?.is_fav ? (
+              <TouchableOpacity
+                style={styles.likeTouch}
+                onPress={() => {
+                  this.deleteFavShowroom(item.showroom_no)
+                }}
+              >
+                <FastImage resizeMode={'contain'} style={styles.likeImg} source={likeImgOn} />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={styles.likeTouch}
+                onPress={() => {
+                  this.postFavShowroom(item.showroom_no)
+                }}
+              >
+                <FastImage resizeMode={'contain'} style={styles.likeImg} source={likeImg} />
+              </TouchableOpacity>
+            ))}
 
           {selectOnOff &&
             (select.includes(item) ? (

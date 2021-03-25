@@ -42,6 +42,8 @@ class ScheduleMemoScreen extends PureComponent {
       selected: '',
       day: '',
       selectedColor: '',
+      type: false,
+      memo_no: '',
     }
   }
 
@@ -60,29 +62,54 @@ class ScheduleMemoScreen extends PureComponent {
   }
 
   getMemo = async () => {
-    const {no, date} = this.params
+    const {no, date, name} = this.params
     try {
       let response = await API.getMemo({
-        showroom_no: no,
-        date: date,
+        showroom_no: no ? no : this.state.select.showroom_no,
+        date: date ? date : this.state.selectedTimeStamp,
       })
       console.log('getMemo>>>>>>', response)
-      //this.setState({desc: response.content, color: response.selectedColor, selectedTimeStamp: })
+      if (response.memo) {
+        this.setState({
+          desc: response.content,
+          color: response.selectedColor,
+          selectedTimeStamp: response.memo_dt,
+          selectedDate: moment(response.memo_dt).format('YYYY.MM.DD'),
+          day: moment(response.memo_dt).format('dd'),
+          type: true,
+          memo_no: response.memo_no,
+        })
+      } else {
+        this.setState({
+          desc: '',
+          color: this.state.selectedColor,
+          selectedTimeStamp: this.state.selectedTimeStamp,
+          selectedDate: moment(this.state.selectedTimeStamp).format('YYYY.MM.DD'),
+          day: moment(this.state.selectedTimeStamp).format('dd'),
+          type: false,
+          memo_no: '',
+        })
+      }
     } catch (error) {
       console.log('getMemo>>>>>>', error)
     }
   }
 
   componentDidMount() {
-    const {no, date} = this.params
+    const {no, date, name} = this.params
     let day = Math.floor(new Date().getTime() / 1000)
+    console.log('?????', date)
     this.modalOption('')
     this.onFocus(this.handleOnFocus)
     this.setState({
-      selectedDate: moment(day.timestamp).format('YYYY.MM.DD'),
-      selectedTimeStamp: day.timestamp / 1000,
-      day: moment(day.timestamp).format('dd'),
+      selectedDate: date ? mUtils.getShowDate(date, 'YYYY.MM.DD') : moment(day.timestamp).format('YYYY.MM.DD'),
+      selectedTimeStamp: date ? date : day.timestamp / 1000,
+      day: date ? moment(date * 1000).format('dd') : moment(day.timestamp).format('dd'),
+      select: no && name ? {showroom_no: no, showroom_nm: name} : '',
     })
+    if (no && date) {
+      this.getMemo()
+    }
   }
   componentWillUnmount() {
     this.removeFocus()
@@ -91,7 +118,9 @@ class ScheduleMemoScreen extends PureComponent {
     //this.getSampleRequests()
   }
   onSelect = (idx, value) => {
-    this.setState({select: value})
+    this.setState({select: value}, () => {
+      this.getMemo()
+    })
   }
 
   onDayPress = day => {
@@ -104,9 +133,64 @@ class ScheduleMemoScreen extends PureComponent {
     this.getShowRoomList(day.timestamp / 1000)
   }
 
+  postMemo = async () => {
+    const {selectedTimeStamp, select, desc, selectedColor} = this.state
+    try {
+      let response = await API.getMemo({
+        showroom_no: select.showroom_no,
+        date: selectedTimeStamp,
+        color: selectedColor,
+        content: desc,
+      })
+      console.log('postMemo>>>>', response)
+      setTimeout(() => {
+        this.alert('추가 완료', '메모를 추가 완료하였습니다.', [{onPress: () => this.goBack()}])
+      }, 100)
+    } catch (error) {
+      console.log('postMemo>>>>', error)
+    }
+  }
+
+  putMemo = async () => {
+    const {memo_no, selectedTimeStamp, select, desc, selectedColor} = this.state
+    try {
+      let response = await API.putMemo({
+        memo_no: memo_no,
+        showroom_no: select.showroom_no,
+        date: selectedTimeStamp,
+        color: selectedColor,
+        content: desc,
+      })
+      console.log('putMemo>>>>', response)
+      if (response.success) {
+        setTimeout(() => {
+          this.alert('수정 완료', '메모를 수정 완료하였습니다.', [{onPress: () => this.goBack()}])
+        }, 100)
+      }
+    } catch (error) {
+      console.log('putMemo>>>>', error)
+    }
+  }
+
+  delMemo = async () => {
+    const {memo_no} = this.state
+    try {
+      let response = await API.delMemo({
+        memo_no: memo_no,
+      })
+      console.log('delMemo>>>>', response)
+      if (response.success) {
+        setTimeout(() => {
+          this.alert('삭제 완료', '메모를 삭제 완료하였습니다.', [{onPress: () => this.goBack()}])
+        }, 100)
+      }
+    } catch (error) {
+      console.log('delMemo>>>>', error)
+    }
+  }
+
   render() {
-    const {color1, color2, select, look, selectedDate, selected, drop, desc, day, selectedColor} = this.state
-    const {type} = this.props.route.params
+    const {color1, color2, select, look, selectedDate, selected, drop, desc, day, selectedColor, type} = this.state
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
@@ -158,7 +242,7 @@ class ScheduleMemoScreen extends PureComponent {
             </TouchableOpacity>
           </View>
           <View style={{paddingHorizontal: mUtils.wScale(20)}}>
-            <DropDown options={look} value={select} onSelect={this.onSelect} />
+            <DropDown options={look} value={select} onSelect={this.onSelect} placeholder={'선택해주세요.'} />
           </View>
 
           <View style={{paddingHorizontal: mUtils.wScale(20)}}>
@@ -167,7 +251,7 @@ class ScheduleMemoScreen extends PureComponent {
               multiline={true}
               textAlignVertical={'top'}
               placeholder={'메모 입력해주세요.'}
-              placeholderTextColor={mConst.gray}
+              placeholderTextColor={'#999999'}
               value={desc}
               onChangeText={text => {
                 this.setState({desc: text})
@@ -213,9 +297,7 @@ class ScheduleMemoScreen extends PureComponent {
                 this.alert('메모 삭제', '해당 메모를 삭제하시겠습니까?', [
                   {
                     onPress: () => {
-                      setTimeout(() => {
-                        this.alert('삭제 완료', '메모를 삭제 하였습니다.', [{onPress: () => this.goBack()}])
-                      }, 100)
+                      this.delMemo()
                     },
                   },
                   {onPress: () => null},
@@ -229,14 +311,23 @@ class ScheduleMemoScreen extends PureComponent {
           <TouchableOpacity
             style={{...styles.box, width: type ? '70%' : '100%'}}
             onPress={() => {
-              this.alert('메모 추가', '해당 메모를 추가하시겠습니까?', [
-                {
-                  onPress: () => {
-                    this.goBack()
-                  },
-                },
-                {onPress: () => null},
-              ])
+              this.state.memo_no
+                ? this.alert('메모 수정', '해당 메모를 수정하시겠습니까?', [
+                    {
+                      onPress: () => {
+                        this.putMemo()
+                      },
+                    },
+                    {onPress: () => null},
+                  ])
+                : this.alert('메모 추가', '해당 메모를 추가하시겠습니까?', [
+                    {
+                      onPress: () => {
+                        this.postMemo()
+                      },
+                    },
+                    {onPress: () => null},
+                  ])
             }}
           >
             <Text style={styles.bottom}>Confirm</Text>

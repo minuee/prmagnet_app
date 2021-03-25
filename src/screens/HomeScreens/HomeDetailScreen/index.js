@@ -19,20 +19,23 @@ class HomeDetailScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
-    this.state = {data: [], next_token: '', has_next: true, total_count: 0}
+    this.state = {data: [], page: 1, limit: 30, total_count: 0}
   }
 
   getHomeNR = async () => {
-    const {next_token, data} = this.state
+    const {page, limit, data} = this.state
     try {
-      let response = await API.getHomeNR({next_token: next_token})
+      let response = await API.getHomeNR({page: page, limit})
       console.log('getHomeNR>>>', response)
-      this.setState({
-        data: data.concat(response.new_request),
-        next_token: response.next_token,
-        has_next: response.has_next,
-        total_count: response.total_count,
-      })
+      if (response.success) {
+        if (response.new_request.length > 0) {
+          this.setState({
+            data: data.concat(response.new_request),
+            page: page + 1,
+            total_count: response.total_count,
+          })
+        }
+      }
     } catch (error) {
       console.log('getHomeNR>>>1', error)
     }
@@ -40,27 +43,29 @@ class HomeDetailScreen extends PureComponent {
 
   getHomeTR = async () => {
     const date = Math.floor(new Date().getTime() / 1000)
-    const {next_token, data} = this.state
+    const {page, limit, data} = this.state
     try {
-      let response = await API.getHomeTR({date: date, next_token: next_token})
+      let response = await API.getHomeTR({date: date, page: page, limit: limit})
       console.log('getHomeTR>>>', response)
-      this.setState({
-        data: data.concat(response.new_request),
-        next_token: response.next_token,
-        has_next: response.has_next,
-        total_count: response.total_count,
-      })
+      if (response.success) {
+        if (response.today_request.length > 0) {
+          this.setState({
+            data: data.concat(response.new_request),
+            page: page + 1,
+            total_count: response.total_count,
+          })
+        }
+      }
     } catch (error) {
       console.log('getHomeTR>>>1', error)
     }
   }
 
   handleLoadMore = async () => {
-    const {has_next} = this.state
     const {type} = this.props.route.params
-    if (has_next && type) {
+    if (type) {
       this.getHomeNR()
-    } else if (has_next && !type) {
+    } else {
       this.getHomeTR()
     }
   }
@@ -89,7 +94,7 @@ class HomeDetailScreen extends PureComponent {
       <View style={styles.layout3}>
         <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: item.mgzn_logo_url_adres}} />
         <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>{item.editor_nm}</Text>
-        <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>{mUtils.getShowDate(item.brand_cnfirm_dt, 'YYYY-MM-DD')}</Text>
+        <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>{mUtils.getShowDate(item.req_dt, 'YYYY-MM-DD')}</Text>
         <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
           {item.mgzn_nm} • {item.photogrf_modl_nm}
         </Text>

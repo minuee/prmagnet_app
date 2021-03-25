@@ -59,7 +59,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: mUtils.wScale(20),
-    paddingTop: mUtils.wScale(35),
+    paddingTop: mUtils.wScale(10),
     paddingBottom: mUtils.wScale(10),
     backgroundColor: mConst.white,
   },

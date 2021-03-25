@@ -76,6 +76,7 @@ class LookBookDetailScreen extends PureComponent {
   }
 
   componentDidMount() {
+    this.pushOption('LookBook')
     this.onFocus(this.handleOnFocus)
     this.getShare()
   }
@@ -127,7 +128,7 @@ class LookBookDetailScreen extends PureComponent {
     const {user} = this.props
     return (
       <SafeAreaView style={styles.container}>
-        <Header pushTo={this.pushTo} userType={user.userType} />
+        {/*<Header pushTo={this.pushTo} userType={user.userType} />*/}
         <View style={styles.layout1}>
           <Text style={styles.mainTitle}>LookBook</Text>
           <TouchableOpacity
@@ -146,9 +147,10 @@ class LookBookDetailScreen extends PureComponent {
             data={list}
             renderItem={this.renderItem}
             keyExtractor={item => `${item.showroom_nm}_${Math.random()}`}
-            contentContainerStyle={{paddingVertical: mUtils.wScale(20)}}
+            contentContainerStyle={{paddingVertical: mUtils.wScale(20), paddingBottom: mUtils.wScale(150)}}
             columnWrapperStyle={{justifyContent: 'space-between'}}
             numColumns={2}
+            showsVerticalScrollIndicator={false}
           />
         </View>
       </SafeAreaView>

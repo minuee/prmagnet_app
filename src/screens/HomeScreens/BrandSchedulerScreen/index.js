@@ -170,7 +170,7 @@ class BrandSchedulerScreen extends PureComponent {
       <SafeAreaView style={styles.container}>
         <Header pushTo={this.pushTo} />
         <Text style={styles.mainTitle}>Scheduler</Text>
-        {dataList ? (
+        {data ? (
           <>
             <View style={{...styles.layout, backgroundColor: '#f6f6f6', paddingHorizontal: mUtils.wScale(20), paddingVertical: mUtils.wScale(10)}}>
               <View style={styles.layout1}>
@@ -189,27 +189,12 @@ class BrandSchedulerScreen extends PureComponent {
               </TouchableOpacity>
             </View>
             <ScrollView style={{paddingHorizontal: mUtils.wScale(20), paddingVertical: mUtils.wScale(25)}}>
-              {dataList.list.map((item, index) => {
+              {data.list.map((item, index) => {
                 return (
                   <View key={index} style={{...styles.layout4}}>
                     <View style={{width: '49%'}}>
                       <FastImage resizeMode={'cover'} style={styles.modelImg} source={{uri: item.image_list[0]}} />
                       <Text style={{...styles.title, marginVertical: mUtils.wScale(10)}}>{item.showroom_nm}</Text>
-                      {/*{item.memo_list &&
-                        item.memo_list.map((item2, index2) => {
-                          return (
-                            <TouchableOpacity
-                              key={index2}
-                              style={{...styles.layout3, borderColor: item2.color ? item2.color : mConst.borderGray}}
-                              onPress={() => {
-                                this.pushTo('ScheduleMemoScreen')
-                              }}
-                            >
-                              <Text style={styles.smallTitle}>{item.showroom_nm}</Text>
-                              <Text style={{...styles.smallDesc}}>{item2.content}</Text>
-                            </TouchableOpacity>
-                          )
-                        })}*/}
                     </View>
                     <View style={{width: '49%'}}>
                       {(item.req_list.length > 0 || item.memo_list) && (
@@ -222,15 +207,18 @@ class BrandSchedulerScreen extends PureComponent {
                                     key={i}
                                     style={{...styles.layout3, borderColor: e.color ? e.color : mConst.borderGray}}
                                     onPress={() => {
-                                      this.pushTo('ScheduleMemoScreen')
+                                      this.pushTo('ScheduleMemoScreen', {no: item.showroom_no, date: e.memo_dt, name: item.showroom_nm})
                                     }}
                                   >
-                                    <Text style={{...styles.smallDesc}}>{e.content}</Text>
+                                    <Text style={{...styles.smallDesc}} numberOfLines={2}>
+                                      {e.content}
+                                    </Text>
+                                    <Text style={{...styles.brandDate}}>{mUtils.getShowDate(e.memo_dt, 'YYYY-MM-DD')}</Text>
                                   </TouchableOpacity>
                                 )
                               }
                             })}
-                          <View style={styles.layout5}>
+                          <View style={{...styles.layout5, marginBottom: mUtils.wScale(18)}}>
                             <View style={{...styles.layout6, backgroundColor: item.req_list[0].mgzn_color}}>
                               <Text style={styles.title}>{item.req_list[0].company_name}</Text>
                               <View style={styles.layout}>
@@ -261,28 +249,46 @@ class BrandSchedulerScreen extends PureComponent {
                           .filter((e, i) => i !== 0)
                           .map((item1, index1) => {
                             return (
-                              <View key={index1} style={{...styles.layout5, marginTop: mUtils.wScale(10)}}>
-                                <View style={{...styles.layout6, backgroundColor: item1.mgzn_color}}>
-                                  <Text style={styles.title}>{item1.company_name}</Text>
-                                  <View style={styles.layout}>
-                                    <FastImage resizeMode={'contain'} style={styles.dollarImg1} source={dollarImg1} />
-                                    <FastImage resizeMode={'contain'} style={styles.airplaneImg} source={airplaneImg} />
+                              <>
+                                {item.memo_list.map((item2, index2) => {
+                                  if (item1.start_dt === item2.memo_dt) {
+                                    return (
+                                      <TouchableOpacity
+                                        key={index2}
+                                        style={{...styles.layout3, borderColor: item2.color ? item2.color : mConst.borderGray}}
+                                        onPress={() => {
+                                          this.pushTo('ScheduleMemoScreen', {no: item.showroom_no, date: item2.memo_dt, name: item.showroom_nm})
+                                        }}
+                                      >
+                                        <Text style={{...styles.smallDesc}}>{item2.content}</Text>
+                                      </TouchableOpacity>
+                                    )
+                                  }
+                                })}
+                                <View key={index1} style={{...styles.layout5, marginBottom: mUtils.wScale(5)}}>
+                                  <View style={{...styles.layout6, backgroundColor: item1.mgzn_color}}>
+                                    <Text style={styles.title}>{item1.company_name}</Text>
+                                    <View style={styles.layout}>
+                                      <FastImage resizeMode={'contain'} style={styles.dollarImg1} source={dollarImg1} />
+                                      <FastImage resizeMode={'contain'} style={styles.airplaneImg} source={airplaneImg} />
+                                    </View>
+                                  </View>
+                                  <View style={styles.layout7}>
+                                    <Text style={{...styles.name}}>{item1.req_user_nm}</Text>
+                                    <Text style={{...styles.brandDate, marginTop: mUtils.wScale(3)}}>
+                                      {item1.company_name} / {'\n'}
+                                      {mUtils.getShowDate(item1.start_dt, 'YYYY-MM-DD')} ~ {mUtils.getShowDate(item1.end_dt, 'YYYY-MM-DD')}
+                                    </Text>
+                                    <Text style={{...styles.desc, marginTop: mUtils.wScale(8)}}>{item1.address}</Text>
+
+                                    <Text style={{...styles.desc, marginTop: mUtils.wScale(3)}}>
+                                      {item1.contact_user_nm}
+                                      {'\n'}
+                                      {mUtils.allNumber(mUtils.get(item1.contact_user_phone))}
+                                    </Text>
                                   </View>
                                 </View>
-                                <View style={styles.layout7}>
-                                  <Text style={{...styles.name}}>{item1.req_user_nm}</Text>
-                                  <Text style={{...styles.brandDate, marginTop: mUtils.wScale(3)}}>
-                                    {item1.company_name} / {mUtils.getShowDate(item1.req_dt, 'YYYY-MM-DD')}
-                                  </Text>
-                                  <Text style={{...styles.desc, marginTop: mUtils.wScale(8)}}>{item1.address}</Text>
-
-                                  <Text style={{...styles.desc, marginTop: mUtils.wScale(3)}}>
-                                    {item1.contact_user_nm}
-                                    {'\n'}
-                                    {mUtils.allNumber(mUtils.get(item1.contact_user_phone))}
-                                  </Text>
-                                </View>
-                              </View>
+                              </>
                             )
                           })}
                       {item.req_list.length - 1 !== 0 && !toggle.includes(item.showroom_no) && (

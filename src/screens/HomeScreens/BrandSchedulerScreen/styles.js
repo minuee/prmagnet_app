@@ -59,7 +59,6 @@ export default StyleSheet.create({
     fontSize: 11,
     textAlign: 'left',
     color: mConst.black,
-    marginTop: mUtils.wScale(3),
   },
   name: {
     fontFamily: 'NotoSansKR-Medium',
@@ -108,6 +107,8 @@ export default StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: mUtils.wScale(8),
     marginBottom: mUtils.wScale(5),
+    justifyContent: 'space-between',
+    paddingVertical: mUtils.wScale(10),
   },
   layout4: {
     flexDirection: 'row',

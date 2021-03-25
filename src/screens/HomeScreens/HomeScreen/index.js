@@ -34,7 +34,7 @@ class HomeScreen extends PureComponent {
         <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20)}}>
           <Text style={styles.new}>
             {userType === 'M' ? 'Confirmed' : 'New'} <Text style={{fontFamily: 'Roboto-Medium'}}>Requests : </Text>
-            <Text style={{fontFamily: 'Roboto-Bold', color: '#7ea1b2'}}>{_.get(data, 'new_request.length', 0)}</Text>
+            <Text style={{fontFamily: 'Roboto-Bold', color: '#7ea1b2'}}>{data.new_request_total_count}</Text>
           </Text>
           <TouchableOpacity
             style={styles.layout}
@@ -52,20 +52,18 @@ class HomeScreen extends PureComponent {
             backgroundColor: 'rgba(126, 161, 178, 0.2)',
           }}
         >
-          {_.get(data, userType === 'M' ? 'cnfirm_request' : 'new_request', [])
-            .slice(0, 6)
-            .map((item, index) => {
-              return (
-                <View key={index} style={styles.layout3}>
-                  <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: item.mgzn_logo_url_adres}} />
-                  <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>{item.editor_nm}</Text>
-                  <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>{mUtils.getShowDate(item.brand_cnfirm_dt, 'YYYY-MM-DD')}</Text>
-                  <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
-                    {item.mgzn_nm} • {item.photogrf_modl_nm}
-                  </Text>
-                </View>
-              )
-            })}
+          {_.get(data, userType === 'M' ? 'cnfirm_request' : 'new_request', []).map((item, index) => {
+            return (
+              <View key={index} style={styles.layout3}>
+                <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: item.mgzn_logo_url_adres}} />
+                <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>{item.editor_nm}</Text>
+                <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>{mUtils.getShowDate(item.req_dt, 'YYYY-MM-DD')}</Text>
+                <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
+                  {item.mgzn_nm} • {item.photogrf_modl_nm}
+                </Text>
+              </View>
+            )
+          })}
         </View>
       </View>
     )
@@ -79,7 +77,7 @@ class HomeScreen extends PureComponent {
         <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(40)}}>
           <Text style={styles.new}>
             Today's <Text style={{fontFamily: 'Roboto-Medium'}}>{userType === 'M' ? 'PickUps' : 'Send-Outs'} : </Text>
-            <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}>{data.today_request.length}</Text>
+            <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}>{data.today_request_total_count}</Text>
           </Text>
           <TouchableOpacity
             style={styles.layout}
