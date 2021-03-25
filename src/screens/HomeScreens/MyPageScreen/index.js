@@ -10,6 +10,7 @@ import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
 import styles from './styles'
+import {actionLogout} from '../../../redux/actions'
 import API from '../../../common/aws-api'
 import Loading from '../../common/Loading'
 
@@ -112,6 +113,16 @@ class MyPageScreen extends PureComponent {
               <Text style={styles.text1}>버전 정보</Text>
               <Text style={styles.text2}>{DeviceInfo.getVersion()}</Text>
             </View>
+            {/* TODO 임시 테스트용 로그아웃 설정 Start--------------------------------------------------------- */}
+            <TouchableOpacity
+              style={{paddingTop: mUtils.wScale(40)}}
+              onPress={() => {
+                this.props.logoutSuccess()
+              }}
+            >
+              <Text style={styles.text1}>로그아웃(임시)</Text>
+            </TouchableOpacity>
+            {/* TODO 임시 테스트용 로그아웃 설정 End--------------------------------------------------------- */}
           </ScrollView>
         </SafeAreaView>
       </>
@@ -123,5 +134,7 @@ class MyPageScreen extends PureComponent {
 
 export default connect(
   state => ({}),
-  dispatch => ({})
+  dispatch => ({
+    logoutSuccess: data => dispatch(actionLogout.success(data)),
+  })
 )(MyPageScreen)

@@ -17,14 +17,15 @@ class LoginScreen extends PureComponent {
     super(props)
     cBind(this)
     this.state = {
-      email: 'test1000@ruu.kr',
-      pw: 'test1000@ruu.kr',
-      // email: 'brand_01@ruu.kr',
-      // pw: 'yes1234',
-      // email: 'mgzn_05@ruu.kr',
-      // pw: 'yes1234',
-      // email: 'stylist_01@ruu.kr',
-      // pw: 'yes1234',
+      // email: 'test1000@ruu.kr',
+      // pw: 'test1000@ruu.kr',
+      // email: 'gucci@ruu.kr', // 브랜드 테스트
+      email: 'bazzar@ruu.kr', // 매거진 테스트
+      // email: 'cosmo@ruu.kr', // 매거진 테스트
+      // email: 'arena@ruu.kr', // 매거진 테스트
+      // email: 'dazed@ruu.kr', // 매거진 테스트
+      // email: 'elle@ruu.kr', // 매거진 테스트
+      pw: '1234qwer',
     }
   }
   componentDidMount() {
@@ -138,6 +139,31 @@ class LoginScreen extends PureComponent {
               </TouchableOpacity>
             </View>
           </View>
+          {/* TODO 임시 테스트용 아이디 비번 설정 Start--------------------------------------------------------- */}
+          <View style={{justifyContents: 'center', paddingTop: 0, backgroundColor: 'gray'}}>
+            <View style={styles.lowerSubWrapper}>
+              <TouchableOpacity style={styles.itemTextWrapper} onPress={() => this.setState({email: 'gucci@ruu.kr', pw: '1234qwer'})}>
+                <Text style={styles.itemText}>B:gucci</Text>
+              </TouchableOpacity>
+              <Text style={styles.fence}>|</Text>
+              <TouchableOpacity style={styles.itemTextWrapper} onPress={() => this.setState({email: 'bazzar@ruu.kr', pw: '1234qwer'})}>
+                <Text style={styles.itemText}>M:bazzar</Text>
+              </TouchableOpacity>
+              <Text style={styles.fence}>|</Text>
+              <TouchableOpacity style={styles.itemTextWrapper} onPress={() => this.setState({email: 'cosmo@ruu.kr', pw: '1234qwer'})}>
+                <Text style={styles.itemText}>M:cosmo</Text>
+              </TouchableOpacity>
+              <Text style={styles.fence}>|</Text>
+              <TouchableOpacity style={styles.itemTextWrapper} onPress={() => this.setState({email: 'dazed@ruu.kr', pw: '1234qwer'})}>
+                <Text style={styles.itemText}>M:dazed</Text>
+              </TouchableOpacity>
+              <Text style={styles.fence}>|</Text>
+              <TouchableOpacity style={styles.itemTextWrapper} onPress={() => this.setState({email: 'elle@ruu.kr', pw: '1234qwer'})}>
+                <Text style={styles.itemText}>M:elle</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          {/* TODO 임시 테스트용 아이디 비번 설정 End--------------------------------------------------------- */}
         </SafeAreaView>
       </KeyboardAvoidingView>
     )
