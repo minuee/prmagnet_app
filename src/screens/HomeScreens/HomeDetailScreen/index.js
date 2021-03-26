@@ -132,7 +132,9 @@ class HomeDetailScreen extends PureComponent {
               flex: data.length === 0 ? 1 : 0,
             }}
           >
-            {data.length > 0 ? (
+            {data.length === 0 ? (
+              <Empty />
+            ) : (
               <FlatList
                 style={{flexDirection: 'column'}}
                 columnWrapperStyle={{justifyContent: 'space-between'}}
@@ -144,8 +146,6 @@ class HomeDetailScreen extends PureComponent {
                 onEndReached={this.handleLoadMore}
                 onEndReachedThreshold={1}
               />
-            ) : (
-              <Empty />
             )}
           </View>
         </SafeAreaView>

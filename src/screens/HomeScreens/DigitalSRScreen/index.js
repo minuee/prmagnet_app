@@ -13,6 +13,7 @@ import Text from '../../common/Text'
 import styles from './styles'
 import API from '../../../common/aws-api'
 import Loading from '../../common/Loading'
+import Empty from '../../common/Empty'
 
 const newImg = require('../../../images/navi/new_1.png')
 const notiImg = require('../../../images/navi/noti_1.png')
@@ -54,7 +55,6 @@ class DigitalSRScreen extends PureComponent {
   }
 
   setFilter = list => {
-    console.log('??????', list)
     this.setState(
       {
         brand_id: list.brand_id,
@@ -444,18 +444,22 @@ class DigitalSRScreen extends PureComponent {
                   )}
                 </View>
               </View>
-              <FlatList
-                bounces={false}
-                data={data.list}
-                renderItem={this.renderItem}
-                keyExtractor={item => `${item.title}_${Math.random()}`}
-                contentContainerStyle={{}}
-                columnWrapperStyle={{justifyContent: 'space-between'}}
-                numColumns={2}
-                showsVerticalScrollIndicator={false}
-                onEndReached={this.handleLoadMore}
-                onEndReachedThreshold={1}
-              />
+              {data?.list?.length > 0 ? (
+                <FlatList
+                  bounces={false}
+                  data={data.list}
+                  renderItem={this.renderItem}
+                  keyExtractor={item => `${item.title}_${Math.random()}`}
+                  contentContainerStyle={{}}
+                  columnWrapperStyle={{justifyContent: 'space-between'}}
+                  numColumns={2}
+                  showsVerticalScrollIndicator={false}
+                  onEndReached={this.handleLoadMore}
+                  onEndReachedThreshold={1}
+                />
+              ) : (
+                <Empty />
+              )}
             </>
           ) : (
             <Loading />

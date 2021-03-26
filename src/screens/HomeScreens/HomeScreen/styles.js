@@ -47,10 +47,9 @@ export default StyleSheet.create({
   },
   layout2: {
     width: '100%',
-    flexDirection: 'row',
+
     alignItems: 'center',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
+
     paddingHorizontal: mUtils.wScale(20),
     paddingVertical: mUtils.wScale(5),
     marginTop: mUtils.wScale(11),

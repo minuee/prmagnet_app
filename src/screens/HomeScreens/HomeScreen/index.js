@@ -17,6 +17,7 @@ import Text from '../../common/Text'
 import Header from '../../common/Header'
 import styles from './styles'
 import Loading from '../../common/Loading'
+import Empty from '../../common/Empty'
 
 const moreImg = require('../../../images/navi/more_5.png')
 
@@ -35,7 +36,9 @@ class HomeScreen extends PureComponent {
         <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20)}}>
           <Text style={styles.new}>
             {userType === 'M' ? 'Confirmed' : 'New'} <Text style={{fontFamily: 'Roboto-Medium'}}>Requests : </Text>
-            <Text style={{fontFamily: 'Roboto-Bold', color: '#7ea1b2'}}>{data.new_request_total_count}</Text>
+            <Text style={{fontFamily: 'Roboto-Bold', color: '#7ea1b2'}}>
+              {userType === 'B' ? data.new_request_total_count : data.cnfirm_request_total_count}
+            </Text>
           </Text>
           <TouchableOpacity
             style={styles.layout}
@@ -51,20 +54,40 @@ class HomeScreen extends PureComponent {
           style={{
             ...styles.layout2,
             backgroundColor: 'rgba(126, 161, 178, 0.2)',
+            flex: _.get(data, userType === 'M' ? 'cnfirm_request' : 'new_request', []).length === 0 ? 1 : 0,
+            flexDirection: _.get(data, userType === 'M' ? 'cnfirm_request' : 'new_request', []).length === 0 ? 'column' : 'row',
+            justifyContent: _.get(data, userType === 'M' ? 'cnfirm_request' : 'new_request', []).length === 0 ? 'center' : 'space-between',
+            flexWrap: _.get(data, userType === 'M' ? 'cnfirm_request' : 'new_request', []).length === 0 ? 'nowrap' : 'wrap',
           }}
         >
-          {_.get(data, userType === 'M' ? 'cnfirm_request' : 'new_request', []).map((item, index) => {
-            return (
-              <View key={index} style={styles.layout3}>
-                <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: item.mgzn_logo_url_adres}} />
-                <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>{item.editor_nm}</Text>
-                <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>{mUtils.getShowDate(item.req_dt, 'YYYY-MM-DD')}</Text>
-                <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
-                  {item.mgzn_nm} • {item.celeb_list ? item.celeb_list[0] : item.model_list[0]}
-                </Text>
-              </View>
-            )
-          })}
+          {_.get(data, userType === 'M' ? 'cnfirm_request' : 'new_request', []).length > 0 ? (
+            _.get(data, userType === 'M' ? 'cnfirm_request' : 'new_request', []).map((item, index) => {
+              return (
+                <View key={index} style={styles.layout3}>
+                  <FastImage
+                    resizeMode={'contain'}
+                    style={styles.brandImg}
+                    source={{uri: userType === 'B' ? item.mgzn_logo_url_adres : item.brand_logo_url_adres}}
+                  />
+                  <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>
+                    {item.editor_nm} {item.editor_posi}
+                  </Text>
+                  <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>
+                    {mUtils.getShowDate(userType === 'B' ? item.req_dt : item.brand_cnfirm_dt, 'YYYY-MM-DD')}
+                  </Text>
+                  {userType === 'B' ? (
+                    <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
+                      {item.mgzn_nm} • {item.celeb_list ? item.celeb_list[0] : item.model_list[0]}
+                    </Text>
+                  ) : (
+                    <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>{item.brand_nm}</Text>
+                  )}
+                </View>
+              )
+            })
+          ) : (
+            <Empty />
+          )}
         </View>
       </View>
     )
@@ -95,20 +118,38 @@ class HomeScreen extends PureComponent {
           style={{
             ...styles.layout2,
             backgroundColor: 'rgba(178, 126, 126, 0.2)',
+            flex: data.today_request.length === 0 ? 1 : 0,
+            flexDirection: data.today_request.length === 0 ? 'column' : 'row',
+            justifyContent: data.today_request.length === 0 ? 'center' : 'space-between',
+            flexWrap: data.today_request.length === 0 ? 'nowrap' : 'wrap',
           }}
         >
-          {data.today_request.slice(0, 6).map((item, index) => {
-            return (
-              <View key={index} style={styles.layout3}>
-                <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: item.mgzn_logo_url_adres}} />
-                <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>{item.mgzn_nm}</Text>
-                <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>{mUtils.getShowDate(item.date, 'YYYY-MM-DD')}</Text>
-                <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
-                  {item.mgzn_nm} • {item.celeb_list ? item.celeb_list[0] : item.model_list[0]}
-                </Text>
-              </View>
-            )
-          })}
+          {data.today_request.length > 0 ? (
+            data.today_request.map((item, index) => {
+              return (
+                <View key={index} style={styles.layout3}>
+                  <FastImage
+                    resizeMode={'contain'}
+                    style={styles.brandImg}
+                    source={{uri: userType === 'B' ? item.mgzn_logo_url_adres : item.brand_logo_url_adres}}
+                  />
+                  <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>
+                    {item.editor_nm} {item.editor_posi}
+                  </Text>
+                  <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>{mUtils.getShowDate(item.date, 'YYYY-MM-DD')}</Text>
+                  {userType === 'B' ? (
+                    <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
+                      {item.mgzn_nm} • {item.celeb_list ? item.celeb_list[0] : item.model_list[0]}
+                    </Text>
+                  ) : (
+                    <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>{item.brand_nm}</Text>
+                  )}
+                </View>
+              )
+            })
+          ) : (
+            <Empty />
+          )}
         </View>
       </View>
     )
