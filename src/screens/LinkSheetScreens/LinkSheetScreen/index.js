@@ -121,16 +121,9 @@ class LinkSheetScreen extends PureComponent {
     this.setState({loading: true}, () => {
       const {brandId} = this.state
       const {start, end} = _.get(this.props, 'route.params', {}) // onFocus에서는 이렇게 불러와야 함 navigation.js 33번째 줄 참조
-      console.log('>>', params.start, params.end)
-      //if (start && end) {
-      //  this.handleLoadData(start, end, brandId)
-      //  this.setState({start, end})
-      //} else {
-      //  this.handleLoadData(this.state.start, this.state.end, brandId)
-      //}
-      if (params.start && params.end) {
-        this.handleLoadData(params.start, params.end, brandId)
-        this.setState({start: params.start, end: params.end})
+      if (start && end) {
+        this.handleLoadData(start, end, brandId)
+        this.setState({start, end})
       } else {
         this.handleLoadData(this.state.start, this.state.end, brandId)
       }
@@ -140,6 +133,7 @@ class LinkSheetScreen extends PureComponent {
     const {selectTitle} = this.state
     if (selectTitle === 'Return') {
       try {
+        // console.log('###Return 스케쥴 조회 params:', {start_date: start, fin_date: end, brand_id: brandId})
         const response = await API.getReturnSchedule({start_date: start, fin_date: end})
         this.setState({dataList: _.get(response, 'request_list', []), loading: false})
         console.log('Return 스케쥴 조회 성공', JSON.stringify(response))
@@ -149,6 +143,7 @@ class LinkSheetScreen extends PureComponent {
       }
     } else if (selectTitle === 'Pickups') {
       try {
+        // console.log('###Pickup 스케쥴 조회 params:', {start_date: start, fin_date: end, brand_id: brandId})
         const response = await API.getPickupSchedule({start_date: start, fin_date: end, brand_id: brandId})
         this.setState({dataList: _.get(response, 'request_list', []), loading: false})
         console.log('Pickup 스케쥴 조회 성공', JSON.stringify(response))
@@ -158,6 +153,7 @@ class LinkSheetScreen extends PureComponent {
       }
     } else if (selectTitle === 'Send Out') {
       try {
+        // console.log('###Sendout 스케쥴 조회 params:', {start_date: start, fin_date: end, brand_id: brandId})
         const response = await API.getSendoutSchedule({start_date: start, fin_date: end, brand_id: brandId})
         this.setState({dataList: _.get(response, 'request_list', []), loading: false})
         console.log('Sendout 스케쥴 조회 성공', JSON.stringify(response))
@@ -173,7 +169,7 @@ class LinkSheetScreen extends PureComponent {
     this.pushTo('SelectScheduleScreen', {get: this.handleOnFocus, start, end, caller: 'LinkSheetScreen'})
   }
   handleChangeTitle = item => {
-    this.setState({selectTitle: item}, () => this.handleLoadData())
+    this.setState({selectTitle: item}, this.handleOnFocus)
   }
   handleLinkSheetDetail = () => {
     const {selectTitle, selectDate} = this.state
