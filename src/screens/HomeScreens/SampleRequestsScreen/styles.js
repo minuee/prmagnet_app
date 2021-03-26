@@ -104,7 +104,6 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: mUtils.wScale(35),
-    //backgroundColor: 'red',
   },
   layout2: {
     flexDirection: 'row',

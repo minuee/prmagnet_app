@@ -107,6 +107,7 @@ class LinkSheetScreen extends PureComponent {
       selectTitle: titles[0],
       loading: true,
       selectDate: [],
+      totalCount: 0,
     }
   }
   async componentDidMount() {
@@ -185,27 +186,22 @@ class LinkSheetScreen extends PureComponent {
     }
   }
   selectDate = (date, count) => {
-    const {selectDate} = this.state
-    if (
-      selectDate
-        .map(e => {
-          return e.date
-        })
-        .indexOf(date) > -1
-    ) {
+    const {selectDate, totalCount} = this.state
+    if (selectDate.indexOf(date) > -1) {
       this.setState(state => {
-        const list = state.selectDate.filter((e, i) => e.date !== date)
+        const list = state.selectDate.filter((e, i) => e !== date)
         return {
           selectDate: list,
+          totalCount: totalCount - Number(count),
         }
       })
     } else {
-      let result = selectDate.concat({date: date, count: count})
-      this.setState({selectDate: result})
+      let result = selectDate.concat(date)
+      this.setState({selectDate: result, totalCount: totalCount + Number(count)})
     }
   }
   render() {
-    const {start, end, brandId, dataList, brands, selectTitle, loading, selectDate} = this.state
+    const {start, end, brandId, dataList, brands, selectTitle, loading, selectDate, totalCount} = this.state
     const {user} = this.props
     return (
       <SafeAreaView style={styles.container}>
@@ -249,56 +245,52 @@ class LinkSheetScreen extends PureComponent {
             <Text style={styles.change}>변경</Text>
           </TouchableOpacity>
         </View>
-        {/*{loading ? (
+        {loading ? (
           <Loading />
-        ) : (*/}
-        <ScrollView style={{paddingBottom: mUtils.wScale(25)}}>
-          {_.map(data.list, (item, index) => {
-            return (
-              <View key={index} style={{width: '100%', marginTop: mUtils.wScale(25)}}>
-                <TouchableOpacity
-                  onPress={() => {
-                    this.selectDate(item.date, item.each_count)
-                  }}
-                  style={{...styles.layout1, marginBottom: mUtils.wScale(15), paddingHorizontal: mUtils.wScale(20)}}
-                >
-                  {selectDate
-                    .map(e => {
-                      return e.date
-                    })
-                    .indexOf(item.date) > -1 ? (
-                    <FastImage resizeMode={'contain'} style={styles.checkImg} source={checkImg} />
-                  ) : (
-                    <FastImage resizeMode={'contain'} style={styles.checkImg} source={noCheckImg} />
-                  )}
+        ) : (
+          <ScrollView style={{paddingBottom: mUtils.wScale(25)}}>
+            {_.map(dataList, (item, index) => {
+              return (
+                <View key={index} style={{width: '100%', marginTop: mUtils.wScale(25)}}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.selectDate(item.date, item.each_count)
+                    }}
+                    style={{...styles.layout1, marginBottom: mUtils.wScale(15), paddingHorizontal: mUtils.wScale(20)}}
+                  >
+                    {selectDate.indexOf(item.date) > -1 ? (
+                      <FastImage resizeMode={'contain'} style={styles.checkImg} source={checkImg} />
+                    ) : (
+                      <FastImage resizeMode={'contain'} style={styles.checkImg} source={noCheckImg} />
+                    )}
 
-                  <Text style={{...styles.subDt}}>
-                    {mUtils.getShowDate(item.date)}
-                    <Text style={{fontSize: 16}}>
-                      : <Text style={{fontSize: 16, color: '#7ea1b2'}}>{item.each_count}</Text>
+                    <Text style={{...styles.subDt}}>
+                      {mUtils.getShowDate(item.date)}
+                      <Text style={{fontSize: 16}}>
+                        : <Text style={{fontSize: 16, color: '#7ea1b2'}}>{item.each_count}</Text>
+                      </Text>
                     </Text>
-                  </Text>
-                </TouchableOpacity>
-                <View style={{...styles.layout, flexWrap: 'wrap', paddingHorizontal: mUtils.wScale(20)}}>
-                  {_.map(item.each_list, (subItem, subIndex) => {
-                    return (
-                      <TouchableOpacity key={subIndex} style={{...styles.brandBox}} onPress={() => this.handleLinkSheetDetail(subItem.req_no)}>
-                        <View style={{...styles.box1, backgroundColor: subItem.mgzn_color}}>
-                          <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
+                  </TouchableOpacity>
+                  <View style={{...styles.layout, flexWrap: 'wrap', paddingHorizontal: mUtils.wScale(20)}}>
+                    {_.map(item.each_list, (subItem, subIndex) => {
+                      return (
+                        <View key={subIndex} style={{...styles.brandBox}}>
+                          <View style={{...styles.box1, backgroundColor: subItem.mgzn_color}}>
+                            <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
+                          </View>
+                          <View style={styles.box2}>
+                            <Text style={{...styles.name}}>{subItem.req_user_nm}</Text>
+                            <Text style={{...styles.brand, marginTop: mUtils.wScale(5)}}>{subItem.mgzn_nm}</Text>
+                          </View>
                         </View>
-                        <View style={styles.box2}>
-                          <Text style={{...styles.name}}>{subItem.req_user_nm}</Text>
-                          <Text style={{...styles.brand, marginTop: mUtils.wScale(5)}}>{subItem.mgzn_nm}</Text>
-                        </View>
-                      </TouchableOpacity>
-                    )
-                  })}
+                      )
+                    })}
+                  </View>
                 </View>
-              </View>
-            )
-          })}
-        </ScrollView>
-        {/*)}*/}
+              )
+            })}
+          </ScrollView>
+        )}
         {selectDate.length > 0 && (
           <View style={styles.bottomSheet}>
             <View style={{flexDirection: 'row'}}>
@@ -306,9 +298,7 @@ class LinkSheetScreen extends PureComponent {
                 <Text style={{...styles.bottomText1}}>Total Number of </Text>
                 <Text style={{...styles.bottomText1, fontFamily: 'Roboto-Bold', alignSelf: 'flex-end'}}>{this.state.selectTitle} : </Text>
               </View>
-              <Text style={{...styles.bottomText2, marginLeft: mUtils.wScale(3)}}>
-                {selectDate.reduce((accumulator, currentValue) => Number(accumulator) + Number(currentValue.count), 0)}
-              </Text>
+              <Text style={{...styles.bottomText2, marginLeft: mUtils.wScale(3)}}>{totalCount}</Text>
             </View>
             <TouchableOpacity
               style={styles.bottomButton}

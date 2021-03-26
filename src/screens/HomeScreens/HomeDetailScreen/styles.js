@@ -17,7 +17,6 @@ export default StyleSheet.create({
   brandImg: {
     width: mUtils.wScale(52.5),
     height: mUtils.wScale(18),
-    backgroundColor: 'red',
   },
   name: {
     fontFamily: 'NotoSansKR-Bold',
