@@ -12,6 +12,7 @@ import cBind, {callOnce} from '../../../common/navigation'
 import API from '../../../common/aws-api'
 import Text from '../../common/Text'
 import LinkSheetUnit from '../../common/LinkSheetUnit'
+import Loading from '../../common/Loading'
 import styles from './styles'
 
 const goLeftImage = require('../../../images/navi/go_left.png')
