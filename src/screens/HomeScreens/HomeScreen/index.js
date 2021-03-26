@@ -6,6 +6,7 @@ import FastImage from 'react-native-fast-image'
 import 'moment/locale/ko'
 import _ from 'lodash'
 
+import {isLoggedIn} from '../../../common/aws-auth'
 import {actionLogout} from '../../../redux/actions'
 import CodePush from '../../common/CodePush'
 import mConst from '../../../common/constants'
@@ -135,8 +136,11 @@ class HomeScreen extends PureComponent {
   componentWillUnmount() {
     this.removeFocus()
   }
-  handleOnFocus = () => {
+  handleOnFocus = async () => {
     this.getHome()
+    if (!(await isLoggedIn())) {
+      this.props.logout()
+    }
   }
   setupFcm = async () => {
     const fcmToken = await mUtils.getFcmToken()
