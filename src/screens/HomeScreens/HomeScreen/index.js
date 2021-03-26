@@ -60,7 +60,7 @@ class HomeScreen extends PureComponent {
                 <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>{item.editor_nm}</Text>
                 <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>{mUtils.getShowDate(item.req_dt, 'YYYY-MM-DD')}</Text>
                 <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
-                  {item.mgzn_nm} • {item.photogrf_modl_nm}
+                  {item.mgzn_nm} • {item.celeb_list ? item.celeb_list[0] : item.model_list[0]}
                 </Text>
               </View>
             )
@@ -100,11 +100,11 @@ class HomeScreen extends PureComponent {
           {data.today_request.slice(0, 6).map((item, index) => {
             return (
               <View key={index} style={styles.layout3}>
-                <Text style={{...styles.brand}}>{item.brand}</Text>
-                <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>{item.name}</Text>
-                <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>{item.dt}</Text>
+                <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: item.mgzn_logo_url_adres}} />
+                <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>{item.mgzn_nm}</Text>
+                <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>{mUtils.getShowDate(item.date, 'YYYY-MM-DD')}</Text>
                 <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
-                  {item.mgzn_nm} • {item.photogrf_modl_nm}
+                  {item.mgzn_nm} • {item.celeb_list ? item.celeb_list[0] : item.model_list[0]}
                 </Text>
               </View>
             )
@@ -118,7 +118,7 @@ class HomeScreen extends PureComponent {
     const date = Math.floor(new Date().getTime() / 1000)
     try {
       let response = await API.getHome({date: date})
-      console.log('getHome>>>', response)
+      console.log('getHome>>>', JSON.stringify(response))
       this.setState({data: response})
     } catch (error) {
       console.log('getHome>>>', error)

@@ -12,6 +12,7 @@ import Text from '../../common/Text'
 import styles from './styles'
 import API from '../../../common/aws-api'
 import Loading from '../../common/Loading'
+import Empty from '../../common/Empty'
 
 const userType = mConst.getUserType()
 
@@ -50,7 +51,7 @@ class HomeDetailScreen extends PureComponent {
       if (response.success) {
         if (response.today_request.length > 0) {
           this.setState({
-            data: data.concat(response.new_request),
+            data: data.concat(response.today_request),
             page: page + 1,
             total_count: response.total_count,
           })
@@ -96,7 +97,7 @@ class HomeDetailScreen extends PureComponent {
         <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>{item.editor_nm}</Text>
         <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>{mUtils.getShowDate(item.req_dt, 'YYYY-MM-DD')}</Text>
         <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
-          {item.mgzn_nm} • {item.photogrf_modl_nm}
+          {item.mgzn_nm} • {item.celeb_list ? item.celeb_list[0] : item.model_list[0]}
         </Text>
       </View>
     )
@@ -127,20 +128,25 @@ class HomeDetailScreen extends PureComponent {
             style={{
               ...styles.layout2,
               backgroundColor: type ? 'rgba(126, 161, 178, 0.2)' : 'rgba(178, 126, 126, 0.2)',
+              marginBottom: mUtils.wScale(50),
+              flex: data.length === 0 ? 1 : 0,
             }}
           >
-            <FlatList
-              style={{flexDirection: 'column'}}
-              contentContainerStyle={{paddingBottom: mUtils.wScale(50)}}
-              columnWrapperStyle={{justifyContent: 'space-between'}}
-              showsVerticalScrollIndicator={false}
-              numColumns={2}
-              data={data}
-              renderItem={this.renderItem}
-              keyExtractor={item => `_${item.req_no}_${Math.random()}`}
-              onEndReached={this.handleLoadMore}
-              onEndReachedThreshold={1}
-            />
+            {data.length > 0 ? (
+              <FlatList
+                style={{flexDirection: 'column'}}
+                columnWrapperStyle={{justifyContent: 'space-between'}}
+                showsVerticalScrollIndicator={false}
+                numColumns={2}
+                data={data}
+                renderItem={this.renderItem}
+                keyExtractor={item => `_${item.req_no}_${Math.random()}`}
+                onEndReached={this.handleLoadMore}
+                onEndReachedThreshold={1}
+              />
+            ) : (
+              <Empty />
+            )}
           </View>
         </SafeAreaView>
       </>

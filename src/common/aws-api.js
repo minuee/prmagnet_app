@@ -499,8 +499,7 @@ const API = {
       queryStringParameters: {
         date: date,
         page: page,
-        limit,
-        limit,
+        limit: limit,
       },
     }
     return Api.get(apiName, path, init)
