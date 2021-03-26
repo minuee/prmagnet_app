@@ -172,13 +172,14 @@ class LinkSheetScreen extends PureComponent {
     this.setState({selectTitle: item}, this.handleOnFocus)
   }
   handleLinkSheetDetail = () => {
-    const {selectTitle, selectDate} = this.state
+    const {selectTitle, selectDate, dataList} = this.state
+    const selectEachList = dataList.flatMap(data => (selectDate.includes(data.date) ? data.each_list : []))
     if (selectTitle === 'Send Out') {
-      this.pushTo('SendOutScreen', {selectDate})
+      this.pushTo('SendOutScreen', {selectDate, selectEachList})
     } else if (selectTitle === 'Pickups') {
-      this.pushTo('PickupsScreen', {selectDate})
+      this.pushTo('PickupsScreen', {selectDate, selectEachList})
     } else if (selectTitle === 'Return') {
-      this.pushTo('ReturnScreen', {selectDate})
+      this.pushTo('ReturnScreen', {selectDate, selectEachList})
     }
   }
   selectDate = (date, count) => {
