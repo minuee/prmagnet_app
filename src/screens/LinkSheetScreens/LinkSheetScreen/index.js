@@ -135,7 +135,7 @@ class LinkSheetScreen extends PureComponent {
       try {
         // console.log('###Return 스케쥴 조회 params:', {start_date: start, fin_date: end, brand_id: brandId})
         const response = await API.getReturnSchedule({start_date: start, fin_date: end})
-        this.setState({dataList: _.get(response, 'request_list', []), loading: false})
+        this.setState({dataList: _.get(response, 'list', []), loading: false})
         console.log('Return 스케쥴 조회 성공', JSON.stringify(response))
       } catch (error) {
         this.setState({loading: false})
@@ -145,7 +145,7 @@ class LinkSheetScreen extends PureComponent {
       try {
         // console.log('###Pickup 스케쥴 조회 params:', {start_date: start, fin_date: end, brand_id: brandId})
         const response = await API.getPickupSchedule({start_date: start, fin_date: end, brand_id: brandId})
-        this.setState({dataList: _.get(response, 'request_list', []), loading: false})
+        this.setState({dataList: _.get(response, 'list', []), loading: false})
         console.log('Pickup 스케쥴 조회 성공', JSON.stringify(response))
       } catch (error) {
         this.setState({loading: false})
@@ -155,7 +155,7 @@ class LinkSheetScreen extends PureComponent {
       try {
         // console.log('###Sendout 스케쥴 조회 params:', {start_date: start, fin_date: end, brand_id: brandId})
         const response = await API.getSendoutSchedule({start_date: start, fin_date: end, brand_id: brandId})
-        this.setState({dataList: _.get(response, 'request_list', []), loading: false})
+        this.setState({dataList: _.get(response, 'list', []), loading: false})
         console.log('Sendout 스케쥴 조회 성공', JSON.stringify(response))
       } catch (error) {
         this.setState({loading: false})
