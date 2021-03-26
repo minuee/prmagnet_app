@@ -17,24 +17,96 @@ import styles from './styles'
 
 const moreImg = require('../../../images/navi/more_4.png')
 const schedulerImg = require('../../../images/navi/scheduler_1.png')
-const noCheckImg = require('../../../images/navi/no_check_2.png')
+const checkImg = require('../../../images/navi/check_6.png')
+const noCheckImg = require('../../../images/navi/no_check_3.png')
 const brandImg = require('../../../images/navi/brand_1.png')
+
+const data = {
+  success: true,
+  total_count: 3,
+  list: [
+    {
+      date: '1611619200',
+      month: '01',
+      day: '26',
+      each_count: '30',
+      each_list: [
+        {
+          req_no: '20210126000012',
+          mgzn_nm: '테스트매거진1',
+          mgzn_color: '#c18c8c',
+          req_user_nm: '테스트',
+          req_user_type: 'MAGAZINE',
+          mgzn_logo_adres: null,
+        },
+        {
+          req_no: '20210126000012',
+          mgzn_nm: '테스트매거진1',
+          mgzn_color: '#c18c8c',
+          req_user_nm: '테스트',
+          req_user_type: 'MAGAZINE',
+          mgzn_logo_adres: null,
+        },
+        {
+          req_no: '20210126000012',
+          mgzn_nm: '테스트매거진1',
+          mgzn_color: '#c18c8c',
+          req_user_nm: '테스트',
+          req_user_type: 'MAGAZINE',
+          mgzn_logo_adres: null,
+        },
+      ],
+    },
+    {
+      date: '1616741786',
+      month: '01',
+      day: '26',
+      each_count: '30',
+      each_list: [
+        {
+          req_no: '20210126000012',
+          mgzn_nm: '테스트매거진1',
+          mgzn_color: '#c18c8c',
+          req_user_nm: '테스트',
+          req_user_type: 'MAGAZINE',
+          mgzn_logo_adres: null,
+        },
+        {
+          req_no: '20210126000012',
+          mgzn_nm: '테스트매거진1',
+          mgzn_color: '#c18c8c',
+          req_user_nm: '테스트',
+          req_user_type: 'MAGAZINE',
+          mgzn_logo_adres: null,
+        },
+        {
+          req_no: '20210126000012',
+          mgzn_nm: '테스트매거진1',
+          mgzn_color: '#c18c8c',
+          req_user_nm: '테스트',
+          req_user_type: 'MAGAZINE',
+          mgzn_logo_adres: null,
+        },
+      ],
+    },
+  ],
+}
 
 class LinkSheetScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
-    // const titles = mConst.getUserType() === 'B' ? ['Send Out', 'Return'] : ['Pickups', 'Send Out'] // TODO 임시 주석처리
-    const titles = ['Pickups', 'Send Out'] // TODO 테스트용
+    const titles = mConst.getUserType() === 'B' ? ['Send Out', 'Return'] : ['Pickups', 'Send Out'] // TODO 임시 주석처리
     this.state = {
-      start: 1611100800, // mUtils.getToday(), // TODO 테스트 데이타 관계로 일단 임시 값으로 설정
-      end: mUtils.getNextWeek(),
+      start: mUtils.getToday(), // TODO 테스트 데이타 관계로 일단 임시 값으로 설정
+      end: mUtils.getToday(),
       brandId: '',
       dataList: [],
       brands: [],
       titles,
       selectTitle: titles[0],
       loading: true,
+      selectDate: [],
     }
   }
   async componentDidMount() {
@@ -65,19 +137,28 @@ class LinkSheetScreen extends PureComponent {
   }
   handleLoadData = async (start, end, brandId) => {
     const {selectTitle} = this.state
-    if (selectTitle === 'Pickups') {
+    if (selectTitle === 'Return') {
+      try {
+        const response = await API.getReturnSchedule({start_date: start, fin_date: end})
+        this.setState({dataList: _.get(response, 'request_list', []), loading: false})
+        console.log('Return 스케쥴 조회 성공', JSON.stringify(response))
+      } catch (error) {
+        this.setState({loading: false})
+        console.log('Return 스케쥴 조회 실패', JSON.stringify(error))
+      }
+    } else if (selectTitle === 'Pickups') {
       try {
         const response = await API.getPickupSchedule({start_date: start, fin_date: end, brand_id: brandId})
-        this.setState({dataList: _.get(response, 'request_list', []), brands: _.get(response, 'brand_list', []), loading: false})
+        this.setState({dataList: _.get(response, 'request_list', []), loading: false})
         console.log('Pickup 스케쥴 조회 성공', JSON.stringify(response))
       } catch (error) {
         this.setState({loading: false})
-        console.log('Pickup 스케쥴 조회 실패', error)
+        console.log('Pickup 스케쥴 조회 실패', JSON.stringify(error))
       }
     } else if (selectTitle === 'Send Out') {
       try {
         const response = await API.getSendoutSchedule({start_date: start, fin_date: end, brand_id: brandId})
-        this.setState({dataList: _.get(response, 'request_list', []), brands: _.get(response, 'brand_list', []), loading: false})
+        this.setState({dataList: _.get(response, 'request_list', []), loading: false})
         console.log('Sendout 스케쥴 조회 성공', JSON.stringify(response))
       } catch (error) {
         this.setState({loading: false})
@@ -93,18 +174,38 @@ class LinkSheetScreen extends PureComponent {
   handleChangeTitle = item => {
     this.setState({selectTitle: item}, () => this.handleLoadData())
   }
-  handleLinkSheetDetail = reqNo => {
-    const {selectTitle} = this.state
+  handleLinkSheetDetail = () => {
+    const {selectTitle, selectDate} = this.state
     if (selectTitle === 'Send Out') {
-      this.pushTo('SendOutScreen', {reqNo})
+      this.pushTo('SendOutScreen', {selectDate})
     } else if (selectTitle === 'Pickups') {
-      this.pushTo('PickupsScreen', {reqNo})
+      this.pushTo('PickupsScreen', {selectDate})
     } else if (selectTitle === 'Return') {
-      this.pushTo('ReturnScreen', {reqNo})
+      this.pushTo('ReturnScreen', {selectDate})
+    }
+  }
+  selectDate = (date, count) => {
+    const {selectDate} = this.state
+    if (
+      selectDate
+        .map(e => {
+          return e.date
+        })
+        .indexOf(date) > -1
+    ) {
+      this.setState(state => {
+        const list = state.selectDate.filter((e, i) => e.date !== date)
+        return {
+          selectDate: list,
+        }
+      })
+    } else {
+      let result = selectDate.concat({date: date, count: count})
+      this.setState({selectDate: result})
     }
   }
   render() {
-    const {start, end, brandId, dataList, brands, selectTitle, loading} = this.state
+    const {start, end, brandId, dataList, brands, selectTitle, loading, selectDate} = this.state
     const {user} = this.props
     return (
       <SafeAreaView style={styles.container}>
@@ -141,49 +242,83 @@ class LinkSheetScreen extends PureComponent {
           <View style={styles.layout1}>
             <FastImage resizeMode={'contain'} style={styles.schedulerImg} source={schedulerImg} />
             <Text style={styles.date}>
-              {mUtils.getShowDate(start)} - {mUtils.getShowDate(end)}
+              {mUtils.getShowDate(start, 'YYYY/MM/DD')} - {mUtils.getShowDate(end, 'YYYY/MM/DD')}
             </Text>
           </View>
           <TouchableOpacity onPress={this.handleChangeSchedule}>
             <Text style={styles.change}>변경</Text>
           </TouchableOpacity>
         </View>
-        {loading ? (
+        {/*{loading ? (
           <Loading />
-        ) : (
-          <ScrollView style={{paddingBottom: mUtils.wScale(25)}}>
-            {_.map(dataList, (item, index) => {
-              return (
-                <View key={index} style={{width: '100%', marginTop: mUtils.wScale(25)}}>
-                  <TouchableOpacity style={{...styles.layout1, marginBottom: mUtils.wScale(15), paddingHorizontal: mUtils.wScale(20)}}>
+        ) : (*/}
+        <ScrollView style={{paddingBottom: mUtils.wScale(25)}}>
+          {_.map(data.list, (item, index) => {
+            return (
+              <View key={index} style={{width: '100%', marginTop: mUtils.wScale(25)}}>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.selectDate(item.date, item.each_count)
+                  }}
+                  style={{...styles.layout1, marginBottom: mUtils.wScale(15), paddingHorizontal: mUtils.wScale(20)}}
+                >
+                  {selectDate
+                    .map(e => {
+                      return e.date
+                    })
+                    .indexOf(item.date) > -1 ? (
+                    <FastImage resizeMode={'contain'} style={styles.checkImg} source={checkImg} />
+                  ) : (
                     <FastImage resizeMode={'contain'} style={styles.checkImg} source={noCheckImg} />
-                    <Text style={{...styles.subDt}}>
-                      {mUtils.getShowDate(item.receive_date)}
-                      <Text style={{fontSize: 16}}>
-                        {' '}
-                        : <Text style={{fontSize: 16, color: '#7ea1b2'}}>{_.size(item.individual_schedules)}</Text>
-                      </Text>
+                  )}
+
+                  <Text style={{...styles.subDt}}>
+                    {mUtils.getShowDate(item.date)}
+                    <Text style={{fontSize: 16}}>
+                      : <Text style={{fontSize: 16, color: '#7ea1b2'}}>{item.each_count}</Text>
                     </Text>
-                  </TouchableOpacity>
-                  <View style={{...styles.layout, flexWrap: 'wrap', paddingHorizontal: mUtils.wScale(20)}}>
-                    {_.map(item.individual_schedules, (subItem, subIndex) => {
-                      return (
-                        <TouchableOpacity key={subIndex} style={{...styles.brandBox}} onPress={() => this.handleLinkSheetDetail(subItem.req_no)}>
-                          <View style={styles.box1}>
-                            <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_url_adres}} />
-                          </View>
-                          <View style={styles.box2}>
-                            <Text style={{...styles.name}}>{subItem.brand_user_nm}</Text>
-                            <Text style={{...styles.brand, marginTop: mUtils.wScale(5)}}>{subItem.brand_nm}</Text>
-                          </View>
-                        </TouchableOpacity>
-                      )
-                    })}
-                  </View>
+                  </Text>
+                </TouchableOpacity>
+                <View style={{...styles.layout, flexWrap: 'wrap', paddingHorizontal: mUtils.wScale(20)}}>
+                  {_.map(item.each_list, (subItem, subIndex) => {
+                    return (
+                      <TouchableOpacity key={subIndex} style={{...styles.brandBox}} onPress={() => this.handleLinkSheetDetail(subItem.req_no)}>
+                        <View style={{...styles.box1, backgroundColor: subItem.mgzn_color}}>
+                          <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
+                        </View>
+                        <View style={styles.box2}>
+                          <Text style={{...styles.name}}>{subItem.req_user_nm}</Text>
+                          <Text style={{...styles.brand, marginTop: mUtils.wScale(5)}}>{subItem.mgzn_nm}</Text>
+                        </View>
+                      </TouchableOpacity>
+                    )
+                  })}
                 </View>
-              )
-            })}
-          </ScrollView>
+              </View>
+            )
+          })}
+        </ScrollView>
+        {/*)}*/}
+        {selectDate.length > 0 && (
+          <View style={styles.bottomSheet}>
+            <View style={{flexDirection: 'row'}}>
+              <View>
+                <Text style={{...styles.bottomText1}}>Total Number of </Text>
+                <Text style={{...styles.bottomText1, fontFamily: 'Roboto-Bold', alignSelf: 'flex-end'}}>{this.state.selectTitle} : </Text>
+              </View>
+              <Text style={{...styles.bottomText2, marginLeft: mUtils.wScale(3)}}>
+                {selectDate.reduce((accumulator, currentValue) => Number(accumulator) + Number(currentValue.count), 0)}
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={styles.bottomButton}
+              onPress={() => {
+                this.handleLinkSheetDetail()
+              }}
+            >
+              <Text style={{...styles.bottomText3}}>Create Document</Text>
+            </TouchableOpacity>
+          </View>
         )}
       </SafeAreaView>
     )

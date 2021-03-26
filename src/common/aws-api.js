@@ -367,6 +367,18 @@ const API = {
     }
     return Api.post(apiName, path, myInit)
   },
+  getReturnSchedule: ({start_date, fin_date}) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/return-schedule` // TODO 임시 주석처리
+    // const path = '/stylist/pickup-schedule' // TODO 테스트용
+    const init = {
+      queryStringParameters: {
+        start_date,
+        fin_date,
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
   getPickupSchedule: ({start_date, fin_date, brand_id}) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/pickup-schedule` // TODO 임시 주석처리
@@ -385,11 +397,17 @@ const API = {
     const path = `${mConst.getApiPath()}/sendout-schedule` // TODO 임시 주석처리
     // const path = '/stylist/sendout-schedule' // TODO 테스트용
     const init = {
-      queryStringParameters: {
-        start_date,
-        fin_date,
-        brand_id,
-      },
+      queryStringParameters:
+        mConst.getUserType() === 'B'
+          ? {
+              start_date,
+              fin_date,
+            }
+          : {
+              start_date,
+              fin_date,
+              brand_id,
+            },
     }
     return Api.get(apiName, path, init)
   },

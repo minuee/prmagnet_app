@@ -74,8 +74,8 @@ export default StyleSheet.create({
     marginRight: mUtils.wScale(5),
   },
   checkImg: {
-    width: mUtils.wScale(14),
-    height: mUtils.wScale(14),
+    width: mUtils.wScale(12),
+    height: mUtils.wScale(12),
     marginRight: mUtils.wScale(5),
   },
   brandImg: {
@@ -96,7 +96,6 @@ export default StyleSheet.create({
     marginBottom: mUtils.wScale(12),
   },
   box1: {
-    backgroundColor: '#b8c18c',
     borderTopLeftRadius: mUtils.wScale(7),
     borderTopRightRadius: mUtils.wScale(7),
     paddingHorizontal: mUtils.wScale(8),
@@ -119,5 +118,40 @@ export default StyleSheet.create({
   menuOption: {
     paddingHorizontal: mUtils.wScale(15),
     paddingVertical: mUtils.wScale(8),
+  },
+  bottomSheet: {
+    width: '100%',
+    paddingHorizontal: mUtils.wScale(20),
+    paddingVertical: mUtils.wScale(10),
+    position: 'absolute',
+    bottom: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: mConst.white,
+  },
+  bottomText1: {
+    fontFamily: 'Roboto-Light',
+    fontSize: 14,
+    textAlign: 'left',
+    color: mConst.black,
+  },
+  bottomText2: {
+    fontFamily: 'Roboto-Bold',
+    fontSize: 32,
+    textAlign: 'left',
+    color: '#7ea1b2',
+  },
+  bottomText3: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 16,
+    textAlign: 'center',
+    color: mConst.white,
+  },
+  bottomButton: {
+    borderRadius: mUtils.wScale(7),
+    backgroundColor: mConst.black,
+    paddingVertical: mUtils.wScale(12),
+    paddingHorizontal: mUtils.wScale(12),
   },
 })

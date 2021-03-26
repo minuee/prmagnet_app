@@ -466,7 +466,7 @@ class DigitalSRScreen extends PureComponent {
             <View style={{flexDirection: 'row'}}>
               <View>
                 <Text style={{...styles.bottomText1}}>Total Number of </Text>
-                <Text style={{...styles.bottomText1, fontFamily: 'Roboto-Bold'}}>Sample Selectsd : </Text>
+                <Text style={{...styles.bottomText1, fontFamily: 'Roboto-Bold'}}>Sample Selected : </Text>
               </View>
               <Text style={{...styles.bottomText2, marginLeft: mUtils.wScale(3)}}>{this.state.select.length}</Text>
             </View>

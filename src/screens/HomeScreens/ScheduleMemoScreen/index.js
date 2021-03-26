@@ -15,6 +15,7 @@ import DropDown from '../../common/DropDown'
 import API from '../../../common/aws-api'
 
 const moreImg = require('../../../images/navi/more_3.png')
+const checkImg = require('../../../images/navi/check_5.png')
 
 LocaleConfig.locales['en'] = {
   monthNames: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
@@ -198,17 +199,18 @@ class ScheduleMemoScreen extends PureComponent {
             {color1.map((item, index) => {
               return (
                 <TouchableOpacity
+                  activeOpacity={0.8}
                   key={index}
                   style={{
                     ...styles.color,
                     backgroundColor: item,
-                    borderWidth: selectedColor === item ? 3 : 0,
-                    borderColor: selectedColor === item ? 'rgba(0, 0, 0, 0.5)' : '',
                   }}
                   onPress={() => {
                     this.setState({selectedColor: item})
                   }}
-                />
+                >
+                  {selectedColor === item && <FastImage resizeMode={'cover'} source={checkImg} style={styles.checkImg} />}
+                </TouchableOpacity>
               )
             })}
           </View>
@@ -216,17 +218,18 @@ class ScheduleMemoScreen extends PureComponent {
             {color2.map((item, index) => {
               return (
                 <TouchableOpacity
+                  activeOpacity={0.8}
                   key={index}
                   style={{
                     ...styles.color,
                     backgroundColor: item,
-                    borderWidth: selectedColor === item ? 3 : 0,
-                    borderColor: selectedColor === item ? 'rgba(0, 0, 0, 0.5)' : '',
                   }}
                   onPress={() => {
                     this.setState({selectedColor: item})
                   }}
-                />
+                >
+                  {selectedColor === item && <FastImage resizeMode={'cover'} source={checkImg} style={styles.checkImg} />}
+                </TouchableOpacity>
               )
             })}
           </View>

@@ -89,4 +89,8 @@ export default StyleSheet.create({
     fontSize: 16,
     color: '#070708',
   },
+  checkImg: {
+    width: '100%',
+    height: '100%',
+  },
 })

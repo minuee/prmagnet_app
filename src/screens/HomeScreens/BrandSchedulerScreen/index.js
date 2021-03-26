@@ -176,8 +176,7 @@ class BrandSchedulerScreen extends PureComponent {
               <View style={styles.layout1}>
                 <FastImage resizeMode={'contain'} style={styles.schedulerImg} source={schedulerImg} />
                 <Text style={styles.date}>
-                  {mUtils.getShowDate(this.state.start, 'M/DD')}({mUtils.getShowDate(this.state.start, 'ddd')}) ~{' '}
-                  {mUtils.getShowDate(this.state.end, 'M/DD')}({mUtils.getShowDate(this.state.end, 'ddd')})
+                  {mUtils.getShowDate(this.state.start, 'YYYY/MM/DD')} - {mUtils.getShowDate(this.state.end, 'YYYY/MM/DD')}
                 </Text>
               </View>
               <TouchableOpacity
