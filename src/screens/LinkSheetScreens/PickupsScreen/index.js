@@ -207,6 +207,7 @@ class PickupsScreen extends PureComponent {
                           name={fromName}
                           phone={fromPhone}
                           onLongPress={() => this.handleLongPress(fromName, subItem.sample_no)}
+                          onLongPressPhone={() => this.handleLongPressPhone(fromName, fromPhone)}
                           onSwipeCheck={() => this.handleCheckItem(fromName, subItem.category, subItem.sample_no)}
                           color={mConst.bgYellow}
                         />

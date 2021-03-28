@@ -6,8 +6,8 @@ import mConst from '../../common/constants'
 import mUtils from '../../common/utils'
 
 const config = {
-  velocityThreshold: 0.3,
-  directionalOffsetThreshold: 50,
+  velocityThreshold: 0.01,
+  directionalOffsetThreshold: 800,
 }
 
 const CommonSwiper = props => {
