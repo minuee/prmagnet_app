@@ -101,7 +101,7 @@ class LinkSheetScreen extends PureComponent {
       // start: mUtils.getToday(), // TODO 테스트 데이타 관계로 일단 임시 값으로 설정
       // end: mUtils.getToday(),
       start: mUtils.getDayValue(2021, 3, 10),
-      end: mUtils.getDayValue(2021, 3, 31),
+      end: mUtils.getDayValue(2021, 3, 30),
       brandId: '',
       dataList: [],
       brands: [],
@@ -165,10 +165,15 @@ class LinkSheetScreen extends PureComponent {
       }
     }
   }
+  handleSetDates = ({start, end}) => {
+    if (start && end) {
+      this.setState({start, end})
+    }
+  }
   handleChangeSchedule = () => {
     const {start, end} = this.state
     console.log('>>>>>>', start, end)
-    this.pushTo('SelectScheduleScreen', {get: this.handleOnFocus, start, end, caller: 'LinkSheetScreen'})
+    this.pushTo('SelectScheduleScreen', {setDate: this.handleSetDates, start, end, caller: 'LinkSheetScreen'})
   }
   handleChangeTitle = item => {
     this.setState({selectTitle: item, selectDate: [], totalCount: 0}, this.handleOnFocus)
