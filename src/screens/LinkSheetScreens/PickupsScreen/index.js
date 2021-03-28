@@ -3,8 +3,8 @@ import {SafeAreaView, ScrollView, View, TouchableOpacity, Linking} from 'react-n
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import {Grid, Col, Row} from 'react-native-easy-grid'
-import _ from 'lodash'
 import Modal from 'react-native-modal'
+import _ from 'lodash'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'

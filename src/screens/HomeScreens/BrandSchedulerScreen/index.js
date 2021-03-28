@@ -196,7 +196,7 @@ class BrandSchedulerScreen extends PureComponent {
                       <Text style={{...styles.title, marginVertical: mUtils.wScale(10)}}>{item.showroom_nm}</Text>
                     </View>
                     <View style={{width: '49%'}}>
-                      {(item.req_list.length > 0 || item.memo_list) && (
+                      {item.req_list && item.req_list.length > 0 && item.memo_list && (
                         <>
                           {item.memo_list &&
                             item.memo_list.map((e, i) => {
