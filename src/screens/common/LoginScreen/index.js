@@ -66,10 +66,10 @@ class LoginScreen extends PureComponent {
     await Linking.openURL('http://fpr-prod-web.s3-website.ap-northeast-2.amazonaws.com/join')
   })
   handleFindId = callOnce(async () => {
-    await Linking.openURL('http://fpr-prod-web.s3-website.ap-northeast-2.amazonaws.com')
+    await Linking.openURL('http://fpr-prod-web.s3-website.ap-northeast-2.amazonaws.com/find-id')
   })
   handleFindPw = callOnce(async () => {
-    await Linking.openURL('http://fpr-prod-web.s3-website.ap-northeast-2.amazonaws.com')
+    await Linking.openURL('http://fpr-prod-web.s3-website.ap-northeast-2.amazonaws.com/find-pw')
   })
   render() {
     const {email, pw} = this.state
