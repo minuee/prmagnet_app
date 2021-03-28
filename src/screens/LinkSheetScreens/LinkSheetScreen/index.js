@@ -98,8 +98,10 @@ class LinkSheetScreen extends PureComponent {
     cBind(this)
     const titles = mConst.getUserType() === 'B' ? ['Send Out', 'Return'] : ['Pickups', 'Send Out'] // TODO 임시 주석처리
     this.state = {
-      start: mUtils.getToday(), // TODO 테스트 데이타 관계로 일단 임시 값으로 설정
-      end: mUtils.getToday(),
+      // start: mUtils.getToday(), // TODO 테스트 데이타 관계로 일단 임시 값으로 설정
+      // end: mUtils.getToday(),
+      start: mUtils.getDayValue(2021, 3, 10),
+      end: mUtils.getDayValue(2021, 3, 31),
       brandId: '',
       dataList: [],
       brands: [],
@@ -169,7 +171,7 @@ class LinkSheetScreen extends PureComponent {
     this.pushTo('SelectScheduleScreen', {get: this.handleOnFocus, start, end, caller: 'LinkSheetScreen'})
   }
   handleChangeTitle = item => {
-    this.setState({selectTitle: item}, this.handleOnFocus)
+    this.setState({selectTitle: item, selectDate: [], totalCount: 0}, this.handleOnFocus)
   }
   handleLinkSheetDetail = () => {
     const {selectTitle, selectDate, dataList} = this.state
@@ -260,7 +262,6 @@ class LinkSheetScreen extends PureComponent {
                     ) : (
                       <FastImage resizeMode={'contain'} style={styles.checkImg} source={noCheckImg} />
                     )}
-
                     <Text style={{...styles.subDt}}>
                       {mUtils.getShowDate(item.date)}
                       <Text style={{fontSize: 16}}>
@@ -270,8 +271,9 @@ class LinkSheetScreen extends PureComponent {
                   </TouchableOpacity>
                   <View style={{...styles.layout, flexWrap: 'wrap', paddingHorizontal: mUtils.wScale(20)}}>
                     {_.map(item.each_list, (subItem, subIndex) => {
+                      console.log('#매거진색깔:', subItem.mgzn_color)
                       return (
-                        <View key={subIndex} style={{...styles.brandBox}}>
+                        <View key={subIndex} style={styles.brandBox}>
                           <View style={{...styles.box1, backgroundColor: subItem.mgzn_color}}>
                             <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
                           </View>

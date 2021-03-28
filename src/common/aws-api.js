@@ -367,35 +367,9 @@ const API = {
     }
     return Api.post(apiName, path, myInit)
   },
-  getReturnSchedule: ({start_date, fin_date}) => {
-    const apiName = v1Api
-    const path = `${mConst.getApiPath()}/return-schedule` // TODO 임시 주석처리
-    // const path = '/stylist/pickup-schedule' // TODO 테스트용
-    const init = {
-      queryStringParameters: {
-        start_date,
-        fin_date,
-      },
-    }
-    return Api.get(apiName, path, init)
-  },
-  getPickupSchedule: ({start_date, fin_date, brand_id}) => {
-    const apiName = v1Api
-    const path = `${mConst.getApiPath()}/pickup-schedule` // TODO 임시 주석처리
-    // const path = '/stylist/pickup-schedule' // TODO 테스트용
-    const init = {
-      queryStringParameters: {
-        start_date,
-        fin_date,
-        brand_id,
-      },
-    }
-    return Api.get(apiName, path, init)
-  },
   getSendoutSchedule: ({start_date, fin_date, brand_id}) => {
     const apiName = v1Api
-    const path = `${mConst.getApiPath()}/sendout-schedule` // TODO 임시 주석처리
-    // const path = '/stylist/sendout-schedule' // TODO 테스트용
+    const path = `${mConst.getApiPath()}/sendout-schedule`
     const init = {
       queryStringParameters:
         mConst.getUserType() === 'B'
@@ -411,19 +385,89 @@ const API = {
     }
     return Api.get(apiName, path, init)
   },
-  getPickupDetail: req_no => {
+  getPickupSchedule: ({start_date, fin_date, brand_id}) => {
     const apiName = v1Api
-    const path = `${mConst.getApiPath()}/pickup-detailed/${req_no}` // TODO 임시 주석처리
-    // const path = `/stylist/pickup-detailed/${req_no}` // TODO 테스트용
-    const init = {}
+    const path = `${mConst.getApiPath()}/pickup-schedule`
+    const init = {
+      queryStringParameters: {
+        start_date,
+        fin_date,
+        brand_id,
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
+  getReturnSchedule: ({start_date, fin_date}) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/return-schedule`
+    const init = {
+      queryStringParameters: {
+        start_date,
+        fin_date,
+      },
+    }
     return Api.get(apiName, path, init)
   },
   getSendoutDetail: req_no => {
     const apiName = v1Api
-    const path = `${mConst.getApiPath()}/sendout-detailed/${req_no}` // TODO 임시 주석처리
-    // const path = `/stylist/sendout-detailed/${req_no}` // TODO 테스트용
+    const path = `${mConst.getApiPath()}/sendout-detailed/req/${req_no}`
     const init = {}
     return Api.get(apiName, path, init)
+  },
+  getPickupDetail: req_no => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/pickup-detailed/req/${req_no}`
+    const init = {}
+    return Api.get(apiName, path, init)
+  },
+  getReturnDetail: req_no => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/return-detailed/req/${req_no}`
+    const init = {}
+    return Api.get(apiName, path, init)
+  },
+  pushSendout: (req_no, showroom_len) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/sendout-push`
+    const myInit = {
+      body: {
+        req_no,
+        len: showroom_len,
+      },
+    }
+    return Api.post(apiName, path, myInit)
+  },
+  pushPickupSuccess: req_no => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/pickup-success`
+    const myInit = {
+      body: {req_no},
+    }
+    return Api.post(apiName, path, myInit)
+  },
+  pushPickupFail: req_no => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/pickup-fail`
+    const myInit = {
+      body: {req_no},
+    }
+    return Api.post(apiName, path, myInit)
+  },
+  pushReturnSuccess: req_no => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/return-success`
+    const myInit = {
+      body: {req_no},
+    }
+    return Api.post(apiName, path, myInit)
+  },
+  pushReturnFail: req_no => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/return-fail`
+    const myInit = {
+      body: {req_no},
+    }
+    return Api.post(apiName, path, myInit)
   },
   getLookBook: ({page, limit, search_text}) => {
     const apiName = v1Api

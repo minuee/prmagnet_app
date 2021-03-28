@@ -17,15 +17,13 @@ import styles from './styles'
 
 const goLeftImage = require('../../../images/navi/go_left.png')
 const goRightImage = require('../../../images/navi/go_right.png')
-const unfoldImage = require('../../../images/common/unfold.png')
-const model1Image = require('../../../images/sample/model_1.png')
-const model2Image = require('../../../images/sample/model_2.png')
 
 class SendOutScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
     this.state = {
+      listIndex: 0,
       checked: false,
       allChecked: false,
       data: {},
@@ -40,10 +38,13 @@ class SendOutScreen extends PureComponent {
     this.handleLoadData()
   }
   handleLoadData = async () => {
-    const {reqNo} = this.params
+    const {selectEachList} = this.params
+    const {listIndex} = this.state
+    console.log('###sendout params:', this.params)
+    console.log('###params_req:', _.get(selectEachList, `[${listIndex}].req_no`))
     try {
-      const response = await API.getSendoutDetail(reqNo)
-      this.setState({data: response, loading: false})
+      const response = await API.getSendoutDetail(_.get(selectEachList, `[${listIndex}].req_no`))
+      this.setState({data: _.get(response, 'right'), loading: false})
       console.log('Send Out 스케쥴 상세 조회 성공', JSON.stringify(response))
     } catch (error) {
       this.setState({loading: false})
@@ -53,9 +54,9 @@ class SendOutScreen extends PureComponent {
   handleLongPressPhone = (name, phone) => {
     this.setState({isvisible: {open: true, name, phone}})
   }
-  handleCheckItem = (name, sampleName, sampleNo) => {
+  handleCheckItem = (name, roomName, sampleName, sampleNo) => {
     if (!this.state.checkedList.includes(sampleNo)) {
-      this.alert('발송완료', `${name}님께 ${sampleName} 발송 완료`, [
+      this.alert('발송완료', `${name}님께 ${roomName}${mConst.lf}${sampleName} 발송 완료하였습니다.`, [
         {
           onPress: () => this.setState(prevstate => ({checkedList: prevstate.checkedList.concat(sampleNo)})),
         },
@@ -63,15 +64,28 @@ class SendOutScreen extends PureComponent {
     }
   }
   handleCheckItemAll = () => {
+    const {data} = this.state
+    console.log('###req_no, len:', _.get(data, 'req_no'), _.get(data, 'showroom_list.length'))
+    const sendPush = async () => {
+      try {
+        const response = await API.pushSendout(_.get(data, 'req_no'), _.get(data, 'showroom_list.length'))
+        this.setState({allChecked: true})
+        console.log('전체 발송 완료')
+      } catch (error) {
+        console.log('전체 발송 실패', error)
+      }
+    }
     if (!this.state.allChecked) {
-      this.alert('전체 상품 발송 확인', '전체 상품을 발송 하셨습니까?', [{onPress: () => this.setState({allChecked: true})}, {}])
+      this.alert('전체 상품 발송 확인', '전체 상품을 발송 하셨습니까?', [{onPress: sendPush}, {}])
     }
   }
   render() {
     const {data, checkedList, allChecked, loading} = this.state
-    const fromName = mUtils.get(data, 'main_user_nm')
-    const toName = mUtils.get(data, 'brand_user_nm')
-    const toPhone = mUtils.phoneFormat(mUtils.get(data, 'brand_phone_no'))
+    const loaningDate = mUtils.getShowDate(mUtils.get(data, 'loaning_date'))
+    const fromName = mUtils.get(data, 'from_user_nm')
+    const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'from_user_phone'))
+    const toName = mUtils.get(data, 'to_user_nm')
+    const toPhone = mUtils.phoneFormat(mUtils.get(data, 'to_user_phone'))
     if (loading) return <Loading />
     return (
       <SafeAreaView style={styles.container}>
@@ -80,29 +94,26 @@ class SendOutScreen extends PureComponent {
           <View style={styles.titleWrapper}>
             <FastImage source={goLeftImage} style={styles.goImage} />
             <View style={styles.titleSubWrapper}>
-              <Text style={styles.titleSubText}>
-                {fromName}-&gt;{toName}
-              </Text>
-              <FastImage source={unfoldImage} style={styles.unfoldImage} />
+              <Text style={styles.titleSubText}>{loaningDate}</Text>
             </View>
             <FastImage source={goRightImage} style={styles.goImage} />
           </View>
           <View style={styles.middleWrapper}>
             <Text style={styles.middleText}>Magazine</Text>
-            <Text style={styles.middleDescText}>{mUtils.get(data, 'posi_compy_nm', '-')}</Text>
+            <Text style={styles.middleDescText}>{mUtils.get(data, 'mgzn_nm', '-')}</Text>
           </View>
           <View style={styles.middleGroupWrapper}>
             <View style={styles.middleSubWrapper()}>
               <Text style={styles.middleText}>Editor/Stylist</Text>
               <View style={styles.middleDescWrapper}>
-                <Text style={styles.middleDescTextBold}>{fromName}</Text>
+                <Text style={styles.middleDescTextBold}>{toName}</Text>
               </View>
             </View>
             <View style={styles.middleSubWrapper()}>
               <Text style={styles.middleText}>Assistant</Text>
               <View style={styles.middleDescWrapper}>
-                <Text style={styles.middleDescTextBold}>{mUtils.get(data, 'assi_user_nm', '-')}</Text>
-                <Text style={styles.middleDescText}> {mUtils.phoneFormat(mUtils.get(data, 'assi_phone_no'))}</Text>
+                <Text style={styles.middleDescTextBold}>{mUtils.get(data, 'contact_user_nm', '-')}</Text>
+                <Text style={styles.middleDescText}> {mUtils.phoneFormat(mUtils.get(data, 'contact_user_phone'))}</Text>
               </View>
             </View>
           </View>
@@ -110,15 +121,15 @@ class SendOutScreen extends PureComponent {
             <View style={styles.middleGroupWrapper}>
               <View style={styles.middleSubWrapper(3)}>
                 <Text style={styles.middleText}>Loaning Date</Text>
-                <Text style={styles.middleDescText}>{mUtils.getShowDate(data.pickup_date)}</Text>
+                <Text style={styles.middleDescText}>{mUtils.getShowDate(data.loaning_date)}</Text>
               </View>
               <View style={styles.middleSubWrapper(3)}>
                 <Text style={styles.middleText}>Shooting Date</Text>
-                <Text style={styles.middleDescText}>{mUtils.getShowDate(data.photo_date)}</Text>
+                <Text style={styles.middleDescText}>{mUtils.getShowDate(data.shooting_date)}</Text>
               </View>
               <View style={styles.middleSubWrapper(3)}>
                 <Text style={styles.middleText}>Returning Date</Text>
-                <Text style={styles.middleDescText}>{mUtils.getShowDate(data.photo_date)}</Text>
+                <Text style={styles.middleDescText}>{mUtils.getShowDate(data.returning_date)}</Text>
               </View>
             </View>
           ) : (
@@ -135,7 +146,7 @@ class SendOutScreen extends PureComponent {
           )}
           <View style={styles.middleWrapper}>
             <Text style={styles.middleText}>Address</Text>
-            <Text style={styles.middleDescText}>{mUtils.get(data, 'dlvy_adres_nm', '-')}</Text>
+            <Text style={styles.middleDescText}>{mUtils.get(data, 'studio', '-')}</Text>
           </View>
           <Grid style={styles.grid}>
             <Row>
@@ -150,8 +161,9 @@ class SendOutScreen extends PureComponent {
               </Col>
             </Row>
             {_.map(mUtils.get(data, 'showroom_list', []), (item, index) => {
-              const samples = mUtils.get(item, 'individual_samples', [])
-              const roomName = mUtils.get(item, 'individual_samples.showroom_nm')
+              const samples = mUtils.get(item, 'sample_list', [])
+              const roomName = mUtils.get(item, 'showroom_nm')
+              const imageUrl = mUtils.get(samples, '[0].image_list[0]')
               const rowSize = _.size(samples)
               return (
                 <Row key={index}>
@@ -163,7 +175,7 @@ class SendOutScreen extends PureComponent {
                       return (
                         <React.Fragment key={subIndex}>
                           <Row style={styles.row()}>
-                            <Text style={styles.sText()}>{mUtils.get(subItem, 'sample_category')}</Text>
+                            <Text style={styles.sText()}>{mUtils.get(subItem, 'category')}</Text>
                           </Row>
                           <Row style={styles.row()}>
                             <Text style={styles.sText(9)}>{mUtils.moneyFormat(mUtils.get(subItem, 'price', 0))}</Text>
@@ -173,7 +185,7 @@ class SendOutScreen extends PureComponent {
                     })}
                   </Col>
                   <Col style={styles.col(rowSize * 2, true)} size={2}>
-                    <FastImage source={model2Image} style={styles.modelImage} />
+                    <FastImage source={{uri: imageUrl}} style={styles.modelImage} />
                   </Col>
                   <Col style={styles.col(rowSize * 2)} size={6}>
                     {_.map(samples, (subItem, subIndex) => {
@@ -183,8 +195,9 @@ class SendOutScreen extends PureComponent {
                           readOnly={mConst.getUserType() !== 'B'}
                           checked={checkedList.includes(subItem.sample_no) || allChecked}
                           name={fromName}
+                          phone={fromPhone}
                           onLongPress={() => null}
-                          onSwipeCheck={() => this.handleCheckItem(fromName, subItem.sample_nm, subItem.sample_no)}
+                          onSwipeCheck={() => this.handleCheckItem(toName, roomName, subItem.category, subItem.sample_no)}
                           color={mConst.getUserType() === 'B' ? '#e1c668' : '#d78979'}
                         />
                       )

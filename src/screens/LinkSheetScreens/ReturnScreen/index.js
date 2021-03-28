@@ -26,6 +26,7 @@ class ReturnScreen extends PureComponent {
     super(props)
     cBind(this)
     this.state = {
+      listIndex: 0,
       checked: false,
       allChecked: false,
       data: {},
@@ -40,50 +41,80 @@ class ReturnScreen extends PureComponent {
     this.handleLoadData()
   }
   handleLoadData = async () => {
-    const {reqNo} = this.params
+    const {selectEachList} = this.params
+    const {listIndex} = this.state
+    console.log('###return params:', this.params)
+    console.log('###params_req:', _.get(selectEachList, `[${listIndex}].req_no`))
     try {
-      const response = await API.getPickupDetail(reqNo)
-      this.setState({data: response, loading: false})
-      console.log('픽업 스케쥴 상세 조회 성공', JSON.stringify(response))
+      const response = await API.getReturnDetail(_.get(selectEachList, `[${listIndex}].req_no`))
+      this.setState({data: _.get(response, 'right'), loading: false})
+      console.log('Return 스케쥴 상세 조회 성공', JSON.stringify(response))
     } catch (error) {
       this.setState({loading: false})
-      console.log('픽업 스케쥴 상세 조회 실패', error)
+      console.log('Return 스케쥴 상세 조회 실패', error)
     }
   }
   handleLongPress = (name, sampleNo) => {
-    this.alert('상품 미수령 알림', `'${name}'님께 상품미수령 알림을 보내시겠습니까?`, [
-      {
-        onPress: () => {
-          setTimeout(() => {
-            this.alert('미수령 알림 전송 완료', '미수령 알림을 전송하였습니다.')
-          }, 100)
-        },
-      },
-      {},
-    ])
+    const {data} = this.state
+    console.log('###reqNo:', _.get(data, 'req_no'))
+    const sendPush = async () => {
+      try {
+        const response = await API.pushReturnFail(_.get(data, 'req_no'))
+        this.alert('미수령 알림 전송 완료', '미수령 알림을 전송하였습니다.')
+        console.log('선택 미수령 푸시 완료')
+      } catch (error) {
+        console.log('선택 미수령 푸시 실패', error)
+      }
+    }
+    this.alert('상품 미수령 알림', `'${name}'님께 상품미수령 알림을 보내시겠습니까?`, [{onPress: sendPush}, {}])
   }
   handleLongPressPhone = (name, phone) => {
     this.setState({isvisible: {open: true, name, phone}})
   }
   handleCheckItem = (name, sampleName, sampleNo) => {
     if (!this.state.checkedList.includes(sampleNo)) {
+      const sendPush = async () => {
+        try {
+          const response = await API.pushReturnSuccess(_.get(data, 'req_no'))
+          this.setState({allChecked: true})
+          console.log('전체 수령 푸시 완료')
+        } catch (error) {
+          console.log('전체 수령 푸시 실패', error)
+        }
+      }
       this.alert('수령완료', `${name}님께 ${sampleName} 수령 완료`, [
         {
-          onPress: () => this.setState(prevstate => ({checkedList: prevstate.checkedList.concat(sampleNo)})),
+          onPress: () => {
+            sendPush()
+            this.setState(prevstate => ({checkedList: prevstate.checkedList.concat(sampleNo)}))
+          },
         },
       ])
     }
   }
   handleCheckItemAll = () => {
+    const {data} = this.state
+    const sendPush = async () => {
+      try {
+        const response = await API.pushReturnSuccess(_.get(data, 'req_no'))
+        this.setState({allChecked: true})
+        console.log('전체 수령 푸시 완료')
+      } catch (error) {
+        console.log('전체 수령 푸시 실패', error)
+      }
+    }
     if (!this.state.allChecked) {
-      this.alert('전체 상품 수령 확인', '전체 상품을 수령 하셨습니까?', [{onPress: () => this.setState({allChecked: true})}, {}])
+      this.alert('전체 상품 수령 확인', '전체 상품을 수령 하셨습니까?', [{onPress: sendPush}, {}])
     }
   }
   render() {
     const {data, checkedList, allChecked, loading} = this.state
-    const fromName = mUtils.get(data, 'main_user_nm')
-    const toName = mUtils.get(data, 'brand_user_nm')
-    const toPhone = mUtils.phoneFormat(mUtils.get(data, 'brand_phone_no'))
+    console.log('data:', JSON.stringify(data))
+    const returningDate = mUtils.getShowDate(mUtils.get(data, 'returning_date'))
+    const fromName = mUtils.get(data, 'from_user_nm')
+    const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'from_user_phone'))
+    const toName = mUtils.get(data, 'to_user_nm')
+    const toPhone = mUtils.phoneFormat(mUtils.get(data, 'to_user_phone'))
     if (loading) return <Loading />
     return (
       <SafeAreaView style={styles.container}>
@@ -92,16 +123,14 @@ class ReturnScreen extends PureComponent {
           <View style={styles.titleWrapper}>
             <FastImage source={goLeftImage} style={styles.goImage} />
             <View style={styles.titleSubWrapper}>
-              <Text style={styles.titleSubText}>
-                {fromName}-&gt;{toName}
-              </Text>
-              <FastImage source={unfoldImage} style={styles.unfoldImage} />
+              <Text style={styles.titleSubText}>{returningDate}</Text>
+              {/* <FastImage source={unfoldImage} style={styles.unfoldImage} /> */}
             </View>
             <FastImage source={goRightImage} style={styles.goImage} />
           </View>
           <View style={styles.middleWrapper}>
             <Text style={styles.middleText}>Magazine</Text>
-            <Text style={styles.middleDescText}>{mUtils.get(data, 'posi_compy_nm', '-')}</Text>
+            <Text style={styles.middleDescText}>{mUtils.get(data, 'mgzn_nm', '-')}</Text>
           </View>
           <View style={styles.middleGroupWrapper}>
             <View style={styles.middleSubWrapper()}>
@@ -113,24 +142,28 @@ class ReturnScreen extends PureComponent {
             <View style={styles.middleSubWrapper()}>
               <Text style={styles.middleText}>Assistant</Text>
               <View style={styles.middleDescWrapper}>
-                <Text style={styles.middleDescTextBold}>{mUtils.get(data, 'assi_user_nm', '-')}</Text>
-                <Text style={styles.middleDescText}> {mUtils.phoneFormat(mUtils.get(data, 'assi_phone_no'))}</Text>
+                <Text style={styles.middleDescTextBold}>{mUtils.get(data, 'contact_user_nm', '-')}</Text>
+                <Text style={styles.middleDescText}> {mUtils.phoneFormat(mUtils.get(data, 'contact_user_phone'))}</Text>
               </View>
             </View>
           </View>
           <View style={styles.middleGroupWrapper}>
-            <View style={styles.middleSubWrapper(2)}>
-              <Text style={styles.middleText}>Pickup Date</Text>
-              <Text style={styles.middleDescText}>{mUtils.getShowDate(data.pickup_date)}</Text>
+            <View style={styles.middleSubWrapper(3)}>
+              <Text style={styles.middleText}>Loaning Date</Text>
+              <Text style={styles.middleDescText}>{mUtils.getShowDate(data.loaning_date)}</Text>
             </View>
-            <View style={styles.middleSubWrapper(2)}>
+            <View style={styles.middleSubWrapper(3)}>
               <Text style={styles.middleText}>Shooting Date</Text>
-              <Text style={styles.middleDescText}>{mUtils.getShowDate(data.photo_date)}</Text>
+              <Text style={styles.middleDescText}>{mUtils.getShowDate(data.shooting_date)}</Text>
+            </View>
+            <View style={styles.middleSubWrapper(3)}>
+              <Text style={styles.middleText}>Returning Date</Text>
+              <Text style={styles.middleDescText}>{mUtils.getShowDate(data.returning_date)}</Text>
             </View>
           </View>
           <View style={styles.middleWrapper}>
             <Text style={styles.middleText}>Address</Text>
-            <Text style={styles.middleDescText}>{mUtils.get(data, 'dlvy_adres_nm', '-')}</Text>
+            <Text style={styles.middleDescText}>{mUtils.get(data, 'studio', '-')}</Text>
           </View>
           <Grid style={styles.grid}>
             <Row>
@@ -138,15 +171,16 @@ class ReturnScreen extends PureComponent {
               <Col style={styles.col()} size={2}></Col>
               <Col style={styles.col()} size={2}></Col>
               <Col style={styles.col(1, true)} size={6}>
-                <Text>From</Text>
+                <Text>Shoot</Text>
               </Col>
               <Col style={styles.col(1, true)} size={6}>
-                <Text>Shoot</Text>
+                <Text>To</Text>
               </Col>
             </Row>
             {_.map(mUtils.get(data, 'showroom_list', []), (item, index) => {
-              const samples = mUtils.get(item, 'individual_samples', [])
-              const roomName = mUtils.get(item, 'individual_samples.showroom_nm')
+              const samples = mUtils.get(item, 'sample_list', [])
+              const roomName = mUtils.get(item, 'showroom_nm')
+              const imageUrl = mUtils.get(samples, '[0].image_list[0]')
               const rowSize = _.size(samples)
               return (
                 <Row key={index}>
@@ -158,7 +192,7 @@ class ReturnScreen extends PureComponent {
                       return (
                         <React.Fragment key={subIndex}>
                           <Row style={styles.row()}>
-                            <Text style={styles.sText()}>{mUtils.get(subItem, 'sample_category')}</Text>
+                            <Text style={styles.sText()}>{mUtils.get(subItem, 'category')}</Text>
                           </Row>
                           <Row style={styles.row()}>
                             <Text style={styles.sText(9)}>{mUtils.moneyFormat(mUtils.get(subItem, 'price', 0))}</Text>
@@ -168,11 +202,11 @@ class ReturnScreen extends PureComponent {
                     })}
                   </Col>
                   <Col style={styles.col(rowSize * 2, true)} size={2}>
-                    <FastImage source={model2Image} style={styles.modelImage} />
+                    <FastImage source={{uri: imageUrl}} style={styles.modelImage} />
                   </Col>
                   <Col style={styles.col(rowSize * 2)} size={6}>
                     {_.map(samples, (subItem, subIndex) => {
-                      return <LinkSheetUnit readOnly key={subIndex} name={fromName} color={mConst.bgBlue} />
+                      return <LinkSheetUnit readOnly key={subIndex} name={fromName} phone={fromPhone} color={mConst.bgBlue} />
                     })}
                   </Col>
                   <Col style={styles.col(rowSize * 2)} size={6}>
@@ -185,7 +219,7 @@ class ReturnScreen extends PureComponent {
                           phone={toPhone}
                           onLongPress={() => this.handleLongPress(toName, subItem.sample_no)}
                           onLongPressPhone={() => this.handleLongPressPhone(toName, toPhone)}
-                          onSwipeCheck={() => this.handleCheckItem(toName, subItem.sample_nm, subItem.sample_no)}
+                          onSwipeCheck={() => this.handleCheckItem(toName, subItem.category, subItem.sample_no)}
                           color={mConst.bgKhaki}
                         />
                       )
@@ -197,7 +231,7 @@ class ReturnScreen extends PureComponent {
           </Grid>
         </ScrollView>
         <TouchableOpacity onPress={this.handleCheckItemAll} style={styles.bottom}>
-          <Text style={styles.bottomText}>All Picked Up</Text>
+          <Text style={styles.bottomText}>All Returned</Text>
         </TouchableOpacity>
         <Modal style={styles.modal} isVisible={this.state.isvisible.open} useNativeDriver={true}>
           <View style={styles.modalView}>
