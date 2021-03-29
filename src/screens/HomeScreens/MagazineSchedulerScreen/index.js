@@ -64,7 +64,7 @@ class MagazineSchedulerScreen extends PureComponent {
   changeSchedule = () => {
     const {start, end, boolean} = this.state
     this.pushTo('SelectScheduleScreen', {
-      get: boolean ? this.getMagazineSchedular : this.getBrandMagazineSchedular,
+      setDate: boolean ? this.getMagazineSchedular : this.getBrandMagazineSchedular,
       start,
       end,
       caller: 'ScheduleTab',

@@ -149,7 +149,7 @@ class BrandSchedulerScreen extends PureComponent {
 
   changeSchedule = () => {
     const {start, end} = this.state
-    this.pushTo('SelectScheduleScreen', {get: this.getSchedular, start, end, caller: 'ScheduleTab'})
+    this.pushTo('SelectScheduleScreen', {setDate: this.getSchedular, start, end, caller: 'ScheduleTab'})
   }
 
   componentDidMount() {
