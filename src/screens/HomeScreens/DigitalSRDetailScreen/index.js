@@ -52,9 +52,8 @@ class DigitalSRDetailScreen extends PureComponent {
         <ScrollView>
           {data.sample_list.map((item, index) => {
             return (
-              <>
+              <React.Fragment key={index}>
                 <Swiper
-                  key={index}
                   loop={false}
                   height={mUtils.wScale(500)}
                   style={{height: mUtils.wScale(500), flex: 0}}
@@ -132,7 +131,7 @@ class DigitalSRDetailScreen extends PureComponent {
                     <Text style={styles.desc}>{item.etc}</Text>
                   </View>
                 </View>
-              </>
+              </React.Fragment>
             )
           })}
         </ScrollView>
