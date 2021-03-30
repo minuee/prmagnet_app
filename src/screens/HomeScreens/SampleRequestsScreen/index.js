@@ -8,6 +8,7 @@ import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-men
 import {Calendar, LocaleConfig} from 'react-native-calendars'
 import moment from 'moment'
 import ModalDropdown from 'react-native-modal-dropdown'
+import _ from 'lodash'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -140,8 +141,8 @@ class SampleRequestsScreen extends PureComponent {
         end_dt: endTime,
         return_prearnge_dt: String(Math.floor(Number(rtDate.timestamp) / 1000)),
         photogrf_concept: concept,
-        model_list: fashionModel,
-        celeb_list: celebrity,
+        model_list: fashionModel[0] === '' ? [] : fashionModel,
+        celeb_list: celebrity[0] === '' ? [] : celebrity,
         page_cnt: numberPage,
         etc_brand: togetherBrand,
         today_connect: todayConnect,
@@ -198,8 +199,8 @@ class SampleRequestsScreen extends PureComponent {
         end_dt: endTime,
         return_prearnge_dt: String(Math.floor(Number(rtDate.timestamp) / 1000)),
         photogrf_concept: concept,
-        model_list: fashionModel,
-        celeb_list: celebrity,
+        model_list: fashionModel[0] === '' ? [] : fashionModel,
+        celeb_list: celebrity[0] === '' ? [] : celebrity,
         page_cnt: numberPage,
         etc_brand: togetherBrand,
         today_connect: todayConnect,
@@ -297,8 +298,8 @@ class SampleRequestsScreen extends PureComponent {
         destinationDetail: response.adres_detail,
         shippingNote: response.dlvy_atent_matter,
         concept: response.photogrf_concept,
-        celebrity: response.celeb_list,
-        fashionModel: response.model_list,
+        celebrity: _.size(response.celeb_list) === 0 ? [''] : response.celeb_list,
+        fashionModel: _.size(response.model_list) === 0 ? [''] : response.model_list,
         locateShoot: response.loc_value,
         todayConnect: response.today_connect,
         numberPage: response.page_cnt,

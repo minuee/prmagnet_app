@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import moment from 'moment'
 import ModalDropdown from 'react-native-modal-dropdown'
+import _ from 'lodash'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'

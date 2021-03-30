@@ -89,12 +89,13 @@ class LookBookDetailScreen extends PureComponent {
   }
 
   renderItem = ({item}) => {
+    console.log('????', item)
     return (
       <View style={{width: '49%', height: mUtils.wScale(310)}}>
         <View style={{width: '100%', height: mUtils.wScale(275)}}>
           <Pressable>
             {({pressed}) => (
-              <FastImage resizeMode={'contain'} style={styles.modelImg} source={item.image_url}>
+              <FastImage resizeMode={'cover'} style={styles.modelImg} source={{uri: item.image_url}}>
                 {pressed ? (
                   <View
                     style={{

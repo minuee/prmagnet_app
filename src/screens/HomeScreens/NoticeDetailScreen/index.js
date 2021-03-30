@@ -16,29 +16,51 @@ class NoticeDetailScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
-    this.state = {
-      inqry_subj: '공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요. 공지사항 내용을 입력해주세요.',
-      inqry_dt: '1611303128',
-      inqry_cntent:
-        '공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.공지사항 내용을 입력해주세요.',
+    this.state = {data: '', loading: false}
+  }
+  getNoticeDetail = async () => {
+    const {no} = this.params
+    try {
+      let response = await API.getNoticeDetail({notice_no: no})
+      console.log('getNoticeDetail>>>', response)
+      if (response.success) {
+        this.setState({data: response, loading: false})
+      }
+    } catch (error) {
+      this.setState({loading: false})
+      console.log('getNoticeDetail>>>', error)
     }
   }
 
   componentDidMount() {
     this.pushOption('공지사항')
+    this.onFocus(this.handleOnFocus)
+  }
+  componentWillUnmount() {
+    this.removeFocus()
+  }
+
+  handleOnFocus = () => {
+    this.setState({loading: true}, () => {
+      this.getNoticeDetail()
+    })
   }
 
   render() {
-    const {inqry_subj, inqry_dt, inqry_cntent} = this.state
+    const {data, loading} = this.state
     return (
       <SafeAreaView style={styles.container}>
-        <ScrollView>
-          <View style={styles.itemBox}>
-            <Text style={styles.title}>{inqry_subj}</Text>
-            <Text style={styles.dt}>{mUtils.getShowDate(inqry_dt, 'YYYY.MM.DD')}</Text>
-          </View>
-          <Text style={styles.desc}>{inqry_cntent}</Text>
-        </ScrollView>
+        {loading ? (
+          <Loading />
+        ) : (
+          <ScrollView>
+            <View style={styles.itemBox}>
+              <Text style={styles.title}>{data.title}</Text>
+              <Text style={styles.dt}>{mUtils.getShowDate(data.reg_dt, 'YYYY.MM.DD')}</Text>
+            </View>
+            <Text style={styles.desc}>{data.content}</Text>
+          </ScrollView>
+        )}
       </SafeAreaView>
     )
   }

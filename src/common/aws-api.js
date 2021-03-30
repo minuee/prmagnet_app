@@ -109,6 +109,7 @@ const API = {
   setPushToken: ({token_value}) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/push-token`
+    console.log('>>>>>0000', path)
     const myInit = {
       body: {
         token_value,
@@ -275,12 +276,13 @@ const API = {
     }
     return Api.get(apiName, path, init)
   },
-  getAlarm: ({next_token}) => {
+  getAlarm: ({page, limit}) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/alarm`
     const init = {
       queryStringParameters: {
-        next_token: next_token,
+        page: page,
+        limit: limit,
       },
     }
     return Api.get(apiName, path, init)
@@ -528,6 +530,17 @@ const API = {
   getHomeNR: ({page, limit}) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/home/new-request`
+    const init = {
+      queryStringParameters: {
+        page: page,
+        limit: limit,
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
+  getHomeCR: ({page, limit}) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/home/confirmed-request`
     const init = {
       queryStringParameters: {
         page: page,
@@ -981,6 +994,27 @@ const API = {
       },
     }
     return Api.del(apiName, path, myInit)
+  },
+  getNoticeList: ({page, limit}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/notice-list`
+    var init = {
+      queryStringParameters: {
+        page: page,
+        limit: limit,
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
+  getNoticeDetail: ({notice_no}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/notice/${notice_no}`
+    var init = {
+      queryStringParameters: {
+        notice_no: notice_no,
+      },
+    }
+    return Api.get(apiName, path, init)
   },
 }
 

@@ -7,6 +7,7 @@ import Header from '../../common/Header'
 import _ from 'lodash'
 import API from '../../../common/aws-api'
 import Loading from '../../common/Loading'
+import Empty from '../../common/Empty'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -26,6 +27,7 @@ class SampleRequestsListScreen extends PureComponent {
       page: 1,
       limit: 10,
       search_text: '',
+      loading: false,
     }
   }
 
@@ -56,6 +58,7 @@ class SampleRequestsListScreen extends PureComponent {
 
   getMagazineSample = async () => {
     const {list, page, limit, search_text} = this.state
+    console.log('??>?>?', page)
     try {
       let response = await API.getMagazineSample({
         page: page,
@@ -80,14 +83,18 @@ class SampleRequestsListScreen extends PureComponent {
         page: 1,
         limit: limit,
         search_text: search_text,
+        loading: false,
       })
       console.log('getMagazineSampleReset>>>', response)
       if (response.success) {
         if (response.list.length > 0) {
-          this.setState({list: list.concat(response.list), page: 2})
+          this.setState({list: response.list, page: 2, loading: false})
+        } else {
+          this.setState({loading: false})
         }
       }
     } catch (error) {
+      this.setState({loading: false})
       console.log('getMagazineSampleReset>>>', error)
     }
   }
@@ -104,7 +111,9 @@ class SampleRequestsListScreen extends PureComponent {
   }
 
   handleOnFocus = () => {
-    this.getMagazineSampleReset()
+    this.setState({loading: true}, () => {
+      this.getMagazineSampleReset()
+    })
   }
 
   renderItem = ({item, index}) => {
@@ -185,25 +194,31 @@ class SampleRequestsListScreen extends PureComponent {
 
   render() {
     const {user} = this.props
-    const {list} = this.state
+    const {list, loading} = this.state
     return (
       <SafeAreaView style={styles.container}>
         <Header pushTo={this.pushTo} userType={user.userType} />
         <View style={styles.layout1}>
           <Text style={styles.mainTitle}>My Requests</Text>
         </View>
-        {list ? (
-          <FlatList
-            bounces={false}
-            style={styles.list}
-            data={list}
-            renderItem={this.renderItem}
-            keyExtractor={item => `${item.req_no}_${Math.random()}`}
-            onEndReached={this.handleLoadMore}
-            onEndReachedThreshold={1}
-          />
-        ) : (
+        {loading ? (
           <Loading />
+        ) : (
+          <>
+            {list ? (
+              <FlatList
+                bounces={false}
+                style={styles.list}
+                data={list}
+                renderItem={this.renderItem}
+                keyExtractor={item => `${item.req_no}_${Math.random()}`}
+                onEndReached={this.handleLoadMore}
+                onEndReachedThreshold={1}
+              />
+            ) : (
+              <Empty />
+            )}
+          </>
         )}
       </SafeAreaView>
     )

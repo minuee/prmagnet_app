@@ -36,10 +36,6 @@ export default StyleSheet.create({
     textAlign: 'left',
     color: '#999999',
   },
-  layout: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   layout1: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -47,7 +43,7 @@ export default StyleSheet.create({
   },
   layout2: {
     width: '100%',
-    alignItems: 'center',
+    //alignItems: 'center',
     paddingHorizontal: mUtils.wScale(20),
     paddingVertical: mUtils.wScale(5),
     marginTop: mUtils.wScale(15),

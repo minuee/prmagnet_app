@@ -137,16 +137,18 @@ class ScheduleMemoScreen extends PureComponent {
   postMemo = async () => {
     const {selectedTimeStamp, select, desc, selectedColor} = this.state
     try {
-      let response = await API.getMemo({
+      let response = await API.postMemo({
         showroom_no: select.showroom_no,
         date: selectedTimeStamp,
         color: selectedColor,
         content: desc,
       })
       console.log('postMemo>>>>', response)
-      setTimeout(() => {
-        this.alert('추가 완료', '메모를 추가 완료하였습니다.', [{onPress: () => this.goBack()}])
-      }, 100)
+      if (response.success) {
+        setTimeout(() => {
+          this.alert('추가 완료', '메모를 추가 완료하였습니다.', [{onPress: () => this.goBack()}])
+        }, 100)
+      }
     } catch (error) {
       console.log('postMemo>>>>', error)
     }
@@ -191,7 +193,7 @@ class ScheduleMemoScreen extends PureComponent {
   }
 
   render() {
-    const {color1, color2, select, look, selectedDate, selected, drop, desc, day, selectedColor, type} = this.state
+    const {color1, color2, select, look, selectedDate, selected, drop, desc, day, selectedColor, type, selectedTimeStamp} = this.state
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
@@ -240,7 +242,8 @@ class ScheduleMemoScreen extends PureComponent {
                 this.setState({drop: !drop})
               }}
             >
-              <Text style={styles.select}>{selectedDate && day ? `${selectedDate} (${day})` : '0000.00.00 (요일)'}</Text>
+              {console.log('>?>?>?>?>?>?>?', selectedTimeStamp)}
+              <Text style={styles.select}>{selectedTimeStamp ? mUtils.getShowDate(selectedTimeStamp, 'YYYY.MM.DD(ddd)') : '0000.00.00 (요일)'}</Text>
               <FastImage resizeMode={'contain'} source={moreImg} style={styles.moreImg} />
             </TouchableOpacity>
           </View>

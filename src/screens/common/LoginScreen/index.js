@@ -46,12 +46,14 @@ class LoginScreen extends PureComponent {
     // if (!mUtils.isPassword(pw)) return this.alert('', '비밀번호 형식을 확인해주세요.') // TODO 임시 주석 처리
     API.login(data, {
       cbSuccess: async response => {
-        API.getUserType().then(resUserType => {
-          // console.log('###UserType:', resUserType)
-          userTypeSuccess(resUserType)
-          loginSuccess(response)
-        })
-        await API.setPushToken({token_value: pushKey})
+        API.getUserType()
+          .then(resUserType => {
+            // console.log('###UserType:', resUserType)
+            userTypeSuccess(resUserType)
+            loginSuccess(response)
+          })
+          .then(() => API.setPushToken({token_value: pushKey}))
+
         console.log('###로그인 성공:', response)
         // console.log('로그인 시 props 확인 : ', this.props)
       },

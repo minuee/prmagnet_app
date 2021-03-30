@@ -12,6 +12,7 @@ import Text from '../../common/Text'
 import styles from './styles'
 import API from '../../../common/aws-api'
 import Loading from '../../common/Loading'
+import Empty from '../../common/Empty'
 
 const closeBtnImage = require('../../../images/navi/close.png')
 const notiSky = require('../../../images/navi/noti_sky.png')
@@ -24,8 +25,9 @@ class NotificationScreen extends PureComponent {
     cBind(this)
     this.state = {
       list: [],
-      next_token: '',
-      has_next: true,
+      page: 1,
+      limit: 10,
+      loading: false,
     }
   }
 
@@ -47,23 +49,25 @@ class NotificationScreen extends PureComponent {
   }
 
   getAlarm = async () => {
-    const {next_token, list} = this.state
+    const {page, limit, list} = this.state
     try {
-      let response = await API.getAlarm({next_token: next_token})
+      let response = await API.getAlarm({page})
       console.log('getAlarm>>>', response)
       if (response.success) {
-        this.setState({list: list.concat(response.list), next_token: response.next_token, has_next: response.has_next})
+        if (response.list.length > 0) {
+          this.setState({list: list.concat(response.list), page: page + 1, loading: false})
+        } else {
+          this.setState({loading: false})
+        }
       }
     } catch (error) {
+      this.setState({loading: false})
       console.log('getAlarm>>>', error)
     }
   }
 
   handleLoadMore = async () => {
-    const {has_next} = this.state
-    if (has_next) {
-      this.getAlarm()
-    }
+    this.getAlarm()
   }
 
   componentDidMount() {
@@ -75,7 +79,9 @@ class NotificationScreen extends PureComponent {
   }
 
   handleOnFocus = () => {
-    this.getAlarm()
+    this.setState({loading: true}, () => {
+      this.getAlarm()
+    })
   }
 
   renderItem = ({item, index}) => {
@@ -83,7 +89,7 @@ class NotificationScreen extends PureComponent {
       <View style={styles.itemBox}>
         <View style={styles.items}>
           <FastImage resizeMode={'contain'} style={styles.listImg} source={userType === 'M' ? notiSky : notiBlack} />
-          <View style={{marginTop: mUtils.wScale(5)}}>
+          <View style={{marginTop: mUtils.wScale(5), width: '80%'}}>
             <Text style={styles.title}>{item.subj}</Text>
             <Text style={styles.desc}>{item.cntent}</Text>
             <Text style={styles.dt}>
@@ -109,18 +115,28 @@ class NotificationScreen extends PureComponent {
     )
   }
   render() {
-    const {list} = this.state
+    const {list, loading} = this.state
     return (
       <>
         <SafeAreaView style={styles.container}>
-          <FlatList
-            style={styles.list}
-            data={list}
-            renderItem={this.renderItem}
-            keyExtractor={item => `_${item.notice_id}_${Math.random()}`}
-            onEndReached={this.handleLoadMore}
-            onEndReachedThreshold={1}
-          />
+          {loading ? (
+            <Loading />
+          ) : (
+            <>
+              {_.size(list) === 0 ? (
+                <Empty />
+              ) : (
+                <FlatList
+                  style={styles.list}
+                  data={list}
+                  renderItem={this.renderItem}
+                  keyExtractor={item => `_${item.notice_id}_${Math.random()}`}
+                  onEndReached={this.handleLoadMore}
+                  onEndReachedThreshold={1}
+                />
+              )}
+            </>
+          )}
         </SafeAreaView>
       </>
     )

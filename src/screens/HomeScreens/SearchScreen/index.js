@@ -24,14 +24,10 @@ class SearchScreen extends PureComponent {
       brand: {
         showroom: [],
         lookbook: [],
-        scheduler: [],
         net_count_app: 0,
       },
       magazine: {
         showroom: [],
-        sample_request: [],
-        scheduler: [],
-        pickup: [],
         net_count_app: 0,
       },
     }
@@ -44,7 +40,7 @@ class SearchScreen extends PureComponent {
           <FastImage resizeMode={'contain'} style={styles.modelImg} source={{uri: item.img_url_adres}} />
           <View style={styles.layout1}>
             <Text style={styles.brand}>{item.title}</Text>
-            <Text style={styles.dt}>{mUtils.getShowDate(item.reg_dt, 'YYYY-MM-DD')}</Text>
+            <Text style={styles.dt}>{item.subtitle}</Text>
           </View>
         </View>
       )
@@ -52,17 +48,17 @@ class SearchScreen extends PureComponent {
   }
 
   search = text => {
-    this.setState({loading: true})
-    console.log('4545454545', text)
-    this.setState({keyword: text})
-    this.getAllSearch(text)
+    this.setState({loading: true, keyword: text}, () => {
+      this.getAllSearch()
+    })
   }
 
-  getAllSearch = async text => {
+  getAllSearch = async () => {
     const userType = mConst.getUserType()
+    const {keyword} = this.state
     try {
       let response = await API.getAllSearch({
-        search_text: text,
+        search_text: keyword,
       })
       console.log('getAllSearch>>>', response)
       if (response.success) {
@@ -116,33 +112,49 @@ class SearchScreen extends PureComponent {
           {loading ? (
             <Loading />
           ) : (
-            <ScrollView style={styles.scroll} contentContainerStyle={{flexGrow: 1}}>
-              {userType === 'M' ? (
+            <>
+              {keyword ? (
                 <>
-                  <Text style={styles.subTitle}>Digital Showroom ({magazine.showroom.length})</Text>
-                  {this.mapList(magazine.showroom)}
-                  <Text numberOfLines={2} style={styles.subTitle}>
-                    Sample Requests ({magazine.sample_request.length})
-                  </Text>
-                  {this.mapList(magazine.sample_request)}
-                  <Text style={styles.subTitle}>Scheduler ({magazine.scheduler.length})</Text>
-                  {this.mapList(magazine.scheduler)}
-                  <Text style={styles.subTitle}>Pickup ({magazine.pickup.length})</Text>
-                  {this.mapList(magazine.pickup)}
+                  {userType === 'B' ? (
+                    _.size(brand.showroom) > 0 || _.size(brand.lookbook) > 0 ? (
+                      <ScrollView style={styles.scroll} contentContainerStyle={{flexGrow: 1}} showsVerticalScrollIndicator={false}>
+                        <>
+                          <Text style={styles.subTitle}>Digital Showroom ({brand.showroom.length})</Text>
+                          {this.mapList(brand.showroom)}
+                          <Text numberOfLines={2} style={styles.subTitle}>
+                            Lookbook ({brand.lookbook.length})
+                          </Text>
+                          {this.mapList(brand.lookbook)}
+                        </>
+                      </ScrollView>
+                    ) : (
+                      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        <Text style={{fontSize: 18, color: mConst.textGray, marginBottom: mUtils.wScale(100)}}>
+                          {keyword}와 (과) 일치하는 검색 결과가 없습니다.
+                        </Text>
+                      </View>
+                    )
+                  ) : _.size(magazine.showroom) > 0 ? (
+                    <ScrollView style={styles.scroll} contentContainerStyle={{flexGrow: 1}} showsVerticalScrollIndicator={false}>
+                      <>
+                        <Text style={styles.subTitle}>Digital Showroom ({magazine.showroom.length})</Text>
+                        {this.mapList(magazine.showroom)}
+                      </>
+                    </ScrollView>
+                  ) : (
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                      <Text style={{fontSize: 18, color: mConst.textGray, marginBottom: mUtils.wScale(100)}}>
+                        {keyword}와 (과) 일치하는 검색 결과가 없습니다.
+                      </Text>
+                    </View>
+                  )}
                 </>
               ) : (
-                <>
-                  <Text style={styles.subTitle}>Digital Showroom ({brand.showroom.length})</Text>
-                  {this.mapList(brand.showroom)}
-                  <Text numberOfLines={2} style={styles.subTitle}>
-                    Lookbook ({brand.lookbook.length})
-                  </Text>
-                  {this.mapList(brand.lookbook)}
-                  <Text style={styles.subTitle}>Scheduler ({brand.scheduler.length})</Text>
-                  {this.mapList(brand.scheduler)}
-                </>
+                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                  <Text style={{fontSize: 18, color: mConst.textGray, marginBottom: mUtils.wScale(100)}}>검색어를 입력해 주세요.</Text>
+                </View>
               )}
-            </ScrollView>
+            </>
           )}
         </View>
       </SafeAreaView>

@@ -32,7 +32,7 @@ class HomeScreen extends PureComponent {
     const {data} = this.state
     const userType = mConst.getUserType()
     return (
-      <View>
+      <View style={{flex: _.get(data, userType === 'M' ? 'cnfirm_request' : 'new_request', []).length === 0 ? 1 : 0}}>
         <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20)}}>
           <Text style={styles.new}>
             {userType === 'M' ? 'Confirmed' : 'New'} <Text style={{fontFamily: 'Roboto-Medium'}}>Requests : </Text>
@@ -97,7 +97,7 @@ class HomeScreen extends PureComponent {
     const {data} = this.state
     const userType = mConst.getUserType()
     return (
-      <View>
+      <View style={{flex: _.get(data, 'today_request', []).length === 0 ? 1 : 0, flex: data.today_request.length === 0 ? 1 : 0}}>
         <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(40)}}>
           <Text style={styles.new}>
             Today's <Text style={{fontFamily: 'Roboto-Medium'}}>{userType === 'M' ? 'PickUps' : 'Send-Outs'} : </Text>
@@ -118,6 +118,7 @@ class HomeScreen extends PureComponent {
           style={{
             ...styles.layout2,
             backgroundColor: 'rgba(178, 126, 126, 0.2)',
+            flex: _.get(data, 'today_request', []).length === 0 ? 1 : 0,
             flex: data.today_request.length === 0 ? 1 : 0,
             flexDirection: data.today_request.length === 0 ? 'column' : 'row',
             justifyContent: data.today_request.length === 0 ? 'center' : 'space-between',
@@ -211,7 +212,7 @@ class HomeScreen extends PureComponent {
     return (
       <SafeAreaView style={styles.container}>
         <Header pushTo={this.pushTo} userType={user.userType} />
-        <ScrollView contentContainerStyle={{flexGrow: 1}}>
+        <ScrollView contentContainerStyle={{flexGrow: 1, marginBottom: mUtils.wScale(37.5)}} bounces={false}>
           <Text style={styles.screenTitleText}>Home</Text>
           {data ? (
             <>

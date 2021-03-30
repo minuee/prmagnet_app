@@ -50,14 +50,6 @@ class FavoritesScreen extends PureComponent {
         this.setState({loading: false})
         console.log('쇼룸 즐겨찾기 조회 실패', error)
       }
-      //try {
-      //  const response = await API.getFavPress()
-      //  this.setState({favPress: _.get(response, 'list', []), loading: false})
-      //  console.log('프레스 즐겨찾기 조회 성공', JSON.stringify(response))
-      //} catch (error) {
-      //  this.setState({loading: false})
-      //  console.log('프레스 즐겨찾기 조회 실패', error)
-      //}
     })
   }
   deleteFavShowroom = async no => {

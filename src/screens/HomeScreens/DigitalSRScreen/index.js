@@ -72,7 +72,6 @@ class DigitalSRScreen extends PureComponent {
       })
       console.log('postFavShowroom>>>>>', response)
       if (response.success) {
-        //this.postDigitalSRReset()
         this.setState(state => {
           const list = state.data.list.map((item, index) => {
             if (no === item.showroom_no) {
@@ -103,7 +102,6 @@ class DigitalSRScreen extends PureComponent {
       })
       console.log('deleteFavShowroom>>>>>', response)
       if (response.success) {
-        //this.postDigitalSRReset()
         this.setState(state => {
           const list = state.data.list.map((item, index) => {
             if (no === item.showroom_no) {
@@ -178,23 +176,24 @@ class DigitalSRScreen extends PureComponent {
           if (userType === 'B') {
             this.setState({
               data: response,
-              season_year: response.season_list.length > 0 ? response.season_list[0] : {season_year: '', season_cd_id: ''},
               page: page + 1,
+              loading: true,
             })
           } else {
             this.setState({
               data: response,
-              season_year: response.season_list.length > 0 ? response.season_list[0] : {season_year: '', season_cd_id: ''},
               page: page + 1,
               notice: response.brand_notice.notice,
               inquiryNum: response.brand_notice.inquiry_number,
+              loading: true,
             })
           }
         } else if (response.list.length > 0) {
-          this.setState({data: {...data, list: data.list.concat(response.list)}, page: page + 1})
+          this.setState({data: {...data, list: data.list.concat(response.list)}, page: page + 1, loading: true})
         }
       }
     } catch (error) {
+      this.setState({loading: true})
       console.log('postDigitalSR>>>', error)
     }
   }
@@ -238,6 +237,7 @@ class DigitalSRScreen extends PureComponent {
         }
       }
     } catch (error) {
+      this.setState({loading: true})
       console.log('postDigitalSRReset>>>', error)
     }
   }
@@ -392,8 +392,8 @@ class DigitalSRScreen extends PureComponent {
                             key={index}
                             style={styles.menuOption}
                             onSelect={() => {
-                              this.setState({season_year: item}, () => {
-                                this.postDigitalSRReset()
+                              this.setState({season_year: item, page: 1, limit: 10, loading: false}, () => {
+                                this.postDigitalSR()
                               })
                             }}
                           >

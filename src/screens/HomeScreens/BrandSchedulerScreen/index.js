@@ -26,99 +26,6 @@ const plusImg = require('../../../images/navi/plus_1.png')
 const memoImg = require('../../../images/navi/memo_1.png')
 const linkImg = require('../../../images/navi/link_1.png')
 
-const dataList = {
-  list: [
-    {
-      showroom_no: '20210125000008',
-      season_year: '2020',
-      season_se_cd: 'SS0001',
-      showroom_nm: '테스트 쇼룸 1',
-      image_list: ['https://fpr-prod-file.s3-ap-northeast-2.amazonaws.com/public/showroomImage/3adcf69d-d03f-4e80-b2b9-5256b19b7a34.png'],
-      req_list: [
-        {
-          end_dt: '1617181205',
-          loc_yn: false,
-          req_dt: '1611627925',
-          req_no: '20210126000011',
-          address: '서울 강남구 논현로 503',
-          start_dt: '1617008405',
-          mgzn_color: '#ffffff',
-          req_user_nm: '테스트',
-          company_name: '테스트매거진1',
-          company_type: 'MAGAZINE',
-          contact_user_nm: '이영표',
-          mgzn_logo_adres: null,
-          pchrg_picalbm_yn: true,
-          contact_user_phone: '01098773333',
-          own_paid_pictorial_yn: false,
-          other_paid_pictorial_yn: false,
-        },
-      ],
-      memo_list: null,
-    },
-    {
-      showroom_no: '20210125000009',
-      season_year: '2020',
-      season_se_cd: 'SS0001',
-      showroom_nm: '테스트 쇼룸 1',
-      image_list: ['https://fpr-prod-file.s3-ap-northeast-2.amazonaws.com/public/showroomImage/3adcf69d-d03f-4e80-b2b9-5256b19b7a34.png'],
-      req_list: [
-        {
-          end_dt: '1617181205',
-          loc_yn: false,
-          req_dt: '1611627925',
-          req_no: '20210126000011',
-          address: '서울 강남구 논현로 503',
-          start_dt: '1617094805',
-          mgzn_color: '#ffffff',
-          req_user_nm: '테스트',
-          company_name: '테스트매거진1',
-          company_type: 'MAGAZINE',
-          contact_user_nm: '이영표',
-          mgzn_logo_adres: null,
-          pchrg_picalbm_yn: true,
-          contact_user_phone: '01098773333',
-          own_paid_pictorial_yn: false,
-          other_paid_pictorial_yn: false,
-        },
-        {
-          end_dt: '1617181205',
-          loc_yn: false,
-          req_dt: '1611904143',
-          req_no: '20210129000024',
-          address: '서울 강남구 논현로 503',
-          start_dt: '1617094805',
-          mgzn_color: '#ffffff',
-          req_user_nm: '테스트',
-          company_name: '테스트매거진1',
-          company_type: 'MAGAZINE',
-          contact_user_nm: '테스트',
-          mgzn_logo_adres: null,
-          chrg_picalbm_yn: true,
-          contact_user_phone: '01044444444',
-          own_paid_pictorial_yn: false,
-          other_paid_pictorial_yn: false,
-        },
-      ],
-      memo_list: [
-        {
-          color: '#000000',
-          content: '그냥 메모',
-          memo_dt: '1617008405',
-          memo_no: '20210318000012',
-        },
-        {
-          color: '#000000',
-          content: '그냥 메모',
-          memo_dt: '1617094805',
-          memo_no: '20210318000012',
-        },
-      ],
-    },
-  ],
-  success: true,
-}
-
 class BrandSchedulerScreen extends PureComponent {
   constructor(props) {
     super(props)
@@ -196,27 +103,27 @@ class BrandSchedulerScreen extends PureComponent {
                       <Text style={{...styles.title, marginVertical: mUtils.wScale(10)}}>{item.showroom_nm}</Text>
                     </View>
                     <View style={{width: '49%'}}>
-                      {item.req_list && item.req_list.length > 0 && item.memo_list && (
-                        <>
-                          {item.memo_list &&
-                            item.memo_list.map((e, i) => {
-                              if (e.memo_dt <= item.req_list[0].start_dt) {
-                                return (
-                                  <TouchableOpacity
-                                    key={i}
-                                    style={{...styles.layout3, borderColor: e.color ? e.color : mConst.borderGray}}
-                                    onPress={() => {
-                                      this.pushTo('ScheduleMemoScreen', {no: item.showroom_no, date: e.memo_dt, name: item.showroom_nm})
-                                    }}
-                                  >
-                                    <Text style={{...styles.smallDesc}} numberOfLines={2}>
-                                      {e.content}
-                                    </Text>
-                                    <Text style={{...styles.brandDate}}>{mUtils.getShowDate(e.memo_dt, 'YYYY-MM-DD')}</Text>
-                                  </TouchableOpacity>
-                                )
-                              }
-                            })}
+                      <>
+                        {item.memo_list &&
+                          item.memo_list.map((e, i) => {
+                            if (e.memo_dt <= item.req_list[0].start_dt) {
+                              return (
+                                <TouchableOpacity
+                                  key={i}
+                                  style={{...styles.layout3, borderColor: e.color ? e.color : mConst.borderGray}}
+                                  onPress={() => {
+                                    this.pushTo('ScheduleMemoScreen', {no: item.showroom_no, date: e.memo_dt, name: item.showroom_nm})
+                                  }}
+                                >
+                                  <Text style={{...styles.smallDesc}} numberOfLines={2}>
+                                    {e.content}
+                                  </Text>
+                                  <Text style={{...styles.brandDate}}>{mUtils.getShowDate(e.memo_dt, 'YYYY-MM-DD')}</Text>
+                                </TouchableOpacity>
+                              )
+                            }
+                          })}
+                        {item.req_list && (
                           <View style={{...styles.layout5, marginBottom: mUtils.wScale(18)}}>
                             <View style={{...styles.layout6, backgroundColor: item.req_list[0].mgzn_color}}>
                               <Text style={styles.title}>{item.req_list[0].company_name}</Text>
@@ -241,29 +148,30 @@ class BrandSchedulerScreen extends PureComponent {
                               </Text>
                             </View>
                           </View>
-                        </>
-                      )}
+                        )}
+                      </>
                       {toggle.includes(item.showroom_no) &&
                         item.req_list
                           .filter((e, i) => i !== 0)
                           .map((item1, index1) => {
                             return (
                               <>
-                                {item.memo_list.map((item2, index2) => {
-                                  if (item1.start_dt === item2.memo_dt) {
-                                    return (
-                                      <TouchableOpacity
-                                        key={index2}
-                                        style={{...styles.layout3, borderColor: item2.color ? item2.color : mConst.borderGray}}
-                                        onPress={() => {
-                                          this.pushTo('ScheduleMemoScreen', {no: item.showroom_no, date: item2.memo_dt, name: item.showroom_nm})
-                                        }}
-                                      >
-                                        <Text style={{...styles.smallDesc}}>{item2.content}</Text>
-                                      </TouchableOpacity>
-                                    )
-                                  }
-                                })}
+                                {item.memo_list &&
+                                  item.memo_list.map((item2, index2) => {
+                                    if (item1.start_dt === item2.memo_dt) {
+                                      return (
+                                        <TouchableOpacity
+                                          key={index2}
+                                          style={{...styles.layout3, borderColor: item2.color ? item2.color : mConst.borderGray}}
+                                          onPress={() => {
+                                            this.pushTo('ScheduleMemoScreen', {no: item.showroom_no, date: item2.memo_dt, name: item.showroom_nm})
+                                          }}
+                                        >
+                                          <Text style={{...styles.smallDesc}}>{item2.content}</Text>
+                                        </TouchableOpacity>
+                                      )
+                                    }
+                                  })}
                                 <View key={index1} style={{...styles.layout5, marginBottom: mUtils.wScale(5)}}>
                                   <View style={{...styles.layout6, backgroundColor: item1.mgzn_color}}>
                                     <Text style={styles.title}>{item1.company_name}</Text>
@@ -317,7 +225,7 @@ class BrandSchedulerScreen extends PureComponent {
             <TouchableOpacity
               style={{...styles.layout8}}
               onPress={() => {
-                this.pushTo('ScheduleMemoScreen')
+                this.pushTo('ScheduleMemoScreen', {no: '', date: Math.floor(new Date().getTime() / 1000), name: ''})
               }}
             >
               <FastImage resizeMode={'contain'} style={styles.memoImg} source={memoImg} />

@@ -11,12 +11,13 @@ import Text from '../../../common/Text'
 import styles from './styles'
 import API from '../../../../common/aws-api'
 import Loading from '../../../common/Loading'
+import Empty from '../../../common/Empty'
 
 class ContactConfirm extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
-    this.state = {list: [], page: 1, limit: 10, search_text: ''}
+    this.state = {list: [], page: 1, limit: 10, search_text: '', loading: false}
   }
   renderItem = ({item}) => {
     return (
@@ -47,10 +48,13 @@ class ContactConfirm extends PureComponent {
       console.log('getQnaList>>>', response)
       if (response.success) {
         if (response.list.length > 0) {
-          this.setState({list: list.concat(response.list), page: page + 1})
+          this.setState({list: list.concat(response.list), page: page + 1, loading: false})
+        } else {
+          this.setState({loading: false})
         }
       }
     } catch (error) {
+      this.setState({loading: false})
       console.log('getQnaList>>>', error)
     }
   }
@@ -66,26 +70,32 @@ class ContactConfirm extends PureComponent {
   }
 
   handleOnFocus = () => {
-    this.getQnaList()
+    this.setState({loading: true}, () => {
+      this.getQnaList()
+    })
   }
 
   render() {
-    const {list, page, limit, search_text} = this.state
-    return list.length > 0 ? (
-      <>
-        <SafeAreaView style={styles.container}>
-          <FlatList
-            style={styles.list}
-            data={list}
-            renderItem={this.renderItem}
-            keyExtractor={item => item.inqry_dt}
-            onEndReached={this.handleLoadMore}
-            onEndReachedThreshold={1}
-          />
-        </SafeAreaView>
-      </>
-    ) : (
+    const {list, page, limit, search_text, loading} = this.state
+    return loading ? (
       <Loading />
+    ) : (
+      <>
+        {_.size(list) === 0 ? (
+          <Empty />
+        ) : (
+          <SafeAreaView style={styles.container}>
+            <FlatList
+              style={styles.list}
+              data={list}
+              renderItem={this.renderItem}
+              keyExtractor={item => item.inqry_dt}
+              onEndReached={this.handleLoadMore}
+              onEndReachedThreshold={1}
+            />
+          </SafeAreaView>
+        )}
+      </>
     )
   }
 }

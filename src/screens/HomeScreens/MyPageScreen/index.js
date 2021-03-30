@@ -54,10 +54,16 @@ class MyPageScreen extends PureComponent {
                 <FastImage resizeMode={'contain'} style={styles.profileImg} source={{uri: info.img_full_path}} />
               </View>
               <View style={{marginLeft: mUtils.wScale(10)}}>
-                <Text style={styles.name}>{info.brand_user_nm}</Text>
-                <Text style={styles.info}>
-                  {info.brand_nm} • {info.user_position}
-                </Text>
+                <Text style={styles.name}>{mConst.getUserType() === 'B' ? info.brand_user_nm : info.mgzn_user_nm}</Text>
+                {mConst.getUserType() === 'B' ? (
+                  <Text style={styles.info}>
+                    {info.brand_nm} • {info.user_position}
+                  </Text>
+                ) : (
+                  <Text style={styles.info}>
+                    {info.mgzn_nm} • {info.user_position}
+                  </Text>
+                )}
               </View>
             </View>
             <TouchableOpacity
