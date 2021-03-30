@@ -19,78 +19,6 @@ const moreImg = require('../../../images/navi/more_4.png')
 const schedulerImg = require('../../../images/navi/scheduler_1.png')
 const checkImg = require('../../../images/navi/check_6.png')
 const noCheckImg = require('../../../images/navi/no_check_3.png')
-const brandImg = require('../../../images/navi/brand_1.png')
-
-const data = {
-  success: true,
-  total_count: 3,
-  list: [
-    {
-      date: '1611619200',
-      month: '01',
-      day: '26',
-      each_count: '30',
-      each_list: [
-        {
-          req_no: '20210126000012',
-          mgzn_nm: '테스트매거진1',
-          mgzn_color: '#c18c8c',
-          req_user_nm: '테스트',
-          req_user_type: 'MAGAZINE',
-          mgzn_logo_adres: null,
-        },
-        {
-          req_no: '20210126000012',
-          mgzn_nm: '테스트매거진1',
-          mgzn_color: '#c18c8c',
-          req_user_nm: '테스트',
-          req_user_type: 'MAGAZINE',
-          mgzn_logo_adres: null,
-        },
-        {
-          req_no: '20210126000012',
-          mgzn_nm: '테스트매거진1',
-          mgzn_color: '#c18c8c',
-          req_user_nm: '테스트',
-          req_user_type: 'MAGAZINE',
-          mgzn_logo_adres: null,
-        },
-      ],
-    },
-    {
-      date: '1616741786',
-      month: '01',
-      day: '26',
-      each_count: '30',
-      each_list: [
-        {
-          req_no: '20210126000012',
-          mgzn_nm: '테스트매거진1',
-          mgzn_color: '#c18c8c',
-          req_user_nm: '테스트',
-          req_user_type: 'MAGAZINE',
-          mgzn_logo_adres: null,
-        },
-        {
-          req_no: '20210126000012',
-          mgzn_nm: '테스트매거진1',
-          mgzn_color: '#c18c8c',
-          req_user_nm: '테스트',
-          req_user_type: 'MAGAZINE',
-          mgzn_logo_adres: null,
-        },
-        {
-          req_no: '20210126000012',
-          mgzn_nm: '테스트매거진1',
-          mgzn_color: '#c18c8c',
-          req_user_nm: '테스트',
-          req_user_type: 'MAGAZINE',
-          mgzn_logo_adres: null,
-        },
-      ],
-    },
-  ],
-}
 
 class LinkSheetScreen extends PureComponent {
   constructor(props) {
@@ -100,8 +28,8 @@ class LinkSheetScreen extends PureComponent {
     this.state = {
       // start: mUtils.getToday(), // TODO 테스트 데이타 관계로 일단 임시 값으로 설정
       // end: mUtils.getToday(),
-      start: mUtils.getDayValue(2021, 3, 10),
-      end: mUtils.getDayValue(2021, 3, 30),
+      start: mUtils.getDayValue(2021, 3, 20),
+      end: mUtils.getDayValue(2021, 3, 31),
       brandId: '',
       dataList: [],
       brands: [],
@@ -181,13 +109,7 @@ class LinkSheetScreen extends PureComponent {
   handleLinkSheetDetail = () => {
     const {selectTitle, selectDate, dataList} = this.state
     const selectEachList = dataList.flatMap(data => (selectDate.includes(data.date) ? data.each_list : []))
-    if (selectTitle === 'Send Out') {
-      this.pushTo('SendOutScreen', {selectDate, selectEachList})
-    } else if (selectTitle === 'Pickups') {
-      this.pushTo('PickupsScreen', {selectDate, selectEachList})
-    } else if (selectTitle === 'Return') {
-      this.pushTo('ReturnScreen', {selectDate, selectEachList})
-    }
+    this.pushTo('LinkSheetDetailScreen', {selectTitle, selectEachList})
   }
   selectDate = (date, count) => {
     const {selectDate, totalCount} = this.state

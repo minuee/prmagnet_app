@@ -123,7 +123,7 @@ const cBind = reactComp => {
     navigation.closeDrawer()
     navigation.navigate(screenName, params)
   }
-  reactComp.reset = screenName => navigation.dispatch(CommonActions.reset({routes: [{name: screenName}]}))
+  reactComp.reset = (screenName, params) => navigation.dispatch(CommonActions.reset({routes: [{name: screenName, params}]}))
   reactComp.onFocus = cb => (reactComp.removeFocus = navigation.addListener('focus', cb))
 
   reactComp.changeInputText = property => text => {

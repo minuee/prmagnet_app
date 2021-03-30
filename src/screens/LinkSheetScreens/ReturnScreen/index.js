@@ -1,10 +1,9 @@
 import React, {PureComponent} from 'react'
 import {SafeAreaView, ScrollView, View, TouchableOpacity, Linking} from 'react-native'
-import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import {Grid, Col, Row} from 'react-native-easy-grid'
-import _ from 'lodash'
 import Modal from 'react-native-modal'
+import _ from 'lodash'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -17,9 +16,6 @@ import styles from './styles'
 
 const goLeftImage = require('../../../images/navi/go_left.png')
 const goRightImage = require('../../../images/navi/go_right.png')
-const unfoldImage = require('../../../images/common/unfold.png')
-const model1Image = require('../../../images/sample/model_1.png')
-const model2Image = require('../../../images/sample/model_2.png')
 
 class ReturnScreen extends PureComponent {
   constructor(props) {
@@ -36,21 +32,17 @@ class ReturnScreen extends PureComponent {
     }
   }
   componentDidMount() {
-    this.pushOption('Return', true)
-    // this.alert('수령 완료', '“스타일H김나현님께 Look #1 Knitwear 수령 완료"', [{onPress: () => null}, {onPress: () => null}])
     this.handleLoadData()
   }
   handleLoadData = async () => {
-    const {selectEachList} = this.params
-    const {listIndex} = this.state
-    console.log('###return params:', this.params)
-    console.log('###params_req:', _.get(selectEachList, `[${listIndex}].req_no`))
+    const {reqNo} = this.props
+    console.log('###ReturnScreen-reqNo:', reqNo)
     try {
-      const response = await API.getReturnDetail(_.get(selectEachList, `[${listIndex}].req_no`))
+      const response = await API.getReturnDetail(reqNo)
       this.setState({data: _.get(response, 'right'), loading: false})
       console.log('Return 스케쥴 상세 조회 성공', JSON.stringify(response))
     } catch (error) {
-      this.setState({loading: false})
+      // this.setState({loading: false})
       console.log('Return 스케쥴 상세 조회 실패', error)
     }
   }
@@ -109,7 +101,7 @@ class ReturnScreen extends PureComponent {
   }
   render() {
     const {data, checkedList, allChecked, loading} = this.state
-    console.log('data:', JSON.stringify(data))
+    const {moveLeft, moveRight} = this.props
     const returningDate = mUtils.getShowDate(mUtils.get(data, 'returning_date'))
     const fromName = mUtils.get(data, 'from_user_nm')
     const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'from_user_phone'))
@@ -119,14 +111,16 @@ class ReturnScreen extends PureComponent {
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={{paddingVertical: 10}}>
-          {/* {this.closeBackOption(closeBtnImage, 'FILTER', null)} */}
           <View style={styles.titleWrapper}>
-            <FastImage source={goLeftImage} style={styles.goImage} />
+            <TouchableOpacity onPress={() => moveLeft()}>
+              <FastImage source={goLeftImage} style={styles.goImage} />
+            </TouchableOpacity>
             <View style={styles.titleSubWrapper}>
               <Text style={styles.titleSubText}>{returningDate}</Text>
-              {/* <FastImage source={unfoldImage} style={styles.unfoldImage} /> */}
             </View>
-            <FastImage source={goRightImage} style={styles.goImage} />
+            <TouchableOpacity onPress={() => moveRight()}>
+              <FastImage source={goRightImage} style={styles.goImage} />
+            </TouchableOpacity>
           </View>
           <View style={styles.middleWrapper}>
             <Text style={styles.middleText}>Magazine</Text>
@@ -150,15 +144,15 @@ class ReturnScreen extends PureComponent {
           <View style={styles.middleGroupWrapper}>
             <View style={styles.middleSubWrapper(3)}>
               <Text style={styles.middleText}>Loaning Date</Text>
-              <Text style={styles.middleDescText}>{mUtils.getShowDate(data.loaning_date)}</Text>
+              <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'loaning_date'))}</Text>
             </View>
             <View style={styles.middleSubWrapper(3)}>
               <Text style={styles.middleText}>Shooting Date</Text>
-              <Text style={styles.middleDescText}>{mUtils.getShowDate(data.shooting_date)}</Text>
+              <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'shooting_date'))}</Text>
             </View>
             <View style={styles.middleSubWrapper(3)}>
               <Text style={styles.middleText}>Returning Date</Text>
-              <Text style={styles.middleDescText}>{mUtils.getShowDate(data.returning_date)}</Text>
+              <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'returning_date'))}</Text>
             </View>
           </View>
           <View style={styles.middleWrapper}>
@@ -262,9 +256,4 @@ class ReturnScreen extends PureComponent {
   }
 }
 
-export default connect(
-  state => ({
-    user: state.user,
-  }),
-  dispatch => ({})
-)(ReturnScreen)
+export default ReturnScreen

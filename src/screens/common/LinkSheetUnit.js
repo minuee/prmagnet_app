@@ -7,7 +7,7 @@ import _ from 'lodash'
 import mConst from '../../common/constants'
 import mUtils from '../../common/utils'
 import Text from './Text'
-import Swiper from './Swiper'
+import SwiperUnit from './SwiperUnit'
 
 const circleCheckImage = require('../../images/common/circle_check.png')
 const circleCheckOnImage = require('../../images/common/circle_check_on.png')
@@ -41,7 +41,7 @@ export default class LinkSheetUnit extends PureComponent {
     }
     return (
       <>
-        <Swiper onSwipeLeft={() => this.onSwipe('left')} onSwipeRight={() => this.onSwipe('right')}>
+        <SwiperUnit onSwipeLeft={() => this.onSwipe('left')} onSwipeRight={() => this.onSwipe('right')}>
           {swiped || checked ? (
             <TouchableWithoutFeedback onPress={swiped ? onSwipeCheck : null}>
               <Row style={styles.row(color)}>
@@ -66,7 +66,7 @@ export default class LinkSheetUnit extends PureComponent {
               )}
             </Pressable>
           )}
-        </Swiper>
+        </SwiperUnit>
         <Pressable onLongPress={onLongPressPhone}>
           {({pressed}) => (
             <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : mConst.white)}>

@@ -1,6 +1,5 @@
 import React, {PureComponent} from 'react'
 import {SafeAreaView, ScrollView, View, TouchableOpacity, Linking} from 'react-native'
-import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import {Grid, Col, Row} from 'react-native-easy-grid'
 import Modal from 'react-native-modal'
@@ -17,9 +16,6 @@ import styles from './styles'
 
 const goLeftImage = require('../../../images/navi/go_left.png')
 const goRightImage = require('../../../images/navi/go_right.png')
-const unfoldImage = require('../../../images/common/unfold.png')
-const model1Image = require('../../../images/sample/model_1.png')
-const model2Image = require('../../../images/sample/model_2.png')
 
 class PickupsScreen extends PureComponent {
   constructor(props) {
@@ -36,21 +32,16 @@ class PickupsScreen extends PureComponent {
     }
   }
   componentDidMount() {
-    this.pushOption('Pickups', true)
-    // this.alert('수령 완료', '“스타일H김나현님께 Look #1 Knitwear 수령 완료"', [{onPress: () => null}, {onPress: () => null}])
     this.handleLoadData()
   }
   handleLoadData = async () => {
-    const {selectEachList} = this.params
-    const {listIndex} = this.state
-    console.log('###params:', this.params)
-    console.log('###reqNo:', _.get(selectEachList, `[${listIndex}].req_no`))
+    const {reqNo} = this.props
     try {
-      const response = await API.getPickupDetail(_.get(selectEachList, `[${listIndex}].req_no`))
+      const response = await API.getPickupDetail(reqNo)
       this.setState({data: _.get(response, 'right'), loading: false})
       console.log('픽업 스케쥴 상세 조회 성공', JSON.stringify(response))
     } catch (error) {
-      this.setState({loading: false})
+      // this.setState({loading: false})
       console.log('픽업 스케쥴 상세 조회 실패', error)
     }
   }
@@ -109,6 +100,7 @@ class PickupsScreen extends PureComponent {
   }
   render() {
     const {data, checkedList, allChecked, loading} = this.state
+    const {moveLeft, moveRight} = this.props
     const loaningDate = mUtils.getShowDate(mUtils.get(data, 'loaning_date'))
     const fromName = mUtils.get(data, 'from_user_nm')
     const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'from_user_phone'))
@@ -118,13 +110,16 @@ class PickupsScreen extends PureComponent {
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={{paddingVertical: 10}}>
-          {/* {this.closeBackOption(closeBtnImage, 'FILTER', null)} */}
           <View style={styles.titleWrapper}>
-            <FastImage source={goLeftImage} style={styles.goImage} />
+            <TouchableOpacity onPress={() => moveLeft()}>
+              <FastImage source={goLeftImage} style={styles.goImage} />
+            </TouchableOpacity>
             <View style={styles.titleSubWrapper}>
               <Text style={styles.titleSubText}>{loaningDate}</Text>
             </View>
-            <FastImage source={goRightImage} style={styles.goImage} />
+            <TouchableOpacity onPress={() => moveRight()}>
+              <FastImage source={goRightImage} style={styles.goImage} />
+            </TouchableOpacity>
           </View>
           <View style={styles.middleWrapper}>
             <Text style={styles.middleText}>Magazine</Text>
@@ -256,9 +251,4 @@ class PickupsScreen extends PureComponent {
   }
 }
 
-export default connect(
-  state => ({
-    user: state.user,
-  }),
-  dispatch => ({})
-)(PickupsScreen)
+export default PickupsScreen

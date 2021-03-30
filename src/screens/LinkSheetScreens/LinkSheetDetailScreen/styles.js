@@ -81,7 +81,6 @@ export default StyleSheet.create({
     paddingTop: mUtils.wScale(16),
   },
   grid: {
-    width: mConst.wWidth,
     marginTop: mUtils.wScale(30),
   },
   col: (heightScale = 1, center, backgroundColor = mConst.white) => ({

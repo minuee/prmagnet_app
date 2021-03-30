@@ -36,6 +36,7 @@ import NoticeScreen from './HomeScreens/NoticeScreen'
 import SampleRequestsScreen from './HomeScreens/SampleRequestsScreen'
 import SampleRequestsListScreen from './HomeScreens/SampleRequestsListScreen'
 import LinkSheetScreen from './LinkSheetScreens/LinkSheetScreen'
+import LinkSheetDetailScreen from './LinkSheetScreens/LinkSheetDetailScreen'
 import SendOutScreen from './LinkSheetScreens/SendOutScreen'
 import PickupsScreen from './LinkSheetScreens/PickupsScreen'
 import ReturnScreen from './LinkSheetScreens/ReturnScreen'
@@ -113,6 +114,7 @@ class RootScreen extends PureComponent {
         <MemberStack.Screen name="NoticeListScreen" component={NoticeListScreen} />
         <MemberStack.Screen name="ByBrandsSearchScreen" component={ByBrandsSearchScreen} />
         <MemberStack.Screen name="LinkSheetScreen" component={LinkSheetScreen} options={{headerShown: false}} />
+        <MemberStack.Screen name="LinkSheetDetailScreen" component={LinkSheetDetailScreen} />
         <MemberStack.Screen name="SendOutScreen" component={SendOutScreen} />
         <MemberStack.Screen name="PickupsScreen" component={PickupsScreen} />
         <MemberStack.Screen name="ReturnScreen" component={ReturnScreen} />

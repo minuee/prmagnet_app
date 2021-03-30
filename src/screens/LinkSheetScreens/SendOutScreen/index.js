@@ -1,10 +1,9 @@
 import React, {PureComponent} from 'react'
 import {SafeAreaView, ScrollView, View, TouchableOpacity, Linking} from 'react-native'
-import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import {Grid, Col, Row} from 'react-native-easy-grid'
-import _ from 'lodash'
 import Modal from 'react-native-modal'
+import _ from 'lodash'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -23,7 +22,6 @@ class SendOutScreen extends PureComponent {
     super(props)
     cBind(this)
     this.state = {
-      listIndex: 0,
       checked: false,
       allChecked: false,
       data: {},
@@ -33,21 +31,16 @@ class SendOutScreen extends PureComponent {
     }
   }
   componentDidMount() {
-    this.pushOption('Send Out', true)
-    // this.alert('수령 완료', '“스타일H김나현님께 Look #1 Knitwear 수령 완료"', [{onPress: () => null}, {onPress: () => null}])
     this.handleLoadData()
   }
   handleLoadData = async () => {
-    const {selectEachList} = this.params
-    const {listIndex} = this.state
-    console.log('###sendout params:', this.params)
-    console.log('###params_req:', _.get(selectEachList, `[${listIndex}].req_no`))
+    const {reqNo} = this.props
     try {
-      const response = await API.getSendoutDetail(_.get(selectEachList, `[${listIndex}].req_no`))
+      const response = await API.getSendoutDetail(reqNo)
       this.setState({data: _.get(response, 'right'), loading: false})
       console.log('Send Out 스케쥴 상세 조회 성공', JSON.stringify(response))
     } catch (error) {
-      this.setState({loading: false})
+      // this.setState({loading: false})
       console.log('Send Out 스케쥴 상세 조회 실패', error)
     }
   }
@@ -93,6 +86,7 @@ class SendOutScreen extends PureComponent {
   }
   render() {
     const {data, checkedList, allChecked, loading} = this.state
+    const {moveLeft, moveRight} = this.props
     const loaningDate = mUtils.getShowDate(mUtils.get(data, 'loaning_date'))
     const fromName = mUtils.get(data, 'from_user_nm')
     const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'from_user_phone'))
@@ -102,13 +96,16 @@ class SendOutScreen extends PureComponent {
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={{paddingVertical: 10}}>
-          {/* {this.closeBackOption(closeBtnImage, 'FILTER', null)} */}
           <View style={styles.titleWrapper}>
-            <FastImage source={goLeftImage} style={styles.goImage} />
+            <TouchableOpacity onPress={() => moveLeft()}>
+              <FastImage source={goLeftImage} style={styles.goImage} />
+            </TouchableOpacity>
             <View style={styles.titleSubWrapper}>
               <Text style={styles.titleSubText}>{loaningDate}</Text>
             </View>
-            <FastImage source={goRightImage} style={styles.goImage} />
+            <TouchableOpacity onPress={() => moveRight()}>
+              <FastImage source={goRightImage} style={styles.goImage} />
+            </TouchableOpacity>
           </View>
           <View style={styles.middleWrapper}>
             <Text style={styles.middleText}>Magazine</Text>
@@ -133,26 +130,26 @@ class SendOutScreen extends PureComponent {
             <View style={styles.middleGroupWrapper}>
               <View style={styles.middleSubWrapper(3)}>
                 <Text style={styles.middleText}>Loaning Date</Text>
-                <Text style={styles.middleDescText}>{mUtils.getShowDate(data.loaning_date)}</Text>
+                <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'loaning_date'))}</Text>
               </View>
               <View style={styles.middleSubWrapper(3)}>
                 <Text style={styles.middleText}>Shooting Date</Text>
-                <Text style={styles.middleDescText}>{mUtils.getShowDate(data.shooting_date)}</Text>
+                <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'shooting_date'))}</Text>
               </View>
               <View style={styles.middleSubWrapper(3)}>
                 <Text style={styles.middleText}>Returning Date</Text>
-                <Text style={styles.middleDescText}>{mUtils.getShowDate(data.returning_date)}</Text>
+                <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'returning_date'))}</Text>
               </View>
             </View>
           ) : (
             <View style={styles.middleGroupWrapper}>
               <View style={styles.middleSubWrapper(2)}>
                 <Text style={styles.middleText}>Pickup Date</Text>
-                <Text style={styles.middleDescText}>{mUtils.getShowDate(data.pickup_date)}</Text>
+                <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'loaning_date'))}</Text>
               </View>
               <View style={styles.middleSubWrapper(2)}>
                 <Text style={styles.middleText}>Shooting Date</Text>
-                <Text style={styles.middleDescText}>{mUtils.getShowDate(data.photo_date)}</Text>
+                <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'shooting_date'))}</Text>
               </View>
             </View>
           )}
@@ -269,9 +266,4 @@ class SendOutScreen extends PureComponent {
   }
 }
 
-export default connect(
-  state => ({
-    user: state.user,
-  }),
-  dispatch => ({})
-)(SendOutScreen)
+export default SendOutScreen
