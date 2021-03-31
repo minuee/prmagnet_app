@@ -205,8 +205,32 @@ class LinkSheetScreen extends PureComponent {
                             <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
                           </View>
                           <View style={styles.box2}>
-                            <Text style={{...styles.name}}>{subItem.req_user_nm}</Text>
-                            <Text style={{...styles.brand, marginTop: mUtils.wScale(5)}}>{subItem.mgzn_nm}</Text>
+                            {mConst.getUserType() === 'B' ? (
+                              <>
+                                <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
+                                  {subItem.req_user_nm} {subItem.req_user_position}
+                                </Text>
+                                <Text style={{...styles.brand, marginTop: mUtils.wScale(5)}}>{subItem.mgzn_nm}</Text>
+                              </>
+                            ) : selectTitle === 'Send Out' ? (
+                              <>
+                                <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
+                                  {subItem.req_user_nm} {subItem.req_user_position} →
+                                </Text>
+                                <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
+                                  {subItem.brand_user_nm} {subItem.brand_user_position}
+                                </Text>
+                              </>
+                            ) : (
+                              <>
+                                <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
+                                  {subItem.brand_user_nm} {subItem.brand_user_position} →
+                                </Text>
+                                <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
+                                  {subItem.req_user_nm} {subItem.req_user_position}
+                                </Text>
+                              </>
+                            )}
                           </View>
                         </View>
                       )
