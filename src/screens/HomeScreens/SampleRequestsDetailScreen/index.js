@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react'
 import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity, TextInput} from 'react-native'
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
-import moment from 'moment'
 import ModalDropdown from 'react-native-modal-dropdown'
 import _ from 'lodash'
 
@@ -238,7 +237,7 @@ class SampleRequestsDetailScreen extends PureComponent {
                     }}
                   >
                     <Text style={styles.boxText}>
-                      {`${moment(data.shooting_date * 1000).format('MM/DD')}(${moment(data.shooting_date * 1000).format('ddd')})`}
+                      {`${mUtils.getShowDate(data.shooting_date, 'MM/DD')}(${mUtils.getShowDate(data.shooting_date, 'ddd')})`}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -251,7 +250,7 @@ class SampleRequestsDetailScreen extends PureComponent {
                     }}
                   >
                     <Text style={styles.boxText}>
-                      {`${moment(data.pickup_date * 1000).format('MM/DD')}(${moment(data.pickup_date * 1000).format('ddd')})`}
+                      {`${mUtils.getShowDate(data.pickup_date, 'MM/DD')}(${mUtils.getShowDate(data.pickup_date, 'ddd')})`}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -264,7 +263,7 @@ class SampleRequestsDetailScreen extends PureComponent {
                     }}
                   >
                     <Text style={styles.boxText}>
-                      {`${moment(data.returning_date * 1000).format('MM/DD')}(${moment(data.returning_date * 1000).format('ddd')})`}
+                      {`${mUtils.getShowDate(data.returning_date, 'MM/DD')}(${mUtils.getShowDate(data.returning_date, 'ddd')})`}
                     </Text>
                   </TouchableOpacity>
                 </View>

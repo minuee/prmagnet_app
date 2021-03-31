@@ -2,8 +2,6 @@ import React, {PureComponent} from 'react'
 import {SafeAreaView, View, TouchableWithoutFeedback, TouchableOpacity, TextInput, FlatList, ScrollView, Pressable} from 'react-native'
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
-import moment from 'moment'
-import 'moment/locale/ko'
 import _ from 'lodash'
 
 import mConst from '../../../common/constants'
