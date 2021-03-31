@@ -38,10 +38,8 @@ class ScheduleMemoScreen extends PureComponent {
       select: '',
       desc: '',
       drop: false,
-      selectedDate: '',
       selectedTimeStamp: '',
       selected: '',
-      day: '',
       selectedColor: '',
       type: false,
       memo_no: '',
@@ -49,14 +47,17 @@ class ScheduleMemoScreen extends PureComponent {
   }
 
   getShowRoomList = async date => {
+    console.log('?!?!!!!!', date)
     try {
       let response = await API.getShowRoomList({
         date: date,
       })
       console.log('getShowRoomList>>>', response)
-      this.setState({
-        look: response.list,
-      })
+      if (response.success) {
+        this.setState({
+          look: response.list,
+        })
+      }
     } catch (error) {
       console.log('getShowRoomList>>>', error)
     }
@@ -64,29 +65,24 @@ class ScheduleMemoScreen extends PureComponent {
 
   getMemo = async () => {
     const {no, date, name} = this.params
+    const {showroom_no, selectedTimeStamp, select} = this.state
     try {
       let response = await API.getMemo({
-        showroom_no: no ? no : this.state.select.showroom_no,
-        date: date ? date : this.state.selectedTimeStamp,
+        showroom_no: no ? no : select ? select.showroom_no : '',
+        date: date ? date : selectedTimeStamp,
       })
       console.log('getMemo>>>>>>', response)
       if (response.memo) {
         this.setState({
-          desc: response.content,
-          color: response.selectedColor,
-          selectedTimeStamp: response.memo_dt,
-          selectedDate: moment(response.memo_dt).format('YYYY.MM.DD'),
-          day: moment(response.memo_dt).format('dd'),
+          desc: response.memo.content,
+          color: response.memo.selectedColor,
+          selectedTimeStamp: response.memo.memo_dt,
           type: true,
-          memo_no: response.memo_no,
+          memo_no: response.memo.memo_no,
         })
       } else {
         this.setState({
           desc: '',
-          color: this.state.selectedColor,
-          selectedTimeStamp: this.state.selectedTimeStamp,
-          selectedDate: moment(this.state.selectedTimeStamp).format('YYYY.MM.DD'),
-          day: moment(this.state.selectedTimeStamp).format('dd'),
           type: false,
           memo_no: '',
         })
@@ -97,26 +93,14 @@ class ScheduleMemoScreen extends PureComponent {
   }
 
   componentDidMount() {
-    const {no, date, name} = this.params
-    let day = Math.floor(new Date().getTime() / 1000)
-    console.log('?????', date)
     this.modalOption('')
     this.onFocus(this.handleOnFocus)
-    this.setState({
-      selectedDate: date ? mUtils.getShowDate(date, 'YYYY.MM.DD') : moment(day.timestamp).format('YYYY.MM.DD'),
-      selectedTimeStamp: date ? date : day.timestamp / 1000,
-      day: date ? moment(date * 1000).format('dd') : moment(day.timestamp).format('dd'),
-      select: no && name ? {showroom_no: no, showroom_nm: name} : '',
-    })
-    if (no && date) {
-      this.getMemo()
-    }
   }
   componentWillUnmount() {
     this.removeFocus()
   }
   handleOnFocus = () => {
-    //this.getSampleRequests()
+    this.getMemo()
   }
   onSelect = (idx, value) => {
     this.setState({select: value}, () => {
@@ -125,13 +109,16 @@ class ScheduleMemoScreen extends PureComponent {
   }
 
   onDayPress = day => {
-    this.setState({
-      selectedDate: moment(day.timestamp).format('YYYY.MM.DD'),
-      selectedTimeStamp: day.timestamp / 1000,
-      day: moment(day.timestamp).format('dd'),
-      drop: false,
-    })
-    this.getShowRoomList(day.timestamp / 1000)
+    this.setState(
+      {
+        selectedTimeStamp: day.timestamp / 1000,
+        drop: false,
+        select: '',
+      },
+      () => {
+        this.getShowRoomList(day.timestamp / 1000)
+      }
+    )
   }
 
   postMemo = async () => {
@@ -193,7 +180,7 @@ class ScheduleMemoScreen extends PureComponent {
   }
 
   render() {
-    const {color1, color2, select, look, selectedDate, selected, drop, desc, day, selectedColor, type, selectedTimeStamp} = this.state
+    const {color1, color2, select, look, selected, drop, desc, selectedColor, type, selectedTimeStamp} = this.state
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
@@ -242,8 +229,7 @@ class ScheduleMemoScreen extends PureComponent {
                 this.setState({drop: !drop})
               }}
             >
-              {console.log('>?>?>?>?>?>?>?', selectedTimeStamp)}
-              <Text style={styles.select}>{selectedTimeStamp ? mUtils.getShowDate(selectedTimeStamp, 'YYYY.MM.DD(ddd)') : '0000.00.00 (요일)'}</Text>
+              <Text style={styles.select}>{selectedTimeStamp ? mUtils.getShowDate(selectedTimeStamp, 'YYYY.MM.DD (ddd)') : '0000.00.00 (요일)'}</Text>
               <FastImage resizeMode={'contain'} source={moreImg} style={styles.moreImg} />
             </TouchableOpacity>
           </View>

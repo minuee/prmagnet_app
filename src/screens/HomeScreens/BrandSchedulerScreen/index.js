@@ -103,102 +103,79 @@ class BrandSchedulerScreen extends PureComponent {
                       <Text style={{...styles.title, marginVertical: mUtils.wScale(10)}}>{item.showroom_nm}</Text>
                     </View>
                     <View style={{width: '49%'}}>
-                      <>
-                        {item.memo_list &&
-                          item.memo_list.map((e, i) => {
-                            if (e.memo_dt <= item.req_list[0].start_dt) {
-                              return (
-                                <TouchableOpacity
-                                  key={i}
-                                  style={{...styles.layout3, borderColor: e.color ? e.color : mConst.borderGray}}
-                                  onPress={() => {
-                                    this.pushTo('ScheduleMemoScreen', {no: item.showroom_no, date: e.memo_dt, name: item.showroom_nm})
-                                  }}
-                                >
-                                  <Text style={{...styles.smallDesc}} numberOfLines={2}>
-                                    {e.content}
-                                  </Text>
-                                  <Text style={{...styles.brandDate}}>{mUtils.getShowDate(e.memo_dt, 'YYYY-MM-DD')}</Text>
-                                </TouchableOpacity>
-                              )
-                            }
-                          })}
-                        {item.req_list && (
-                          <View style={{...styles.layout5, marginBottom: mUtils.wScale(18)}}>
-                            <View style={{...styles.layout6, backgroundColor: item.req_list[0].mgzn_color}}>
-                              <Text style={styles.title}>{item.req_list[0].company_name}</Text>
-                              <View style={styles.layout}>
-                                <FastImage resizeMode={'contain'} style={styles.dollarImg1} source={dollarImg1} />
-                                {item.req_list[0].loc_yn && <FastImage resizeMode={'contain'} style={styles.airplaneImg} source={airplaneImg} />}
-                              </View>
-                            </View>
-                            <View style={styles.layout7}>
-                              <Text style={{...styles.name}}>{item.req_list[0].req_user_nm}</Text>
-                              <Text style={{...styles.brandDate, marginTop: mUtils.wScale(3)}}>
-                                {item.req_list[0].company_name} / {'\n'}
-                                {mUtils.getShowDate(item.req_list[0].start_dt, 'YYYY-MM-DD')} ~{' '}
-                                {mUtils.getShowDate(item.req_list[0].end_dt, 'YYYY-MM-DD')}
-                              </Text>
-                              <Text style={{...styles.desc, marginTop: mUtils.wScale(8)}}>{item.req_list[0].address}</Text>
-
-                              <Text style={{...styles.desc, marginTop: mUtils.wScale(3)}}>
-                                {item.req_list[0].contact_user_nm}
-                                {'\n'}
-                                {mUtils.allNumber(mUtils.get(item.req_list[0].contact_user_phone))}
-                              </Text>
-                            </View>
-                          </View>
-                        )}
-                      </>
-                      {toggle.includes(item.showroom_no) &&
-                        item.req_list
-                          .filter((e, i) => i !== 0)
-                          .map((item1, index1) => {
+                      {item.memo_list
+                        ? item.req_list &&
+                          item.memo_list.map((item1, index1) => {
                             return (
                               <>
-                                {item.memo_list &&
-                                  item.memo_list.map((item2, index2) => {
-                                    if (item1.start_dt === item2.memo_dt) {
-                                      return (
-                                        <TouchableOpacity
-                                          key={index2}
-                                          style={{...styles.layout3, borderColor: item2.color ? item2.color : mConst.borderGray}}
-                                          onPress={() => {
-                                            this.pushTo('ScheduleMemoScreen', {no: item.showroom_no, date: item2.memo_dt, name: item.showroom_nm})
-                                          }}
-                                        >
-                                          <Text style={{...styles.smallDesc}}>{item2.content}</Text>
-                                        </TouchableOpacity>
-                                      )
-                                    }
-                                  })}
-                                <View key={index1} style={{...styles.layout5, marginBottom: mUtils.wScale(5)}}>
-                                  <View style={{...styles.layout6, backgroundColor: item1.mgzn_color}}>
-                                    <Text style={styles.title}>{item1.company_name}</Text>
-                                    <View style={styles.layout}>
-                                      <FastImage resizeMode={'contain'} style={styles.dollarImg1} source={dollarImg1} />
-                                      <FastImage resizeMode={'contain'} style={styles.airplaneImg} source={airplaneImg} />
-                                    </View>
-                                  </View>
-                                  <View style={styles.layout7}>
-                                    <Text style={{...styles.name}}>{item1.req_user_nm}</Text>
-                                    <Text style={{...styles.brandDate, marginTop: mUtils.wScale(3)}}>
-                                      {item1.company_name} / {'\n'}
-                                      {mUtils.getShowDate(item1.start_dt, 'YYYY-MM-DD')} ~ {mUtils.getShowDate(item1.end_dt, 'YYYY-MM-DD')}
-                                    </Text>
-                                    <Text style={{...styles.desc, marginTop: mUtils.wScale(8)}}>{item1.address}</Text>
+                                <TouchableOpacity
+                                  key={index1}
+                                  style={{...styles.layout3, borderColor: item1.color ? item1.color : mConst.borderGray}}
+                                  onPress={() => {
+                                    this.pushTo('ScheduleMemoScreen', {no: item.showroom_no, date: item1.memo_dt, name: item.showroom_nm})
+                                  }}
+                                >
+                                  <Text style={{...styles.smallDesc}}>{item1.content}</Text>
+                                </TouchableOpacity>
+                                {item.req_list.map((item2, index2) => {
+                                  return (
+                                    <View key={index2} style={{...styles.layout5, marginBottom: mUtils.wScale(5)}}>
+                                      <View style={{...styles.layout6, backgroundColor: item2.mgzn_color}}>
+                                        <Text style={styles.title}>{item2.company_name}</Text>
+                                        <View style={styles.layout}>
+                                          <FastImage resizeMode={'contain'} style={styles.dollarImg1} source={dollarImg1} />
+                                          <FastImage resizeMode={'contain'} style={styles.airplaneImg} source={airplaneImg} />
+                                        </View>
+                                      </View>
+                                      <View style={styles.layout7}>
+                                        <Text style={{...styles.name}}>{item2.req_user_nm}</Text>
+                                        <Text style={{...styles.brandDate, marginTop: mUtils.wScale(3)}}>
+                                          {item2.company_name} / {'\n'}
+                                          {mUtils.getShowDate(item2.start_dt, 'YYYY-MM-DD')} ~ {mUtils.getShowDate(item2.end_dt, 'YYYY-MM-DD')}
+                                        </Text>
+                                        <Text style={{...styles.desc, marginTop: mUtils.wScale(8)}}>{item2.address}</Text>
 
-                                    <Text style={{...styles.desc, marginTop: mUtils.wScale(3)}}>
-                                      {item1.contact_user_nm}
-                                      {'\n'}
-                                      {mUtils.allNumber(mUtils.get(item1.contact_user_phone))}
-                                    </Text>
-                                  </View>
-                                </View>
+                                        <Text style={{...styles.desc, marginTop: mUtils.wScale(3)}}>
+                                          {item2.contact_user_nm}
+                                          {'\n'}
+                                          {mUtils.allNumber(mUtils.get(item2.contact_user_phone))}
+                                        </Text>
+                                      </View>
+                                    </View>
+                                  )
+                                })}
                               </>
                             )
+                          })
+                        : item.req_list.map((item2, index2) => {
+                            return (
+                              <View key={index2} style={{...styles.layout5, marginBottom: mUtils.wScale(5)}}>
+                                <View style={{...styles.layout6, backgroundColor: item2.mgzn_color}}>
+                                  <Text style={styles.title}>{item2.company_name}</Text>
+                                  <View style={styles.layout}>
+                                    <FastImage resizeMode={'contain'} style={styles.dollarImg1} source={dollarImg1} />
+                                    <FastImage resizeMode={'contain'} style={styles.airplaneImg} source={airplaneImg} />
+                                  </View>
+                                </View>
+                                <View style={styles.layout7}>
+                                  <Text style={{...styles.name}}>{item2.req_user_nm}</Text>
+                                  <Text style={{...styles.brandDate, marginTop: mUtils.wScale(3)}}>
+                                    {item2.company_name} / {'\n'}
+                                    {mUtils.getShowDate(item2.start_dt, 'YYYY-MM-DD')} ~ {mUtils.getShowDate(item2.end_dt, 'YYYY-MM-DD')}
+                                  </Text>
+                                  <Text style={{...styles.desc, marginTop: mUtils.wScale(8)}}>{item2.address}</Text>
+
+                                  <Text style={{...styles.desc, marginTop: mUtils.wScale(3)}}>
+                                    {item2.contact_user_nm}
+                                    {'\n'}
+                                    {mUtils.allNumber(mUtils.get(item2.contact_user_phone))}
+                                  </Text>
+                                </View>
+                              </View>
+                            )
                           })}
-                      {item.req_list.length - 1 !== 0 && !toggle.includes(item.showroom_no) && (
+
+                      {/*{item.req_list.length - 1 !== 0 && !toggle.includes(item.showroom_no) && (
                         <TouchableOpacity
                           style={styles.plusButton}
                           onPress={() => {
@@ -216,7 +193,7 @@ class BrandSchedulerScreen extends PureComponent {
                             <Text style={styles.smallText}>{item.req_list.length - 1}</Text>
                           </View>
                         </TouchableOpacity>
-                      )}
+                      )}*/}
                     </View>
                   </View>
                 )
@@ -225,7 +202,7 @@ class BrandSchedulerScreen extends PureComponent {
             <TouchableOpacity
               style={{...styles.layout8}}
               onPress={() => {
-                this.pushTo('ScheduleMemoScreen', {no: '', date: Math.floor(new Date().getTime() / 1000), name: ''})
+                this.pushTo('ScheduleMemoScreen', {no: '', date: '', name: ''})
               }}
             >
               <FastImage resizeMode={'contain'} style={styles.memoImg} source={memoImg} />

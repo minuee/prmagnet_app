@@ -14,8 +14,6 @@ import API from '../../../common/aws-api'
 import Loading from '../../common/Loading'
 import Empty from '../../common/Empty'
 
-const userType = mConst.getUserType()
-
 class HomeDetailScreen extends PureComponent {
   constructor(props) {
     super(props)
@@ -116,16 +114,16 @@ class HomeDetailScreen extends PureComponent {
         <FastImage
           resizeMode={'contain'}
           style={styles.brandImg}
-          source={{uri: userType === 'B' ? item.mgzn_logo_url_adres : item.brand_logo_url_adres}}
+          source={{uri: mConst.getUserType() === 'B' ? item.mgzn_logo_url_adres : item.brand_logo_url_adres}}
         />
         <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>
           {item.editor_nm} {item.editor_posi}
         </Text>
         <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>
           {' '}
-          {mUtils.getShowDate(userType === 'B' ? item.req_dt : item.brand_cnfirm_dt, 'YYYY-MM-DD')}
+          {mUtils.getShowDate(mConst.getUserType() === 'B' ? item.req_dt : item.brand_cnfirm_dt, 'YYYY-MM-DD')}
         </Text>
-        {userType === 'B' ? (
+        {mConst.getUserType() === 'B' ? (
           <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
             {item.mgzn_nm} • {item.celeb_list ? item.celeb_list[0] : item.model_list[0]}
           </Text>
@@ -145,14 +143,14 @@ class HomeDetailScreen extends PureComponent {
           {type ? (
             <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(30)}}>
               <Text style={styles.new}>
-                {userType === 'M' ? 'Confirmed' : 'New'} <Text style={{fontFamily: 'Roboto-Medium'}}>Requests : </Text>
+                {mConst.getUserType() === 'M' ? 'Confirmed' : 'New'} <Text style={{fontFamily: 'Roboto-Medium'}}>Requests : </Text>
                 <Text style={{fontFamily: 'Roboto-Bold', color: '#7ea1b2'}}>{total_count}</Text>
               </Text>
             </View>
           ) : (
             <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(30)}}>
               <Text style={styles.new}>
-                Today's <Text style={{fontFamily: 'Roboto-Medium'}}>{userType === 'M' ? 'PickUps' : 'Send-Outs'} : </Text>
+                Today's <Text style={{fontFamily: 'Roboto-Medium'}}>{mConst.getUserType() === 'M' ? 'PickUps' : 'Send-Outs'} : </Text>
                 <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}>{total_count}</Text>
               </Text>
             </View>

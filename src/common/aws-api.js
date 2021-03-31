@@ -941,6 +941,7 @@ const API = {
     return Api.post(apiName, path, myInit)
   },
   getSchedular: ({min_date, max_date}) => {
+    console.log('>>>>>>>>>', min_date, max_date)
     var apiName = v1Api
     var path = `${mConst.getApiPath()}/my-schedule`
     var init = {
@@ -974,6 +975,7 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getMemo: ({showroom_no, date}) => {
+    console.log('?!?', showroom_no, date)
     var apiName = v1Api
     var path = `${mConst.getApiPath()}/memo`
     var init = {
