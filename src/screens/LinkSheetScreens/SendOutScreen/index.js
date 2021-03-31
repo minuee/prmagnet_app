@@ -202,7 +202,7 @@ class SendOutScreen extends PureComponent {
                         <LinkSheetUnit
                           key={subIndex}
                           readOnly={mConst.getUserType() !== 'B'}
-                          checked={checkedList.includes(subItem.sample_no) || allChecked}
+                          checked={checkedList.includes(subItem.sample_no) || subItem.check_yn || allChecked}
                           name={fromName}
                           phone={fromPhone}
                           onLongPress={() => null}
@@ -218,7 +218,7 @@ class SendOutScreen extends PureComponent {
                         <LinkSheetUnit
                           key={subIndex}
                           readOnly={mConst.getUserType() === 'B'}
-                          checked={checkedList.includes(subItem.sample_no) || allChecked}
+                          checked={checkedList.includes(subItem.sample_no) || subItem.check_yn || allChecked}
                           name={toName}
                           phone={toPhone}
                           onLongPress={() => null}

@@ -198,7 +198,7 @@ class PickupsScreen extends PureComponent {
                       return (
                         <LinkSheetUnit
                           key={subIndex}
-                          checked={checkedList.includes(subItem.sample_no) || allChecked}
+                          checked={checkedList.includes(subItem.sample_no) || subItem.check_yn || allChecked}
                           name={fromName}
                           phone={fromPhone}
                           onLongPress={() => this.handleLongPress(fromName, subItem.sample_no)}

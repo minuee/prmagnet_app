@@ -208,7 +208,7 @@ class ReturnScreen extends PureComponent {
                       return (
                         <LinkSheetUnit
                           key={subIndex}
-                          checked={checkedList.includes(subItem.sample_no) || allChecked}
+                          checked={checkedList.includes(subItem.sample_no) || subItem.check_yn || allChecked}
                           name={toName}
                           phone={toPhone}
                           onLongPress={() => this.handleLongPress(toName, subItem.sample_no)}
