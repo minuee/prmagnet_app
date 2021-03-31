@@ -51,11 +51,11 @@ class ReturnScreen extends PureComponent {
     console.log('###reqNo:', _.get(data, 'req_no'))
     const sendPush = async () => {
       try {
-        const response = await API.pushReturnFail(_.get(data, 'req_no'))
+        const response = await API.pushReturnOneFail(_.get(data, 'req_no'), sampleNo)
         this.alert('미수령 알림 전송 완료', '미수령 알림을 전송하였습니다.')
-        console.log('선택 미수령 푸시 완료')
+        console.log('리턴 단일 미수령 푸시 완료')
       } catch (error) {
-        console.log('선택 미수령 푸시 실패', error)
+        console.log('리턴 선택 미수령 푸시 실패', error)
       }
     }
     this.alert('상품 미수령 알림', `'${name}'님께 상품미수령 알림을 보내시겠습니까?`, [{onPress: sendPush}, {}])
@@ -64,14 +64,14 @@ class ReturnScreen extends PureComponent {
     this.setState({isvisible: {open: true, name, phone}})
   }
   handleCheckItem = (name, sampleName, sampleNo) => {
+    const {data} = this.state
     if (!this.state.checkedList.includes(sampleNo)) {
       const sendPush = async () => {
         try {
-          const response = await API.pushReturnSuccess(_.get(data, 'req_no'))
-          this.setState({allChecked: true})
-          console.log('전체 수령 푸시 완료')
+          const response = await API.pushReturnOneSuccess(_.get(data, 'req_no'), sampleNo)
+          console.log('리턴 단일 수령 푸시 완료')
         } catch (error) {
-          console.log('전체 수령 푸시 실패', error)
+          console.log('리턴 단일 수령 푸시 실패', error)
         }
       }
       this.alert('수령완료', `${name}님께 ${sampleName} 수령 완료`, [
