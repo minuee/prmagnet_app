@@ -24,7 +24,7 @@ class LinkSheetDetailScreen extends PureComponent {
   }
   componentDidMount() {
     const {selectTitle} = this.params
-    this.pushOption(selectTitle, true)
+    this.pushOption(selectTitle, false)
   }
   render() {
     const {selectTitle, selectEachList} = this.params
