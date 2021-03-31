@@ -432,10 +432,15 @@ const API = {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/sendout-push`
     const myInit = {
-      body: {
-        req_no,
-        len: showroom_len,
-      },
+      body: {req_no, len: showroom_len},
+    }
+    return Api.post(apiName, path, myInit)
+  },
+  pushSendoutOne: (req_no, showroom_len, sample_no) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/sendout-push-individual`
+    const myInit = {
+      body: {req_no, len: showroom_len, sample_no},
     }
     return Api.post(apiName, path, myInit)
   },
@@ -447,11 +452,27 @@ const API = {
     }
     return Api.post(apiName, path, myInit)
   },
+  pushPickupOneSuccess: (req_no, sample_no) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/pickup-success-individual`
+    const myInit = {
+      body: {req_no, sample_no},
+    }
+    return Api.post(apiName, path, myInit)
+  },
   pushPickupFail: req_no => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/pickup-fail`
     const myInit = {
       body: {req_no},
+    }
+    return Api.post(apiName, path, myInit)
+  },
+  pushPickupOneFail: (req_no, sample_no) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/pickup-fail-individual`
+    const myInit = {
+      body: {req_no, sample_no},
     }
     return Api.post(apiName, path, myInit)
   },
@@ -463,11 +484,27 @@ const API = {
     }
     return Api.post(apiName, path, myInit)
   },
+  pushReturnOneSuccess: (req_no, sample_no) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/return-success-individual`
+    const myInit = {
+      body: {req_no, sample_no},
+    }
+    return Api.post(apiName, path, myInit)
+  },
   pushReturnFail: req_no => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/return-fail`
     const myInit = {
       body: {req_no},
+    }
+    return Api.post(apiName, path, myInit)
+  },
+  pushReturnOneFail: (req_no, sample_no) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/return-fail-individual`
+    const myInit = {
+      body: {req_no, sample_no},
     }
     return Api.post(apiName, path, myInit)
   },
