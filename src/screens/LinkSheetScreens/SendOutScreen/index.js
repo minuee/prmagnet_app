@@ -48,14 +48,14 @@ class SendOutScreen extends PureComponent {
     this.setState({isvisible: {open: true, name, phone}})
   }
   handleCheckItem = (name, roomName, sampleName, sampleNo) => {
+    const {data} = this.state
     if (!this.state.checkedList.includes(sampleNo)) {
       const sendPush = async () => {
         try {
-          const response = await API.pushSendout(_.get(data, 'req_no'), _.get(data, 'showroom_list.length'))
-          this.setState({allChecked: true})
-          console.log('전체 발송 완료')
+          const response = await API.pushSendoutOne(_.get(data, 'req_no'), _.get(data, 'showroom_list.length'), sampleNo)
+          console.log('Send Out 단일 발송 완료')
         } catch (error) {
-          console.log('전체 발송 실패', error)
+          console.log('Send Out 단일 발송 실패', error)
         }
       }
       this.alert('발송완료', `${name}님께 ${roomName}${mConst.lf}${sampleName} 발송 완료하였습니다.`, [
