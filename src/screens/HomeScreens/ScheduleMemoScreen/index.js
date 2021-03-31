@@ -64,18 +64,17 @@ class ScheduleMemoScreen extends PureComponent {
   }
 
   getMemo = async () => {
-    const {no, date, name} = this.params
     const {showroom_no, selectedTimeStamp, select} = this.state
     try {
       let response = await API.getMemo({
-        showroom_no: no ? no : select ? select.showroom_no : '',
-        date: date ? date : selectedTimeStamp,
+        showroom_no: select ? select.showroom_no : '',
+        date: selectedTimeStamp,
       })
       console.log('getMemo>>>>>>', response)
       if (response.memo) {
         this.setState({
           desc: response.memo.content,
-          color: response.memo.selectedColor,
+          selectedColor: response.memo.color,
           selectedTimeStamp: response.memo.memo_dt,
           type: true,
           memo_no: response.memo.memo_no,
@@ -100,7 +99,14 @@ class ScheduleMemoScreen extends PureComponent {
     this.removeFocus()
   }
   handleOnFocus = () => {
-    this.getMemo()
+    const {no, date, name} = this.params
+    if (no && date) {
+      this.setState({select: {showroom_no: no, showroom_nm: name}, selectedTimeStamp: date}, () => {
+        this.getMemo()
+      })
+    } else {
+      this.getMemo()
+    }
   }
   onSelect = (idx, value) => {
     this.setState({select: value}, () => {

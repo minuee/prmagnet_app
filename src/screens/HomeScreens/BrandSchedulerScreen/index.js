@@ -116,6 +116,7 @@ class BrandSchedulerScreen extends PureComponent {
                                   }}
                                 >
                                   <Text style={{...styles.smallDesc}}>{item1.content}</Text>
+                                  <Text style={{...styles.brandDate}}>{mUtils.getShowDate(item1.memo_dt, 'YYYY-MM-DD')}</Text>
                                 </TouchableOpacity>
                                 {item.req_list.map((item2, index2) => {
                                   return (
