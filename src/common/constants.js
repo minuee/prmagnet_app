@@ -2,7 +2,7 @@ import {Dimensions, Platform, StatusBar} from 'react-native'
 import {isIphoneX, getBottomSpace, getStatusBarHeight} from 'react-native-iphone-x-helper'
 
 const PRODUCTION = false // 배포 버전 여부(개발은 false)
-const STAGE = true // QA 버전 여부(개발은 false)
+const STAGE = false // QA 버전 여부(개발은 false)
 const STORYBOOK = false // 스토리북 적용 여부
 
 const PROD_APIURI = 'http://211.42.197.193:3034' // AWS 실서비스 주소
