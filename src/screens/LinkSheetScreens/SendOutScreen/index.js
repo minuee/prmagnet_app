@@ -240,7 +240,7 @@ class SendOutScreen extends PureComponent {
                           phone={toPhone}
                           onLongPress={() => null}
                           onLongPressPhone={() => this.handleLongPressPhone(toName, toPhone)}
-                          onSwipeCheck={() => this.handleCheckItem(toName, roomName, subItem.sample_nm, subItem.sample_no)}
+                          onSwipeCheck={() => this.handleCheckItem(toName, roomName, subItem.category, subItem.sample_no)}
                           color={mConst.getUserType() === 'B' ? '#7ea1b2' : '#b8c18c'}
                         />
                       )
