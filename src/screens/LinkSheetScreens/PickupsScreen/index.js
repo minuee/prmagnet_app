@@ -35,26 +35,27 @@ class PickupsScreen extends PureComponent {
     const {selectEachList} = this.params
     // console.log('###selectEachList:', selectEachList)
     this.pushOption('Pickups', false)
-    this.handleLoadData(_.get(selectEachList, '[0].req_no'))
+    this.handleLoadData(0)
   }
   moveLeft = () => {
     const {listIndex} = this.state
-    const {selectEachList} = this.params
     if (listIndex > 0) {
-      this.setState({listIndex: listIndex - 1}, () => this.handleLoadData(_.get(selectEachList, `[${listIndex - 1}].req_no`)))
+      this.handleLoadData(listIndex - 1)
     }
   }
   moveRight = () => {
     const {listIndex} = this.state
     const {selectEachList} = this.params
     if (listIndex < _.size(selectEachList) - 1) {
-      this.setState({listIndex: listIndex + 1}, () => this.handleLoadData(_.get(selectEachList, `[${listIndex + 1}].req_no`)))
+      this.handleLoadData(listIndex + 1)
     }
   }
-  handleLoadData = async reqNo => {
+  handleLoadData = async listIndex => {
+    const {selectEachList} = this.params
+    const reqNo = _.get(selectEachList, `[${listIndex}].req_no`)
     try {
       const response = await API.getPickupDetail(reqNo)
-      this.setState({data: _.get(response, 'right'), loading: false})
+      this.setState({data: _.get(response, 'right'), listIndex, loading: false})
       console.log('픽업 스케쥴 상세 조회 성공', JSON.stringify(response))
     } catch (error) {
       // this.setState({loading: false})
