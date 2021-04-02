@@ -22,6 +22,7 @@ class SendOutScreen extends PureComponent {
     super(props)
     cBind(this)
     this.state = {
+      listIndex: 0,
       checked: false,
       allChecked: false,
       data: {},
@@ -31,10 +32,26 @@ class SendOutScreen extends PureComponent {
     }
   }
   componentDidMount() {
-    this.handleLoadData()
+    const {selectEachList} = this.params
+    // console.log('###selectEachList:', selectEachList)
+    this.pushOption('Send Out', false)
+    this.handleLoadData(_.get(selectEachList, '[0].req_no'))
   }
-  handleLoadData = async () => {
-    const {reqNo} = this.props
+  moveLeft = () => {
+    const {listIndex} = this.state
+    const {selectEachList} = this.params
+    if (listIndex > 0) {
+      this.setState({listIndex: listIndex - 1}, () => this.handleLoadData(_.get(selectEachList, `[${listIndex - 1}].req_no`)))
+    }
+  }
+  moveRight = () => {
+    const {listIndex} = this.state
+    const {selectEachList} = this.params
+    if (listIndex < _.size(selectEachList) - 1) {
+      this.setState({listIndex: listIndex + 1}, () => this.handleLoadData(_.get(selectEachList, `[${listIndex + 1}].req_no`)))
+    }
+  }
+  handleLoadData = async reqNo => {
     try {
       const response = await API.getSendoutDetail(reqNo)
       this.setState({data: _.get(response, 'right'), loading: false})
@@ -97,13 +114,13 @@ class SendOutScreen extends PureComponent {
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={{paddingVertical: 10}}>
           <View style={styles.titleWrapper}>
-            <TouchableOpacity onPress={() => moveLeft()}>
+            <TouchableOpacity onPress={this.moveLeft}>
               <FastImage source={goLeftImage} style={styles.goImage} />
             </TouchableOpacity>
             <View style={styles.titleSubWrapper}>
               <Text style={styles.titleSubText}>{loaningDate}</Text>
             </View>
-            <TouchableOpacity onPress={() => moveRight()}>
+            <TouchableOpacity onPress={this.moveRight}>
               <FastImage source={goRightImage} style={styles.goImage} />
             </TouchableOpacity>
           </View>
@@ -200,7 +217,7 @@ class SendOutScreen extends PureComponent {
                     {_.map(samples, (subItem, subIndex) => {
                       return (
                         <LinkSheetUnit
-                          key={subIndex}
+                          key={`${subItem.sample_no}${subIndex}`}
                           readOnly={mConst.getUserType() !== 'B'}
                           checked={checkedList.includes(subItem.sample_no) || subItem.check_yn || allChecked}
                           name={fromName}
@@ -216,14 +233,14 @@ class SendOutScreen extends PureComponent {
                     {_.map(samples, (subItem, subIndex) => {
                       return (
                         <LinkSheetUnit
-                          key={subIndex}
+                          key={`${subItem.sample_no}${subIndex}`}
                           readOnly={mConst.getUserType() === 'B'}
                           checked={checkedList.includes(subItem.sample_no) || subItem.check_yn || allChecked}
                           name={toName}
                           phone={toPhone}
                           onLongPress={() => null}
                           onLongPressPhone={() => this.handleLongPressPhone(toName, toPhone)}
-                          onSwipeCheck={() => this.handleCheckItem(toName, subItem.sample_nm, subItem.sample_no)}
+                          onSwipeCheck={() => this.handleCheckItem(toName, roomName, subItem.sample_nm, subItem.sample_no)}
                           color={mConst.getUserType() === 'B' ? '#7ea1b2' : '#b8c18c'}
                         />
                       )

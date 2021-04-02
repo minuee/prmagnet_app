@@ -109,7 +109,13 @@ class LinkSheetScreen extends PureComponent {
   handleLinkSheetDetail = () => {
     const {selectTitle, selectDate, dataList} = this.state
     const selectEachList = dataList.flatMap(data => (selectDate.includes(data.date) ? data.each_list : []))
-    this.pushTo('LinkSheetDetailScreen', {selectTitle, selectEachList})
+    if (selectTitle === 'Send Out') {
+      this.pushTo('SendOutScreen', {selectEachList})
+    } else if (selectTitle === 'Pickups') {
+      this.pushTo('PickupsScreen', {selectEachList})
+    } else if (selectTitle === 'Return') {
+      this.pushTo('ReturnScreen', {selectEachList})
+    }
   }
   selectDate = (date, count) => {
     const {selectDate, totalCount} = this.state
