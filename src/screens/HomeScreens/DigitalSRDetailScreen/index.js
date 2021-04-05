@@ -104,7 +104,7 @@ class DigitalSRDetailScreen extends PureComponent {
                   </View>
                   <View style={styles.layout}>
                     <Text style={styles.left}>Size</Text>
-                    <Text style={{...styles.right}}>{mUtils.get(item.size_text, '')}</Text>
+                    <Text style={{...styles.right}}>{item.size_direct_input}</Text>
                   </View>
                   <View style={styles.layout}>
                     <Text style={styles.left}>Material</Text>
