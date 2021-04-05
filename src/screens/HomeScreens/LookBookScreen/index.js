@@ -13,6 +13,7 @@ import Text from '../../common/Text'
 import styles from './styles'
 import Loading from '../../common/Loading'
 import API from '../../../common/aws-api'
+import Empty from '../../common/Empty'
 
 const moreImage1 = require('../../../images/navi/more_1.png')
 const moreImage3 = require('../../../images/navi/more_3.png')
@@ -26,6 +27,7 @@ class LookBookScreen extends PureComponent {
       page: 1,
       limit: 10,
       search_text: '',
+      loading: false,
     }
   }
 
@@ -35,7 +37,18 @@ class LookBookScreen extends PureComponent {
       console.log('putLookBook>>>', response)
       if (response.success) {
         setTimeout(() => {
-          this.alert('삭제 완료', '룩북을 삭제 하였습니다.', [{onPress: () => this.getLookBookReset()}])
+          this.alert('삭제 완료', '룩북을 삭제 하였습니다.', [
+            {
+              onPress: () =>
+                this.setState(state => {
+                  const result = state.list.filter((e, i) => e.lookbook_no !== lookbook_no_list)
+
+                  return {
+                    list: result,
+                  }
+                }),
+            },
+          ])
         }, 100)
       }
     } catch (error) {
@@ -49,25 +62,14 @@ class LookBookScreen extends PureComponent {
       let response = await API.getLookBook({page: page, limit: limit, search_text: search_text})
       console.log('getLookBook>>>', response)
       if (response.success) {
-        if (response.list.length > 0) {
-          this.setState({list: list.concat(response.list), page: page + 1})
-        }
+        this.setState({loading: false}, () => {
+          if (response.list.length > 0) {
+            this.setState({list: list.concat(response.list), page: page + 1})
+          }
+        })
       }
     } catch (error) {
       console.log('getLookBook>>>', error)
-    }
-  }
-
-  getLookBookReset = async () => {
-    const {list, page, limit, search_text} = this.state
-    try {
-      let response = await API.getLookBook({page: 1, limit: limit, search_text: search_text})
-      console.log('getLookBookReset>>>', response)
-      if (response.success) {
-        this.setState({list: response.list, page: 2})
-      }
-    } catch (error) {
-      console.log('getLookBookReset>>>', error)
     }
   }
 
@@ -83,7 +85,9 @@ class LookBookScreen extends PureComponent {
   }
 
   handleOnFocus = () => {
-    this.getLookBook()
+    this.setState({loading: true}, () => {
+      this.getLookBook()
+    })
   }
 
   renderItem = ({item}) => {
@@ -149,13 +153,16 @@ class LookBookScreen extends PureComponent {
   }
 
   render() {
-    const {list} = this.state
+    const {list, loading} = this.state
     const {user} = this.props
     return (
       <SafeAreaView style={styles.container}>
         <Header pushTo={this.pushTo} userType={user.userType} />
+
         <Text style={styles.mainTitle}>LookBook</Text>
-        {list ? (
+        {loading ? (
+          <Loading />
+        ) : _.size(list) > 0 ? (
           <FlatList
             bounces={false}
             style={styles.list}
@@ -166,7 +173,9 @@ class LookBookScreen extends PureComponent {
             onEndReachedThreshold={1}
           />
         ) : (
-          <Loading />
+          <View style={{flex: 1, paddingBottom: mUtils.wScale(100)}}>
+            <Empty />
+          </View>
         )}
       </SafeAreaView>
     )

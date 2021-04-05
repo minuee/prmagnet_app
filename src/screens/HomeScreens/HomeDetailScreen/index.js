@@ -17,7 +17,7 @@ class HomeDetailScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
-    this.state = {data: [], page: 1, limit: 30, total_count: 0}
+    this.state = {data: [], page: 1, limit: 30, total_count: 0, loading: false}
   }
 
   getHomeNR = async () => {
@@ -26,23 +26,27 @@ class HomeDetailScreen extends PureComponent {
       let response = mConst.getUserType() === 'B' ? await API.getHomeNR({page: page, limit}) : await API.getHomeCR({page: page, limit})
       console.log('getHomeNR>>>', response)
       if (response.success) {
-        if (mConst.getUserType() === 'B') {
-          if (response.new_request.length > 0) {
-            this.setState({
-              data: data.concat(response.new_request),
-              page: page + 1,
-              total_count: response.total_count,
-            })
+        this.setState({loading: false}, () => {
+          if (mConst.getUserType() === 'B') {
+            if (response.new_request.length > 0) {
+              this.setState({
+                data: data.concat(response.new_request),
+                page: page + 1,
+                total_count: response.total_count,
+                loading: false,
+              })
+            }
+          } else {
+            if (response.list.length > 0) {
+              this.setState({
+                data: data.concat(response.list),
+                page: page + 1,
+                total_count: response.total_count,
+                loading: false,
+              })
+            }
           }
-        } else {
-          if (response.list.length > 0) {
-            this.setState({
-              data: data.concat(response.list),
-              page: page + 1,
-              total_count: response.total_count,
-            })
-          }
-        }
+        })
       }
     } catch (error) {
       console.log('getHomeNR>>>1', JSON.stringify(error))
@@ -56,23 +60,25 @@ class HomeDetailScreen extends PureComponent {
       let response = await API.getHomeTR({date: date, page: page, limit: limit})
       console.log('getHomeTR>>>', response)
       if (response.success) {
-        if (mConst.getUserType() === 'B') {
-          if (response.today_request.length > 0) {
-            this.setState({
-              data: data.concat(response.today_request),
-              page: page + 1,
-              total_count: response.total_count,
-            })
+        this.setState({loading: false}, () => {
+          if (mConst.getUserType() === 'B') {
+            if (response.today_request.length > 0) {
+              this.setState({
+                data: data.concat(response.today_request),
+                page: page + 1,
+                total_count: response.total_count,
+              })
+            }
+          } else {
+            if (response.list.length > 0) {
+              this.setState({
+                data: data.concat(response.list),
+                page: page + 1,
+                total_count: response.total_count,
+              })
+            }
           }
-        } else {
-          if (response.list.length > 0) {
-            this.setState({
-              data: data.concat(response.list),
-              page: page + 1,
-              total_count: response.total_count,
-            })
-          }
-        }
+        })
       }
     } catch (error) {
       console.log('getHomeTR>>>1', error)
@@ -99,11 +105,13 @@ class HomeDetailScreen extends PureComponent {
 
   handleOnFocus = () => {
     const {type} = this.props.route.params
-    if (type) {
-      this.getHomeNR()
-    } else {
-      this.getHomeTR()
-    }
+    this.setState({loading: true}, () => {
+      if (type) {
+        this.getHomeNR()
+      } else {
+        this.getHomeTR()
+      }
+    })
   }
 
   renderItem = ({item}) => {
@@ -134,7 +142,7 @@ class HomeDetailScreen extends PureComponent {
   }
 
   render() {
-    const {data, total_count} = this.state
+    const {data, total_count, loading} = this.state
     const {type} = this.props.route.params
     return (
       <>
@@ -162,7 +170,9 @@ class HomeDetailScreen extends PureComponent {
               flex: data.length === 0 ? 1 : 0,
             }}
           >
-            {data.length === 0 ? (
+            {loading ? (
+              <Loading />
+            ) : data.length === 0 ? (
               <Empty />
             ) : (
               <FlatList

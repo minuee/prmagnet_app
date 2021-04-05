@@ -117,7 +117,11 @@ class SearchScreen extends PureComponent {
                 <>
                   {userType === 'B' ? (
                     _.size(brand.showroom) > 0 || _.size(brand.lookbook) > 0 ? (
-                      <ScrollView style={styles.scroll} contentContainerStyle={{flexGrow: 1}} showsVerticalScrollIndicator={false}>
+                      <ScrollView
+                        style={styles.scroll}
+                        contentContainerStyle={{flexGrow: 1, paddingBottom: mUtils.wScale(30)}}
+                        showsVerticalScrollIndicator={false}
+                      >
                         <>
                           <Text style={styles.subTitle}>Digital Showroom ({brand.showroom.length})</Text>
                           {this.mapList(brand.showroom)}

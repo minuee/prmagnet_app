@@ -4,10 +4,14 @@ import FastImage from 'react-native-fast-image'
 
 import mConst from '../../common/constants'
 import mUtils from '../../common/utils'
+import API from '../../common/aws-api'
+import cBind from '../../common/navigation'
 
 const searchImage = require('../../images/common/search.png')
 const bellImage = require('../../images/common/bell.png')
+const bell_offImage = require('../../images/navi/bell_off.png')
 const bell2Image = require('../../images/common/bell_2.png')
+const bell_off2Image = require('../../images/navi/bell_off2.png')
 const profileImage = require('../../images/common/profile.png')
 const profile2Image = require('../../images/common/profile_2.png')
 const like2Image = require('../../images/common/like_2.png')
@@ -15,12 +19,31 @@ const like2Image = require('../../images/common/like_2.png')
 export default class CommonHeader extends PureComponent {
   constructor(props) {
     super(props)
+    cBind(this)
     this.state = {
       keyword: '',
+      alarmYN: false,
     }
   }
+
+  //getUserInfo = async () => {
+  //  try {
+  //    let response = await API.getUserInfo()
+  //    console.log('getUserInfo>>>', response)
+  //    if (response.success) {
+  //      this.setState({alarmYN: response.unread_notifications})
+  //    }
+  //  } catch (error) {
+  //    console.log('getUserInfo>>>', error)
+  //  }
+  //}
+
+  //componentDidMount() {
+  //  this.getUserInfo()
+  //}
+
   render() {
-    const {keyword} = this.state
+    const {keyword, alarmYN} = this.state
     const {like, pushTo, userType} = this.props
     const mUserType = userType || mConst.getUserType()
     return (
@@ -63,7 +86,11 @@ export default class CommonHeader extends PureComponent {
             </TouchableOpacity>
           )}
           <TouchableOpacity style={styles.inputIconWrapper} onPress={() => pushTo('NotificationScreen')}>
-            <FastImage resizeMode={'contain'} source={mUserType === 'B' ? bellImage : bell2Image} style={styles.inputIcon} />
+            <FastImage
+              resizeMode={'contain'}
+              source={mUserType === 'B' ? (alarmYN ? bellImage : bell_offImage) : alarmYN ? bell2Image : bell_off2Image}
+              style={styles.inputIcon}
+            />
           </TouchableOpacity>
           <TouchableOpacity style={styles.inputIconWrapper} onPress={() => pushTo('MyPageScreen')}>
             <FastImage resizeMode={'contain'} source={mUserType === 'B' ? profileImage : profile2Image} style={styles.inputIcon} />
