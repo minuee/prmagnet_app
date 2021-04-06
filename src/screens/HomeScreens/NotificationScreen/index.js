@@ -5,6 +5,7 @@ import FastImage from 'react-native-fast-image'
 import _ from 'lodash'
 import moment from 'moment'
 
+import {actionSetAlarm} from '../../../redux/actions'
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
@@ -50,10 +51,12 @@ class NotificationScreen extends PureComponent {
 
   getAlarm = async () => {
     const {page, limit, list} = this.state
+    const {setAlarm} = this.props
     try {
       let response = await API.getAlarm({page})
       console.log('getAlarm>>>', response)
       if (response.success) {
+        setAlarm({alarm: false})
         if (response.list.length > 0) {
           this.setState({list: list.concat(response.list), page: page + 1, loading: false})
         } else {
@@ -145,5 +148,7 @@ class NotificationScreen extends PureComponent {
 
 export default connect(
   state => ({}),
-  dispatch => ({})
+  dispatch => ({
+    setAlarm: data => dispatch(actionSetAlarm(data)),
+  })
 )(NotificationScreen)

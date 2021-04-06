@@ -39,4 +39,4 @@ export const actionWithdraw = createActionObject(WITHDRAW)
 export const actionUserType = createActionObject(USER_TYPE)
 
 /* 사용자 정의 액션 */
-export const actionSetUserPhone = data => actionCreator('setUserPhone', data)
+export const actionSetAlarm = data => actionCreator('setAlarm', data)

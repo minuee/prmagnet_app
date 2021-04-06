@@ -7,7 +7,7 @@ import 'moment/locale/ko'
 import _ from 'lodash'
 
 import {isLoggedIn} from '../../../common/aws-auth'
-import {actionLogout} from '../../../redux/actions'
+import {actionLogout, actionSetAlarm} from '../../../redux/actions'
 import CodePush from '../../common/CodePush'
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -185,6 +185,7 @@ class HomeScreen extends PureComponent {
     }
   }
   setupFcm = async () => {
+    const {setAlarm} = this.props
     const fcmToken = await mUtils.getFcmToken()
     if (fcmToken) {
       const handleDataMessage = msg => {
@@ -192,6 +193,7 @@ class HomeScreen extends PureComponent {
       }
       messaging().onMessage(message => {
         console.log('fcm-msg:', message)
+        setAlarm({alarm: true})
         if (_.isEmpty(message.data)) {
           this.alert(_.get(message, 'notification.title'), _.get(message, 'notification.body'))
         } else {
@@ -200,6 +202,7 @@ class HomeScreen extends PureComponent {
       })
       messaging().setBackgroundMessageHandler(message => {
         console.log('fcm-bg-msg:', message)
+        setAlarm({alarm: true})
         if (!_.isEmpty(message.data)) {
           handleDataMessage(message)
         }
@@ -235,5 +238,6 @@ export default connect(
   }),
   dispatch => ({
     logout: (data, rest) => dispatch(actionLogout.success(data, rest)),
+    setAlarm: data => dispatch(actionSetAlarm(data)),
   })
 )(HomeScreen)

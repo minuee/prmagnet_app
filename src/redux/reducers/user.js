@@ -6,6 +6,7 @@ import API from '../../common/services'
 const initialState = {
   isLogged: false,
   userType: 'B',
+  alarm: false,
 }
 
 export default function user(state = initialState, action) {
@@ -34,6 +35,12 @@ export default function user(state = initialState, action) {
         userType,
       }
     }
+    case 'setAlarm':
+      const data = API.getData(action)
+      return {
+        ...state,
+        alarm: data.alarm,
+      }
     case LOGIN.FAILURE:
     case LOGOUT.SUCCESS:
     case LOGOUT.FAILURE:
