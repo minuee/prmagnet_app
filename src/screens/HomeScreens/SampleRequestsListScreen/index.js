@@ -197,7 +197,7 @@ class SampleRequestsListScreen extends PureComponent {
     const {list, loading} = this.state
     return (
       <SafeAreaView style={styles.container}>
-        <Header pushTo={this.pushTo} userType={user.userType} />
+        <Header pushTo={this.pushTo} userType={user.userType} alarmSet={user.alarm} />
         <View style={styles.layout1}>
           <Text style={styles.mainTitle}>My Requests</Text>
         </View>

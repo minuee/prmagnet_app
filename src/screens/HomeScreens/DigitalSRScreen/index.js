@@ -338,10 +338,12 @@ class DigitalSRScreen extends PureComponent {
   render() {
     const {data} = this.state
     const {notice, inquiryNum, season_year, selectOnOff, isvisible, loading, select} = this.state
+    const {user} = this.props
     const userType = mConst.getUserType()
+
     return (
       <SafeAreaView style={styles.container}>
-        <Header pushTo={this.pushTo} userType={userType} />
+        <Header pushTo={this.pushTo} userType={userType} alarmSet={user.alarm} />
         <View style={{paddingHorizontal: mUtils.wScale(20), flex: 1}}>
           <View style={{...styles.layout, justifyContent: 'space-between', marginTop: mUtils.wScale(25)}}>
             <View>
@@ -496,6 +498,8 @@ class DigitalSRScreen extends PureComponent {
 }
 
 export default connect(
-  state => ({}),
+  state => ({
+    user: state.user,
+  }),
   dispatch => ({})
 )(DigitalSRScreen)

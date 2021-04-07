@@ -26,25 +26,9 @@ export default class CommonHeader extends PureComponent {
     }
   }
 
-  //getUserInfo = async () => {
-  //  try {
-  //    let response = await API.getUserInfo()
-  //    console.log('getUserInfo>>>', response)
-  //    if (response.success) {
-  //      this.setState({alarmYN: response.unread_notifications})
-  //    }
-  //  } catch (error) {
-  //    console.log('getUserInfo>>>', error)
-  //  }
-  //}
-
-  //componentDidMount() {
-  //  this.getUserInfo()
-  //}
-
   render() {
     const {keyword, alarmYN} = this.state
-    const {like, pushTo, userType} = this.props
+    const {like, pushTo, userType, alarmSet} = this.props
     const mUserType = userType || mConst.getUserType()
     return (
       <View style={styles.upperWrapper}>
@@ -88,7 +72,7 @@ export default class CommonHeader extends PureComponent {
           <TouchableOpacity style={styles.inputIconWrapper} onPress={() => pushTo('NotificationScreen')}>
             <FastImage
               resizeMode={'contain'}
-              source={mUserType === 'B' ? (alarmYN ? bellImage : bell_offImage) : alarmYN ? bell2Image : bell_off2Image}
+              source={mUserType === 'B' ? (alarmSet ? bellImage : bell_offImage) : alarmSet ? bell2Image : bell_off2Image}
               style={styles.inputIcon}
             />
           </TouchableOpacity>

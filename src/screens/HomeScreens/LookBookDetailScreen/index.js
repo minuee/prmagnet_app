@@ -3,7 +3,6 @@ import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity, Pressable, S
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import _ from 'lodash'
-import Header from '../../common/Header'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -129,7 +128,6 @@ class LookBookDetailScreen extends PureComponent {
     const {user} = this.props
     return (
       <SafeAreaView style={styles.container}>
-        {/*<Header pushTo={this.pushTo} userType={user.userType} />*/}
         <View style={styles.layout1}>
           <Text style={styles.mainTitle}>LookBook</Text>
           <TouchableOpacity

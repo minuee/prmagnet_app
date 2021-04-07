@@ -157,7 +157,7 @@ class LookBookScreen extends PureComponent {
     const {user} = this.props
     return (
       <SafeAreaView style={styles.container}>
-        <Header pushTo={this.pushTo} userType={user.userType} />
+        <Header pushTo={this.pushTo} userType={user.userType} alarmSet={user.alarm} />
 
         <Text style={styles.mainTitle}>LookBook</Text>
         {loading ? (

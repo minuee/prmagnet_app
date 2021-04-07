@@ -72,10 +72,11 @@ class BrandSchedulerScreen extends PureComponent {
 
   render() {
     const {data, toggle, start, end} = this.state
+    const {user} = this.props
     //const {start, end} = _.get(this.props, 'route.params', {})
     return (
       <SafeAreaView style={styles.container}>
-        <Header pushTo={this.pushTo} />
+        <Header pushTo={this.pushTo} alarmSet={user.alarm} />
         <Text style={styles.mainTitle}>Scheduler</Text>
         {data ? (
           <>
@@ -221,6 +222,8 @@ class BrandSchedulerScreen extends PureComponent {
 }
 
 export default connect(
-  state => ({}),
+  state => ({
+    user: state.user,
+  }),
   dispatch => ({})
 )(BrandSchedulerScreen)

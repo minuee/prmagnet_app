@@ -214,7 +214,7 @@ class HomeScreen extends PureComponent {
     const {data} = this.state
     return (
       <SafeAreaView style={styles.container}>
-        <Header pushTo={this.pushTo} userType={user.userType} />
+        <Header pushTo={this.pushTo} userType={user.userType} alarmSet={user.alarm} />
         <ScrollView contentContainerStyle={{flexGrow: 1, marginBottom: mUtils.wScale(37.5)}} bounces={false}>
           <Text style={styles.screenTitleText}>Home</Text>
           {data ? (
