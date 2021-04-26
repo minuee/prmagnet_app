@@ -115,7 +115,7 @@ class DigitalSRDetailScreen extends PureComponent {
                     <Text style={{...styles.right}}>{mUtils.numberWithCommas(item.price)}원</Text>
                   </View>
                   <View style={styles.layout}>
-                    <Text style={styles.left}>In</Text>
+                    <Text style={styles.left}>샘플 입고</Text>
                     <FastImage resizeMode={'contain'} style={styles.checkImg} source={item.in_yn ? checkImg : noCheckImg} />
                   </View>
 
