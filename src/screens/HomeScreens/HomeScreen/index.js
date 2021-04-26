@@ -35,7 +35,7 @@ class HomeScreen extends PureComponent {
       <View style={{flex: _.get(data, userType === 'M' ? 'cnfirm_request' : 'new_request', []).length === 0 ? 1 : 0}}>
         <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20)}}>
           <Text style={styles.new}>
-            {userType === 'M' ? 'Confirmed' : 'New'} <Text style={{fontFamily: 'Roboto-Medium'}}>Requests : </Text>
+            {userType === 'M' ? 'Confirmed' : 'New'} <Text style={{fontFamily: 'Roboto-Medium'}}>Sample Requests : </Text>
             <Text style={{fontFamily: 'Roboto-Bold', color: '#7ea1b2'}}>
               {userType === 'B' ? data.new_request_total_count : data.cnfirm_request_total_count}
             </Text>
@@ -43,7 +43,7 @@ class HomeScreen extends PureComponent {
           <TouchableOpacity
             style={styles.layout}
             onPress={() => {
-              this.pushTo('HomeDetailScreen', {type: true, title: userType === 'M' ? 'Confirmed Requests' : 'New Requests'})
+              this.pushTo('HomeDetailScreen', {type: true, title: userType === 'M' ? 'Confirmed Requests' : 'New Sample Requests'})
             }}
           >
             <Text style={styles.more}>More</Text>

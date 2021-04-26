@@ -112,7 +112,7 @@ class DigitalSRDetailScreen extends PureComponent {
                   </View>
                   <View style={styles.layout}>
                     <Text style={styles.left}>Price</Text>
-                    <Text style={{...styles.right}}>{mUtils.numberWithCommas(item.price)}</Text>
+                    <Text style={{...styles.right}}>{mUtils.numberWithCommas(item.price)}원</Text>
                   </View>
                   <View style={styles.layout}>
                     <Text style={styles.left}>In</Text>
@@ -126,7 +126,7 @@ class DigitalSRDetailScreen extends PureComponent {
                   <View style={{...styles.layout1, marginTop: mUtils.wScale(6), marginBottom: mUtils.wScale(13)}}>
                     <Text style={styles.desc}>{item.caption_english}</Text>
                   </View>
-                  <Text style={styles.left}>Etc</Text>
+                  <Text style={styles.left}>기타 사항</Text>
                   <View style={{...styles.layout2, marginTop: mUtils.wScale(10), marginBottom: mUtils.wScale(30)}}>
                     <Text style={styles.desc}>{item.etc}</Text>
                   </View>
