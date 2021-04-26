@@ -11,6 +11,9 @@ import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
 import styles from './styles'
+import FastImage from 'react-native-fast-image'
+
+const logoImg = require('../../../images/app_icon1.png')
 
 class LoginScreen extends PureComponent {
   constructor(props) {
@@ -78,7 +81,10 @@ class LoginScreen extends PureComponent {
     return (
       <KeyboardAvoidingView behavior={mConst.bIos ? 'padding' : null} style={{flex: 1}}>
         <SafeAreaView style={styles.container}>
-          <Text style={styles.screenTitleText}>로그인</Text>
+          <View style={styles.screenTitleView}>
+            <FastImage resizeMode={'contain'} style={styles.logoImg} source={logoImg} />
+            <Text style={styles.screenTitleText}>로그인</Text>
+          </View>
           {/* <PushHeader onPress={this.pop} /> */}
           <View style={styles.upperWrapper}>
             <Text style={styles.inputTitleText}>이메일</Text>

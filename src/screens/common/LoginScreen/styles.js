@@ -11,12 +11,21 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: mConst.white,
   },
+  logoImg: {
+    width: mUtils.wScale(100),
+    height: mUtils.wScale(100),
+  },
   screenTitleText: {
     fontSize: 24,
     fontWeight: 'bold',
     paddingTop: mUtils.wScale(30),
     paddingHorizontal: mUtils.wScale(20),
     paddingBottom: mUtils.wScale(10),
+  },
+  screenTitleView: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    marginTop: mUtils.wScale(60),
   },
   upperWrapper: {
     paddingHorizontal: mUtils.wScale(20),
