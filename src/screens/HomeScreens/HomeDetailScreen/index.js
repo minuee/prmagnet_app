@@ -115,9 +115,16 @@ class HomeDetailScreen extends PureComponent {
   }
 
   renderItem = ({item}) => {
-    const {type} = this.props.route.params
+    const {type, title} = this.props.route.params
+    const userType = mConst.getUserType()
     return (
-      <View style={styles.layout3}>
+      <TouchableOpacity
+        onPress={() => {
+          this.pushTo('SampleRequestsDetailScreen', {no: item.req_no})
+        }}
+        disabled={userType === 'M' && title === 'Confirmed Requests' ? false : true}
+        style={styles.layout3}
+      >
         <FastImage
           resizeMode={'contain'}
           style={styles.brandImg}
@@ -137,7 +144,7 @@ class HomeDetailScreen extends PureComponent {
         ) : (
           <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>{item.brand_nm}</Text>
         )}
-      </View>
+      </TouchableOpacity>
     )
   }
 

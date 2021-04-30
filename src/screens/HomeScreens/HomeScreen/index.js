@@ -63,7 +63,14 @@ class HomeScreen extends PureComponent {
           {_.get(data, userType === 'M' ? 'cnfirm_request' : 'new_request', []).length > 0 ? (
             _.get(data, userType === 'M' ? 'cnfirm_request' : 'new_request', []).map((item, index) => {
               return (
-                <View key={index} style={styles.layout3}>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.pushTo('SampleRequestsDetailScreen', {no: item.req_no})
+                  }}
+                  disabled={userType === 'M' ? false : true}
+                  key={index}
+                  style={styles.layout3}
+                >
                   <FastImage
                     resizeMode={'contain'}
                     style={styles.brandImg}
@@ -82,7 +89,7 @@ class HomeScreen extends PureComponent {
                   ) : (
                     <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>{item.brand_nm}</Text>
                   )}
-                </View>
+                </TouchableOpacity>
               )
             })
           ) : (
