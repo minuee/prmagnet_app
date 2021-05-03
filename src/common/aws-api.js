@@ -530,16 +530,12 @@ const API = {
     }
     return Api.put(apiName, path, myInit)
   },
-  getShare: ({lookbook_no, lookbook_nm}) => {
+  getShare: ({lookbook_no}) => {
     console.log('>>>', lookbook_no)
     const apiName = v1Api
     const path = `/brand/lookbook/${lookbook_no}/share-uuid`
     console.log('???', path)
-    const init = {
-      queryStringParameters: {
-        lookbook_nm: lookbook_nm,
-      },
-    }
+    const init = {}
     return Api.get(apiName, path, init)
   },
   getLookBookDetail: ({lookbook_no, page, limit}) => {
@@ -744,6 +740,12 @@ const API = {
   getSRDetail: showroom_no => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/showroom/${showroom_no}`
+    const init = {}
+    return Api.get(apiName, path, init)
+  },
+  getLookBookSRDetail: (lookbook_no, showroom_no) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/lookbook-showroom/${lookbook_no}/${showroom_no}`
     const init = {}
     return Api.get(apiName, path, init)
   },

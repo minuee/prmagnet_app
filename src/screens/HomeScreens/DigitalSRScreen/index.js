@@ -286,7 +286,7 @@ class DigitalSRScreen extends PureComponent {
       <View style={{width: '49%', height: mUtils.wScale(310)}}>
         <TouchableOpacity
           onPress={() => {
-            selectOnOff ? this.selected(item) : this.pushTo('DigitalSRDetailScreen', {no: item.showroom_no})
+            selectOnOff ? this.selected(item) : this.pushTo('DigitalSRDetailScreen', {no: item.showroom_no, type: 'digital'})
           }}
           activeOpacity={0.5}
           style={{width: '100%', height: mUtils.wScale(275)}}

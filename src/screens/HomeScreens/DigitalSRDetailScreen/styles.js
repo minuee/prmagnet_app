@@ -30,6 +30,10 @@ export default StyleSheet.create({
     borderWidth: 0.5,
     padding: mUtils.wScale(5),
   },
+  layout3: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   emptyBar: {
     width: '100%',
     height: 1,
@@ -77,5 +81,67 @@ export default StyleSheet.create({
     width: mUtils.wScale(45),
     marginLeft: 0,
     marginRight: 0,
+  },
+  shareImg: {
+    width: mUtils.wScale(20),
+    height: mUtils.wScale(20),
+  },
+  shareTouch: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    zIndex: 1,
+  },
+  modalView: {
+    width: '100%',
+    backgroundColor: 'white',
+    paddingTop: mUtils.wScale(20),
+    paddingBottom: mUtils.wScale(60),
+    paddingHorizontal: mUtils.wScale(20),
+    alignItems: 'center',
+  },
+  closeImg: {
+    width: mUtils.wScale(18),
+    height: mUtils.wScale(18),
+  },
+  urlBox: {
+    width: mUtils.wScale(300),
+    borderRadius: 1.3,
+    backgroundColor: '#f6f6f6',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: mUtils.wScale(4),
+  },
+  urlButton: {
+    borderRadius: 1.3,
+    backgroundColor: '#7ea1b2',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: mUtils.wScale(5),
+    paddingHorizontal: mUtils.wScale(10),
+    paddingVertical: mUtils.wScale(5),
+  },
+  buttonText: {
+    fontFamily: 'NotoSansKR-Bold',
+    fontSize: mUtils.wScale(12),
+    textAlign: 'center',
+    color: '#ffffff',
+  },
+  urlText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: mUtils.wScale(16),
+    textAlign: 'center',
+    color: '#000000',
+  },
+  shareText: {
+    fontFamily: 'Roboto-Bold',
+    fontSize: mUtils.wScale(20),
+    textAlign: 'center',
+    color: '#000000',
+    marginBottom: mUtils.wScale(14),
+    marginTop: mUtils.wScale(2),
+  },
+  closeButton: {
+    alignSelf: 'flex-end',
   },
 })

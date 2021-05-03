@@ -3,6 +3,8 @@ import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity, Pressable, S
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import _ from 'lodash'
+import Modal from 'react-native-modal'
+import Clipboard from '@react-native-clipboard/clipboard'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -14,6 +16,7 @@ import API from '../../../common/aws-api'
 
 const modelImg = require('../../../images/sample/model_1.png')
 const newImg = require('../../../images/navi/new_1.png')
+const closeImg = require('../../../images/navi/close_2.png')
 
 class LookBookDetailScreen extends PureComponent {
   constructor(props) {
@@ -25,24 +28,17 @@ class LookBookDetailScreen extends PureComponent {
       page: 1,
       limit: 10,
       share_uuid: '',
+      link: false,
     }
   }
 
-  share = async () => {
-    const {brandTitle, share_uuid} = this.state
-    Share.share(
-      {
-        message: share_uuid,
-        url: share_uuid,
-        title: brandTitle,
-      },
-      {
-        // Android only:
-        dialogTitle: 'Share BAM goodness',
-        // iOS only:
-        excludedActivityTypes: ['com.apple.UIKit.activity.PostToTwitter'],
-      }
-    )
+  copyToClipboard = () => {
+    const {share_uuid} = this.state
+    Clipboard.setString(` https://www.prmagnet.co.kr/share-lookbook/${share_uuid}`)
+    this.setState({link: false})
+    setTimeout(() => {
+      this.alert('', '복사 완료')
+    }, 500)
   }
 
   getLookBookDetail = async () => {
@@ -64,7 +60,7 @@ class LookBookDetailScreen extends PureComponent {
   getShare = async () => {
     const {lookbook_nm, lookbook_no} = this.props.route.params
     try {
-      let response = await API.getShare({lookbook_no: lookbook_no, lookbook_nm: lookbook_nm})
+      let response = await API.getShare({lookbook_no: lookbook_no})
       console.log('getShare>>>', response)
       if (response.success) {
         this.setState({...this.state, share_uuid: response.share_uuid})
@@ -89,10 +85,15 @@ class LookBookDetailScreen extends PureComponent {
 
   renderItem = ({item}) => {
     console.log('????', item)
+    const {lookbook_no} = this.props.route.params
     return (
       <View style={{width: '49%', height: mUtils.wScale(310)}}>
         <View style={{width: '100%', height: mUtils.wScale(275)}}>
-          <Pressable>
+          <Pressable
+            onPressOut={() => {
+              this.pushTo('DigitalSRDetailScreen', {no: item.showroom_no, lookNo: lookbook_no, type: 'lookbook'})
+            }}
+          >
             {({pressed}) => (
               <FastImage resizeMode={'cover'} style={styles.modelImg} source={{uri: item.image_url}}>
                 {pressed ? (
@@ -124,7 +125,7 @@ class LookBookDetailScreen extends PureComponent {
   }
 
   render() {
-    const {list, brandTitle} = this.state
+    const {list, brandTitle, link, share_uuid} = this.state
     const {user} = this.props
     return (
       <SafeAreaView style={styles.container}>
@@ -133,7 +134,7 @@ class LookBookDetailScreen extends PureComponent {
           <TouchableOpacity
             style={styles.smallBox}
             onPress={() => {
-              this.share()
+              this.setState({link: true})
             }}
           >
             <Text style={styles.rightSmall}>Share</Text>
@@ -152,6 +153,34 @@ class LookBookDetailScreen extends PureComponent {
             showsVerticalScrollIndicator={false}
           />
         </View>
+        <Modal isVisible={link} style={{margin: 0, padding: 0, alignItems: 'flex-end', justifyContent: 'flex-end'}}>
+          <View style={styles.modalView}>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => {
+                this.setState({link: false})
+              }}
+            >
+              <FastImage style={styles.closeImg} resizeMode={'contain'} source={closeImg} />
+            </TouchableOpacity>
+            <Text style={styles.shareText}>Share</Text>
+            <TouchableOpacity
+              style={styles.layout3}
+              onPress={() => {
+                this.copyToClipboard()
+              }}
+            >
+              <View style={styles.urlBox}>
+                <Text style={styles.urlText} numberOfLines={1}>
+                  https://www.prmagnet.co.kr/share-lookbook/{share_uuid}
+                </Text>
+              </View>
+              <View style={styles.urlButton}>
+                <Text style={styles.buttonText}>링크복사</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </Modal>
       </SafeAreaView>
     )
   }

@@ -4,6 +4,8 @@ import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import _ from 'lodash'
 import Swiper from 'react-native-swiper'
+import Modal from 'react-native-modal'
+import Clipboard from '@react-native-clipboard/clipboard'
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -15,13 +17,25 @@ import Loading from '../../common/Loading'
 
 const noCheckImg = require('../../../images/navi/no_check_1.png')
 const checkImg = require('../../../images/navi/check_1.png')
+const shareImg = require('../../../images/navi/share_1.png')
+const closeImg = require('../../../images/navi/close_2.png')
 
 class DigitalSRDetailScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
-    this.state = {data: ''}
+    this.state = {data: '', link: false}
   }
+
+  copyToClipboard = () => {
+    const {share_uuid} = this.state
+    Clipboard.setString(` https://www.prmagnet.co.kr/share-lookbook/${share_uuid}`)
+    this.setState({link: false})
+    setTimeout(() => {
+      this.alert('', '복사 완료')
+    }, 500)
+  }
+
   getSRDetail = async () => {
     const {no} = this.props.route.params
     try {
@@ -30,6 +44,30 @@ class DigitalSRDetailScreen extends PureComponent {
       this.setState({data: response})
     } catch (error) {
       console.log('getSRDetail>>>', error)
+    }
+  }
+
+  getLookBookSRDetail = async () => {
+    const {no, lookNo} = this.props.route.params
+    try {
+      let response = await API.getLookBookSRDetail(lookNo, no)
+      console.log('getSRDetail>>>', JSON.stringify(response))
+      this.setState({data: response})
+    } catch (error) {
+      console.log('getSRDetail>>>', error)
+    }
+  }
+
+  getShare = async () => {
+    const {no, lookNo} = this.props.route.params
+    try {
+      let response = await API.getShare({lookbook_no: lookNo})
+      console.log('getShare>>>', response)
+      if (response.success) {
+        this.setState({...this.state, share_uuid: response.share_uuid})
+      }
+    } catch (error) {
+      console.log('getShare>>>', error)
     }
   }
 
@@ -42,41 +80,57 @@ class DigitalSRDetailScreen extends PureComponent {
   }
 
   handleOnFocus = () => {
-    this.getSRDetail()
+    const {type} = this.props.route.params
+
+    type !== 'digital' ? (this.getLookBookSRDetail(), this.getShare()) : this.getSRDetail()
   }
 
   render() {
-    const {data} = this.state
+    const {data, link, share_uuid} = this.state
+    const {type} = this.props.route.params
     return data ? (
       <SafeAreaView style={styles.container}>
         <ScrollView>
+          {type !== 'digital' && (
+            <TouchableOpacity
+              style={styles.shareTouch}
+              onPress={() => {
+                this.setState({link: true})
+              }}
+            >
+              <FastImage style={styles.shareImg} resizeMode={'contain'} source={shareImg} />
+            </TouchableOpacity>
+          )}
+
           {data.sample_list.map((item, index) => {
             return (
               <React.Fragment key={index}>
-                <Swiper
-                  loop={false}
-                  height={mUtils.wScale(500)}
-                  style={{height: mUtils.wScale(500), flex: 0}}
-                  containerStyle={{
-                    height: mUtils.wScale(500),
-                    flex: 0,
-                  }}
-                  activeDotColor={mConst.black}
-                  dotColor={mConst.white}
-                  dotStyle={styles.swipeDot}
-                  activeDotStyle={styles.swipeActiveDot}
-                >
-                  {item.sample_image_list.map((item, index) => {
-                    return (
-                      <FastImage
-                        key={index}
-                        resizeMode={'contain'}
-                        style={{width: '100%', height: mUtils.wScale(500)}}
-                        source={{uri: item.full_url}}
-                      />
-                    )
-                  })}
-                </Swiper>
+                <View>
+                  <Swiper
+                    loop={false}
+                    height={mUtils.wScale(500)}
+                    style={{height: mUtils.wScale(500), flex: 0}}
+                    containerStyle={{
+                      height: mUtils.wScale(500),
+                      flex: 0,
+                    }}
+                    activeDotColor={mConst.black}
+                    dotColor={mConst.white}
+                    dotStyle={styles.swipeDot}
+                    activeDotStyle={styles.swipeActiveDot}
+                  >
+                    {item.sample_image_list.map((item, index) => {
+                      return (
+                        <FastImage
+                          key={index}
+                          resizeMode={'contain'}
+                          style={{width: '100%', height: mUtils.wScale(500)}}
+                          source={{uri: item.full_url}}
+                        />
+                      )
+                    })}
+                  </Swiper>
+                </View>
 
                 <View style={{paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(25)}}>
                   {index === 0 ? <Text style={styles.title}>{data.showroom_nm}</Text> : null}
@@ -135,6 +189,34 @@ class DigitalSRDetailScreen extends PureComponent {
             )
           })}
         </ScrollView>
+        <Modal isVisible={link} style={{margin: 0, padding: 0, alignItems: 'flex-end', justifyContent: 'flex-end'}}>
+          <View style={styles.modalView}>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => {
+                this.setState({link: false})
+              }}
+            >
+              <FastImage style={styles.closeImg} resizeMode={'contain'} source={closeImg} />
+            </TouchableOpacity>
+            <Text style={styles.shareText}>Share</Text>
+            <TouchableOpacity
+              style={styles.layout3}
+              onPress={() => {
+                this.copyToClipboard()
+              }}
+            >
+              <View style={styles.urlBox}>
+                <Text style={styles.urlText} numberOfLines={1}>
+                  https://www.prmagnet.co.kr/share-lookbook/{share_uuid}
+                </Text>
+              </View>
+              <View style={styles.urlButton}>
+                <Text style={styles.buttonText}>링크복사</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </Modal>
       </SafeAreaView>
     ) : (
       <Loading />
