@@ -12,8 +12,8 @@ export default StyleSheet.create({
     backgroundColor: mConst.white,
   },
   logoImg: {
-    width: mUtils.wScale(100),
-    height: mUtils.wScale(100),
+    width: mUtils.wScale(113.5),
+    height: mUtils.wScale(77.5),
   },
   screenTitleText: {
     fontSize: 24,
@@ -25,7 +25,8 @@ export default StyleSheet.create({
   screenTitleView: {
     alignSelf: 'center',
     alignItems: 'center',
-    marginTop: mUtils.wScale(60),
+    marginTop: mUtils.wScale(80),
+    marginBottom: mUtils.wScale(60),
   },
   upperWrapper: {
     paddingHorizontal: mUtils.wScale(20),
@@ -33,7 +34,6 @@ export default StyleSheet.create({
   inputTitleText: {
     fontSize: 12,
     color: mConst.darkGray,
-    marginTop: mUtils.wScale(30),
   },
   inputTextWrapper: {
     height: mUtils.wScale(40),

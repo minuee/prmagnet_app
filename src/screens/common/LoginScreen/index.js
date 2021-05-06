@@ -13,7 +13,7 @@ import Text from '../../common/Text'
 import styles from './styles'
 import FastImage from 'react-native-fast-image'
 
-const logoImg = require('../../../images/app_icon1.png')
+const logoImg = require('../../../images/logo_2.png')
 
 class LoginScreen extends PureComponent {
   constructor(props) {
@@ -83,7 +83,6 @@ class LoginScreen extends PureComponent {
         <SafeAreaView style={styles.container}>
           <View style={styles.screenTitleView}>
             <FastImage resizeMode={'contain'} style={styles.logoImg} source={logoImg} />
-            <Text style={styles.screenTitleText}>로그인</Text>
           </View>
           {/* <PushHeader onPress={this.pop} /> */}
           <View style={styles.upperWrapper}>
