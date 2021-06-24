@@ -13,16 +13,51 @@ import styles from './styles'
 import API from '../../../common/aws-api'
 import Loading from '../../common/Loading'
 
-const getMobileHtml = contents => `
-<!DOCTYPE html>
+const getMobileHtml = contents => `<!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PRMagnet 이용약관</title>
-  </head>
-<body style="margin: 0; padding: 2em">${contents}
+<head>
+  <meta charset="utf-8" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
+  <title>PRMagnet 이용약관</title>
+  <style type="text/css">
+    * {
+      margin: 0;
+      padding: 0;
+      letter-spacing: -0.5px;
+      line-height: 1.6;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+        "Helvetica", "Arial", sans-serif !important;
+    }
+    body {
+      margin: 0;
+      padding: 15px;
+      font-size: 14px;
+      -webkit-text-size-adjust: none;
+    }
+    ul,
+    li {
+      list-style: none;
+    }
+    table {
+      border-spacing: 0;
+      padding: 0;
+      border: 0;
+      border-collapse: collapse;
+    }
+    th,
+    td {
+      border: solid 1px #000000;
+      padding: 10px;
+      margin: 0;
+    }
+  </style>
+</head>
+<body style="margin: 0; padding: 2em">
+${contents}
 </body>
 </html>
 `
