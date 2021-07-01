@@ -38,7 +38,7 @@ export default class ColorGroup extends PureComponent {
                   <View style={styles.colorCircle(item[0])} />
                   <Text style={styles.colorText}>{item[1]}</Text>
                 </View>
-                {selectedItems.includes(item) && <FastImage source={selectedImage} style={styles.selectedImage} />}
+                {selectedItems.includes(item[0]) && <FastImage source={selectedImage} style={styles.selectedImage} />}
               </Row>
             </TouchableOpacity>
           )
