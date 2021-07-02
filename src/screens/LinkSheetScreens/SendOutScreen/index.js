@@ -62,7 +62,7 @@ class SendOutScreen extends PureComponent {
       console.log('Send Out 스케쥴 상세 조회 실패', error)
     }
   }
-  handleLongPressPhone = (name, phone) => {
+  handlePressPhone = (name, phone) => {
     this.setState({isvisible: {open: true, name, phone}})
   }
   handleCheckItem = (name, roomName, sampleName, sampleNo) => {
@@ -223,7 +223,8 @@ class SendOutScreen extends PureComponent {
                           checked={checkedList.includes(subItem.sample_no) || subItem.check_yn || allChecked}
                           name={fromName}
                           phone={fromPhone}
-                          onLongPress={() => null}
+                          onPress={() => null}
+                          onPressPhone={() => this.handlePressPhone(fromName, fromPhone)}
                           onSwipeCheck={() => this.handleCheckItem(toName, roomName, subItem.category, subItem.sample_no)}
                           color={mConst.getUserType() === 'B' ? '#e1c668' : '#d78979'}
                         />
@@ -239,8 +240,8 @@ class SendOutScreen extends PureComponent {
                           checked={checkedList.includes(subItem.sample_no) || subItem.check_yn || allChecked}
                           name={toName}
                           phone={toPhone}
-                          onLongPress={() => null}
-                          onLongPressPhone={() => this.handleLongPressPhone(toName, toPhone)}
+                          onPress={() => null}
+                          onPressPhone={() => this.handlePressPhone(toName, toPhone)}
                           onSwipeCheck={() => this.handleCheckItem(toName, roomName, subItem.category, subItem.sample_no)}
                           color={mConst.getUserType() === 'B' ? '#7ea1b2' : '#b8c18c'}
                         />

@@ -62,7 +62,7 @@ class PickupsScreen extends PureComponent {
       console.log('픽업 스케쥴 상세 조회 실패', error)
     }
   }
-  handleLongPress = (name, sampleNo) => {
+  handlePress = (name, sampleNo) => {
     const {data} = this.state
     console.log('###reqNo:', _.get(data, 'req_no'))
     const sendPush = async () => {
@@ -76,7 +76,7 @@ class PickupsScreen extends PureComponent {
     }
     this.alert('상품 미수령 알림', `'${name}'님께 상품미수령 알림을 보내시겠습니까?`, [{onPress: sendPush}, {}])
   }
-  handleLongPressPhone = (name, phone) => {
+  handlePressPhone = (name, phone) => {
     this.setState({isvisible: {open: true, name, phone}})
   }
   handleCheckItem = (name, sampleName, sampleNo) => {
@@ -218,8 +218,8 @@ class PickupsScreen extends PureComponent {
                           checked={checkedList.includes(subItem.sample_no) || subItem.check_yn || allChecked}
                           name={fromName}
                           phone={fromPhone}
-                          onLongPress={() => this.handleLongPress(fromName, subItem.sample_no)}
-                          onLongPressPhone={() => this.handleLongPressPhone(fromName, fromPhone)}
+                          onPress={() => this.handlePress(fromName, subItem.sample_no)}
+                          onPressPhone={() => this.handlePressPhone(fromName, fromPhone)}
                           onSwipeCheck={() => this.handleCheckItem(fromName, subItem.category, subItem.sample_no)}
                           color={mConst.bgYellow}
                         />
@@ -228,7 +228,16 @@ class PickupsScreen extends PureComponent {
                   </Col>
                   <Col style={styles.col(rowSize * 2)} size={6}>
                     {_.map(samples, (subItem, subIndex) => {
-                      return <LinkSheetUnit readOnly key={subIndex} name={toName} phone={toPhone} color={mConst.bgOrange} />
+                      return (
+                        <LinkSheetUnit
+                          readOnly
+                          key={subIndex}
+                          name={toName}
+                          phone={toPhone}
+                          onPressPhone={() => this.handlePressPhone(toName, toPhone)}
+                          color={mConst.bgOrange}
+                        />
+                      )
                     })}
                   </Col>
                 </Row>

@@ -62,7 +62,7 @@ class ReturnScreen extends PureComponent {
       console.log('Return 스케쥴 상세 조회 실패', error)
     }
   }
-  handleLongPress = (name, sampleNo) => {
+  handlePress = (name, sampleNo) => {
     const {data} = this.state
     console.log('###reqNo:', _.get(data, 'req_no'))
     const sendPush = async () => {
@@ -76,7 +76,7 @@ class ReturnScreen extends PureComponent {
     }
     this.alert('상품 미수령 알림', `'${name}'님께 상품미수령 알림을 보내시겠습니까?`, [{onPress: sendPush}, {}])
   }
-  handleLongPressPhone = (name, phone) => {
+  handlePressPhone = (name, phone) => {
     this.setState({isvisible: {open: true, name, phone}})
   }
   handleCheckItem = (name, sampleName, sampleNo) => {
@@ -216,7 +216,16 @@ class ReturnScreen extends PureComponent {
                   </Col>
                   <Col style={styles.col(rowSize * 2)} size={6}>
                     {_.map(samples, (subItem, subIndex) => {
-                      return <LinkSheetUnit readOnly key={subIndex} name={fromName} phone={fromPhone} color={mConst.bgBlue} />
+                      return (
+                        <LinkSheetUnit
+                          readOnly
+                          key={subIndex}
+                          name={fromName}
+                          phone={fromPhone}
+                          onPressPhone={() => this.handlePressPhone(fromName, fromPhone)}
+                          color={mConst.bgBlue}
+                        />
+                      )
                     })}
                   </Col>
                   <Col style={styles.col(rowSize * 2)} size={6}>
@@ -227,8 +236,8 @@ class ReturnScreen extends PureComponent {
                           checked={checkedList.includes(subItem.sample_no) || subItem.check_yn || allChecked}
                           name={toName}
                           phone={toPhone}
-                          onLongPress={() => this.handleLongPress(toName, subItem.sample_no)}
-                          onLongPressPhone={() => this.handleLongPressPhone(toName, toPhone)}
+                          onPress={() => this.handlePress(toName, subItem.sample_no)}
+                          onPressPhone={() => this.handlePressPhone(toName, toPhone)}
                           onSwipeCheck={() => this.handleCheckItem(toName, subItem.category, subItem.sample_no)}
                           color={mConst.bgKhaki}
                         />

@@ -24,7 +24,7 @@ export default class LinkSheetUnit extends PureComponent {
   }
   render() {
     const {swiped} = this.state
-    const {name, phone, onLongPress, onLongPressPhone, onSwipeCheck, color, checked, readOnly} = this.props
+    const {name, phone, onPress, onPressPhone, onSwipeCheck, color, checked, readOnly} = this.props
     if (readOnly) {
       return (
         <>
@@ -33,9 +33,13 @@ export default class LinkSheetUnit extends PureComponent {
               {name}
             </Text>
           </Row>
-          <Row style={styles.row(mConst.white)}>
-            <Text style={styles.sText(mConst.darkGray)}>{phone}</Text>
-          </Row>
+          <Pressable onPress={onPressPhone}>
+            {({pressed}) => (
+              <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : mConst.white)}>
+                <Text style={styles.sText(mConst.darkGray)}>{phone}</Text>
+              </Row>
+            )}
+          </Pressable>
         </>
       )
     }
@@ -56,7 +60,7 @@ export default class LinkSheetUnit extends PureComponent {
               </Row>
             </TouchableWithoutFeedback>
           ) : (
-            <Pressable onLongPress={onLongPress}>
+            <Pressable onPress={onPress}>
               {({pressed}) => (
                 <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : color)}>
                   <Text style={styles.sText()} numberOfLines={1}>
@@ -67,7 +71,7 @@ export default class LinkSheetUnit extends PureComponent {
             </Pressable>
           )}
         </SwiperUnit>
-        <Pressable onLongPress={onLongPressPhone}>
+        <Pressable onPress={onPressPhone}>
           {({pressed}) => (
             <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : mConst.white)}>
               <Text style={styles.sText(mConst.darkGray)}>{phone}</Text>
