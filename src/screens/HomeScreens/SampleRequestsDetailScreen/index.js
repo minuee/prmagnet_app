@@ -336,7 +336,7 @@ class SampleRequestsDetailScreen extends PureComponent {
               <View style={{width: '65%'}}>
                 {data.celeb_list.map((item, index) => {
                   return (
-                    <View style={{...styles.box2}} key={index}>
+                    <View key={index} style={{...styles.box2}}>
                       <TextInput
                         style={{...styles.inputBox1}}
                         placeholder={'이름'}
@@ -369,7 +369,7 @@ class SampleRequestsDetailScreen extends PureComponent {
               <View style={{width: '65%'}}>
                 {data.model_list.map((item, index) => {
                   return (
-                    <View style={{...styles.box2}}>
+                    <View key={index} style={{...styles.box2}}>
                       <TextInput
                         style={{...styles.inputBox1}}
                         placeholder={'이름'}
