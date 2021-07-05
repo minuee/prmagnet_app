@@ -104,8 +104,8 @@ export default StyleSheet.create({
     color,
   }),
   modelImage: {
-    width: mUtils.wScale(45),
-    height: mUtils.wScale((45 * 945) / 630),
+    width: mUtils.wScale(38),
+    height: mUtils.wScale((38 * 945) / 630),
   },
   checkWrapper: {
     justifyContent: 'center',
