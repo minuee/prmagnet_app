@@ -375,7 +375,7 @@ const utils = {
   },
   getCalendarMinDate() {
     const minDate = new Date()
-    minDate.setMonth(minDate.getMonth() - 1)
+    minDate.setMonth(minDate.getMonth() - 3)
     minDate.setDate(1)
     return minDate
   },
