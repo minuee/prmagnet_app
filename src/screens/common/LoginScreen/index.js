@@ -5,6 +5,7 @@ import {sha256} from 'react-native-sha256'
 import _ from 'lodash'
 
 import {actionLogin, actionUserType} from '../../../redux/actions'
+import CodePush from '../../common/CodePush'
 import API from '../../../common/aws-api'
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -172,6 +173,7 @@ class LoginScreen extends PureComponent {
           </View>
           {/* TODO 임시 테스트용 아이디 비번 설정 End--------------------------------------------------------- */}
         </SafeAreaView>
+        {(mConst.PRODUCTION || mConst.STAGE) && <CodePush />}
       </KeyboardAvoidingView>
     )
   }
