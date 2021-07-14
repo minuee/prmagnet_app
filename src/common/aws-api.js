@@ -954,6 +954,17 @@ const API = {
     }
     return Api.get(apiName, path, init)
   },
+  getBrandHoliday: ({year, brand_id}) => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/brand-holiday`
+    var init = {
+      queryStringParameters: {
+        year,
+        brand_id,
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
   getMagazineSchedular: ({min_date, max_date}) => {
     var apiName = v1Api
     var path = `${mConst.getApiPath()}/my-schedule-date`

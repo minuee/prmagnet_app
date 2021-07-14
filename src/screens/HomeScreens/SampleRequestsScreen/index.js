@@ -6,6 +6,7 @@ import Modal from 'react-native-modal'
 import Postcode from 'react-native-daum-postcode'
 import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-menu'
 import {Calendar, LocaleConfig} from 'react-native-calendars'
+import dayjs from 'dayjs'
 import moment from 'moment'
 import ModalDropdown from 'react-native-modal-dropdown'
 import _ from 'lodash'
@@ -71,6 +72,15 @@ const time = [
   '23',
 ]
 
+const convertHolidays = array => {
+  return array.reduce((obj, item) => {
+    return {
+      ...obj,
+      [item]: {textColor: 'red'},
+    }
+  }, {})
+}
+
 class SampleRequestsScreen extends PureComponent {
   constructor(props) {
     super(props)
@@ -102,6 +112,21 @@ class SampleRequestsScreen extends PureComponent {
       drop1: false,
       drop2: false,
       isvisible: false,
+      year: dayjs().format('YYYY'),
+      holidays: [],
+    }
+  }
+
+  getBrandHoliday = async (year, brand_id) => {
+    try {
+      const response = await API.getBrandHoliday({year, brand_id})
+      console.log('getBrandHoliday>>>>', JSON.stringify(response))
+      if (response.success) {
+        this.setState({holidays: _.get(response, 'list', []).map(d => dayjs.unix(d).format('YYYY-MM-DD'))})
+      }
+      // this.setState({data: response, start: params ? params.start : this.state.start, end: params ? params.end : this.state.end})
+    } catch (error) {
+      console.log('getBrandHoliday>>>>', error)
     }
   }
 
@@ -239,14 +264,67 @@ class SampleRequestsScreen extends PureComponent {
     }
   }
 
-  onDaySelect = day => {
-    const {drop, drop1, drop2} = this.state
+  onDaySelect = date => {
+    const {drop, drop1, drop2, holidays} = this.state
     if (drop) {
-      this.setState({shDate: day, drop: false})
+      this.setState({shDate: date, drop: false})
+      let pDt =
+        moment(date.timestamp).subtract({day: 1}).day() === 0
+          ? moment(date.timestamp).subtract({day: 3}).format('YYYY-MM-DD')
+          : moment(date.timestamp).subtract({day: 1}).day() === 6
+          ? moment(date.timestamp).subtract({day: 2}).format('YYYY-MM-DD')
+          : moment(date.timestamp).subtract({day: 1}).format('YYYY-MM-DD')
+      for (let i = 0; i < holidays.length; i++) {
+        holidays.find(
+          v =>
+            v === pDt &&
+            (pDt =
+              moment(pDt).subtract({day: 1}).day() === 0
+                ? moment(pDt).subtract({day: 3}).format('YYYY-MM-DD')
+                : moment(pDt).subtract({day: 1}).day() === 6
+                ? moment(pDt).subtract({day: 2}).format('YYYY-MM-DD')
+                : moment(pDt).subtract({day: 1}).format('YYYY-MM-DD'))
+        )
+      }
+
+      let rDt =
+        moment(date.timestamp).add({day: 1}).day() === 6
+          ? moment(date.timestamp).add({day: 3}).format('YYYY-MM-DD')
+          : moment(date.timestamp).add({day: 1}).day() === 0
+          ? moment(date.timestamp).add({day: 2}).format('YYYY-MM-DD')
+          : moment(date.timestamp).add({day: 1}).format('YYYY-MM-DD')
+      for (let i = 0; i < holidays.length; i++) {
+        holidays.find(
+          v =>
+            v === rDt &&
+            (rDt =
+              moment(rDt).add({day: 1}).day() === 6
+                ? moment(rDt).add({day: 3}).format('YYYY-MM-DD')
+                : moment(rDt).add({day: 1}).day() === 0
+                ? moment(rDt).add({day: 2}).format('YYYY-MM-DD')
+                : moment(rDt).add({day: 1}).format('YYYY-MM-DD'))
+        )
+      }
+      const pDtObj = moment(pDt)
+      const rDtObj = moment(rDt)
+      this.setState({
+        shDate: date,
+        drop: false,
+        pkDate: {
+          month: pDtObj.format('MM'),
+          day: pDtObj.format('DD'),
+          timestamp: pDtObj.unix(),
+        },
+        rtDate: {
+          month: rDtObj.format('MM'),
+          day: rDtObj.format('DD'),
+          timestamp: rDtObj.unix(),
+        },
+      })
     } else if (drop1) {
-      this.setState({pkDate: day, drop1: false})
+      this.setState({pkDate: date, drop1: false})
     } else if (drop2) {
-      this.setState({rtDate: day, drop2: false})
+      this.setState({rtDate: date, drop2: false})
     }
   }
 
@@ -314,12 +392,14 @@ class SampleRequestsScreen extends PureComponent {
   }
 
   componentDidMount() {
-    const {modelList, type, brandName} = this.props.route.params
+    const {modelList, type, brandName, brandId} = this.props.route.params
+    const {year} = this.state
     this.pushOption(brandName ? brandName : 'Sample Request')
     if (type) {
       this.setState({selected: modelList})
     }
     this.onFocus(this.handleOnFocus)
+    this.getBrandHoliday(year, brandId)
   }
   componentWillUnmount() {
     this.removeFocus()
@@ -360,6 +440,7 @@ class SampleRequestsScreen extends PureComponent {
       myPay,
       otherPay,
       isvisible,
+      holidays,
     } = this.state
     const {type} = this.props.route.params
     return defaultInfo ? (
@@ -523,6 +604,8 @@ class SampleRequestsScreen extends PureComponent {
                       //    selectedTextColor: '#ffffff',
                       //  },
                       //}}
+                      markingType={'period'}
+                      markedDates={convertHolidays(holidays)}
                     />
                   </View>
                 ) : null}
