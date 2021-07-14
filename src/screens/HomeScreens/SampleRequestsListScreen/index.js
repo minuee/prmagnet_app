@@ -118,7 +118,7 @@ class SampleRequestsListScreen extends PureComponent {
 
   renderItem = ({item, index}) => {
     return (
-      <>
+      <React.Fragment key={index}>
         <TouchableOpacity
           style={styles.layout3}
           onPress={() => {
@@ -127,47 +127,49 @@ class SampleRequestsListScreen extends PureComponent {
         >
           <View style={styles.layout4}>
             <Text style={styles.title}>{item.brand_nm}</Text>
-            <Menu>
-              <MenuTrigger
-                customStyles={{
-                  TriggerTouchableComponent: TouchableOpacity,
-                  triggerTouchable: {
-                    activeOpacity: 90,
-                    style: {
-                      flex: 1,
-                    },
-                  },
-                }}
-                style={styles.layout5}
-              >
-                <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImage1} />
-              </MenuTrigger>
-              <MenuOptions optionsContainerStyle={{marginTop: mUtils.wScale(35)}}>
-                <MenuOption
-                  style={{paddingTop: mUtils.wScale(17), paddingBottom: mUtils.wScale(12), paddingHorizontal: mUtils.wScale(15)}}
-                  onSelect={() => {
-                    this.pushTo('SampleRequestsScreen', {type: false, brandId: item.brand_id, no: item.req_no, brandName: item.brand_nm})
-                  }}
-                >
-                  <Text style={styles.delete}>Edit</Text>
-                </MenuOption>
-                <MenuOption
-                  style={{paddingTop: mUtils.wScale(12), paddingBottom: mUtils.wScale(17), paddingHorizontal: mUtils.wScale(15)}}
-                  onSelect={() => {
-                    this.alert('샘플요청 삭제', '선택하신 샘플을 삭제 하시겠습니까?', [
-                      {
-                        onPress: () => {
-                          this.deleteMyRequests(item.req_no, index)
-                        },
+            {item.editable === true && (
+              <Menu>
+                <MenuTrigger
+                  customStyles={{
+                    TriggerTouchableComponent: TouchableOpacity,
+                    triggerTouchable: {
+                      activeOpacity: 90,
+                      style: {
+                        flex: 1,
                       },
-                      {onPress: () => null},
-                    ])
+                    },
                   }}
+                  style={styles.layout5}
                 >
-                  <Text style={styles.delete}>Delete</Text>
-                </MenuOption>
-              </MenuOptions>
-            </Menu>
+                  <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImage1} />
+                </MenuTrigger>
+                <MenuOptions optionsContainerStyle={{marginTop: mUtils.wScale(35)}}>
+                  <MenuOption
+                    style={{paddingTop: mUtils.wScale(17), paddingBottom: mUtils.wScale(12), paddingHorizontal: mUtils.wScale(15)}}
+                    onSelect={() => {
+                      this.pushTo('SampleRequestsScreen', {type: false, brandId: item.brand_id, no: item.req_no, brandName: item.brand_nm})
+                    }}
+                  >
+                    <Text style={styles.delete}>Edit</Text>
+                  </MenuOption>
+                  <MenuOption
+                    style={{paddingTop: mUtils.wScale(12), paddingBottom: mUtils.wScale(17), paddingHorizontal: mUtils.wScale(15)}}
+                    onSelect={() => {
+                      this.alert('샘플요청 삭제', '선택하신 샘플을 삭제 하시겠습니까?', [
+                        {
+                          onPress: () => {
+                            this.deleteMyRequests(item.req_no, index)
+                          },
+                        },
+                        {onPress: () => null},
+                      ])
+                    }}
+                  >
+                    <Text style={styles.delete}>Delete</Text>
+                  </MenuOption>
+                </MenuOptions>
+              </Menu>
+            )}
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: mUtils.wScale(5)}}>
             <View>
@@ -188,7 +190,7 @@ class SampleRequestsListScreen extends PureComponent {
           </View>
         </TouchableOpacity>
         <View style={styles.emptyBar} />
-      </>
+      </React.Fragment>
     )
   }
 
