@@ -313,12 +313,12 @@ class SampleRequestsScreen extends PureComponent {
         pkDate: {
           month: pDtObj.format('MM'),
           day: pDtObj.format('DD'),
-          timestamp: pDtObj.unix(),
+          timestamp: pDtObj.valueOf(),
         },
         rtDate: {
           month: rDtObj.format('MM'),
           day: rDtObj.format('DD'),
-          timestamp: rDtObj.unix(),
+          timestamp: rDtObj.valueOf(),
         },
       })
     } else if (drop1) {
@@ -741,7 +741,7 @@ class SampleRequestsScreen extends PureComponent {
                 <View style={{width: '65%'}}>
                   {celebrity.map((item, index) => {
                     return (
-                      <View style={{...styles.box2}} key={index}>
+                      <View key={index} style={{...styles.box2}}>
                         <TextInput
                           style={{...styles.inputBox1, width: '70%'}}
                           placeholder={'이름'}
@@ -792,7 +792,7 @@ class SampleRequestsScreen extends PureComponent {
                 <View style={{width: '65%'}}>
                   {fashionModel.map((item, index) => {
                     return (
-                      <View style={{...styles.box2}}>
+                      <View key={index} style={{...styles.box2}}>
                         <TextInput
                           style={{...styles.inputBox1, width: '70%'}}
                           placeholder={'이름'}

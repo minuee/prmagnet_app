@@ -1,6 +1,5 @@
 import React, {PureComponent} from 'react'
 import {SafeAreaView, FlatList, View, TouchableOpacity} from 'react-native'
-import moment from 'moment'
 import _ from 'lodash'
 
 import mConst from '../../common/constants'
@@ -71,7 +70,7 @@ const Month = ({year, month, start, end, onDayPress}) => {
   return (
     <View>
       <Text style={{fontSize: 24, fontWeight: 'bold', margin: mUtils.wScale(20), marginTop: mUtils.wScale(25)}}>
-        {('0' + (new Date(year, month, 1).getMonth() + 1)).slice(-2)}
+        {year}.{('0' + (new Date(year, month, 1).getMonth() + 1)).slice(-2)}
       </Text>
       <FlatList data={monthDates} numColumns={7} renderItem={({item}) => renderDate(item)} keyExtractor={(item, index) => index.toString()} />
     </View>

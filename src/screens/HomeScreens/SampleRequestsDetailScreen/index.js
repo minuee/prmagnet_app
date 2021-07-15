@@ -203,7 +203,7 @@ class SampleRequestsDetailScreen extends PureComponent {
                 style={{width: '49%'}}
                 dropdownStyle={{width: '44%'}}
                 onSelect={(i, v) => this.setState({selectContact: v})}
-                options={defaultInfo.contact_info}
+                options={defaultInfo?.contact_info}
                 renderRow={item => (
                   <View style={styles.contactList}>
                     <Text style={styles.contactText}>{`${item.mgzn_user_nm}(${mUtils.allNumber(item.phone_no)})`}</Text>
