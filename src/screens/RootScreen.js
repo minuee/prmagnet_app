@@ -18,6 +18,7 @@ import LoginScreen from './common/LoginScreen'
 import HomeScreen from './HomeScreens/HomeScreen'
 import HomeDetailScreen from './HomeScreens/HomeDetailScreen'
 import SelectScheduleScreen from './HomeScreens/SelectScheduleScreen'
+import SelectBrandScreen from './HomeScreens/SelectBrandScreen'
 import ContactScreen from './HomeScreens/ContactScreen'
 import ContactDetailScreen from './HomeScreens/ContactDetailScreen'
 import NotificationScreen from './HomeScreens/NotificationScreen'
@@ -135,6 +136,7 @@ class RootScreen extends PureComponent {
         <MemberStack.Screen name="ContactScreen" component={ContactScreen} />
         <MemberStack.Screen name="ContactDetailScreen" component={ContactDetailScreen} />
         <MemberStack.Screen name="SelectScheduleScreen" component={SelectScheduleScreen} options={modalScreenOptions} />
+        <MemberStack.Screen name="SelectBrandScreen" component={SelectBrandScreen} options={modalScreenOptions} />
         <MemberStack.Screen name="FilterScreen" component={FilterScreen} />
         <MemberStack.Screen name="StartScreen" component={StartScreen} options={{headerShown: false}} />
       </MemberStack.Navigator>

@@ -351,14 +351,19 @@ class DigitalSRScreen extends PureComponent {
               <Text style={styles.mainTitle1}>Showroom</Text>
             </View>
             {userType === 'M' && (
-              <TouchableOpacity
-                style={{...styles.selectBox, backgroundColor: selectOnOff ? mConst.black : mConst.white}}
-                onPress={() => {
-                  this.setState({selectOnOff: !selectOnOff, select: []})
-                }}
-              >
-                <Text style={{...styles.selectText, color: selectOnOff ? mConst.white : mConst.black}}>Select</Text>
-              </TouchableOpacity>
+              <View style={styles.layout2}>
+                <TouchableOpacity
+                  style={{...styles.selectBox, backgroundColor: selectOnOff ? mConst.black : mConst.white, marginRight: mUtils.wScale(5)}}
+                  onPress={() => {
+                    this.setState({selectOnOff: !selectOnOff, select: []})
+                  }}
+                >
+                  <Text style={{...styles.selectText, color: selectOnOff ? mConst.white : mConst.black}}>Select</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{...styles.selectBox, backgroundColor: mConst.black}} onPress={() => this.pushTo('SelectBrandScreen')}>
+                  <Text style={{...styles.selectText, color: mConst.white}}>Brands</Text>
+                </TouchableOpacity>
+              </View>
             )}
           </View>
           <View style={{...styles.layout, marginTop: mUtils.wScale(10)}}>

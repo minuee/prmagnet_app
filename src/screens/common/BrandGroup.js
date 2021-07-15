@@ -225,6 +225,7 @@ const styles = StyleSheet.create({
     paddingLeft: mUtils.wScale(12),
   },
   layout: {
+    flex: 1,
     borderBottomWidth: 1,
     borderColor: mConst.borderGray,
   },
