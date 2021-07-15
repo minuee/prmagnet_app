@@ -311,13 +311,13 @@ class SampleRequestsScreen extends PureComponent {
         shDate: date,
         drop: false,
         pkDate: {
-          month: pDtObj.format('MM'),
-          day: pDtObj.format('DD'),
+          month: pDtObj.format('M'),
+          day: pDtObj.format('D'),
           timestamp: pDtObj.valueOf(),
         },
         rtDate: {
-          month: rDtObj.format('MM'),
-          day: rDtObj.format('DD'),
+          month: rDtObj.format('M'),
+          day: rDtObj.format('D'),
           timestamp: rDtObj.valueOf(),
         },
       })
@@ -356,18 +356,18 @@ class SampleRequestsScreen extends PureComponent {
           phone_no: response.contact_phone_no,
         },
         shDate: {
-          month: mUtils.getShowDate(response.shooting_date, 'MM'),
-          day: mUtils.getShowDate(response.shooting_date, 'DD'),
+          month: mUtils.getShowDate(response.shooting_date, 'M'),
+          day: mUtils.getShowDate(response.shooting_date, 'D'),
           timestamp: response.shooting_date * 1000,
         },
         pkDate: {
-          month: mUtils.getShowDate(response.pickup_date, 'MM'),
-          day: mUtils.getShowDate(response.pickup_date, 'DD'),
+          month: mUtils.getShowDate(response.pickup_date, 'M'),
+          day: mUtils.getShowDate(response.pickup_date, 'D'),
           timestamp: response.pickup_date * 1000,
         },
         rtDate: {
-          month: mUtils.getShowDate(response.returning_date, 'MM'),
-          day: mUtils.getShowDate(response.returning_date, 'DD'),
+          month: mUtils.getShowDate(response.returning_date, 'M'),
+          day: mUtils.getShowDate(response.returning_date, 'D'),
           timestamp: response.returning_date * 1000,
         },
         startTime: response.shooting_start_time,
