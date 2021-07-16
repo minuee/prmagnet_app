@@ -25,7 +25,6 @@ export default class BrandGroup extends PureComponent {
     super(props)
     this.state = {
       favoriteItems: [],
-      selectedItems: '',
       select: '1',
       searchText: '',
       searchResult: [],
@@ -59,12 +58,12 @@ export default class BrandGroup extends PureComponent {
   }
   toggleSelectItem = val => {
     console.log('@@@@@', val)
-    const {brand} = this.props
-    val !== this.state.selectedItems ? (this.setState({selectedItems: val}), brand(val)) : (this.setState({selectedItems: ''}), brand(''))
+    const {brandId, setBrand} = this.props
+    val !== brandId ? setBrand(val) : setBrand('')
   }
   render() {
-    const {favoriteItems, selectedItems, select} = this.state
-    const {data, search} = this.props
+    const {favoriteItems, select} = this.state
+    const {data, brandId} = this.props
     return (
       <View style={styles.layout}>
         <Row style={styles.top}>
@@ -72,7 +71,7 @@ export default class BrandGroup extends PureComponent {
             return (
               <TouchableOpacity
                 onPress={() => {
-                  this.setState({select: item.id, selectedItems: [], favoriteItems: []})
+                  this.setState({select: item.id, brandId: '', favoriteItems: []})
                 }}
                 key={index}
                 style={{...styles.layout1}}
@@ -95,7 +94,7 @@ export default class BrandGroup extends PureComponent {
                       </TouchableOpacity>
                       <Text style={styles.itemText}>{item.brand_nm}</Text>
                     </View>
-                    {selectedItems === item.brand_id && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
+                    {brandId === item.brand_id && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
                   </Row>
                 </TouchableOpacity>
               )
@@ -114,7 +113,7 @@ export default class BrandGroup extends PureComponent {
                           </TouchableOpacity>
                           <Text style={styles.itemText}>{item1.brand_nm}</Text>
                         </View>
-                        {selectedItems === item1.brand_id && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
+                        {brandId === item1.brand_id && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
                       </Row>
                     </TouchableOpacity>
                   )
@@ -156,7 +155,7 @@ export default class BrandGroup extends PureComponent {
                       </TouchableOpacity>
                       <Text style={styles.itemText}>{item}</Text>
                     </View>
-                    {selectedItems === item.brand_id && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
+                    {brandId === item.brand_id && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
                   </Row>
                 </TouchableOpacity>
               )
@@ -174,7 +173,7 @@ export default class BrandGroup extends PureComponent {
                         </TouchableOpacity>
                         <Text style={styles.itemText}>{item.brand_nm}</Text>
                       </View>
-                      {selectedItems === item.brand_id && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
+                      {brandId === item.brand_id && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
                     </Row>
                   </TouchableOpacity>
                 )

@@ -17,7 +17,7 @@ import styles from './styles'
 import API from '../../../common/aws-api'
 
 const genders = ['Women', 'Men', 'Unisex']
-const sections = ['Brand', 'Category', 'Color', 'Size', 'Sample', 'Still Life Image', 'Material']
+const sections = ['Category', 'Color', 'Size', 'Sample', 'Still Life Image', 'Material']
 const categories = [
   ['RTW', '아우터웨어', '탑 & 셔츠', '드레스', '팬츠', '스커트', '티셔츠 & 스웨트셔츠', '니트웨어', '언더웨어 & 스윔웨어', '액티브 웨어', '데님'],
   ['Bag', '탑 핸들 백', '토트 백', '숄더 백', '크로스바디 백', '벨트 백 & 백팩', '미니 백', '클러치 & 포트폴리오', '러기지 & 트레블 백'],
@@ -178,11 +178,11 @@ class FilterScreen extends PureComponent {
                   })}
                 </Col>
                 <Col size={65}>
-                  {section === 'Brand' && (
+                  {/* {section === 'Brand' && (
                     <Col>
                       <BrandGroup data={brands} search={this.searchResult} brand={this.selectBrand} />
                     </Col>
-                  )}
+                  )} */}
                   {['Availability', 'Size', 'Sample', 'Still Life Image'].includes(section) && <Text>"{section}" : 서비스 준비중입니다.</Text>}
                   {section === 'Category' && _.map(categories, (item, index) => <CategoryGroup key={index} data={item} />)}
                   {section === 'Color' && <ColorGroup data={colors} />}

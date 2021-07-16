@@ -16,7 +16,7 @@ class SelectBrandScreen extends PureComponent {
     super(props)
     cBind(this)
     this.state = {
-      selectBrand: '',
+      brandId: this.params.brandId,
       brands: [],
       search: [],
     }
@@ -24,9 +24,10 @@ class SelectBrandScreen extends PureComponent {
   componentDidMount() {
     this.modalOption('Brands')
     this.getBrandSearchCompanyAZ()
+    console.log('###SelectBrandScreen-brandId:', this.params.brandId)
   }
-  selectBrand = brand => {
-    this.setState({selectBrand: brand})
+  setBrand = brandId => {
+    this.setState({brandId})
   }
   searchResult = text => {
     this.setState({search: text})
@@ -35,19 +36,28 @@ class SelectBrandScreen extends PureComponent {
     try {
       let response = await API.getBrandSearchCompanyAZ()
       console.log('getBrandSearchCompanyAZ>>>', JSON.stringify(response))
-      this.setState({brands: response.list})
+      this.setState({brands: _.get(response, 'list', [])})
     } catch (error) {
       console.log('getBrandSearchCompanyAZ>>>', error)
       await API.postErrLog({error: JSON.stringify(error), desc: 'getBrandSearchCompanyAZError'})
     }
   }
+  handleReset = () => {
+    this.setState({brandId: ''})
+  }
+  handleConfirm = () => {
+    const {brandId} = this.state
+    const {setBrand} = this.params
+    brandId ? setBrand(brandId) : setBrand(this.params.brandId)
+    this.goBack()
+  }
   render() {
-    const {brands} = this.state
+    const {brandId, brands} = this.state
     return (
       <SafeAreaView style={styles.container}>
         <Grid>
           <Row style={styles.middle}>
-            <BrandGroup data={brands} search={this.searchResult} brand={this.selectBrand} />
+            <BrandGroup data={brands} brandId={brandId} setBrand={this.setBrand} />
           </Row>
           <Row style={styles.bottom}>
             <TouchableOpacity style={styles.leftButton} onPress={this.handleReset}>

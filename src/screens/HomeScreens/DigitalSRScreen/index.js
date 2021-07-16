@@ -55,14 +55,12 @@ class DigitalSRScreen extends PureComponent {
   }
 
   setFilter = list => {
-    this.setState(
-      {
-        brand_id: list.brand_id,
-      },
-      () => {
-        this.postDigitalSRReset()
-      }
-    )
+    // TODO 필터 설정 처리
+    // this.setState({brand_id: list.brand_id}, () => this.postDigitalSRReset())
+    this.postDigitalSRReset()
+  }
+  setBrand = brand_id => {
+    this.setState({brand_id}, () => this.postDigitalSRReset())
   }
 
   postFavShowroom = async no => {
@@ -336,11 +334,11 @@ class DigitalSRScreen extends PureComponent {
   }
 
   render() {
-    const {data} = this.state
+    const {data, brand_id} = this.state
     const {notice, inquiryNum, season_year, selectOnOff, isvisible, loading, select} = this.state
     const {user} = this.props
     const userType = mConst.getUserType()
-
+    console.log('###DigitalSRScreen-brand_id:', data.current_brand_info)
     return (
       <SafeAreaView style={styles.container}>
         <Header pushTo={this.pushTo} userType={userType} alarmSet={user.alarm} />
@@ -360,7 +358,10 @@ class DigitalSRScreen extends PureComponent {
                 >
                   <Text style={{...styles.selectText, color: selectOnOff ? mConst.white : mConst.black}}>Select</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{...styles.selectBox, backgroundColor: mConst.black}} onPress={() => this.pushTo('SelectBrandScreen')}>
+                <TouchableOpacity
+                  style={{...styles.selectBox, backgroundColor: mConst.black}}
+                  onPress={() => this.pushTo('SelectBrandScreen', {brandId: data.current_brand_info.brand_id, setBrand: this.setBrand})}
+                >
                   <Text style={{...styles.selectText, color: mConst.white}}>Brands</Text>
                 </TouchableOpacity>
               </View>
