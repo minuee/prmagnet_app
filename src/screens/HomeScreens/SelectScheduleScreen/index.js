@@ -72,7 +72,14 @@ class SelectScheduleScreen extends PureComponent {
       <SafeAreaView style={styles.container}>
         <Grid>
           <Row>
-            <CalendarList minDate={mUtils.getCalendarMinDate()} start={start} end={end} onDayPress={this.onDayPress} markedDates={markedDates} />
+            <CalendarList
+              minDate={mUtils.getMonthDiffDate(-3)}
+              maxDate={mUtils.getMonthDiffDate(3)}
+              start={start}
+              end={end}
+              onDayPress={this.onDayPress}
+              markedDates={markedDates}
+            />
           </Row>
           <Row style={styles.bottom}>
             <TouchableOpacity style={styles.leftButton} onPress={this.handleReset}>

@@ -373,9 +373,9 @@ const utils = {
       .format(format)
       .toUpperCase()
   },
-  getCalendarMinDate() {
+  getMonthDiffDate(monthDiff = 3) {
     const minDate = new Date()
-    minDate.setMonth(minDate.getMonth() - 3)
+    minDate.setMonth(minDate.getMonth() + monthDiff)
     minDate.setDate(1)
     return minDate
   },
