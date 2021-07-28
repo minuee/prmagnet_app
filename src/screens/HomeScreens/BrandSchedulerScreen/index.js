@@ -96,18 +96,20 @@ class BrandSchedulerScreen extends PureComponent {
               </TouchableOpacity>
             </View>
             <ScrollView style={{paddingHorizontal: mUtils.wScale(20), paddingVertical: mUtils.wScale(25)}}>
-              {data.list.map((item, index) => {
+              {mUtils.get(data, 'list', []).map((item, index) => {
+                const memoList = mUtils.get(item, 'memo_list', [])
+                const reqList = mUtils.get(item, 'req_list', [])
                 return (
                   <View key={index} style={{...styles.layout4}}>
                     <View style={{width: '49%'}}>
-                      <FastImage resizeMode={'cover'} style={styles.modelImg} source={{uri: item.image_list[0]}} />
+                      <FastImage resizeMode={'cover'} style={styles.modelImg} source={{uri: item.image_list}} />
                       <Text style={{...styles.title, marginVertical: mUtils.wScale(10)}}>{item.showroom_nm}</Text>
                     </View>
                     <View style={{width: '49%'}}>
-                      {item.memo_list
-                        ? item.req_list && (
+                      {memoList
+                        ? reqList && (
                             <>
-                              {item.memo_list.map((item1, index1) => {
+                              {memoList.map((item1, index1) => {
                                 return (
                                   <>
                                     <TouchableOpacity
@@ -123,7 +125,7 @@ class BrandSchedulerScreen extends PureComponent {
                                   </>
                                 )
                               })}
-                              {item.req_list.map((item2, index2) => {
+                              {reqList.map((item2, index2) => {
                                 return (
                                   <View key={index2} style={{...styles.layout5, marginBottom: mUtils.wScale(5)}}>
                                     <View style={{...styles.layout6, backgroundColor: item2.mgzn_color}}>
@@ -152,7 +154,7 @@ class BrandSchedulerScreen extends PureComponent {
                               })}
                             </>
                           )
-                        : item.req_list.map((item2, index2) => {
+                        : reqList.map((item2, index2) => {
                             return (
                               <View key={index2} style={{...styles.layout5, marginBottom: mUtils.wScale(5)}}>
                                 <View style={{...styles.layout6, backgroundColor: item2.mgzn_color}}>
