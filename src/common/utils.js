@@ -354,6 +354,16 @@ const utils = {
     now.setHours(0, 0, 0)
     return Math.floor(now.getTime() / 1000)
   },
+  getThisWeekStart() {
+    const start = moment().startOf('week')
+    start.set('hour', 0).set('minute', 0).set('second', 0)
+    return Math.floor(start.valueOf() / 1000)
+  },
+  getThisWeekEnd() {
+    const end = moment().endOf('week')
+    end.set('hour', 23).set('minute', 59).set('second', 59)
+    return Math.floor(end.valueOf() / 1000)
+  },
   getNextWeek() {
     const nextWeek = new Date()
     nextWeek.setDate(nextWeek.getDate() + 7)
