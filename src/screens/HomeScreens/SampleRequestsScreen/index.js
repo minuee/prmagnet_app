@@ -496,20 +496,20 @@ class SampleRequestsScreen extends PureComponent {
                 }}
               >
                 <View style={{width: '49%'}}>
-                  <Text style={styles.smallTitle}>Magazine</Text>
+                  <Text style={styles.smallTitle}>매체명</Text>
                   <View style={{...styles.box1}}>
                     <Text style={styles.boxText}>{defaultInfo.mgzn_nm}</Text>
                   </View>
                 </View>
                 <View style={{width: '49%'}}>
-                  <Text style={styles.smallTitle}>Editor/Stylist</Text>
+                  <Text style={styles.smallTitle}>담당 기자/스타일리스트</Text>
                   <View style={{...styles.box1}}>
                     <Text style={styles.boxText}>{defaultInfo.user_nm}</Text>
                   </View>
                 </View>
               </View>
               <Text style={styles.smallTitle}>
-                Contact <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
+                연결 연락처 <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
               </Text>
               <View style={{...styles.layout2, justifyContent: 'space-between'}}>
                 <ModalDropdown
@@ -543,7 +543,7 @@ class SampleRequestsScreen extends PureComponent {
                   }}
                 >
                   <View style={{width: '32%'}}>
-                    <Text style={styles.smallTitle}>Shooting Date</Text>
+                    <Text style={styles.smallTitle}>촬영일</Text>
                     <TouchableOpacity
                       style={{...styles.box1, justifyContent: 'space-between'}}
                       onPress={() => {
@@ -557,7 +557,7 @@ class SampleRequestsScreen extends PureComponent {
                     </TouchableOpacity>
                   </View>
                   <View style={{width: '32%'}}>
-                    <Text style={styles.smallTitle}>Pickup Date</Text>
+                    <Text style={styles.smallTitle}>픽업일</Text>
                     <TouchableOpacity
                       style={{...styles.box1, justifyContent: 'space-between'}}
                       onPress={() => {
@@ -571,7 +571,7 @@ class SampleRequestsScreen extends PureComponent {
                     </TouchableOpacity>
                   </View>
                   <View style={{width: '32%'}}>
-                    <Text style={styles.smallTitle}>Returning Date</Text>
+                    <Text style={styles.smallTitle}>반납일</Text>
                     <TouchableOpacity
                       style={{...styles.box1, justifyContent: 'space-between'}}
                       onPress={() => {
@@ -618,7 +618,7 @@ class SampleRequestsScreen extends PureComponent {
                 }}
               >
                 <View style={{width: '49%'}}>
-                  <Text style={styles.smallTitle}>Start Time</Text>
+                  <Text style={styles.smallTitle}>촬영 시작 시각</Text>
                   <ModalDropdown
                     dropdownStyle={{width: '44%'}}
                     onSelect={(i, v) => this.setState({startTime: v})}
@@ -636,7 +636,7 @@ class SampleRequestsScreen extends PureComponent {
                   </ModalDropdown>
                 </View>
                 <View style={{width: '49%'}}>
-                  <Text style={styles.smallTitle}>End Time</Text>
+                  <Text style={styles.smallTitle}>촬영 종료 시각</Text>
                   <ModalDropdown
                     dropdownStyle={{width: '44%'}}
                     onSelect={(i, v) => this.setState({endTime: v})}
@@ -654,7 +654,7 @@ class SampleRequestsScreen extends PureComponent {
                   </ModalDropdown>
                 </View>
               </View>
-              <Text style={styles.smallTitle}>Shipping destination</Text>
+              <Text style={styles.smallTitle}>수령 주소</Text>
               <View style={{...styles.layout2, justifyContent: 'space-between'}}>
                 <ModalDropdown
                   style={{width: '100%'}}
@@ -669,7 +669,7 @@ class SampleRequestsScreen extends PureComponent {
                   options={defaultInfo.user}
                 >
                   <View style={{...styles.box1, justifyContent: 'space-between'}}>
-                    <Text style={styles.boxText1}>Last delivery address</Text>
+                    <Text style={styles.boxText1}>예전 수령 주소</Text>
                     <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
                   </View>
                 </ModalDropdown>
@@ -699,7 +699,7 @@ class SampleRequestsScreen extends PureComponent {
                 }}
               />
 
-              <Text style={styles.smallTitle}>Shipping Notes</Text>
+              <Text style={styles.smallTitle}>배송 관련 메모</Text>
               <TextInput
                 style={{...styles.inputBox, height: mUtils.wScale(75), marginTop: mUtils.wScale(6)}}
                 multiline={true}
@@ -731,12 +731,12 @@ class SampleRequestsScreen extends PureComponent {
                 </View>
               </View>
               <Text style={styles.smallTitle}>
-                Model <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
+                모델 <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
               </Text>
               <View style={{...styles.layout, justifyContent: 'space-between', width: '100%'}}>
                 <View style={{...styles.layout1}}>
                   <FastImage resizeMode={'contain'} style={styles.checkImg} source={celebrity[0] ? checkImg : noCheckImg} />
-                  <Text style={{...styles.smallTitle, marginBottom: 0}}>Celebrity</Text>
+                  <Text style={{...styles.smallTitle, marginBottom: 0}}>셀러브리티</Text>
                 </View>
                 <View style={{width: '65%'}}>
                   {celebrity.map((item, index) => {
@@ -787,7 +787,7 @@ class SampleRequestsScreen extends PureComponent {
               >
                 <View style={{...styles.layout1}}>
                   <FastImage resizeMode={'contain'} style={styles.checkImg} source={fashionModel[0] ? checkImg : noCheckImg} />
-                  <Text style={{...styles.smallTitle, marginBottom: 0}}>Fashion Model</Text>
+                  <Text style={{...styles.smallTitle, marginBottom: 0}}>패션 모델</Text>
                 </View>
                 <View style={{width: '65%'}}>
                   {fashionModel.map((item, index) => {
@@ -828,7 +828,7 @@ class SampleRequestsScreen extends PureComponent {
                 </View>
               </View>
               <Text style={styles.smallTitle}>
-                Paid editorial <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
+                유가 여부 <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
               </Text>
               <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
                 <View style={styles.layout2}>
@@ -861,7 +861,7 @@ class SampleRequestsScreen extends PureComponent {
                   }}
                 />
               </View>
-              <Text style={styles.smallTitle}>Location shooting</Text>
+              <Text style={styles.smallTitle}>로케촬영</Text>
               <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
                 <View style={styles.layout2}>
                   <FastImage resizeMode={'contain'} style={styles.checkImg} source={locateShoot ? checkImg : noCheckImg} />
@@ -910,7 +910,7 @@ class SampleRequestsScreen extends PureComponent {
                   )
                 })}
               </View>
-              <Text style={styles.smallTitle}>Number of Pages</Text>
+              <Text style={styles.smallTitle}>페이지 수</Text>
               <TextInput
                 style={{...styles.inputBox, marginTop: mUtils.wScale(3), marginBottom: mUtils.wScale(18)}}
                 placeholder={'Number of pages'}
@@ -930,7 +930,7 @@ class SampleRequestsScreen extends PureComponent {
                   this.setState({togetherBrand: text})
                 }}
               />
-              <Text style={styles.smallTitle}>Message</Text>
+              <Text style={styles.smallTitle}>메세지</Text>
               <TextInput
                 style={{...styles.inputBox, height: mUtils.wScale(75), marginTop: mUtils.wScale(3), marginBottom: mUtils.wScale(18)}}
                 multiline={true}

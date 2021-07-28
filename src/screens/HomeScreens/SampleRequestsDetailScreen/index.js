@@ -183,20 +183,20 @@ class SampleRequestsDetailScreen extends PureComponent {
               }}
             >
               <View style={{width: '49%'}}>
-                <Text style={styles.smallTitle}>Magazine</Text>
+                <Text style={styles.smallTitle}>매체명</Text>
                 <View style={{...styles.box1}}>
                   <Text style={styles.boxText}>{data.mgzn_nm}</Text>
                 </View>
               </View>
               <View style={{width: '49%'}}>
-                <Text style={styles.smallTitle}>Editor/Stylist</Text>
+                <Text style={styles.smallTitle}>담당 기자/스타일리스트</Text>
                 <View style={{...styles.box1}}>
                   <Text style={styles.boxText}>{data.req_send_username}</Text>
                 </View>
               </View>
             </View>
             <Text style={styles.smallTitle}>
-              Contact <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
+              연결 연락처 <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
             </Text>
             <View style={{...styles.layout2, justifyContent: 'space-between'}}>
               <ModalDropdown
@@ -229,7 +229,7 @@ class SampleRequestsDetailScreen extends PureComponent {
                 }}
               >
                 <View style={{width: '32%'}}>
-                  <Text style={styles.smallTitle}>Shooting Date</Text>
+                  <Text style={styles.smallTitle}>촬영일</Text>
                   <TouchableOpacity
                     style={{...styles.box1}}
                     onPress={() => {
@@ -242,7 +242,7 @@ class SampleRequestsDetailScreen extends PureComponent {
                   </TouchableOpacity>
                 </View>
                 <View style={{width: '32%'}}>
-                  <Text style={styles.smallTitle}>Pickup Date</Text>
+                  <Text style={styles.smallTitle}>픽업일</Text>
                   <TouchableOpacity
                     style={{...styles.box1}}
                     onPress={() => {
@@ -255,7 +255,7 @@ class SampleRequestsDetailScreen extends PureComponent {
                   </TouchableOpacity>
                 </View>
                 <View style={{width: '32%'}}>
-                  <Text style={styles.smallTitle}>Returning Date</Text>
+                  <Text style={styles.smallTitle}>반납일</Text>
                   <TouchableOpacity
                     style={{...styles.box1}}
                     onPress={() => {
@@ -277,24 +277,24 @@ class SampleRequestsDetailScreen extends PureComponent {
               }}
             >
               <View style={{width: '49%'}}>
-                <Text style={styles.smallTitle}>Start Time</Text>
+                <Text style={styles.smallTitle}>촬영 시작 시각</Text>
                 <View style={styles.box1}>
                   <Text style={styles.contactText}>{data.shooting_start_time}:00</Text>
                 </View>
               </View>
               <View style={{width: '49%'}}>
-                <Text style={styles.smallTitle}>End Time</Text>
+                <Text style={styles.smallTitle}>촬영 종료 시각</Text>
 
                 <View style={styles.box1}>
                   <Text style={styles.contactText}>{data.shooting_end_time}:00</Text>
                 </View>
               </View>
             </View>
-            <Text style={styles.smallTitle}>Shipping destination</Text>
+            <Text style={styles.smallTitle}>수령 주소</Text>
             <TextInput style={{...styles.inputBox}} value={data.dlvy_adres_nm} />
             <TextInput style={{...styles.inputBox, marginBottom: mUtils.wScale(18)}} value={data.adres_detail} />
 
-            <Text style={styles.smallTitle}>Shipping Notes</Text>
+            <Text style={styles.smallTitle}>배송 관련 메모</Text>
             <TextInput
               style={{...styles.inputBox, height: mUtils.wScale(75), marginTop: mUtils.wScale(6)}}
               multiline={true}
@@ -313,7 +313,7 @@ class SampleRequestsDetailScreen extends PureComponent {
               }}
             >
               <View style={{width: '100%'}}>
-                <Text style={styles.smallTitle}>촬영컨셉</Text>
+                <Text style={styles.smallTitle}>촬영 컨셉</Text>
                 <TextInput
                   style={{...styles.inputBox}}
                   placeholder={'컨셉'}
@@ -326,12 +326,12 @@ class SampleRequestsDetailScreen extends PureComponent {
               </View>
             </View>
             <Text style={styles.smallTitle}>
-              Model <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
+              모델 <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
             </Text>
             <View style={{...styles.layout, justifyContent: 'space-between', width: '100%'}}>
               <View style={{...styles.layout1}}>
                 <FastImage resizeMode={'contain'} style={styles.checkImg} source={data.celeb_list.length > 0 ? checkImg : noCheckImg} />
-                <Text style={{...styles.smallTitle, marginBottom: 0}}>Celebrity</Text>
+                <Text style={{...styles.smallTitle, marginBottom: 0}}>셀러브리티</Text>
               </View>
               <View style={{width: '65%'}}>
                 {data.celeb_list.map((item, index) => {
@@ -364,7 +364,7 @@ class SampleRequestsDetailScreen extends PureComponent {
             >
               <View style={{...styles.layout1}}>
                 <FastImage resizeMode={'contain'} style={styles.checkImg} source={data.model_list.length > 0 ? checkImg : noCheckImg} />
-                <Text style={{...styles.smallTitle, marginBottom: 0}}>Fashion Model</Text>
+                <Text style={{...styles.smallTitle, marginBottom: 0}}>패션 모델</Text>
               </View>
               <View style={{width: '65%'}}>
                 {data.model_list.map((item, index) => {
@@ -387,7 +387,7 @@ class SampleRequestsDetailScreen extends PureComponent {
               </View>
             </View>
             <Text style={styles.smallTitle}>
-              Paid editorial <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
+              유가 여부 <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
             </Text>
             <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
               <View style={styles.layout2}>
@@ -465,7 +465,7 @@ class SampleRequestsDetailScreen extends PureComponent {
                 )
               })}
             </View>
-            <Text style={styles.smallTitle}>Number of Pages</Text>
+            <Text style={styles.smallTitle}>페이지 수</Text>
             <TextInput
               style={{...styles.inputBox, marginTop: mUtils.wScale(3), marginBottom: mUtils.wScale(18)}}
               placeholder={'Number of pages'}
@@ -485,7 +485,7 @@ class SampleRequestsDetailScreen extends PureComponent {
                 this.setState({togetherBrand: text})
               }}
             />
-            <Text style={styles.smallTitle}>Message</Text>
+            <Text style={styles.smallTitle}>메세지</Text>
             <TextInput
               style={{...styles.inputBox, height: mUtils.wScale(75), marginTop: mUtils.wScale(3), marginBottom: mUtils.wScale(18)}}
               multiline={true}

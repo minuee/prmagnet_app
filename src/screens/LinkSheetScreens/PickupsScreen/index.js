@@ -139,18 +139,18 @@ class PickupsScreen extends PureComponent {
             </TouchableOpacity>
           </View>
           <View style={styles.middleWrapper}>
-            <Text style={styles.middleText}>Magazine</Text>
+            <Text style={styles.middleText}>매체명</Text>
             <Text style={styles.middleDescText}>{mUtils.get(data, 'mgzn_nm', '-')}</Text>
           </View>
           <View style={styles.middleGroupWrapper}>
             <View style={styles.middleSubWrapper()}>
-              <Text style={styles.middleText}>Editor/Stylist</Text>
+              <Text style={styles.middleText}>담당 기자/스타일리스트</Text>
               <View style={styles.middleDescWrapper}>
                 <Text style={styles.middleDescTextBold}>{fromName}</Text>
               </View>
             </View>
             <View style={styles.middleSubWrapper()}>
-              <Text style={styles.middleText}>Assistant</Text>
+              <Text style={styles.middleText}>어시스턴트</Text>
               <View style={styles.middleDescWrapper}>
                 <Text style={styles.middleDescTextBold}>{mUtils.get(data, 'contact_user_nm', '-')}</Text>
                 <Text style={styles.middleDescText}> {mUtils.phoneFormat(mUtils.get(data, 'contact_user_phone'))}</Text>
@@ -159,16 +159,16 @@ class PickupsScreen extends PureComponent {
           </View>
           <View style={styles.middleGroupWrapper}>
             <View style={styles.middleSubWrapper(2)}>
-              <Text style={styles.middleText}>Pickup Date</Text>
+              <Text style={styles.middleText}>픽업일</Text>
               <Text style={styles.middleDescText}>{loaningDate}</Text>
             </View>
             <View style={styles.middleSubWrapper(2)}>
-              <Text style={styles.middleText}>Shooting Date</Text>
+              <Text style={styles.middleText}>촬영일</Text>
               <Text style={styles.middleDescText}>{mUtils.getShowDate(mUtils.get(data, 'shooting_date'))}</Text>
             </View>
           </View>
           <View style={styles.middleWrapper}>
-            <Text style={styles.middleText}>Address</Text>
+            <Text style={styles.middleText}>수령 주소</Text>
             <Text style={styles.middleDescText}>{mUtils.get(data, 'studio', '-')}</Text>
           </View>
           <Grid style={styles.grid}>
