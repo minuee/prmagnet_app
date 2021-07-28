@@ -158,7 +158,7 @@ class SampleRequestsScreen extends PureComponent {
     let list = selected.map((item, index) => item.showroom_no)
     console.log('>>>>>', selected)
     try {
-      let response = await API.postSRRequestSend({
+      const response = await API.postSRRequestSend({
         brand_id: brandId,
         duty_recpt_dt: String(Math.floor(Number(pkDate.timestamp / 1000))),
         photogrf_dt: String(Math.floor(Number(shDate.timestamp) / 1000)),
@@ -216,7 +216,7 @@ class SampleRequestsScreen extends PureComponent {
     const {no} = this.props.route.params
     let list = selected.map((item, index) => item.showroom_no)
     try {
-      let response = await API.editSRRequestSend({
+      const response = await API.editSRRequestSend({
         req_no: no,
         duty_recpt_dt: String(Math.floor(Number(pkDate.timestamp / 1000))),
         photogrf_dt: String(Math.floor(Number(shDate.timestamp) / 1000)),
@@ -331,7 +331,7 @@ class SampleRequestsScreen extends PureComponent {
   postSRRequest = async () => {
     const {brandId, type, no} = this.props.route.params
     try {
-      let response = await API.postSRRequest({
+      const response = await API.postSRRequest({
         brand_id: brandId,
       })
       console.log('postSRRequest>>>>', response)
@@ -344,7 +344,7 @@ class SampleRequestsScreen extends PureComponent {
   getSampleRequests = async () => {
     const {brandId, type, no} = this.props.route.params
     try {
-      let response = await API.getSampleRequests({
+      const response = await API.getSampleRequests({
         req_no: no,
       })
       console.log('getSampleRequests>>>>', response)

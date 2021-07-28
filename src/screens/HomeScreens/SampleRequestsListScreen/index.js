@@ -33,7 +33,7 @@ class SampleRequestsListScreen extends PureComponent {
 
   deleteMyRequests = async (no, index) => {
     try {
-      let response = await API.deleteMyRequests({
+      const response = await API.deleteMyRequests({
         req_no: [no],
       })
       console.log('deleteMyRequests>>>>', response)
@@ -60,7 +60,7 @@ class SampleRequestsListScreen extends PureComponent {
     const {list, page, limit, search_text} = this.state
     console.log('??>?>?', page)
     try {
-      let response = await API.getMagazineSample({
+      const response = await API.getMagazineSample({
         page: page,
         limit: limit,
         search_text: search_text,
@@ -79,7 +79,7 @@ class SampleRequestsListScreen extends PureComponent {
   getMagazineSampleReset = async () => {
     const {list, page, limit, search_text} = this.state
     try {
-      let response = await API.getMagazineSample({
+      const response = await API.getMagazineSample({
         page: 1,
         limit: limit,
         search_text: search_text,

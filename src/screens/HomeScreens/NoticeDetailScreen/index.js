@@ -21,7 +21,7 @@ class NoticeDetailScreen extends PureComponent {
   getNoticeDetail = async () => {
     const {no} = this.params
     try {
-      let response = await API.getNoticeDetail({notice_no: no})
+      const response = await API.getNoticeDetail({notice_no: no})
       console.log('getNoticeDetail>>>', response)
       if (response.success) {
         this.setState({data: response, loading: false})

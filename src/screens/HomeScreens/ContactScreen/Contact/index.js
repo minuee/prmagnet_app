@@ -24,7 +24,7 @@ class Contact extends PureComponent {
     const {title, desc} = this.state
     const userType = mConst.getUserType()
     try {
-      let response = await API.postQna({subject: title, content: desc, userType: userType})
+      const response = await API.postQna({subject: title, content: desc, userType: userType})
       console.log('postQna>>>>', response)
       if (response.success) {
         this.setState({title: '', desc: ''})

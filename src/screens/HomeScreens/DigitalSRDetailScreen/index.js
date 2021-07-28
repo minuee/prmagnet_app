@@ -39,7 +39,7 @@ class DigitalSRDetailScreen extends PureComponent {
   getSRDetail = async () => {
     const {no} = this.props.route.params
     try {
-      let response = await API.getSRDetail(no)
+      const response = await API.getSRDetail(no)
       console.log('getSRDetail>>>', JSON.stringify(response))
       this.setState({data: response})
     } catch (error) {
@@ -50,7 +50,7 @@ class DigitalSRDetailScreen extends PureComponent {
   getLookBookSRDetail = async () => {
     const {no, lookNo} = this.props.route.params
     try {
-      let response = await API.getLookBookSRDetail(lookNo, no)
+      const response = await API.getLookBookSRDetail(lookNo, no)
       console.log('getSRDetail>>>', JSON.stringify(response))
       this.setState({data: response})
     } catch (error) {
@@ -61,7 +61,7 @@ class DigitalSRDetailScreen extends PureComponent {
   getShare = async () => {
     const {no, lookNo} = this.props.route.params
     try {
-      let response = await API.getShare({lookbook_no: lookNo})
+      const response = await API.getShare({lookbook_no: lookNo})
       console.log('getShare>>>', response)
       if (response.success) {
         this.setState({...this.state, share_uuid: response.share_uuid})

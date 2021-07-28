@@ -49,7 +49,7 @@ class ScheduleMemoScreen extends PureComponent {
   getShowRoomList = async date => {
     console.log('?!?!!!!!', date)
     try {
-      let response = await API.getShowRoomList({
+      const response = await API.getShowRoomList({
         date: date,
       })
       console.log('getShowRoomList>>>', response)
@@ -66,7 +66,7 @@ class ScheduleMemoScreen extends PureComponent {
   getMemo = async () => {
     const {showroom_no, selectedTimeStamp, select} = this.state
     try {
-      let response = await API.getMemo({
+      const response = await API.getMemo({
         showroom_no: select ? select.showroom_no : '',
         date: selectedTimeStamp,
       })
@@ -130,7 +130,7 @@ class ScheduleMemoScreen extends PureComponent {
   postMemo = async () => {
     const {selectedTimeStamp, select, desc, selectedColor} = this.state
     try {
-      let response = await API.postMemo({
+      const response = await API.postMemo({
         showroom_no: select.showroom_no,
         date: selectedTimeStamp,
         color: selectedColor,
@@ -150,7 +150,7 @@ class ScheduleMemoScreen extends PureComponent {
   putMemo = async () => {
     const {memo_no, selectedTimeStamp, select, desc, selectedColor} = this.state
     try {
-      let response = await API.putMemo({
+      const response = await API.putMemo({
         memo_no: memo_no,
         showroom_no: select.showroom_no,
         date: selectedTimeStamp,
@@ -171,7 +171,7 @@ class ScheduleMemoScreen extends PureComponent {
   delMemo = async () => {
     const {memo_no} = this.state
     try {
-      let response = await API.delMemo({
+      const response = await API.delMemo({
         memo_no: memo_no,
       })
       console.log('delMemo>>>>', response)

@@ -37,7 +37,7 @@ export default class BrandGroup extends PureComponent {
   getBrandSearch = async search => {
     if (search) {
       try {
-        let response = await API.getBrandSearch(search)
+        const response = await API.getBrandSearch(search)
         console.log('getBrandSearch>>>', response)
         this.setState({searchResult: response.list})
       } catch (error) {

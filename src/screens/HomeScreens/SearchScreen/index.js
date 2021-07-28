@@ -57,7 +57,7 @@ class SearchScreen extends PureComponent {
     const userType = mConst.getUserType()
     const {keyword} = this.state
     try {
-      let response = await API.getAllSearch({
+      const response = await API.getAllSearch({
         search_text: keyword,
       })
       console.log('getAllSearch>>>', response)

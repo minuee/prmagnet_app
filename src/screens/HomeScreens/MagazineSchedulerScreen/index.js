@@ -35,7 +35,7 @@ class MagazineSchedulerScreen extends PureComponent {
     const {start, end} = _.get(this.props, 'route.params', {})
     console.log('??????', params)
     try {
-      let response = await API.getMagazineSchedular({
+      const response = await API.getMagazineSchedular({
         min_date: params ? params.start : this.state.start,
         max_date: params ? params.end : this.state.end,
       })
@@ -50,7 +50,7 @@ class MagazineSchedulerScreen extends PureComponent {
     const {start, end} = _.get(this.props, 'route.params', {})
     console.log('??????', params)
     try {
-      let response = await API.getBrandMagazineSchedular({
+      const response = await API.getBrandMagazineSchedular({
         min_date: params ? params.start : this.state.start,
         max_date: params ? params.end : this.state.end,
       })

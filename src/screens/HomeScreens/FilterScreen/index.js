@@ -113,7 +113,7 @@ class FilterScreen extends PureComponent {
 
   getBrandSearchCompanyAZ = async () => {
     try {
-      let response = await API.getBrandSearchCompanyAZ()
+      const response = await API.getBrandSearchCompanyAZ()
       console.log('getBrandSearchCompanyAZ>>>', JSON.stringify(response))
       this.setState({brands: response.list})
     } catch (error) {
@@ -125,7 +125,7 @@ class FilterScreen extends PureComponent {
   getBrandSearch = async search => {
     if (search) {
       try {
-        let response = await API.getBrandSearch(search)
+        const response = await API.getBrandSearch(search)
         console.log('getBrandSearch>>>', response)
         this.setState({search: response.list})
       } catch (error) {

@@ -91,7 +91,7 @@ class SampleRequestsDetailScreen extends PureComponent {
   getSampleRequests = async () => {
     const {no} = this.props.route.params
     try {
-      let response = await API.getSampleRequests({
+      const response = await API.getSampleRequests({
         req_no: no,
       })
       console.log('getSampleRequests>>>', response)

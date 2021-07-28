@@ -55,7 +55,7 @@ class FavoritesScreen extends PureComponent {
   deleteFavShowroom = async no => {
     const {favShowroom} = this.state
     try {
-      let response = await API.deleteFavShowroom({
+      const response = await API.deleteFavShowroom({
         showroom_no: no,
       })
       console.log('deleteFavShowroom>>>>>', response)

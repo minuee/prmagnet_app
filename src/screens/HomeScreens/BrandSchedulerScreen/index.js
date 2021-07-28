@@ -41,7 +41,7 @@ class BrandSchedulerScreen extends PureComponent {
     const {start, end} = _.get(this.props, 'route.params', {})
     console.log('>>>>>>???????<<<<<<', params)
     try {
-      let response = await API.getSchedular({
+      const response = await API.getSchedular({
         min_date: params ? params.start : this.state.start,
         max_date: params ? params.end : this.state.end,
       })

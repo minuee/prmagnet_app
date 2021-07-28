@@ -29,7 +29,7 @@ class FilterSettingScreen extends PureComponent {
   postNotice = async () => {
     const {notice} = this.state
     try {
-      let response = await API.postNotice({
+      const response = await API.postNotice({
         notice: notice,
       })
       console.log('postNotice>>>', response)
@@ -44,7 +44,7 @@ class FilterSettingScreen extends PureComponent {
   postInquiryNum = async () => {
     const {inquiryNum} = this.state
     try {
-      let response = await API.postInquiryNum({
+      const response = await API.postInquiryNum({
         inquiryNum: inquiryNum,
       })
       console.log('postInquiryNum>>>', response)
@@ -59,7 +59,7 @@ class FilterSettingScreen extends PureComponent {
   postSRInquiry = async () => {
     const {SRInquiryNum, email} = this.state
     try {
-      let response = await API.postSRInquiry({
+      const response = await API.postSRInquiry({
         SRInquiryNum: SRInquiryNum,
         email: email,
       })
@@ -74,7 +74,7 @@ class FilterSettingScreen extends PureComponent {
 
   getNotice = async () => {
     try {
-      let response = await API.getNotice()
+      const response = await API.getNotice()
       console.log('getNotice>>>', response)
       if (response.success) {
         this.setState({notice: response.notice_contents})
@@ -86,7 +86,7 @@ class FilterSettingScreen extends PureComponent {
 
   getInquiryNum = async () => {
     try {
-      let response = await API.getInquiryNum()
+      const response = await API.getInquiryNum()
       console.log('getInquiryNum>>>', response)
       if (response.success) {
         this.setState({inquiryNum: response.inquiry_number})
@@ -98,7 +98,7 @@ class FilterSettingScreen extends PureComponent {
 
   getSRInquiry = async () => {
     try {
-      let response = await API.getSRInquiry()
+      const response = await API.getSRInquiry()
       console.log('getSRInquiry>>>', response)
       if (response.success) {
         this.setState({SRInquiryNum: response.showroom_inquiry_contact, email: response.showroom_inquiry_email})

@@ -30,7 +30,7 @@ class AccountSettingScreen extends PureComponent {
   putProfile = async (url, uri) => {
     const {info} = this.props.route.params
     try {
-      let response = await API.putProfile({
+      const response = await API.putProfile({
         user_nm: info.brand_user_nm,
         post_no: info.post_no,
         adres: info.adres,

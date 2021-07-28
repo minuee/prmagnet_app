@@ -45,7 +45,7 @@ class LookBookDetailScreen extends PureComponent {
     const {lookbook_no} = this.props.route.params
     const {page, limit, list} = this.state
     try {
-      let response = await API.getLookBookDetail({lookbook_no: lookbook_no, page: page, limit: limit})
+      const response = await API.getLookBookDetail({lookbook_no: lookbook_no, page: page, limit: limit})
       console.log('getLookBookDetail>>>', JSON.stringify(response))
       if (response.success) {
         if (response.list.length > 0) {
@@ -60,7 +60,7 @@ class LookBookDetailScreen extends PureComponent {
   getShare = async () => {
     const {lookbook_nm, lookbook_no} = this.props.route.params
     try {
-      let response = await API.getShare({lookbook_no: lookbook_no})
+      const response = await API.getShare({lookbook_no: lookbook_no})
       console.log('getShare>>>', response)
       if (response.success) {
         this.setState({...this.state, share_uuid: response.share_uuid})

@@ -40,7 +40,7 @@ class NotiSettingScreen extends PureComponent {
 
   putSampleRequests = async switchValue => {
     try {
-      let response = await API.putSampleRequests({recv_yn: switchValue})
+      const response = await API.putSampleRequests({recv_yn: switchValue})
       console.log('putSampleRequests>>>', response)
     } catch (error) {
       console.log('putSampleRequests>>>', error)
@@ -49,7 +49,7 @@ class NotiSettingScreen extends PureComponent {
 
   putSampleRequestsConfirm = async switchValue => {
     try {
-      let response = await API.putSampleRequestsConfirm({recv_yn: switchValue})
+      const response = await API.putSampleRequestsConfirm({recv_yn: switchValue})
       console.log('putSampleRequestsConfirm>>>', response)
     } catch (error) {
       console.log('putSampleRequestsConfirm>>>', error)
@@ -58,7 +58,7 @@ class NotiSettingScreen extends PureComponent {
 
   putNotReceive = async switchValue => {
     try {
-      let response = await API.putNotReceive({recv_yn: switchValue})
+      const response = await API.putNotReceive({recv_yn: switchValue})
       console.log('putNotReceive>>>', response)
     } catch (error) {
       console.log('putNotReceive>>>', error)
@@ -67,7 +67,7 @@ class NotiSettingScreen extends PureComponent {
 
   putSampleSend = async switchValue => {
     try {
-      let response = await API.putSampleSend({recv_yn: switchValue})
+      const response = await API.putSampleSend({recv_yn: switchValue})
       console.log('putSampleSend>>>', response)
     } catch (error) {
       console.log('putSampleSend>>>', error)
@@ -76,7 +76,7 @@ class NotiSettingScreen extends PureComponent {
 
   putBrandNotice = async switchValue => {
     try {
-      let response = await API.putBrandNotice({recv_yn: switchValue})
+      const response = await API.putBrandNotice({recv_yn: switchValue})
       console.log('putBrandNotice>>>', response)
     } catch (error) {
       console.log('putBrandNotice>>>', error)
@@ -87,7 +87,7 @@ class NotiSettingScreen extends PureComponent {
     const from = this.state.from.getTime() / 1000
     const to = this.state.to.getTime() / 1000
     try {
-      let response = await API.putNotDis({
+      const response = await API.putNotDis({
         mode_on: switchValue,
         begin_dt: switchValue ? (from > to ? to : from) : null,
         end_dt: switchValue ? (from > to ? from : to) : null,

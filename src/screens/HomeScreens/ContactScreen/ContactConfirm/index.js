@@ -44,7 +44,7 @@ class ContactConfirm extends PureComponent {
     const {list, page, limit, search_text} = this.state
     const userType = mConst.getUserType()
     try {
-      let response = await API.getQnaList({page: page, limit: limit, search_text: search_text, userType: userType})
+      const response = await API.getQnaList({page: page, limit: limit, search_text: search_text, userType: userType})
       console.log('getQnaList>>>', response)
       if (response.success) {
         if (response.list.length > 0) {

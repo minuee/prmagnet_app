@@ -23,7 +23,7 @@ class ContactDetailScreen extends PureComponent {
     const {sys_inqry_no} = this.props.route.params
     const userType = mConst.getUserType()
     try {
-      let response = await API.getQnaDetail({sys_inqry_no: sys_inqry_no, userType: userType})
+      const response = await API.getQnaDetail({sys_inqry_no: sys_inqry_no, userType: userType})
       console.log('getQnaDetail>>>', response)
       if (response.success) {
         this.setState({desc: response})

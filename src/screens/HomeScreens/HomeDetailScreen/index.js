@@ -23,7 +23,7 @@ class HomeDetailScreen extends PureComponent {
   getHomeNR = async () => {
     const {page, limit, data} = this.state
     try {
-      let response = mConst.getUserType() === 'B' ? await API.getHomeNR({page: page, limit}) : await API.getHomeCR({page: page, limit})
+      const response = mConst.getUserType() === 'B' ? await API.getHomeNR({page: page, limit}) : await API.getHomeCR({page: page, limit})
       console.log('getHomeNR>>>', response)
       if (response.success) {
         this.setState({loading: false}, () => {
@@ -57,7 +57,7 @@ class HomeDetailScreen extends PureComponent {
     const date = Math.floor(new Date().getTime() / 1000)
     const {page, limit, data} = this.state
     try {
-      let response = await API.getHomeTR({date: date, page: page, limit: limit})
+      const response = await API.getHomeTR({date: date, page: page, limit: limit})
       console.log('getHomeTR>>>', response)
       if (response.success) {
         this.setState({loading: false}, () => {

@@ -65,7 +65,7 @@ class DigitalSRScreen extends PureComponent {
 
   postFavShowroom = async no => {
     try {
-      let response = await API.postFavShowroom({
+      const response = await API.postFavShowroom({
         showroom_no: no,
       })
       console.log('postFavShowroom>>>>>', response)
@@ -95,7 +95,7 @@ class DigitalSRScreen extends PureComponent {
 
   deleteFavShowroom = async no => {
     try {
-      let response = await API.deleteFavShowroom({
+      const response = await API.deleteFavShowroom({
         showroom_no: no,
       })
       console.log('deleteFavShowroom>>>>>', response)
@@ -155,7 +155,7 @@ class DigitalSRScreen extends PureComponent {
     } = this.state
     const userType = mConst.getUserType()
     try {
-      let response = await API.postDigitalSR({
+      const response = await API.postDigitalSR({
         page: page,
         limit: limit,
         season_year: season_year.season_year,
@@ -201,7 +201,7 @@ class DigitalSRScreen extends PureComponent {
     const userType = mConst.getUserType()
     this.setState({loading: false})
     try {
-      let response = await API.postDigitalSR({
+      const response = await API.postDigitalSR({
         page: 1,
         limit: 10,
         season_year: season_year.season_year,
@@ -242,7 +242,7 @@ class DigitalSRScreen extends PureComponent {
 
   getNotice = async () => {
     try {
-      let response = await API.getNotice()
+      const response = await API.getNotice()
       console.log('getNotice>>>', response)
       this.setState({notice: response.notice_contents})
     } catch (error) {
@@ -252,7 +252,7 @@ class DigitalSRScreen extends PureComponent {
 
   getInquiryNum = async () => {
     try {
-      let response = await API.getInquiryNum()
+      const response = await API.getInquiryNum()
       console.log('getInquiryNum>>>', response)
       this.setState({inquiryNum: response.inquiry_number})
     } catch (error) {

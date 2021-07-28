@@ -33,7 +33,7 @@ class LookBookScreen extends PureComponent {
 
   putLookBook = async lookbook_no_list => {
     try {
-      let response = await API.putLookBook({lookbook_no_list: [lookbook_no_list]})
+      const response = await API.putLookBook({lookbook_no_list: [lookbook_no_list]})
       console.log('putLookBook>>>', response)
       if (response.success) {
         setTimeout(() => {
@@ -59,7 +59,7 @@ class LookBookScreen extends PureComponent {
   getLookBook = async () => {
     const {list, page, limit, search_text} = this.state
     try {
-      let response = await API.getLookBook({page: page, limit: limit, search_text: search_text})
+      const response = await API.getLookBook({page: page, limit: limit, search_text: search_text})
       console.log('getLookBook>>>', response)
       if (response.success) {
         this.setState({loading: false}, () => {

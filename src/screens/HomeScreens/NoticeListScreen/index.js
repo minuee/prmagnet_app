@@ -42,7 +42,7 @@ class NoticeListScreen extends PureComponent {
   getNoticeList = async () => {
     const {page, limit, list} = this.state
     try {
-      let response = await API.getNoticeList({page})
+      const response = await API.getNoticeList({page})
       console.log('getNoticeList>>>', response)
       if (response.success) {
         if (response.list.length > 0) {
