@@ -134,6 +134,8 @@ class CalendarList extends PureComponent {
           contentContainerStyle={{paddingVertical: 10}}
           data={dates}
           keyExtractor={(item, index) => index.toString()}
+          getItemLayout={(data, index) => ({length: mUtils.wScale(300), offset: mUtils.wScale(300) * index, index})}
+          initialScrollIndex={3}
           renderItem={({item, index}) => {
             return Month({year: item.getFullYear(), month: item.getMonth(), start, end, onDayPress})
           }}
