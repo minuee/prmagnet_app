@@ -82,7 +82,7 @@ class FilterScreen extends PureComponent {
     cBind(this)
     this.state = {
       gender: genders[0],
-      section: mConst.getUserType() === 'M' ? sections[0] : sections[1],
+      section: sections[0],
       brands: [],
       search: [],
       selectBrand: '',
