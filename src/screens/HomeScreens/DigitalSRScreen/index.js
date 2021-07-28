@@ -443,7 +443,7 @@ class DigitalSRScreen extends PureComponent {
                       <View style={{...styles.emptyBar}} />
                       <TouchableOpacity
                         onPress={() => {
-                          this.pushTo('FilterScreen')
+                          this.pushTo('FilterScreen', {setFilter: this.setFilter})
                         }}
                       >
                         <FastImage resizeMode={'contain'} style={styles.fixImg} source={fixImg} />
