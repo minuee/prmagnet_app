@@ -10,39 +10,22 @@ import Text from './Text'
 
 const selectedImage = require('../../images/common/selected.png')
 
-export default class MaterialGroup extends PureComponent {
-  constructor(props) {
-    super(props)
-    this.state = {
-      selectedItems: [],
-    }
-  }
-  toggleSelectItem = val => {
-    this.setState(prevstate => {
-      const selectedItems = prevstate.selectedItems.includes(val)
-        ? prevstate.selectedItems.filter(item => item !== val)
-        : prevstate.selectedItems.concat(val)
-      return {selectedItems}
-    })
-  }
-  render() {
-    const {selectedItems} = this.state
-    const {data} = this.props
-    return (
-      <>
-        {_.map(data, (item, index) => {
-          return (
-            <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item)}>
-              <Row style={styles.itemWrapper}>
-                <Text style={styles.itemHeadText}>{item}</Text>
-                {selectedItems.includes(item) && <FastImage source={selectedImage} style={styles.selectedImage} />}
-              </Row>
-            </TouchableOpacity>
-          )
-        })}
-      </>
-    )
-  }
+export default materialGroup = props => {
+  const {data, value, setFilter} = props
+  return (
+    <>
+      {_.map(data, (item, index) => {
+        return (
+          <TouchableOpacity key={index} onPress={() => setFilter(item.cd_id)}>
+            <Row style={styles.itemWrapper}>
+              <Text style={styles.itemHeadText}>{item.cd_nm}</Text>
+              {value.includes(item.cd_id) && <FastImage source={selectedImage} style={styles.selectedImage} />}
+            </Row>
+          </TouchableOpacity>
+        )
+      })}
+    </>
+  )
 }
 
 const styles = StyleSheet.create({

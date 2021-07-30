@@ -16,7 +16,7 @@ import BrandGroup from '../../common/BrandGroup'
 import styles from './styles'
 import API from '../../../common/aws-api'
 
-const genders = ['Women', 'Men', 'Unisex']
+const genderSection = {여성: 'Women', 남성: 'Men', 유니섹스: 'Unisex'}
 const sections = ['Category', 'Color', 'Size', 'Sample', 'Still Life Image', 'Material']
 const categories = [
   ['RTW', '아우터웨어', '탑 & 셔츠', '드레스', '팬츠', '스커트', '티셔츠 & 스웨트셔츠', '니트웨어', '언더웨어 & 스윔웨어', '액티브 웨어', '데님'],
@@ -81,11 +81,12 @@ class FilterScreen extends PureComponent {
     super(props)
     cBind(this)
     this.state = {
-      gender: genders[0],
+      gender: [],
       section: sections[0],
-      brands: [],
-      search: [],
-      selectBrand: '',
+      category: [],
+      color: [],
+      size: [],
+      material: [],
     }
   }
   goFilter = () => {
@@ -98,7 +99,10 @@ class FilterScreen extends PureComponent {
   }
   componentDidMount() {
     this.modalOption('FILTER')
-    this.getBrandSearchCompanyAZ()
+    const {category} = this.params.info
+    this.setState({category: category.map(item => ({cd_id: item.sample_catgry_lrge_cl_cd, each_list: []}))}, () =>
+      console.log('!!!category:', this.state.category)
+    )
   }
   handleSelectGender = gender => {
     this.setState({gender})
@@ -106,44 +110,33 @@ class FilterScreen extends PureComponent {
   handleSelectSection = section => {
     this.setState({section})
   }
-
-  selectBrand = brand => {
-    this.setState({selectBrand: brand})
-  }
-
-  getBrandSearchCompanyAZ = async () => {
-    try {
-      const response = await API.getBrandSearchCompanyAZ()
-      console.log('getBrandSearchCompanyAZ>>>', JSON.stringify(response))
-      this.setState({brands: response.list})
-    } catch (error) {
-      console.log('getBrandSearchCompanyAZ>>>', error)
-      await API.postErrLog({error: JSON.stringify(error), desc: 'getBrandSearchCompanyAZError'})
-    }
-  }
-
-  getBrandSearch = async search => {
-    if (search) {
-      try {
-        const response = await API.getBrandSearch(search)
-        console.log('getBrandSearch>>>', response)
-        this.setState({search: response.list})
-      } catch (error) {
-        console.log('getBrandSearch>>>', JSON.stringify(error))
-        await API.postErrLog({error: error, desc: 'getBrandSearch'})
-      }
+  toggleStateList = property => value => {
+    if (value) {
+      this.setState(
+        prevstate => {
+          const list = prevstate[property]?.includes(value) ? prevstate[property]?.filter(item => item !== value) : prevstate[property]?.concat(value)
+          if (property === 'gender' && list.length === 3) return {gender: []}
+          return {[property]: list}
+        },
+        () => console.log('########:', this.state[property])
+      )
     } else {
-      this.setState({search: []})
+      this.setState({[property]: []})
     }
   }
-
-  searchResult = text => {
-    this.setState({search: text})
+  toggleCategory = property => value => {
+    this.setState(
+      prevstate => {
+        const category = prevstate.category.filter(item => item.cd_id === property)[0]
+        category.each_list?.includes(value) ? category.each_list?.splice(category.each_list?.indexOf(value), 1) : category.each_list?.push(value)
+        return {category: [...prevstate.category.filter(item => item.cd_id !== property), category]}
+      },
+      () => console.log('########:', JSON.stringify(this.state.category))
+    )
   }
-
   render() {
-    const {gender, section, brandDrop, brands} = this.state
-    const userType = mConst.getUserType()
+    const {gender, section, category, color, material} = this.state
+    const {info} = this.params
     return (
       <>
         <SafeAreaView style={styles.container}>
@@ -155,18 +148,21 @@ class FilterScreen extends PureComponent {
             {/* {this.closeBackOption(closeBtnImage, 'FILTER', null)} */}
             <Grid>
               <Row style={styles.headerWrapper}>
-                {_.map(genders, (item, index) => {
-                  const selected = item === gender
+                <TouchableOpacity onPress={() => this.toggleStateList('gender')()}>
+                  <Text style={gender.length === 0 ? styles.headerTextOn : styles.headerText}>All</Text>
+                </TouchableOpacity>
+                {_.map(info.gender, (item, index) => {
+                  const selected = gender.includes(item.cd_id)
                   return (
-                    <TouchableOpacity key={index} onPress={() => this.handleSelectGender(item)}>
-                      <Text style={selected ? styles.headerTextOn : styles.headerText}>{item}</Text>
+                    <TouchableOpacity key={index} onPress={() => this.toggleStateList('gender')(item.cd_id)}>
+                      <Text style={selected ? styles.headerTextOn : styles.headerText}>{genderSection[item.cd_nm]}</Text>
                     </TouchableOpacity>
                   )
                 })}
               </Row>
               <Row>
                 <Col size={35}>
-                  {_.map(userType === 'M' ? sections : sections.filter(e => e !== 'Brand'), (item, index) => {
+                  {_.map(sections, (item, index) => {
                     const selected = item === section
                     return (
                       <TouchableOpacity key={index} onPress={() => this.handleSelectSection(item)}>
@@ -178,15 +174,18 @@ class FilterScreen extends PureComponent {
                   })}
                 </Col>
                 <Col size={65}>
-                  {/* {section === 'Brand' && (
-                    <Col>
-                      <BrandGroup data={brands} search={this.searchResult} brand={this.selectBrand} />
-                    </Col>
-                  )} */}
                   {['Availability', 'Size', 'Sample', 'Still Life Image'].includes(section) && <Text>"{section}" : 서비스 준비중입니다.</Text>}
-                  {section === 'Category' && _.map(categories, (item, index) => <CategoryGroup key={index} data={item} />)}
-                  {section === 'Color' && <ColorGroup data={colors} />}
-                  {section === 'Material' && <MaterialGroup data={materials} />}
+                  {section === 'Category' &&
+                    _.map(info.category, (item, index) => (
+                      <CategoryGroup
+                        key={index}
+                        data={item}
+                        value={category.filter(cItem => cItem.cd_id === item.sample_catgry_lrge_cl_cd)[0]}
+                        setFilter={this.toggleCategory}
+                      />
+                    ))}
+                  {section === 'Color' && <ColorGroup data={info.color} value={color} setFilter={this.toggleStateList('color')} />}
+                  {section === 'Material' && <MaterialGroup data={info.material} value={material} setFilter={this.toggleStateList('material')} />}
                 </Col>
               </Row>
             </Grid>

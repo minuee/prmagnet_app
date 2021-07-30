@@ -20,38 +20,45 @@ export default class CategoryGroup extends PureComponent {
       selectedItems: [],
     }
   }
+  componentDidUpdate(prevProps) {
+    const {value} = this.props
+    if (prevProps.value !== value) {
+      this.setState({selectedItems: this.props.value.each_list})
+    }
+  }
   toggleFold = () => {
     this.setState(prevstate => ({fold: !prevstate.fold}))
   }
-  toggleSelectItem = val => {
-    this.setState(prevstate => {
-      const selectedItems = prevstate.selectedItems.includes(val)
-        ? prevstate.selectedItems.filter(item => item !== val)
-        : prevstate.selectedItems.concat(val)
-      return {selectedItems}
-    })
+  toggleSelectItem = (key, value) => {
+    const {setFilter} = this.props
+    this.setState(
+      prevstate => {
+        const selectedItems = prevstate.selectedItems.includes(value)
+          ? prevstate.selectedItems.filter(item => item !== value)
+          : prevstate.selectedItems.concat(value)
+        return {selectedItems}
+      },
+      () => setFilter(key)(value)
+    )
   }
   render() {
     const {fold, selectedItems} = this.state
     const {data} = this.props
     return (
       <>
-        {_.map(data, (item, index) => {
-          if (index === 0) {
+        <TouchableOpacity onPress={this.toggleFold}>
+          <Row style={styles.itemWrapper}>
+            <Text style={styles.itemHeadText}>{data.sample_catgry_lrge_cl_nm}</Text>
+            <FastImage source={fold ? foldImage : unfoldImage} style={styles.foldImage} />
+          </Row>
+        </TouchableOpacity>
+        {_.map(data.each_list, (item, index) => {
+          if (!fold) {
             return (
-              <TouchableOpacity key={index} onPress={this.toggleFold}>
+              <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(data.sample_catgry_lrge_cl_cd, item.sample_catgry_middle_cl_cd)}>
                 <Row style={styles.itemWrapper}>
-                  <Text style={styles.itemHeadText}>{item}</Text>
-                  <FastImage source={fold ? foldImage : unfoldImage} style={styles.foldImage} />
-                </Row>
-              </TouchableOpacity>
-            )
-          } else if (!fold) {
-            return (
-              <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item)}>
-                <Row style={styles.itemWrapper}>
-                  <Text style={styles.itemText}>{item}</Text>
-                  {selectedItems.includes(item) && <FastImage source={selectedImage} style={styles.selectedImage} />}
+                  <Text style={styles.itemText}>{item.sample_catgry_middle_cl_nm}</Text>
+                  {selectedItems.includes(item.sample_catgry_middle_cl_cd) && <FastImage source={selectedImage} style={styles.selectedImage} />}
                 </Row>
               </TouchableOpacity>
             )

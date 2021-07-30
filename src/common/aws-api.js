@@ -162,6 +162,14 @@ const API = {
     }
     return Api.get(apiName, path, init)
   },
+  getSampleInfo: () => {
+    const apiName = v1Cdn
+    const path = '/cdn/sample/info'
+    const init = {
+      queryStringParameters: {},
+    }
+    return Api.get(apiName, path, init)
+  },
   getPrivacyPolicy: () => {
     const apiName = v1Cdn
     const path = '/cdn/privacy-policy'
@@ -597,9 +605,10 @@ const API = {
   postDigitalSR: ({
     page,
     limit,
+    brand_id,
     season_year,
     season_cd_id,
-    brand_id,
+    gender_cd_id,
     available_start_dt,
     available_end_dt,
     category_list,
@@ -611,17 +620,18 @@ const API = {
     const path = `${mConst.getApiPath()}/showroom-list`
     const init = {
       body: {
-        page: page,
-        limit: limit,
-        season_year: season_year,
-        season_cd_id: season_cd_id,
-        brand_id: brand_id,
-        available_start_dt: available_start_dt,
-        available_end_dt: available_end_dt,
-        category_list: category_list,
-        color_list: color_list,
-        size_list: size_list,
-        material_list: material_list,
+        page,
+        limit,
+        brand_id,
+        season_year,
+        season_cd_id,
+        gender_cd_id,
+        available_start_dt,
+        available_end_dt,
+        category_list,
+        color_list,
+        size_list,
+        material_list,
       },
     }
     return Api.post(apiName, path, init)

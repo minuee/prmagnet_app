@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react'
+import React from 'react'
 import {TouchableOpacity, View, StyleSheet} from 'react-native'
 import {Row} from 'react-native-easy-grid'
 import FastImage from 'react-native-fast-image'
@@ -9,43 +9,31 @@ import mUtils from '../../common/utils'
 import Text from './Text'
 
 const selectedImage = require('../../images/common/selected.png')
+const multiImage = require('../../images/common/multi.png')
 
-export default class ColorGroup extends PureComponent {
-  constructor(props) {
-    super(props)
-    this.state = {
-      selectedItems: [],
-    }
-  }
-  toggleSelectItem = val => {
-    this.setState(prevstate => {
-      const selectedItems = prevstate.selectedItems.includes(val)
-        ? prevstate.selectedItems.filter(item => item !== val)
-        : prevstate.selectedItems.concat(val)
-      return {selectedItems}
-    })
-  }
-  render() {
-    const {selectedItems} = this.state
-    const {data} = this.props
-    return (
-      <>
-        {_.map(data, (item, index) => {
-          return (
-            <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item[0])}>
-              <Row style={styles.itemWrapper}>
-                <View style={styles.colorWrapper}>
-                  <View style={styles.colorCircle(item[0])} />
-                  <Text style={styles.colorText}>{item[1]}</Text>
-                </View>
-                {selectedItems.includes(item[0]) && <FastImage source={selectedImage} style={styles.selectedImage} />}
-              </Row>
-            </TouchableOpacity>
-          )
-        })}
-      </>
-    )
-  }
+export default colorGroup = props => {
+  const {data, value, setFilter} = props
+  return (
+    <>
+      {_.map(data, (item, index) => {
+        return (
+          <TouchableOpacity key={index} onPress={() => setFilter(item.cd_id)}>
+            <Row style={styles.itemWrapper}>
+              <View style={styles.colorWrapper}>
+                {item.cd_nm === '멀티컬러' ? (
+                  <FastImage source={multiImage} style={styles.colorCircle()} />
+                ) : (
+                  <View style={styles.colorCircle(item.color_value)} />
+                )}
+                <Text style={styles.colorText}>{item.cd_nm}</Text>
+              </View>
+              {value.includes(item.cd_id) && <FastImage source={selectedImage} style={styles.selectedImage} />}
+            </Row>
+          </TouchableOpacity>
+        )
+      })}
+    </>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -73,7 +61,7 @@ const styles = StyleSheet.create({
     width: mUtils.wScale(24),
     height: mUtils.wScale(24),
     borderRadius: mUtils.wScale(12),
-    borderWidth: color === 'white' ? 1 : 0,
+    borderWidth: color === '#ffffff' ? 1 : 0,
     borderColor: '#e6e6e6',
     backgroundColor: color,
   }),
