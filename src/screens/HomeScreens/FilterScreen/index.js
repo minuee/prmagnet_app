@@ -43,6 +43,18 @@ class FilterScreen extends PureComponent {
     setFilter(this.state)
     this.goBack()
   }
+  handleReset = () => {
+    this.setState({
+      gender: [],
+      section: sections[0],
+      category: [],
+      color: [],
+      size: [],
+      sample: null,
+      stillLifeImg: null,
+      material: [],
+    })
+  }
   toggleStateList = property => value => {
     if (value) {
       this.setState(prevstate => {
@@ -122,7 +134,7 @@ class FilterScreen extends PureComponent {
             </Grid>
           </ScrollView>
           <Row style={styles.bottom}>
-            <TouchableOpacity style={styles.leftButton}>
+            <TouchableOpacity style={styles.leftButton} onPress={() => this.handleReset()}>
               <Text style={styles.leftText}>Reset</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.rightButton} onPress={() => this.goFilter()}>
