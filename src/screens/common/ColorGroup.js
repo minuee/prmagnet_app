@@ -11,7 +11,7 @@ import Text from './Text'
 const selectedImage = require('../../images/common/selected.png')
 const multiImage = require('../../images/common/multi.png')
 
-export default colorGroup = props => {
+export default ColorGroup = props => {
   const {data, value, hide, setFilter} = props
   if (hide) return null
   return (

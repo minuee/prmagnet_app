@@ -10,7 +10,7 @@ import Text from './Text'
 
 const selectedImage = require('../../images/common/selected.png')
 
-export default materialGroup = props => {
+export default MaterialGroup = props => {
   const {data, value, hide, setFilter} = props
   if (hide) return null
   return (

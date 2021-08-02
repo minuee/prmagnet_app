@@ -11,6 +11,7 @@ import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
 import CategoryGroup from '../../common/CategoryGroup'
 import ColorGroup from '../../common/ColorGroup'
+import SizeGroup from '../../common/SizeGroup'
 import MaterialGroup from '../../common/MaterialGroup'
 import BrandGroup from '../../common/BrandGroup'
 import styles from './styles'
@@ -121,8 +122,16 @@ class FilterScreen extends PureComponent {
     }
   }
   render() {
-    const {gender, section, category, color, material} = this.state
+    const {gender, section, category, color, size, material} = this.state
     const {info} = this.params
+    const sizeData = info?.category?.filter(item => item.sample_catgry_lrge_cl_nm === 'Shoes')[0]?.gender_size_list
+    const cRtwData = info?.category
+      ?.filter(item => item.sample_catgry_lrge_cl_nm === 'RTW')[0]
+      ?.each_list.flatMap(item => item.sample_catgry_middle_cl_cd)
+    console.log('##***:', cRtwData)
+    const cShoesData = info?.category
+      ?.filter(item => item.sample_catgry_lrge_cl_nm === 'Shoes')[0]
+      ?.each_list.flatMap(item => item.sample_catgry_middle_cl_cd)
     return (
       <>
         <SafeAreaView style={styles.container}>
@@ -160,9 +169,17 @@ class FilterScreen extends PureComponent {
                   })}
                 </Col>
                 <Col size={65}>
-                  {['Availability', 'Size', 'Sample', 'Still Life Image'].includes(section) && <Text>"{section}" : 서비스 준비중입니다.</Text>}
+                  {['Sample', 'Still Life Image'].includes(section) && <Text>"{section}" : 서비스 준비중입니다.</Text>}
                   <CategoryGroup data={info.category} value={category} hide={section !== 'Category'} setFilter={this.toggleStateList('category')} />
                   <ColorGroup data={info.color} value={color} hide={section !== 'Color'} setFilter={this.toggleStateList('color')} />
+                  <SizeGroup
+                    data={sizeData}
+                    showRtw={category.some(item => cRtwData?.includes(item))}
+                    showShoes={category.some(item => cShoesData?.includes(item))}
+                    value={size}
+                    hide={section !== 'Size'}
+                    setFilter={this.toggleStateList('size')}
+                  />
                   <MaterialGroup data={info.material} value={material} hide={section !== 'Material'} setFilter={this.toggleStateList('material')} />
                 </Col>
               </Row>
