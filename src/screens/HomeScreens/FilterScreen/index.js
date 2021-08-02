@@ -33,48 +33,38 @@ class FilterScreen extends PureComponent {
       material: [],
     }
   }
-  goFilter = () => {
-    console.log('>>>>>>', this.params.setFilter)
-    const {selectBrand} = this.state
-    this.params.setFilter({
-      brand_id: selectBrand,
-    })
-    this.goBack()
-  }
   componentDidMount() {
     this.modalOption('FILTER')
+    const {info} = this.params
+    this.setState(info)
   }
-  handleSelectGender = gender => {
-    this.setState({gender})
-  }
-  handleSelectSection = section => {
-    this.setState({section})
+  goFilter = () => {
+    const {setFilter} = this.params
+    setFilter(this.state)
+    this.goBack()
   }
   toggleStateList = property => value => {
     if (value) {
-      this.setState(
-        prevstate => {
-          const list = prevstate[property]?.includes(value) ? prevstate[property]?.filter(item => item !== value) : prevstate[property]?.concat(value)
-          if (property === 'gender' && list.length === 3) return {gender: []}
-          return {[property]: list}
-        },
-        () => console.log('########:', this.state[property])
-      )
+      this.setState(prevstate => {
+        const list = prevstate[property]?.includes(value) ? prevstate[property]?.filter(item => item !== value) : prevstate[property]?.concat(value)
+        if (property === 'gender' && list.length === 3) return {gender: []}
+        return {[property]: list}
+      })
     } else {
       this.setState({[property]: []})
     }
   }
   handleSetState = property => value => {
-    this.setState({[property]: value}, () => console.log('########:', this.state[property]))
+    this.setState({[property]: value})
   }
   render() {
     const {gender, section, category, color, size, sample, stillLifeImg, material} = this.state
-    const {info} = this.params
-    const sizeData = info?.category?.filter(item => item.sample_catgry_lrge_cl_nm === 'Shoes')[0]?.gender_size_list
-    const cRtwData = info?.category
+    const {data} = this.params
+    const sizeData = data?.category?.filter(item => item.sample_catgry_lrge_cl_nm === 'Shoes')[0]?.gender_size_list
+    const cRtwData = data?.category
       ?.filter(item => item.sample_catgry_lrge_cl_nm === 'RTW')[0]
       ?.each_list.flatMap(item => item.sample_catgry_middle_cl_cd)
-    const cShoesData = info?.category
+    const cShoesData = data?.category
       ?.filter(item => item.sample_catgry_lrge_cl_nm === 'Shoes')[0]
       ?.each_list.flatMap(item => item.sample_catgry_middle_cl_cd)
     return (
@@ -91,7 +81,7 @@ class FilterScreen extends PureComponent {
                 <TouchableOpacity onPress={() => this.toggleStateList('gender')()}>
                   <Text style={gender.length === 0 ? styles.headerTextOn : styles.headerText}>All</Text>
                 </TouchableOpacity>
-                {_.map(info.gender, (item, index) => {
+                {_.map(data.gender, (item, index) => {
                   const selected = gender.includes(item.cd_id)
                   return (
                     <TouchableOpacity key={index} onPress={() => this.toggleStateList('gender')(item.cd_id)}>
@@ -105,7 +95,7 @@ class FilterScreen extends PureComponent {
                   {_.map(sections, (item, index) => {
                     const selected = item === section
                     return (
-                      <TouchableOpacity key={index} onPress={() => this.handleSelectSection(item)}>
+                      <TouchableOpacity key={index} onPress={() => this.handleSetState('section')(item)}>
                         <Row style={selected ? styles.sectionWrapperOn : styles.sectionWrapper}>
                           <Text style={selected ? styles.sectionTextOn : styles.sectionText}>{item}</Text>
                         </Row>
@@ -114,8 +104,8 @@ class FilterScreen extends PureComponent {
                   })}
                 </Col>
                 <Col size={65}>
-                  <CategoryGroup data={info.category} value={category} hide={section !== 'Category'} setFilter={this.toggleStateList('category')} />
-                  <ColorGroup data={info.color} value={color} hide={section !== 'Color'} setFilter={this.toggleStateList('color')} />
+                  <CategoryGroup data={data.category} value={category} hide={section !== 'Category'} setFilter={this.toggleStateList('category')} />
+                  <ColorGroup data={data.color} value={color} hide={section !== 'Color'} setFilter={this.toggleStateList('color')} />
                   <SizeGroup
                     data={sizeData}
                     showRtw={category.some(item => cRtwData?.includes(item))}
@@ -126,7 +116,7 @@ class FilterScreen extends PureComponent {
                   />
                   <FlagGroup value={sample} hide={section !== 'Sample'} setFilter={this.handleSetState('sample')} />
                   <FlagGroup value={stillLifeImg} hide={section !== 'Still Life Image'} setFilter={this.handleSetState('stillLifeImg')} />
-                  <MaterialGroup data={info.material} value={material} hide={section !== 'Material'} setFilter={this.toggleStateList('material')} />
+                  <MaterialGroup data={data.material} value={material} hide={section !== 'Material'} setFilter={this.toggleStateList('material')} />
                 </Col>
               </Row>
             </Grid>

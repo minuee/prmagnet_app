@@ -43,15 +43,17 @@ class DigitalSRScreen extends PureComponent {
       notice: '',
       inquiryNum: '',
       brand_id: '',
-      gender_cd_id: '',
-      available_start_dt: '',
-      available_end_dt: '',
-      category_list: [],
-      color_list: [],
-      size_list: [],
-      material_list: [],
       loading: true,
-      filterInfo: {},
+      filterData: {},
+      filterInfo: {
+        gender: [],
+        category: [],
+        color: [],
+        size: [],
+        sample: null,
+        stillLifeImg: null,
+        material: [],
+      },
     }
   }
   componentDidMount() {
@@ -75,17 +77,16 @@ class DigitalSRScreen extends PureComponent {
       const response = await API.getSampleInfo()
       console.log('getSampleInfo>>>', JSON.stringify(response))
       if (response.success) {
-        this.setState({filterInfo: response})
+        this.setState({filterData: response})
       }
     } catch (error) {
       console.log('getSampleInfo>>>', error)
       await API.postErrLog({error: JSON.stringify(error), desc: 'getSampleInfo'})
     }
   }
-  setFilter = list => {
-    // TODO 필터 설정 처리
-    // this.setState({brand_id: list.brand_id}, () => this.postDigitalSRReset())
-    this.postDigitalSRReset()
+  setFilter = filterInfo => {
+    // console.log('@@@filterInfo:', JSON.stringify(filterInfo))
+    this.setState({filterInfo}, () => this.postDigitalSRReset())
   }
   setBrand = brand_id => {
     this.setState({brand_id}, () => this.postDigitalSRReset())
@@ -168,19 +169,7 @@ class DigitalSRScreen extends PureComponent {
   }
 
   postDigitalSR = async () => {
-    const {
-      data,
-      page,
-      limit,
-      season_year,
-      brand_id,
-      available_start_dt,
-      available_end_dt,
-      category_list,
-      color_list,
-      size_list,
-      material_list,
-    } = this.state
+    const {data, page, limit, season_year, brand_id} = this.state
     const userType = mConst.getUserType()
     try {
       const response = await API.postDigitalSR({
@@ -189,12 +178,6 @@ class DigitalSRScreen extends PureComponent {
         season_year: season_year.season_year,
         season_cd_id: season_year.season_cd_id,
         brand_id: brand_id,
-        available_start_dt: available_start_dt,
-        available_end_dt: available_end_dt,
-        category_list: category_list,
-        color_list: color_list,
-        size_list: size_list,
-        material_list: material_list,
       })
       console.log('postDigitalSR>>>', response)
       if (response.success) {
@@ -225,7 +208,7 @@ class DigitalSRScreen extends PureComponent {
   }
 
   postDigitalSRReset = async () => {
-    const {season_year, brand_id, available_start_dt, available_end_dt, category_list, color_list, size_list, material_list} = this.state
+    const {season_year, brand_id, filterInfo} = this.state
     const userType = mConst.getUserType()
     this.setState({loading: false})
     try {
@@ -235,12 +218,13 @@ class DigitalSRScreen extends PureComponent {
         season_year: season_year.season_year,
         season_cd_id: season_year.season_cd_id,
         brand_id: brand_id,
-        available_start_dt: available_start_dt,
-        available_end_dt: available_end_dt,
-        category_list: category_list,
-        color_list: color_list,
-        size_list: size_list,
-        material_list: material_list,
+        gender_list: filterInfo.gender,
+        category_list: filterInfo.category,
+        color_list: filterInfo.color,
+        size_list: filterInfo.size,
+        wrhousng_yn: filterInfo.sample,
+        still_life_img_yn: filterInfo.stillLifeImg,
+        material_list: filterInfo.material,
       })
       console.log('postDigitalSRReset>>>', response)
       if (response.success) {
@@ -346,7 +330,7 @@ class DigitalSRScreen extends PureComponent {
 
   render() {
     const {data, brand_id} = this.state
-    const {notice, inquiryNum, season_year, selectOnOff, isvisible, loading, select, filterInfo} = this.state
+    const {notice, inquiryNum, season_year, selectOnOff, isvisible, loading, select, filterData, filterInfo} = this.state
     const {user} = this.props
     const userType = mConst.getUserType()
     console.log('###DigitalSRScreen-brand_id:', data.current_brand_info)
@@ -429,7 +413,7 @@ class DigitalSRScreen extends PureComponent {
                   {userType === 'M' ? (
                     <TouchableOpacity
                       onPress={() => {
-                        this.pushTo('FilterScreen', {setFilter: this.setFilter, info: filterInfo})
+                        this.pushTo('FilterScreen', {setFilter: this.setFilter, data: filterData, info: filterInfo})
                       }}
                     >
                       <FastImage resizeMode={'contain'} style={styles.fixImg} source={fixImg} />
@@ -454,7 +438,7 @@ class DigitalSRScreen extends PureComponent {
                       <View style={{...styles.emptyBar}} />
                       <TouchableOpacity
                         onPress={() => {
-                          this.pushTo('FilterScreen', {setFilter: this.setFilter, info: filterInfo})
+                          this.pushTo('FilterScreen', {setFilter: this.setFilter, data: filterData, info: filterInfo})
                         }}
                       >
                         <FastImage resizeMode={'contain'} style={styles.fixImg} source={fixImg} />
