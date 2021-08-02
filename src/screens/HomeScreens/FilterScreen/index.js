@@ -99,10 +99,6 @@ class FilterScreen extends PureComponent {
   }
   componentDidMount() {
     this.modalOption('FILTER')
-    const {category} = this.params.info
-    this.setState({category: category.map(item => ({cd_id: item.sample_catgry_lrge_cl_cd, each_list: []}))}, () =>
-      console.log('!!!category:', this.state.category)
-    )
   }
   handleSelectGender = gender => {
     this.setState({gender})
@@ -123,16 +119,6 @@ class FilterScreen extends PureComponent {
     } else {
       this.setState({[property]: []})
     }
-  }
-  toggleCategory = property => value => {
-    this.setState(
-      prevstate => {
-        const category = prevstate.category.filter(item => item.cd_id === property)[0]
-        category.each_list?.includes(value) ? category.each_list?.splice(category.each_list?.indexOf(value), 1) : category.each_list?.push(value)
-        return {category: [...prevstate.category.filter(item => item.cd_id !== property), category]}
-      },
-      () => console.log('########:', JSON.stringify(this.state.category))
-    )
   }
   render() {
     const {gender, section, category, color, material} = this.state
@@ -175,17 +161,9 @@ class FilterScreen extends PureComponent {
                 </Col>
                 <Col size={65}>
                   {['Availability', 'Size', 'Sample', 'Still Life Image'].includes(section) && <Text>"{section}" : 서비스 준비중입니다.</Text>}
-                  {section === 'Category' &&
-                    _.map(info.category, (item, index) => (
-                      <CategoryGroup
-                        key={index}
-                        data={item}
-                        value={category.filter(cItem => cItem.cd_id === item.sample_catgry_lrge_cl_cd)[0]}
-                        setFilter={this.toggleCategory}
-                      />
-                    ))}
-                  {section === 'Color' && <ColorGroup data={info.color} value={color} setFilter={this.toggleStateList('color')} />}
-                  {section === 'Material' && <MaterialGroup data={info.material} value={material} setFilter={this.toggleStateList('material')} />}
+                  <CategoryGroup data={info.category} value={category} hide={section !== 'Category'} setFilter={this.toggleStateList('category')} />
+                  <ColorGroup data={info.color} value={color} hide={section !== 'Color'} setFilter={this.toggleStateList('color')} />
+                  <MaterialGroup data={info.material} value={material} hide={section !== 'Material'} setFilter={this.toggleStateList('material')} />
                 </Col>
               </Row>
             </Grid>

@@ -11,7 +11,8 @@ import Text from './Text'
 const selectedImage = require('../../images/common/selected.png')
 
 export default materialGroup = props => {
-  const {data, value, setFilter} = props
+  const {data, value, hide, setFilter} = props
+  if (hide) return null
   return (
     <>
       {_.map(data, (item, index) => {

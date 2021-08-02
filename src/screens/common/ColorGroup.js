@@ -12,7 +12,8 @@ const selectedImage = require('../../images/common/selected.png')
 const multiImage = require('../../images/common/multi.png')
 
 export default colorGroup = props => {
-  const {data, value, setFilter} = props
+  const {data, value, hide, setFilter} = props
+  if (hide) return null
   return (
     <>
       {_.map(data, (item, index) => {
