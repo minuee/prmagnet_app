@@ -366,7 +366,7 @@ const utils = {
   },
   getNextWeek() {
     const nextWeek = new Date()
-    nextWeek.setDate(nextWeek.getDate() + 7)
+    nextWeek.setDate(nextWeek.getDate() + 6)
     nextWeek.setHours(23, 59, 59)
     return Math.floor(nextWeek.getTime() / 1000)
   },
