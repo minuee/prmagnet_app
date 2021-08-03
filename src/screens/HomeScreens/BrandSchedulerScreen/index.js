@@ -31,8 +31,8 @@ class BrandSchedulerScreen extends PureComponent {
     cBind(this)
     this.state = {
       data: '',
-      start: mUtils.getThisWeekStart(),
-      end: mUtils.getThisWeekEnd(),
+      start: mUtils.getToday(),
+      end: mUtils.getNextWeek(),
       toggle: [],
     }
   }

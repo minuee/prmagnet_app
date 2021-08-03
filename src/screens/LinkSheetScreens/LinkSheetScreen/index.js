@@ -26,8 +26,8 @@ class LinkSheetScreen extends PureComponent {
     cBind(this)
     const titles = mConst.getUserType() === 'B' ? ['Send Out', 'Return'] : ['Pickups', 'Send Out'] // TODO 임시 주석처리
     this.state = {
-      start: mUtils.getThisWeekStart(),
-      end: mUtils.getThisWeekEnd(),
+      start: mUtils.getToday(),
+      end: mUtils.getNextWeek(),
       // start: mUtils.getDayValue(2021, 7, 25), // TODO 테스트 데이타 관계로 일단 임시 값으로 설정
       // end: mUtils.getDayValue(2021, 8, 7),
       brandId: '',
