@@ -233,7 +233,7 @@ class HomeScreen extends PureComponent {
             <Loading />
           )}
         </ScrollView>
-        {(mConst.PRODUCTION || mConst.STAGE) && <CodePush />}
+        <CodePush />
       </SafeAreaView>
     )
   }

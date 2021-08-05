@@ -22,7 +22,7 @@ class StartScreen extends PureComponent {
         <TouchableOpacity onPress={callOnce(() => this.pushTo('LoginScreen'))}>
           <Text>로그인</Text>
         </TouchableOpacity>
-        {(mConst.PRODUCTION || mConst.STAGE) && <CodePush />}
+        <CodePush />
       </SafeAreaView>
     )
   }

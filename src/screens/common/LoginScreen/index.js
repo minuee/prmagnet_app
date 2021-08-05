@@ -173,7 +173,7 @@ class LoginScreen extends PureComponent {
           </View>
           {/* TODO 임시 테스트용 아이디 비번 설정 End--------------------------------------------------------- */}
         </SafeAreaView>
-        {(mConst.PRODUCTION || mConst.STAGE) && <CodePush />}
+        <CodePush />
       </KeyboardAvoidingView>
     )
   }
