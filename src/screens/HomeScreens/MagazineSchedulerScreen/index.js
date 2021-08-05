@@ -25,8 +25,8 @@ class MagazineSchedulerScreen extends PureComponent {
     cBind(this)
     this.state = {
       data: '',
-      start: String(Math.floor(Number(new Date().getTime() / 1000))),
-      end: String(Math.floor(Number(new Date().getTime() / 1000))),
+      start: mUtils.getToday(),
+      end: mUtils.getNextWeek(),
       boolean: true,
     }
   }

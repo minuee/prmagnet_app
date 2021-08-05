@@ -1072,9 +1072,7 @@ const API = {
     var apiName = v1Api
     var path = `${mConst.getApiPath()}/notice/${notice_no}`
     var init = {
-      queryStringParameters: {
-        notice_no: notice_no,
-      },
+      queryStringParameters: {},
     }
     return Api.get(apiName, path, init)
   },
