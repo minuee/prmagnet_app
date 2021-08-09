@@ -422,10 +422,10 @@ class DigitalSRScreen extends PureComponent {
                     <>
                       <TouchableOpacity
                         onPress={() => {
-                          this.pushTo('LookTab')
+                          this.pushTo('FilterScreen', {setFilter: this.setFilter, data: filterData, info: filterInfo})
                         }}
                       >
-                        <FastImage resizeMode={'contain'} style={styles.bookImg} source={bookImg} />
+                        <FastImage resizeMode={'contain'} style={styles.fixImg} source={fixImg} />
                       </TouchableOpacity>
                       <View style={{...styles.emptyBar}} />
                       <TouchableOpacity
@@ -434,14 +434,6 @@ class DigitalSRScreen extends PureComponent {
                         }}
                       >
                         <FastImage resizeMode={'contain'} style={styles.settingImg} source={settingImg} />
-                      </TouchableOpacity>
-                      <View style={{...styles.emptyBar}} />
-                      <TouchableOpacity
-                        onPress={() => {
-                          this.pushTo('FilterScreen', {setFilter: this.setFilter, data: filterData, info: filterInfo})
-                        }}
-                      >
-                        <FastImage resizeMode={'contain'} style={styles.fixImg} source={fixImg} />
                       </TouchableOpacity>
                     </>
                   )}
