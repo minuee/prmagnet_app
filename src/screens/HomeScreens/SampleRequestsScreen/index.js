@@ -502,14 +502,16 @@ class SampleRequestsScreen extends PureComponent {
                   </View>
                 </View>
                 <View style={{width: '49%'}}>
-                  <Text style={styles.smallTitle}>담당 기자/스타일리스트</Text>
+                  <Text style={styles.smallTitle}>
+                    담당 기자/스타일리스트 <Text style={{color: '#7eb2b2'}}>*</Text>
+                  </Text>
                   <View style={{...styles.box1}}>
                     <Text style={styles.boxText}>{defaultInfo.user_nm}</Text>
                   </View>
                 </View>
               </View>
               <Text style={styles.smallTitle}>
-                연결 연락처 <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
+                연결 연락처 <Text style={{color: '#7eb2b2'}}>*</Text>
               </Text>
               <View style={{...styles.layout2, justifyContent: 'space-between'}}>
                 <ModalDropdown
@@ -543,7 +545,9 @@ class SampleRequestsScreen extends PureComponent {
                   }}
                 >
                   <View style={{width: '32%'}}>
-                    <Text style={styles.smallTitle}>촬영일</Text>
+                    <Text style={styles.smallTitle}>
+                      촬영일 <Text style={{color: '#7eb2b2'}}>*</Text>
+                    </Text>
                     <TouchableOpacity
                       style={{...styles.box1, justifyContent: 'space-between'}}
                       onPress={() => {
@@ -557,7 +561,9 @@ class SampleRequestsScreen extends PureComponent {
                     </TouchableOpacity>
                   </View>
                   <View style={{width: '32%'}}>
-                    <Text style={styles.smallTitle}>픽업일</Text>
+                    <Text style={styles.smallTitle}>
+                      픽업일 <Text style={{color: '#7eb2b2'}}>*</Text>
+                    </Text>
                     <TouchableOpacity
                       style={{...styles.box1, justifyContent: 'space-between'}}
                       onPress={() => {
@@ -571,7 +577,9 @@ class SampleRequestsScreen extends PureComponent {
                     </TouchableOpacity>
                   </View>
                   <View style={{width: '32%'}}>
-                    <Text style={styles.smallTitle}>반납일</Text>
+                    <Text style={styles.smallTitle}>
+                      반납일 <Text style={{color: '#7eb2b2'}}>*</Text>
+                    </Text>
                     <TouchableOpacity
                       style={{...styles.box1, justifyContent: 'space-between'}}
                       onPress={() => {
@@ -731,7 +739,7 @@ class SampleRequestsScreen extends PureComponent {
                 </View>
               </View>
               <Text style={styles.smallTitle}>
-                모델 <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
+                모델 <Text style={{color: '#7eb2b2'}}>*</Text>
               </Text>
               <View style={{...styles.layout, justifyContent: 'space-between', width: '100%'}}>
                 <View style={{...styles.layout1}}>
@@ -828,7 +836,7 @@ class SampleRequestsScreen extends PureComponent {
                 </View>
               </View>
               <Text style={styles.smallTitle}>
-                유가 여부 <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
+                유가 여부 <Text style={{color: '#7eb2b2'}}>*</Text>
               </Text>
               <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
                 <View style={styles.layout2}>

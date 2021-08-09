@@ -195,9 +195,7 @@ class SampleRequestsDetailScreen extends PureComponent {
                 </View>
               </View>
             </View>
-            <Text style={styles.smallTitle}>
-              연결 연락처 <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
-            </Text>
+            <Text style={styles.smallTitle}>연결 연락처</Text>
             <View style={{...styles.layout2, justifyContent: 'space-between'}}>
               <ModalDropdown
                 style={{width: '49%'}}
@@ -325,9 +323,7 @@ class SampleRequestsDetailScreen extends PureComponent {
                 />
               </View>
             </View>
-            <Text style={styles.smallTitle}>
-              모델 <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
-            </Text>
+            <Text style={styles.smallTitle}>모델</Text>
             <View style={{...styles.layout, justifyContent: 'space-between', width: '100%'}}>
               <View style={{...styles.layout1}}>
                 <FastImage resizeMode={'contain'} style={styles.checkImg} source={data.celeb_list.length > 0 ? checkImg : noCheckImg} />
@@ -386,9 +382,7 @@ class SampleRequestsDetailScreen extends PureComponent {
                 })}
               </View>
             </View>
-            <Text style={styles.smallTitle}>
-              유가 여부 <FastImage resizeMode={'contain'} style={styles.starImg} source={starImg} />
-            </Text>
+            <Text style={styles.smallTitle}>유가 여부</Text>
             <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
               <View style={styles.layout2}>
                 <FastImage resizeMode={'contain'} style={styles.checkImg} source={data.own_paid_pictorial_content ? checkImg : noCheckImg} />
