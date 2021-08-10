@@ -104,7 +104,7 @@ class SampleRequestsScreen extends PureComponent {
       myPay: '',
       otherPay: '',
       locateShoot: '',
-      todayConnect: 'No',
+      todayConnect: false,
       numberPage: '',
       togetherBrand: '',
       message: '',
@@ -157,6 +157,20 @@ class SampleRequestsScreen extends PureComponent {
     const {brandId} = this.props.route.params
     let list = selected.map((item, index) => item.showroom_no)
     console.log('>>>>>', selected)
+    if (!selectContact) return this.alert('', '연결 연락처를 선택해 주세요.')
+    if (!shDate) return this.alert('', '촬영일을 선택해 주세요.')
+    if (!pkDate) return this.alert('', '픽업일을 선택해 주세요.')
+    if (!rtDate) return this.alert('', '반납일을 선택해 주세요.')
+    if (!startTime) return this.alert('', '촬영 시작 시각을 선택해 주세요.')
+    if (!endTime) return this.alert('', '촬영 종료 시각을 선택해 주세요.')
+    if (!destination) return this.alert('', '수령 주소를 입력해 주세요.')
+    if (!destinationDetail) return this.alert('', '수령 상세 주소를 입력해 주세요.')
+    if (!shippingNote) return this.alert('', '배송 관련 메모를 입력해 주세요.')
+    if (!concept) return this.alert('', '촬영 컨셉을 입력해 주세요.')
+    if (!_.get(celebrity, '[0]') && !_.get(fashionModel, '[0]')) return this.alert('', '모델을 입력해 주세요.')
+    if (!myPay && !otherPay) return this.alert('', '유가 여부를 입력해 주세요.')
+    if (!numberPage) return this.alert('', '페이지 수를 입력해 주세요.')
+
     try {
       const response = await API.postSRRequestSend({
         brand_id: brandId,
@@ -626,7 +640,9 @@ class SampleRequestsScreen extends PureComponent {
                 }}
               >
                 <View style={{width: '49%'}}>
-                  <Text style={styles.smallTitle}>촬영 시작 시각</Text>
+                  <Text style={styles.smallTitle}>
+                    촬영 시작 시각 <Text style={{color: '#7eb2b2'}}>*</Text>
+                  </Text>
                   <ModalDropdown
                     dropdownStyle={{width: '44%'}}
                     onSelect={(i, v) => this.setState({startTime: v})}
@@ -644,7 +660,9 @@ class SampleRequestsScreen extends PureComponent {
                   </ModalDropdown>
                 </View>
                 <View style={{width: '49%'}}>
-                  <Text style={styles.smallTitle}>촬영 종료 시각</Text>
+                  <Text style={styles.smallTitle}>
+                    촬영 종료 시각 <Text style={{color: '#7eb2b2'}}>*</Text>
+                  </Text>
                   <ModalDropdown
                     dropdownStyle={{width: '44%'}}
                     onSelect={(i, v) => this.setState({endTime: v})}
@@ -662,7 +680,9 @@ class SampleRequestsScreen extends PureComponent {
                   </ModalDropdown>
                 </View>
               </View>
-              <Text style={styles.smallTitle}>수령 주소</Text>
+              <Text style={styles.smallTitle}>
+                수령 주소 <Text style={{color: '#7eb2b2'}}>*</Text>
+              </Text>
               <View style={{...styles.layout2, justifyContent: 'space-between'}}>
                 <ModalDropdown
                   style={{width: '100%'}}
@@ -677,7 +697,7 @@ class SampleRequestsScreen extends PureComponent {
                   options={defaultInfo.user}
                 >
                   <View style={{...styles.box1, justifyContent: 'space-between'}}>
-                    <Text style={styles.boxText1}>예전 수령 주소</Text>
+                    <Text style={styles.boxText1}>최근 배송지</Text>
                     <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
                   </View>
                 </ModalDropdown>
@@ -707,7 +727,9 @@ class SampleRequestsScreen extends PureComponent {
                 }}
               />
 
-              <Text style={styles.smallTitle}>배송 관련 메모</Text>
+              <Text style={styles.smallTitle}>
+                배송 관련 메모 <Text style={{color: '#7eb2b2'}}>*</Text>
+              </Text>
               <TextInput
                 style={{...styles.inputBox, height: mUtils.wScale(75), marginTop: mUtils.wScale(6)}}
                 multiline={true}
@@ -726,7 +748,9 @@ class SampleRequestsScreen extends PureComponent {
                 }}
               >
                 <View style={{width: '100%'}}>
-                  <Text style={styles.smallTitle}>촬영컨셉</Text>
+                  <Text style={styles.smallTitle}>
+                    촬영컨셉 <Text style={{color: '#7eb2b2'}}>*</Text>
+                  </Text>
                   <TextInput
                     style={{...styles.inputBox}}
                     placeholder={'컨셉'}
@@ -918,7 +942,9 @@ class SampleRequestsScreen extends PureComponent {
                   )
                 })}
               </View>
-              <Text style={styles.smallTitle}>페이지 수</Text>
+              <Text style={styles.smallTitle}>
+                페이지 수 <Text style={{color: '#7eb2b2'}}>*</Text>
+              </Text>
               <TextInput
                 style={{...styles.inputBox, marginTop: mUtils.wScale(3), marginBottom: mUtils.wScale(18)}}
                 placeholder={'Number of pages'}
