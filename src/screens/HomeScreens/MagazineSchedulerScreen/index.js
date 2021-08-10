@@ -32,30 +32,26 @@ class MagazineSchedulerScreen extends PureComponent {
   }
 
   getMagazineSchedular = async params => {
-    const {start, end} = _.get(this.props, 'route.params', {})
-    console.log('??????', params)
     try {
       const response = await API.getMagazineSchedular({
-        min_date: params ? params.start : this.state.start,
-        max_date: params ? params.end : this.state.end,
+        min_date: params?.start || this.state.start,
+        max_date: params?.end || this.state.end,
       })
       console.log('getMagazineSchedular>>>>', JSON.stringify(response))
-      this.setState({data: response, start: params ? params.start : this.state.start, end: params ? params.end : this.state.end})
+      this.setState({data: response, start: params?.start || this.state.start, end: params?.end || this.state.end})
     } catch (error) {
       console.log('getMagazineSchedular>>>>', error)
     }
   }
 
   getBrandMagazineSchedular = async params => {
-    const {start, end} = _.get(this.props, 'route.params', {})
-    console.log('??????', params)
     try {
       const response = await API.getBrandMagazineSchedular({
-        min_date: params ? params.start : this.state.start,
-        max_date: params ? params.end : this.state.end,
+        min_date: params?.start || this.state.start,
+        max_date: params?.end || this.state.end,
       })
       console.log('getBrandMagazineSchedular>>>>', JSON.stringify(response))
-      this.setState({data: response, start: params ? params.start : this.state.start, end: params ? params.end : this.state.end})
+      this.setState({data: response, start: params?.start || this.state.start, end: params?.end || this.state.end})
     } catch (error) {
       console.log('getBrandMagazineSchedular>>>>', error)
     }

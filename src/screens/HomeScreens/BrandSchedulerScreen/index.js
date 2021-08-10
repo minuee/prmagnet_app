@@ -38,15 +38,13 @@ class BrandSchedulerScreen extends PureComponent {
   }
 
   getSchedular = async params => {
-    const {start, end} = _.get(this.props, 'route.params', {})
-    console.log('>>>>>>???????<<<<<<', params)
     try {
       const response = await API.getSchedular({
-        min_date: params ? params.start : this.state.start,
-        max_date: params ? params.end : this.state.end,
+        min_date: params?.start || this.state.start,
+        max_date: params?.end || this.state.end,
       })
       console.log('getSchedular>>>>', JSON.stringify(response))
-      this.setState({data: response, start: params ? params.start : this.state.start, end: params ? params.end : this.state.end})
+      this.setState({data: response, start: params?.start || this.state.start, end: params?.end || this.state.end})
     } catch (error) {
       console.log('getSchedular>>>>', error)
     }
@@ -58,13 +56,6 @@ class BrandSchedulerScreen extends PureComponent {
   }
 
   componentDidMount() {
-    this.onFocus(this.handleOnFocus)
-  }
-  componentWillUnmount() {
-    this.removeFocus()
-  }
-
-  handleOnFocus = () => {
     this.getSchedular()
   }
 
