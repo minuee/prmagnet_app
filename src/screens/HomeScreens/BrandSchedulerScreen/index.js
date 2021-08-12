@@ -47,7 +47,9 @@ class BrandSchedulerScreen extends PureComponent {
       toggle: [],
     }
   }
-
+  componentDidMount() {
+    this.getSchedular()
+  }
   getSchedular = async params => {
     try {
       const response = await API.getSchedular({
@@ -68,88 +70,84 @@ class BrandSchedulerScreen extends PureComponent {
       console.log('getSchedular>>>>', error)
     }
   }
-
   changeSchedule = () => {
     const {start, end} = this.state
     this.pushTo('SelectScheduleScreen', {setDate: this.getSchedular, start, end, caller: 'ScheduleTab'})
   }
-
-  componentDidMount() {
-    this.getSchedular()
-  }
-
   render() {
     const {data, toggle, start, end, season_year, gender} = this.state
     const {user} = this.props
     return (
       <SafeAreaView style={styles.container}>
         <Header pushTo={this.pushTo} alarmSet={user.alarm} />
-        <Text style={styles.mainTitle}>Scheduler</Text>
         {data ? (
           <>
-            <View style={styles.menuGroup}>
-              <Menu>
-                <MenuTrigger
-                  customStyles={{
-                    TriggerTouchableComponent: TouchableOpacity,
-                  }}
-                >
-                  <View style={{...styles.layout0}}>
-                    <Text style={styles.season}>
-                      {season_year.season_year} {season_year.season_simple_text}
-                    </Text>
-                    <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
-                  </View>
-                </MenuTrigger>
-                <MenuOptions optionsContainerStyle={styles.menuOptions}>
-                  {data.season_list.map((item, index) => {
-                    return (
-                      <MenuOption
-                        key={index}
-                        style={styles.menuOption}
-                        onSelect={() => {
-                          this.setState({season_year: item, page: 1, limit: 10, loading: false}, () => {
-                            this.getSchedular()
-                          })
-                        }}
-                      >
-                        <Text style={styles.menuText}>
-                          {item.season_year} {item.season_simple_text}
-                        </Text>
-                      </MenuOption>
-                    )
-                  })}
-                </MenuOptions>
-              </Menu>
-              <Menu>
-                <MenuTrigger
-                  customStyles={{
-                    TriggerTouchableComponent: TouchableOpacity,
-                  }}
-                >
-                  <View style={[styles.layout0, {marginLeft: mUtils.wScale(15)}]}>
-                    <Text style={styles.season}>{gender.key}</Text>
-                    <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
-                  </View>
-                </MenuTrigger>
-                <MenuOptions optionsContainerStyle={styles.menuOptions}>
-                  {genderData.map((item, index) => {
-                    return (
-                      <MenuOption
-                        key={index}
-                        style={styles.menuOption}
-                        onSelect={() => {
-                          this.setState({gender: item, page: 1, limit: 10, loading: false}, () => {
-                            this.getSchedular()
-                          })
-                        }}
-                      >
-                        <Text style={styles.menuText}>{item.key}</Text>
-                      </MenuOption>
-                    )
-                  })}
-                </MenuOptions>
-              </Menu>
+            <View style={styles.layout}>
+              <Text style={styles.mainTitle}>Scheduler</Text>
+              <View style={styles.menuGroup}>
+                <Menu>
+                  <MenuTrigger
+                    customStyles={{
+                      TriggerTouchableComponent: TouchableOpacity,
+                    }}
+                  >
+                    <View style={styles.layout0}>
+                      <Text style={styles.season}>
+                        {season_year.season_year} {season_year.season_simple_text}
+                      </Text>
+                      <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                    </View>
+                  </MenuTrigger>
+                  <MenuOptions optionsContainerStyle={styles.menuOptions}>
+                    {data.season_list.map((item, index) => {
+                      return (
+                        <MenuOption
+                          key={index}
+                          style={styles.menuOption}
+                          onSelect={() => {
+                            this.setState({season_year: item, page: 1, limit: 10, loading: false}, () => {
+                              this.getSchedular()
+                            })
+                          }}
+                        >
+                          <Text style={styles.menuText}>
+                            {item.season_year} {item.season_simple_text}
+                          </Text>
+                        </MenuOption>
+                      )
+                    })}
+                  </MenuOptions>
+                </Menu>
+                <Menu>
+                  <MenuTrigger
+                    customStyles={{
+                      TriggerTouchableComponent: TouchableOpacity,
+                    }}
+                  >
+                    <View style={[styles.layout0, {marginLeft: mUtils.wScale(15)}]}>
+                      <Text style={styles.season}>{gender.key}</Text>
+                      <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                    </View>
+                  </MenuTrigger>
+                  <MenuOptions optionsContainerStyle={styles.menuOptions}>
+                    {genderData.map((item, index) => {
+                      return (
+                        <MenuOption
+                          key={index}
+                          style={styles.menuOption}
+                          onSelect={() => {
+                            this.setState({gender: item, page: 1, limit: 10, loading: false}, () => {
+                              this.getSchedular()
+                            })
+                          }}
+                        >
+                          <Text style={styles.menuText}>{item.key}</Text>
+                        </MenuOption>
+                      )
+                    })}
+                  </MenuOptions>
+                </Menu>
+              </View>
             </View>
             <View style={{...styles.layout, backgroundColor: '#f6f6f6', paddingHorizontal: mUtils.wScale(20), paddingVertical: mUtils.wScale(10)}}>
               <View style={styles.layout1}>
@@ -299,7 +297,10 @@ class BrandSchedulerScreen extends PureComponent {
             </>
           </>
         ) : (
-          <Loading />
+          <>
+            <Text style={styles.mainTitle}>Scheduler</Text>
+            <Loading />
+          </>
         )}
       </SafeAreaView>
     )

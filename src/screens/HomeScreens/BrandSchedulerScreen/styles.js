@@ -15,7 +15,7 @@ export default StyleSheet.create({
     color: mConst.black,
     marginHorizontal: mUtils.wScale(20),
     marginTop: mUtils.wScale(20),
-    marginBottom: mUtils.wScale(5),
+    marginBottom: mUtils.wScale(20),
   },
   title: {
     fontFamily: 'Roboto-Medium',
@@ -80,8 +80,7 @@ export default StyleSheet.create({
   },
   menuGroup: {
     flexDirection: 'row',
-    marginHorizontal: mUtils.wScale(20),
-    marginVertical: mUtils.wScale(10),
+    marginRight: mUtils.wScale(20),
   },
   season: {
     fontFamily: 'Roboto-Regular',
