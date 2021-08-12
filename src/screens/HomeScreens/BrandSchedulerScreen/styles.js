@@ -15,7 +15,7 @@ export default StyleSheet.create({
     color: mConst.black,
     marginHorizontal: mUtils.wScale(20),
     marginTop: mUtils.wScale(20),
-    marginBottom: mUtils.wScale(30),
+    marginBottom: mUtils.wScale(5),
   },
   title: {
     fontFamily: 'Roboto-Medium',
@@ -78,10 +78,25 @@ export default StyleSheet.create({
     textAlign: 'left',
     color: mConst.black,
   },
+  menuGroup: {
+    flexDirection: 'row',
+    marginHorizontal: mUtils.wScale(20),
+    marginVertical: mUtils.wScale(10),
+  },
+  season: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 14,
+    textAlign: 'right',
+    color: mConst.black,
+  },
   layout: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  layout0: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   layout1: {
     flexDirection: 'row',
@@ -166,6 +181,11 @@ export default StyleSheet.create({
     width: '100%',
     height: mUtils.wScale(250),
   },
+  moreImg: {
+    width: mUtils.wScale(12),
+    height: mUtils.wScale(12),
+    marginLeft: mUtils.wScale(5),
+  },
   dollarImg1: {
     width: mUtils.wScale(15),
     height: mUtils.wScale(15),
@@ -207,5 +227,14 @@ export default StyleSheet.create({
     fontSize: 9,
     textAlign: 'center',
     color: '#ffffff',
+  },
+  menuOptions: {
+    marginTop: mUtils.wScale(20),
+    width: mUtils.wScale(133),
+    paddingVertical: mUtils.wScale(15),
+  },
+  menuOption: {
+    paddingHorizontal: mUtils.wScale(15),
+    paddingVertical: mUtils.wScale(8),
   },
 })
