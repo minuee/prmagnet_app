@@ -77,6 +77,7 @@ class BrandSchedulerScreen extends PureComponent {
   render() {
     const {data, toggle, start, end, season_year, gender} = this.state
     const {user} = this.props
+    const dates = mUtils.getDayArray(this.state.start, this.state.end)
     return (
       <SafeAreaView style={styles.container}>
         <Header pushTo={this.pushTo} alarmSet={user.alarm} />
@@ -105,7 +106,7 @@ class BrandSchedulerScreen extends PureComponent {
                           key={index}
                           style={styles.menuOption}
                           onSelect={() => {
-                            this.setState({season_year: item, page: 1, limit: 10, loading: false}, () => {
+                            this.setState({season_year: item}, () => {
                               this.getSchedular()
                             })
                           }}
@@ -136,7 +137,7 @@ class BrandSchedulerScreen extends PureComponent {
                           key={index}
                           style={styles.menuOption}
                           onSelect={() => {
-                            this.setState({gender: item, page: 1, limit: 10, loading: false}, () => {
+                            this.setState({gender: item}, () => {
                               this.getSchedular()
                             })
                           }}
@@ -170,96 +171,85 @@ class BrandSchedulerScreen extends PureComponent {
               ) : (
                 <>
                   <ScrollView style={{paddingHorizontal: mUtils.wScale(20), paddingVertical: mUtils.wScale(25)}}>
-                    {mUtils.get(data, 'list', []).map((item, index) => {
-                      const memoList = mUtils.get(item, 'memo_list', [])
-                      const reqList = mUtils.get(item, 'req_list', [])
+                    {mUtils.get(data, 'list', []).map((dItem, dIndex) => {
+                      const memoList = mUtils.get(dItem, 'memo_list', [])
+                      const reqList = mUtils.get(dItem, 'req_list', [])
                       return (
-                        <View key={index} style={{...styles.layout4}}>
-                          <View style={{width: '49%'}}>
-                            <FastImage resizeMode={'cover'} style={styles.modelImg} source={{uri: item.image_list}} />
-                            <Text style={{...styles.title, marginVertical: mUtils.wScale(10)}}>{item.showroom_nm}</Text>
+                        <View key={dIndex} style={{...styles.layout4}}>
+                          <View style={{width: mUtils.wScale(180)}}>
+                            <FastImage resizeMode={'cover'} style={styles.modelImg} source={{uri: dItem.image_list}} />
+                            <Text style={{...styles.title, marginVertical: mUtils.wScale(10)}}>{dItem.showroom_nm}</Text>
                           </View>
-                          <View style={{width: '49%'}}>
-                            {memoList
-                              ? reqList && (
-                                  <>
-                                    {memoList.map((item1, index1) => {
-                                      return (
-                                        <>
+                          <View style={{width: mUtils.wScale(190)}}>
+                            {(memoList.length > 0 || reqList.length > 0) && (
+                              <FlatList
+                                ref={ref => (this.swiperRef = ref)}
+                                horizontal={true}
+                                style={{width: mUtils.wScale(190)}}
+                                pagingEnabled={true}
+                                keyExtractor={(item, index) => index.toString()}
+                                data={dates}
+                                renderItem={({item, index}) => {
+                                  const curMemos = memoList.filter(m => mUtils.isSameDay(item, m.memo_dt))
+                                  const curReqs = reqList.filter(r => mUtils.isDayBetween(item, r.start_dt, r.end_dt))
+                                  return (
+                                    <View style={{flexDirection: 'column'}}>
+                                      {(curMemos.length > 0 || curReqs.length > 0) && (
+                                        <View style={styles.dayTextWrapper}>
+                                          <Text style={styles.dayText}>{mUtils.getShowDate(Math.floor(item.valueOf() / 1000))}</Text>
+                                        </View>
+                                      )}
+                                      {curMemos.map((mItem, mIndex) => {
+                                        return (
+                                          // <Text style={{width: 190}}>메모:{mItem.content}</Text>
                                           <TouchableOpacity
-                                            key={index1}
-                                            style={{...styles.layout3, borderColor: item1.color ? item1.color : mConst.borderGray}}
+                                            key={mIndex}
+                                            style={[styles.dayMemoUnit, {borderColor: mItem.color ? mItem.color : mConst.borderGray}]}
                                             onPress={() => {
                                               this.pushTo('ScheduleMemoScreen', {
-                                                no: item.showroom_no,
-                                                date: item1.memo_dt,
-                                                name: item.showroom_nm,
+                                                no: dItem.showroom_no,
+                                                date: mItem.memo_dt,
+                                                name: dItem.showroom_nm,
                                               })
                                             }}
                                           >
-                                            <Text style={{...styles.smallDesc}}>{item1.content}</Text>
-                                            <Text style={{...styles.brandDate}}>{mUtils.getShowDate(item1.memo_dt, 'YYYY-MM-DD')}</Text>
+                                            <Text style={{...styles.smallDesc}}>{mItem.content}</Text>
+                                            <Text style={{...styles.brandDate}}>{mUtils.getShowDate(mItem.memo_dt, 'YYYY-MM-DD')}</Text>
                                           </TouchableOpacity>
-                                        </>
-                                      )
-                                    })}
-                                    {reqList.map((item2, index2) => {
-                                      return (
-                                        <View key={index2} style={{...styles.layout5, marginBottom: mUtils.wScale(5)}}>
-                                          <View style={{...styles.layout6, backgroundColor: item2.mgzn_color}}>
-                                            <Text style={styles.title}>{item2.company_name}</Text>
-                                            <View style={styles.layout}>
-                                              <FastImage resizeMode={'contain'} style={styles.dollarImg1} source={dollarImg1} />
-                                              <FastImage resizeMode={'contain'} style={styles.airplaneImg} source={airplaneImg} />
+                                        )
+                                      })}
+                                      {curReqs.map((rItem, rIndex) => {
+                                        return (
+                                          <View key={rIndex} style={[styles.dayReqUnit, {marginBottom: mUtils.wScale(5)}]}>
+                                            <View style={{...styles.layout6, backgroundColor: rItem.mgzn_color}}>
+                                              <Text style={styles.title}>{rItem.company_name}</Text>
+                                              <View style={styles.layout}>
+                                                <FastImage resizeMode={'contain'} style={styles.dollarImg1} source={dollarImg1} />
+                                                <FastImage resizeMode={'contain'} style={styles.airplaneImg} source={airplaneImg} />
+                                              </View>
+                                            </View>
+                                            <View style={styles.layout7}>
+                                              <Text style={{...styles.name}}>{rItem.req_user_nm}</Text>
+                                              <Text style={{...styles.brandDate, marginTop: mUtils.wScale(3)}}>
+                                                {rItem.company_name} / {'\n'}
+                                                {mUtils.getShowDate(rItem.start_dt, 'YYYY-MM-DD')} ~ {mUtils.getShowDate(rItem.end_dt, 'YYYY-MM-DD')}
+                                              </Text>
+                                              <Text style={{...styles.desc, marginTop: mUtils.wScale(8)}}>{rItem.address}</Text>
+
+                                              <Text style={{...styles.desc, marginTop: mUtils.wScale(3)}}>
+                                                {rItem.contact_user_nm}
+                                                {'\n'}
+                                                {mUtils.allNumber(mUtils.get(rItem.contact_user_phone))}
+                                              </Text>
                                             </View>
                                           </View>
-                                          <View style={styles.layout7}>
-                                            <Text style={{...styles.name}}>{item2.req_user_nm}</Text>
-                                            <Text style={{...styles.brandDate, marginTop: mUtils.wScale(3)}}>
-                                              {item2.company_name} / {'\n'}
-                                              {mUtils.getShowDate(item2.start_dt, 'YYYY-MM-DD')} ~ {mUtils.getShowDate(item2.end_dt, 'YYYY-MM-DD')}
-                                            </Text>
-                                            <Text style={{...styles.desc, marginTop: mUtils.wScale(8)}}>{item2.address}</Text>
-
-                                            <Text style={{...styles.desc, marginTop: mUtils.wScale(3)}}>
-                                              {item2.contact_user_nm}
-                                              {'\n'}
-                                              {mUtils.allNumber(mUtils.get(item2.contact_user_phone))}
-                                            </Text>
-                                          </View>
-                                        </View>
-                                      )
-                                    })}
-                                  </>
-                                )
-                              : reqList.map((item2, index2) => {
-                                  return (
-                                    <View key={index2} style={{...styles.layout5, marginBottom: mUtils.wScale(5)}}>
-                                      <View style={{...styles.layout6, backgroundColor: item2.mgzn_color}}>
-                                        <Text style={styles.title}>{item2.company_name}</Text>
-                                        <View style={styles.layout}>
-                                          <FastImage resizeMode={'contain'} style={styles.dollarImg1} source={dollarImg1} />
-                                          <FastImage resizeMode={'contain'} style={styles.airplaneImg} source={airplaneImg} />
-                                        </View>
-                                      </View>
-                                      <View style={styles.layout7}>
-                                        <Text style={{...styles.name}}>{item2.req_user_nm}</Text>
-                                        <Text style={{...styles.brandDate, marginTop: mUtils.wScale(3)}}>
-                                          {item2.company_name} / {'\n'}
-                                          {mUtils.getShowDate(item2.start_dt, 'YYYY-MM-DD')} ~ {mUtils.getShowDate(item2.end_dt, 'YYYY-MM-DD')}
-                                        </Text>
-                                        <Text style={{...styles.desc, marginTop: mUtils.wScale(8)}}>{item2.address}</Text>
-
-                                        <Text style={{...styles.desc, marginTop: mUtils.wScale(3)}}>
-                                          {item2.contact_user_nm}
-                                          {'\n'}
-                                          {mUtils.allNumber(mUtils.get(item2.contact_user_phone))}
-                                        </Text>
-                                      </View>
+                                        )
+                                      })}
                                     </View>
                                   )
-                                })}
-
+                                }}
+                              />
+                            )}
                             {/*{item.req_list.length - 1 !== 0 && !toggle.includes(item.showroom_no) && (
                         <TouchableOpacity
                           style={styles.plusButton}

@@ -375,6 +375,28 @@ const utils = {
     isEnd ? day.setHours(23, 59, 59) : day.setHours(0, 0, 0)
     return Math.floor(day.getTime() / 1000)
   },
+  isDayBetween(day, startDbTime, endDbTime) {
+    const startDay = new Date(startDbTime * 1000)
+    startDay.setHours(0, 0, 0)
+    const endDay = new Date(endDbTime * 1000)
+    endDay.setHours(23, 59, 59)
+    return startDay.getTime() <= day.getTime() && day.getTime() <= endDay.getTime()
+  },
+  isSameDay(day, dbTime) {
+    const checkDay = new Date(dbTime * 1000)
+    return day.getFullYear() === checkDay.getFullYear() && day.getMonth() === checkDay.getMonth() && day.getDate() === checkDay.getDate()
+  },
+  getDayArray(startDbTime, endDbTime) {
+    if (startDbTime > endDbTime) return []
+    const startDay = new Date(startDbTime * 1000)
+    const endDay = new Date(endDbTime * 1000)
+    endDay.setHours(23, 59, 59, 999)
+    const dates = []
+    for (let idx = 0; startDay.valueOf() + idx <= endDay.valueOf(); idx += 86400000) {
+      dates.push(new Date(startDay.valueOf() + idx))
+    }
+    return dates
+  },
   getShowDate(dbTime, format = 'M/D(ddd)') {
     // 파라미터는 Date.getTime() / 1000 값임
     if (!dbTime) return '-'

@@ -46,6 +46,24 @@ class ScheduleMemoScreen extends PureComponent {
     }
   }
 
+  componentDidMount() {
+    this.modalOption('')
+    this.onFocus(this.handleOnFocus)
+  }
+  componentWillUnmount() {
+    this.removeFocus()
+  }
+  handleOnFocus = () => {
+    const {no, date, name} = this.params
+    if (no && date) {
+      this.setState({select: {showroom_no: no, showroom_nm: name}, selectedTimeStamp: date}, () => {
+        this.getMemo()
+      })
+    } else {
+      this.getMemo()
+    }
+  }
+
   getShowRoomList = async date => {
     console.log('?!?!!!!!', date)
     try {
@@ -91,23 +109,6 @@ class ScheduleMemoScreen extends PureComponent {
     }
   }
 
-  componentDidMount() {
-    this.modalOption('')
-    this.onFocus(this.handleOnFocus)
-  }
-  componentWillUnmount() {
-    this.removeFocus()
-  }
-  handleOnFocus = () => {
-    const {no, date, name} = this.params
-    if (no && date) {
-      this.setState({select: {showroom_no: no, showroom_nm: name}, selectedTimeStamp: date}, () => {
-        this.getMemo()
-      })
-    } else {
-      this.getMemo()
-    }
-  }
   onSelect = (idx, value) => {
     this.setState({select: value}, () => {
       this.getMemo()
