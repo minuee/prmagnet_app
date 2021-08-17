@@ -22,6 +22,17 @@ export default StyleSheet.create({
     marginHorizontal: mUtils.wScale(20),
     borderBottomWidth: 1,
   },
+  titleCenterWrapper: {
+    width: mConst.wWidth - mUtils.wScale(20) * 2,
+    height: mUtils.wScale(60),
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: mUtils.wScale(20),
+    paddingBottom: mUtils.wScale(18),
+    marginHorizontal: mUtils.wScale(20),
+    borderBottomWidth: 1,
+  },
   goImage: {
     width: mUtils.wScale(24),
     height: mUtils.wScale(24),

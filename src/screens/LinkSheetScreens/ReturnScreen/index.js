@@ -32,9 +32,12 @@ class ReturnScreen extends PureComponent {
     }
   }
   componentDidMount() {
-    const {selectEachList} = this.params
-    // console.log('###selectEachList:', selectEachList)
-    this.pushOption('Return', false)
+    const {reqNo} = this.params
+    if (reqNo) {
+      this.modalOption('Return', false)
+    } else {
+      this.pushOption('Return', false)
+    }
     this.handleLoadData(0)
   }
   moveLeft = () => {
@@ -51,10 +54,10 @@ class ReturnScreen extends PureComponent {
     }
   }
   handleLoadData = async listIndex => {
-    const {selectEachList} = this.params
-    const reqNo = _.get(selectEachList, `[${listIndex}].req_no`)
+    const {selectEachList, reqNo} = this.params
+    const pReqNo = reqNo || _.get(selectEachList, `[${listIndex}].req_no`)
     try {
-      const response = await API.getReturnDetail(reqNo)
+      const response = await API.getReturnDetail(pReqNo)
       this.setState({data: _.get(response, 'right'), listIndex, loading: false})
       console.log('Return 스케쥴 상세 조회 성공', JSON.stringify(response))
     } catch (error) {
@@ -116,6 +119,7 @@ class ReturnScreen extends PureComponent {
     }
   }
   render() {
+    const {reqNo} = this.params
     const {data, checkedList, allChecked, loading} = this.state
     const {moveLeft, moveRight} = this.props
     const returningDate = mUtils.getShowDate(mUtils.get(data, 'returning_date'))
@@ -127,16 +131,20 @@ class ReturnScreen extends PureComponent {
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={{paddingVertical: 10}}>
-          <View style={styles.titleWrapper}>
-            <TouchableOpacity onPress={this.moveLeft}>
-              <FastImage source={goLeftImage} style={styles.goImage} />
-            </TouchableOpacity>
+          <View style={_.isEmpty(reqNo) ? styles.titleWrapper : styles.titleCenterWrapper}>
+            {_.isEmpty(reqNo) && (
+              <TouchableOpacity onPress={this.moveLeft}>
+                <FastImage source={goLeftImage} style={styles.goImage} />
+              </TouchableOpacity>
+            )}
             <View style={styles.titleSubWrapper}>
               <Text style={styles.titleSubText}>{returningDate}</Text>
             </View>
-            <TouchableOpacity onPress={this.moveRight}>
-              <FastImage source={goRightImage} style={styles.goImage} />
-            </TouchableOpacity>
+            {_.isEmpty(reqNo) && (
+              <TouchableOpacity onPress={this.moveRight}>
+                <FastImage source={goRightImage} style={styles.goImage} />
+              </TouchableOpacity>
+            )}
           </View>
           <View style={styles.middleWrapper}>
             <Text style={styles.middleText}>매체명</Text>

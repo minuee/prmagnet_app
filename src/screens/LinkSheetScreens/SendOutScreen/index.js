@@ -34,7 +34,11 @@ class SendOutScreen extends PureComponent {
   componentDidMount() {
     const {selectEachList} = this.params
     // console.log('###selectEachList:', selectEachList)
-    this.pushOption('Send Out', false)
+    if (reqNo) {
+      this.modalOption('Send Out', false)
+    } else {
+      this.pushOption('Send Out', false)
+    }
     this.handleLoadData(0)
   }
   moveLeft = () => {
@@ -51,10 +55,10 @@ class SendOutScreen extends PureComponent {
     }
   }
   handleLoadData = async listIndex => {
-    const {selectEachList} = this.params
-    const reqNo = _.get(selectEachList, `[${listIndex}].req_no`)
+    const {selectEachList, reqNo} = this.params
+    const pReqNo = reqNo || _.get(selectEachList, `[${listIndex}].req_no`)
     try {
-      const response = await API.getSendoutDetail(reqNo)
+      const response = await API.getSendoutDetail(pReqNo)
       this.setState({data: _.get(response, 'right'), listIndex, loading: false})
       console.log('Send Out 스케쥴 상세 조회 성공', JSON.stringify(response))
     } catch (error) {
@@ -103,6 +107,7 @@ class SendOutScreen extends PureComponent {
     }
   }
   render() {
+    const {reqNo} = this.params
     const {data, checkedList, allChecked, loading} = this.state
     const loaningDate = mUtils.getShowDate(mUtils.get(data, 'loaning_date'))
     const fromName = mUtils.get(data, 'from_user_nm')
@@ -113,16 +118,20 @@ class SendOutScreen extends PureComponent {
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={{paddingVertical: 10}}>
-          <View style={styles.titleWrapper}>
-            <TouchableOpacity onPress={this.moveLeft}>
-              <FastImage source={goLeftImage} style={styles.goImage} />
-            </TouchableOpacity>
+          <View style={_.isEmpty(reqNo) ? styles.titleWrapper : styles.titleCenterWrapper}>
+            {_.isEmpty(reqNo) && (
+              <TouchableOpacity onPress={this.moveLeft}>
+                <FastImage source={goLeftImage} style={styles.goImage} />
+              </TouchableOpacity>
+            )}
             <View style={styles.titleSubWrapper}>
               <Text style={styles.titleSubText}>{loaningDate}</Text>
             </View>
-            <TouchableOpacity onPress={this.moveRight}>
-              <FastImage source={goRightImage} style={styles.goImage} />
-            </TouchableOpacity>
+            {_.isEmpty(reqNo) && (
+              <TouchableOpacity onPress={this.moveRight}>
+                <FastImage source={goRightImage} style={styles.goImage} />
+              </TouchableOpacity>
+            )}
           </View>
           <View style={styles.middleWrapper}>
             <Text style={styles.middleText}>매체명</Text>

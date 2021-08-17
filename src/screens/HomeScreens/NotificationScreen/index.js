@@ -87,25 +87,43 @@ class NotificationScreen extends PureComponent {
     })
   }
 
+  handleMove = (type, reqNo) => {
+    if (mConst.getUserType() === 'B') {
+      if (type === 'req' || type === 'send') {
+        this.pushTo('SendOutScreen', {reqNo})
+      } else {
+        this.pushTo('ReturnScreen', {reqNo})
+      }
+    } else {
+      if (type === 'recv') {
+        this.pushTo('PickupsScreen', {reqNo})
+      } else {
+        this.pushTo('SendOutScreen', {reqNo})
+      }
+    }
+  }
+
   renderItem = ({item, index}) => {
     return (
       <View style={styles.itemBox}>
-        <View style={styles.items}>
-          <FastImage resizeMode={'contain'} style={styles.listImg} source={userType === 'M' ? notiSky : notiBlack} />
-          <View style={{marginTop: mUtils.wScale(5), width: '80%'}}>
-            <Text style={styles.title}>{item.subj}</Text>
-            <Text style={styles.desc}>{item.cntent}</Text>
-            <Text style={styles.dt}>
-              {moment(item.send_dt * 1000)
-                .locale('ko')
-                .format('MMM Do')}{' '}
-              ·
-              {moment(item.send_dt * 1000)
-                .locale('ko')
-                .format('LT')}
-            </Text>
+        <TouchableOpacity hitSlop={{top: 35, bottom: 35, left: 40, right: 40}} onPress={() => this.handleMove(item.notifi_type, item.req_no)}>
+          <View style={styles.items}>
+            <FastImage resizeMode={'contain'} style={styles.listImg} source={userType === 'M' ? notiSky : notiBlack} />
+            <View style={{marginTop: mUtils.wScale(5), width: '80%'}}>
+              <Text style={styles.title}>{item.subj}</Text>
+              <Text style={styles.desc}>{item.cntent}</Text>
+              <Text style={styles.dt}>
+                {moment(item.send_dt * 1000)
+                  .locale('ko')
+                  .format('MMM Do')}{' '}
+                ·
+                {moment(item.send_dt * 1000)
+                  .locale('ko')
+                  .format('LT')}
+              </Text>
+            </View>
           </View>
-        </View>
+        </TouchableOpacity>
         <TouchableOpacity
           hitSlop={{top: 35, bottom: 35, left: 40, right: 40}}
           onPress={() => {
