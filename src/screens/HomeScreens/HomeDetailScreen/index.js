@@ -157,7 +157,7 @@ class HomeDetailScreen extends PureComponent {
           {type ? (
             <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(30)}}>
               <Text style={styles.new}>
-                {mConst.getUserType() === 'M' ? 'Confirmed' : 'New'} <Text style={{fontFamily: 'Roboto-Medium'}}>Requests : </Text>
+                {mConst.getUserType() === 'M' ? 'Confirmed' : 'New'} <Text style={{fontFamily: 'Roboto-Medium'}}>Sample Requests : </Text>
                 <Text style={{fontFamily: 'Roboto-Bold', color: '#7ea1b2'}}>{total_count}</Text>
               </Text>
             </View>
