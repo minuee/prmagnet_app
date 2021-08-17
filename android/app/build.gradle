@@ -172,12 +172,10 @@ android {
     }
     buildTypes {
         debug {
-            applicationIdSuffix ".debug"
             resValue "string", "CodePushDeploymentKey", '""'
             signingConfig signingConfigs.debug
         }
         releaseStaging {
-            applicationIdSuffix ".releaseStaging"
             resValue "string", "CodePushDeploymentKey", '"thNOx5_uTMwxPEC-T8wqTBY-hhNi98EwiVsMy"'
             signingConfig signingConfigs.releaseStaging
             matchingFallbacks = ['release']
