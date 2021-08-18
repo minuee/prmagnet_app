@@ -32,8 +32,7 @@ class SendOutScreen extends PureComponent {
     }
   }
   componentDidMount() {
-    const {selectEachList} = this.params
-    // console.log('###selectEachList:', selectEachList)
+    const {reqNo} = this.params
     if (reqNo) {
       this.modalOption('Send Out', false)
     } else {

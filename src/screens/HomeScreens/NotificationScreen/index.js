@@ -89,7 +89,9 @@ class NotificationScreen extends PureComponent {
 
   handleMove = (type, reqNo) => {
     if (mConst.getUserType() === 'B') {
-      if (type === 'req' || type === 'send') {
+      if (type === 'req') {
+        this.pushTo('HomeDetailScreen', {type: true, title: 'New Sample Requests'})
+      } else if (type === 'send') {
         this.pushTo('SendOutScreen', {reqNo})
       } else {
         this.pushTo('ReturnScreen', {reqNo})
@@ -106,7 +108,7 @@ class NotificationScreen extends PureComponent {
   renderItem = ({item, index}) => {
     return (
       <View style={styles.itemBox}>
-        <TouchableOpacity hitSlop={{top: 35, bottom: 35, left: 40, right: 40}} onPress={() => this.handleMove(item.notifi_type, item.req_no)}>
+        <TouchableOpacity hitSlop={{top: 35, bottom: 35, left: 40, right: 40}} onPress={() => this.handleMove(item.notice_type, item.req_no)}>
           <View style={styles.items}>
             <FastImage resizeMode={'contain'} style={styles.listImg} source={userType === 'M' ? notiSky : notiBlack} />
             <View style={{marginTop: mUtils.wScale(5), width: '80%'}}>
