@@ -197,6 +197,7 @@ class BrandSchedulerScreen extends PureComponent {
                               <FlatList
                                 ref={ref => (this.swiperRef = ref)}
                                 horizontal={true}
+                                showsHorizontalScrollIndicator={false}
                                 style={{width: mUtils.wScale(190)}}
                                 pagingEnabled={true}
                                 keyExtractor={(item, index) => index.toString()}
