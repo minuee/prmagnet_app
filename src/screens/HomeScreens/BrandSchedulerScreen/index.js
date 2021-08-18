@@ -24,6 +24,7 @@ const dollarImg1 = require('../../../images/navi/dollar_1.png')
 const airplaneImg = require('../../../images/navi/airplane_1.png')
 const dollarImg2 = require('../../../images/navi/dollar_2.png')
 const plusImg = require('../../../images/navi/plus_1.png')
+const minusImg = require('../../../images/navi/minus_2.png')
 const memoImg = require('../../../images/navi/memo_1.png')
 const linkImg = require('../../../images/navi/link_1.png')
 
@@ -42,6 +43,8 @@ class BrandSchedulerScreen extends PureComponent {
       data: '',
       start: mUtils.getToday(),
       end: mUtils.getNextWeek(),
+      // start: mUtils.getDayValue(2021, 7, 25),
+      // end: mUtils.getDayValue(2021, 7, 28),
       season_year: {season_year: '', season_simple_text: '', season_cd_id: ''},
       gender: genderData[0],
       toggle: [],
@@ -74,6 +77,15 @@ class BrandSchedulerScreen extends PureComponent {
     const {start, end} = this.state
     this.pushTo('SelectScheduleScreen', {setDate: this.getSchedular, start, end, caller: 'ScheduleTab'})
   }
+  toggleShow = showroomNo => {
+    this.setState(prevstate => {
+      const toggle = prevstate.toggle.includes(showroomNo)
+        ? prevstate.toggle.filter(item => item !== showroomNo)
+        : prevstate.toggle.concat(showroomNo)
+      return {toggle}
+    })
+  }
+
   render() {
     const {data, toggle, start, end, season_year, gender} = this.state
     const {user} = this.props
@@ -219,29 +231,51 @@ class BrandSchedulerScreen extends PureComponent {
                                         )
                                       })}
                                       {curReqs.map((rItem, rIndex) => {
+                                        const key = `${dItem.showroom_no}_${mUtils.getDateString(item)}`
+                                        if (!toggle.includes(key)) {
+                                          if (rIndex === 2)
+                                            return (
+                                              <View key={rIndex} style={styles.moreUnit}>
+                                                <TouchableOpacity onPress={() => this.toggleShow(key)}>
+                                                  <FastImage resizeMode={'contain'} style={styles.plusImg} source={plusImg} />
+                                                </TouchableOpacity>
+                                              </View>
+                                            )
+                                          if (rIndex > 2) return null
+                                        }
                                         return (
-                                          <View key={rIndex} style={[styles.dayReqUnit, {marginBottom: mUtils.wScale(5)}]}>
-                                            <View style={{...styles.layout6, backgroundColor: rItem.mgzn_color}}>
-                                              <Text style={styles.title}>{rItem.company_name}</Text>
-                                              <View style={styles.layout}>
-                                                <FastImage resizeMode={'contain'} style={styles.dollarImg1} source={dollarImg1} />
-                                                <FastImage resizeMode={'contain'} style={styles.airplaneImg} source={airplaneImg} />
+                                          <View key={rIndex}>
+                                            <View style={[styles.dayReqUnit, {marginBottom: mUtils.wScale(5)}]}>
+                                              <View style={{...styles.layout6, backgroundColor: rItem.mgzn_color}}>
+                                                <Text style={styles.title}>{rItem.company_name}</Text>
+                                                <View style={styles.layout}>
+                                                  <FastImage resizeMode={'contain'} style={styles.dollarImg1} source={dollarImg1} />
+                                                  <FastImage resizeMode={'contain'} style={styles.airplaneImg} source={airplaneImg} />
+                                                </View>
+                                              </View>
+                                              <View style={styles.layout7}>
+                                                <Text style={{...styles.name}}>{rItem.req_user_nm}</Text>
+                                                <Text style={{...styles.brandDate, marginTop: mUtils.wScale(3)}}>
+                                                  {rItem.company_name} / {'\n'}
+                                                  {mUtils.getShowDate(rItem.start_dt, 'YYYY-MM-DD')} ~{' '}
+                                                  {mUtils.getShowDate(rItem.end_dt, 'YYYY-MM-DD')}
+                                                </Text>
+                                                <Text style={{...styles.desc, marginTop: mUtils.wScale(8)}}>{rItem.address}</Text>
+
+                                                <Text style={{...styles.desc, marginTop: mUtils.wScale(3)}}>
+                                                  {rItem.contact_user_nm}
+                                                  {'\n'}
+                                                  {mUtils.allNumber(mUtils.get(rItem.contact_user_phone))}
+                                                </Text>
                                               </View>
                                             </View>
-                                            <View style={styles.layout7}>
-                                              <Text style={{...styles.name}}>{rItem.req_user_nm}</Text>
-                                              <Text style={{...styles.brandDate, marginTop: mUtils.wScale(3)}}>
-                                                {rItem.company_name} / {'\n'}
-                                                {mUtils.getShowDate(rItem.start_dt, 'YYYY-MM-DD')} ~ {mUtils.getShowDate(rItem.end_dt, 'YYYY-MM-DD')}
-                                              </Text>
-                                              <Text style={{...styles.desc, marginTop: mUtils.wScale(8)}}>{rItem.address}</Text>
-
-                                              <Text style={{...styles.desc, marginTop: mUtils.wScale(3)}}>
-                                                {rItem.contact_user_nm}
-                                                {'\n'}
-                                                {mUtils.allNumber(mUtils.get(rItem.contact_user_phone))}
-                                              </Text>
-                                            </View>
+                                            {toggle.includes(key) && curReqs.length - 1 === rIndex && (
+                                              <View key={rIndex} style={styles.moreUnit}>
+                                                <TouchableOpacity onPress={() => this.toggleShow(key)}>
+                                                  <FastImage resizeMode={'contain'} style={styles.plusImg} source={minusImg} />
+                                                </TouchableOpacity>
+                                              </View>
+                                            )}
                                           </View>
                                         )
                                       })}
@@ -250,6 +284,7 @@ class BrandSchedulerScreen extends PureComponent {
                                 }}
                               />
                             )}
+
                             {/*{item.req_list.length - 1 !== 0 && !toggle.includes(item.showroom_no) && (
                         <TouchableOpacity
                           style={styles.plusButton}

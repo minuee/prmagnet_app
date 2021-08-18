@@ -397,6 +397,9 @@ const utils = {
     }
     return dates
   },
+  getDateString(date) {
+    return `${date.getFullYear()}${date.getMonth()}${date.getDate()}`
+  },
   getShowDate(dbTime, format = 'M/D(ddd)') {
     // 파라미터는 Date.getTime() / 1000 값임
     if (!dbTime) return '-'

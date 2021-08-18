@@ -155,6 +155,10 @@ export default StyleSheet.create({
     borderColor: mConst.borderGray,
     borderRadius: mUtils.wScale(5),
   },
+  moreUnit: {
+    width: mUtils.wScale(190),
+    alignItems: 'center',
+  },
   layout4: {
     flexDirection: 'row',
     justifyContent: 'space-between',
