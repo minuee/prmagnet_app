@@ -121,7 +121,6 @@ class ReturnScreen extends PureComponent {
   render() {
     const {reqNo} = this.params
     const {data, checkedList, allChecked, loading} = this.state
-    const {moveLeft, moveRight} = this.props
     const returningDate = mUtils.getShowDate(mUtils.get(data, 'returning_date'))
     const fromName = mUtils.get(data, 'from_user_nm')
     const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'from_user_phone'))
