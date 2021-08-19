@@ -69,7 +69,14 @@ class DigitalSRScreen extends PureComponent {
       this.getNotice()
       this.getInquiryNum()
     }
-    this.postDigitalSRReset()
+    // 알림에서 브랜드 공지사항 읽기 처리를 위한 파라미터 읽어오기
+    const pBrandId = mUtils.get(this.props, 'route.params.brandId', '')
+    if (pBrandId) {
+      this.setBrand(pBrandId)
+      this.props.route.params.brandId = '' // 파라미터 초기화
+    } else {
+      this.postDigitalSRReset()
+    }
     this.setState({selectOnOff: false, select: []})
   }
   getSampleInfo = async () => {
@@ -333,7 +340,6 @@ class DigitalSRScreen extends PureComponent {
     const {notice, inquiryNum, season_year, selectOnOff, isvisible, loading, select, filterData, filterInfo} = this.state
     const {user} = this.props
     const userType = mConst.getUserType()
-    console.log('###DigitalSRScreen-brand_id:', data.current_brand_info)
     return (
       <SafeAreaView style={styles.container}>
         <Header pushTo={this.pushTo} userType={userType} alarmSet={user.alarm} />

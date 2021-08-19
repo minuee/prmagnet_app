@@ -87,9 +87,11 @@ class NotificationScreen extends PureComponent {
     })
   }
 
-  handleMove = (type, reqNo, noticeId) => {
+  handleMove = (type, reqNo, noticeId, brandId) => {
     if (mConst.getUserType() === 'B') {
-      if (type === 'req') {
+      if (type === 'cms') {
+        this.pushTo('NoticeDetailScreen', {no: noticeId})
+      } else if (type === 'req') {
         this.pushTo('HomeDetailScreen', {type: true, title: 'New Sample Requests'})
       } else if (type === 'send') {
         this.pushTo('SendOutScreen', {reqNo})
@@ -98,10 +100,13 @@ class NotificationScreen extends PureComponent {
       }
     } else {
       if (type === 'brand') {
-        // this.pushTo('NoticeDetailScreen', {no: noticeId})
+        this.pop()
+        this.pushTo('ShowTab', {screen: 'ShowScreen', params: {brandId}})
+      } else if (type === 'cms') {
+        this.pushTo('NoticeDetailScreen', {no: noticeId})
       } else if (type === 'recv') {
         this.pushTo('PickupsScreen', {reqNo})
-      } else {
+      } else if (type === 'req' || type === 'send') {
         this.pushTo('SendOutScreen', {reqNo})
       }
     }
@@ -112,7 +117,7 @@ class NotificationScreen extends PureComponent {
       <View style={styles.itemBox}>
         <TouchableOpacity
           hitSlop={{top: 35, bottom: 35, left: 40, right: 40}}
-          onPress={() => this.handleMove(item.notice_type, item.req_no, item.notice_id)}
+          onPress={() => this.handleMove(item.notice_type, item.req_no, item.notice_id, item.brand_id)}
         >
           <View style={styles.items}>
             <FastImage resizeMode={'contain'} style={styles.listImg} source={userType === 'M' ? notiSky : notiBlack} />
