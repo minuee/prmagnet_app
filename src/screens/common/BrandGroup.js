@@ -63,7 +63,8 @@ export default class BrandGroup extends PureComponent {
   }
   render() {
     const {favoriteItems, select} = this.state
-    const {data, brandId} = this.props
+    const {data, brandId, hide} = this.props
+    if (hide) return null
     return (
       <View style={styles.layout}>
         <Row style={styles.top}>

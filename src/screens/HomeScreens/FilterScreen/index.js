@@ -8,15 +8,17 @@ import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
+import API from '../../../common/aws-api'
 import CategoryGroup from '../../common/CategoryGroup'
 import ColorGroup from '../../common/ColorGroup'
 import SizeGroup from '../../common/SizeGroup'
 import FlagGroup from '../../common/FlagGroup'
 import MaterialGroup from '../../common/MaterialGroup'
+import BrandGroup from '../../common/BrandGroup'
 import styles from './styles'
 
 const genderSection = {여성: 'Women', 남성: 'Men', 유니섹스: 'Unisex'}
-const sections = ['Category', 'Color', 'Size', 'Sample', 'Still Life Image', 'Material']
+const sections = ['Brand', 'Category', 'Color', 'Size', 'Sample', 'Still Life Image', 'Material']
 
 class FilterScreen extends PureComponent {
   constructor(props) {
@@ -24,7 +26,8 @@ class FilterScreen extends PureComponent {
     cBind(this)
     this.state = {
       gender: [],
-      section: sections[0],
+      section: this.params?.brandId ? sections[0] : sections[1],
+      brands: [],
       category: [],
       color: [],
       size: [],
@@ -37,6 +40,7 @@ class FilterScreen extends PureComponent {
     this.modalOption('FILTER')
     const {info} = this.params
     this.setState(info)
+    this.getBrandSearchCompanyAZ()
   }
   goFilter = () => {
     const {setFilter} = this.params
@@ -69,9 +73,22 @@ class FilterScreen extends PureComponent {
   handleSetState = property => value => {
     this.setState({[property]: value})
   }
+  setBrand = brandId => {
+    this.setState({brandId})
+  }
+  getBrandSearchCompanyAZ = async () => {
+    try {
+      const response = await API.getBrandSearchCompanyAZ()
+      console.log('getBrandSearchCompanyAZ>>>', JSON.stringify(response))
+      this.setState({brands: response.list})
+    } catch (error) {
+      console.log('getBrandSearchCompanyAZ>>>', error)
+      await API.postErrLog({error: JSON.stringify(error), desc: 'getBrandSearchCompanyAZError'})
+    }
+  }
   render() {
-    const {gender, section, category, color, size, sample, stillLifeImg, material} = this.state
-    const {data} = this.params
+    const {gender, section, brands, category, color, size, sample, stillLifeImg, material} = this.state
+    const {data, brandId} = this.params
     const sizeData = data?.category?.filter(item => item.sample_catgry_lrge_cl_nm === 'Shoes')[0]?.gender_size_list
     const cRtwData = data?.category
       ?.filter(item => item.sample_catgry_lrge_cl_nm === 'RTW')[0]
@@ -106,6 +123,7 @@ class FilterScreen extends PureComponent {
                 <Col size={35}>
                   {_.map(sections, (item, index) => {
                     const selected = item === section
+                    if (_.isEmpty(brandId) && item === 'Brand') return null
                     return (
                       <TouchableOpacity key={index} onPress={() => this.handleSetState('section')(item)}>
                         <Row style={selected ? styles.sectionWrapperOn : styles.sectionWrapper}>
@@ -116,6 +134,7 @@ class FilterScreen extends PureComponent {
                   })}
                 </Col>
                 <Col size={65}>
+                  <BrandGroup data={brands} brandId={brandId} hide={section !== 'Brand'} setBrand={this.setBrand} />
                   <CategoryGroup data={data.category} value={category} hide={section !== 'Category'} setFilter={this.toggleStateList('category')} />
                   <ColorGroup data={data.color} value={color} hide={section !== 'Color'} setFilter={this.toggleStateList('color')} />
                   <SizeGroup
