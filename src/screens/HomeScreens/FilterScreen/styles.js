@@ -46,10 +46,12 @@ export default StyleSheet.create({
   sectionText: {
     fontFamily: 'Roboto-Medium',
     fontSize: 15,
+    fontWeight: 'bold',
   },
   sectionTextOn: {
     fontFamily: 'Roboto-Medium',
     fontSize: 15,
+    fontWeight: 'bold',
     color: mConst.white,
   },
   itemWrapper: {
@@ -65,7 +67,7 @@ export default StyleSheet.create({
   },
   itemHeadText: {
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: 'bold',
   },
   itemText: {
     fontSize: 14,
