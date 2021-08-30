@@ -26,8 +26,9 @@ class FilterScreen extends PureComponent {
     cBind(this)
     this.state = {
       gender: [],
-      section: this.params?.brandId ? sections[0] : sections[1],
+      section: _.has(this.params, 'brandId') ? sections[0] : sections[1],
       brands: [],
+      brandId: this.params?.brandId || '',
       category: [],
       color: [],
       size: [],
@@ -51,6 +52,7 @@ class FilterScreen extends PureComponent {
     this.setState({
       gender: [],
       section: sections[0],
+      brandId: '',
       category: [],
       color: [],
       size: [],
@@ -87,8 +89,8 @@ class FilterScreen extends PureComponent {
     }
   }
   render() {
-    const {gender, section, brands, category, color, size, sample, stillLifeImg, material} = this.state
-    const {data, brandId} = this.params
+    const {gender, section, brands, brandId, category, color, size, sample, stillLifeImg, material} = this.state
+    const {data} = this.params
     const sizeData = data?.category?.filter(item => item.sample_catgry_lrge_cl_nm === 'Shoes')[0]?.gender_size_list
     const cRtwData = data?.category
       ?.filter(item => item.sample_catgry_lrge_cl_nm === 'RTW')[0]
@@ -123,7 +125,7 @@ class FilterScreen extends PureComponent {
                 <Col size={35}>
                   {_.map(sections, (item, index) => {
                     const selected = item === section
-                    if (_.isEmpty(brandId) && item === 'Brand') return null
+                    if (!_.has(this.params, 'brandId') && item === 'Brand') return null
                     return (
                       <TouchableOpacity key={index} onPress={() => this.handleSetState('section')(item)}>
                         <Row style={selected ? styles.sectionWrapperOn : styles.sectionWrapper}>

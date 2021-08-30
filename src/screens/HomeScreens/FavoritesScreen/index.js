@@ -15,6 +15,7 @@ import styles from './styles'
 
 const modelImg = require('../../../images/sample/model_1.png')
 const likeImg = require('../../../images/navi/like_1.png')
+const fixImg = require('../../../images/navi/fix_1.png')
 
 class FavoritesScreen extends PureComponent {
   constructor(props) {
@@ -22,28 +23,42 @@ class FavoritesScreen extends PureComponent {
     cBind(this)
     this.state = {
       favShowroom: [],
-      // favShowroom: [ // TODO 테스트 데이타 주석 처리
-      //   {
-      //     img: require('../../../images/sample/model_1.png'),
-      //     like: true,
-      //     title: 'Look #1',
-      //   },
-      //   {img: require('../../../images/sample/model_1.png'), new: false, title: 'Look #2'},
-      // ],
       loading: false,
+      filterData: {},
+      filterInfo: {
+        brandId: '',
+        gender: [],
+        category: [],
+        color: [],
+        size: [],
+        sample: null,
+        stillLifeImg: null,
+        material: [],
+      },
     }
   }
   componentDidMount() {
-    this.pushOption('Favorites')
+    this.pushOption('Favorites', {source: fixImg, onPress: this.handleFilter})
+    this.getSampleInfo()
     this.onFocus(this.handleOnFocus)
   }
   componentWillUnmount() {
     this.removeFocus()
   }
   handleOnFocus = () => {
+    const {filterInfo} = this.state
     this.setState({loading: true}, async () => {
       try {
-        const response = await API.getFavShowroom()
+        const response = await API.getFavShowroom({
+          brand_id: filterInfo.brandId,
+          gender_list: filterInfo.gender,
+          category_list: filterInfo.category,
+          color_list: filterInfo.color,
+          size_list: filterInfo.size,
+          wrhousng_yn: filterInfo.sample,
+          still_life_img_yn: filterInfo.stillLifeImg,
+          material_list: filterInfo.material,
+        })
         this.setState({favShowroom: _.get(response, 'list', []), loading: false})
         console.log('쇼룸 즐겨찾기 조회 성공', JSON.stringify(response))
       } catch (error) {
@@ -51,6 +66,25 @@ class FavoritesScreen extends PureComponent {
         console.log('쇼룸 즐겨찾기 조회 실패', error)
       }
     })
+  }
+  getSampleInfo = async () => {
+    try {
+      const response = await API.getSampleInfo()
+      console.log('getSampleInfo>>>', JSON.stringify(response))
+      if (response.success) {
+        this.setState({filterData: response})
+      }
+    } catch (error) {
+      console.log('getSampleInfo>>>', error)
+      await API.postErrLog({error: JSON.stringify(error), desc: 'getSampleInfo'})
+    }
+  }
+  setFilter = filterInfo => {
+    this.setState({filterInfo})
+  }
+  handleFilter = () => {
+    const {filterData, filterInfo} = this.state
+    this.pushTo('FilterScreen', {setFilter: this.setFilter, data: filterData, info: filterInfo, brandId: filterInfo?.brandId})
   }
   deleteFavShowroom = async no => {
     const {favShowroom} = this.state

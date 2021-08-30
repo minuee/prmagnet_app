@@ -57,7 +57,6 @@ export default class BrandGroup extends PureComponent {
     })
   }
   toggleSelectItem = val => {
-    console.log('@@@@@', val)
     const {brandId, setBrand} = this.props
     val !== brandId ? setBrand(val) : setBrand('')
   }

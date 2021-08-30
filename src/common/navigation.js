@@ -42,7 +42,7 @@ const cBind = reactComp => {
         </View>
       ),
     })
-  reactComp.pushOption = (screenName, link) =>
+  reactComp.pushOption = (screenName, headerRight) =>
     navigation.setOptions({
       title: screenName,
       headerStyle: {backgroundColor: mConst.white, shadowColor: 'transparent', elevation: 0},
@@ -53,9 +53,9 @@ const cBind = reactComp => {
         </TouchableOpacity>
       ),
       headerRight: () =>
-        link ? (
-          <TouchableOpacity style={{paddingHorizontal: 20}} onPress={reactComp.notReady}>
-            <FastImage style={{width: 20, height: 20}} source={linkImage} />
+        headerRight ? (
+          <TouchableOpacity style={{paddingHorizontal: 20}} onPress={headerRight.onPress}>
+            <FastImage style={{width: 20, height: 20}} source={headerRight.source} />
           </TouchableOpacity>
         ) : null,
     })

@@ -306,12 +306,36 @@ const API = {
     }
     return Api.del(apiName, path, init)
   },
-  getFavShowroom: () => {
+  getFavShowroom: ({
+    brand_id,
+    season_year,
+    season_cd_id,
+    gender_cd_id,
+    available_start_dt,
+    available_end_dt,
+    category_list,
+    color_list,
+    size_list,
+    material_list,
+  }) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/fav-show` // TODO 임시 주석처리
     //const path = '/stylist/fav-show' // TODO 테스트용
-    const init = {}
-    return Api.get(apiName, path, init)
+    const init = {
+      body: {
+        brand_id,
+        season_year,
+        season_cd_id,
+        gender_cd_id,
+        available_start_dt,
+        available_end_dt,
+        category_list,
+        color_list,
+        size_list,
+        material_list,
+      },
+    }
+    return Api.post(apiName, path, init)
   },
   getFavPress: () => {
     const apiName = v1Api
