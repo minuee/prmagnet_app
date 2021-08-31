@@ -107,14 +107,14 @@ class HomeScreen extends PureComponent {
       <View style={{flex: _.get(data, 'today_request', []).length === 0 ? 1 : 0, flex: data.today_request.length === 0 ? 1 : 0}}>
         <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(40)}}>
           <Text style={styles.new}>
-            Today's <Text style={{fontFamily: 'Roboto-Medium'}}>{userType !== 'B' ? 'Send-Outs' : 'Pickups'} : </Text>
+            Today's <Text style={{fontFamily: 'Roboto-Medium'}}>{userType === 'B' ? 'Send-Outs' : 'Pickups'} : </Text>
             <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}>{data.today_request_total_count}</Text>
           </Text>
           <TouchableOpacity
             style={styles.layout}
             onPress={() => {
               // eslint-disable-next-line quotes
-              this.pushTo('HomeDetailScreen', {type: false, title: userType !== 'B' ? "Today's Send-Outs" : "Today's Pickups"})
+              this.pushTo('HomeDetailScreen', {type: false, title: userType === 'B' ? "Today's Send-Outs" : "Today's Pickups"})
             }}
           >
             <Text style={styles.more}>More</Text>
