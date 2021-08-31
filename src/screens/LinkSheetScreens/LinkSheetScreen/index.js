@@ -206,7 +206,16 @@ class LinkSheetScreen extends PureComponent {
                     {_.map(item.each_list, (subItem, subIndex) => {
                       console.log('#매거진색깔:', subItem.mgzn_color)
                       return (
-                        <View key={subIndex} style={styles.brandBox}>
+                        <TouchableOpacity
+                          key={subIndex}
+                          style={styles.brandBox}
+                          onPress={() =>
+                            this.pushTo(
+                              selectTitle === 'Send Out' ? 'SendOutScreen' : mConst.getUserType() === 'B' ? 'ReturnScreen' : 'PickupsScreen',
+                              {reqNo: subItem.req_no}
+                            )
+                          }
+                        >
                           <View style={{...styles.box1, backgroundColor: subItem.mgzn_color}}>
                             <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
                           </View>
@@ -238,7 +247,7 @@ class LinkSheetScreen extends PureComponent {
                               </>
                             )}
                           </View>
-                        </View>
+                        </TouchableOpacity>
                       )
                     })}
                   </View>
