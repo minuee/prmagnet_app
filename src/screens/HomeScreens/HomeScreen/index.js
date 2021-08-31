@@ -107,14 +107,14 @@ class HomeScreen extends PureComponent {
       <View style={{flex: _.get(data, 'today_request', []).length === 0 ? 1 : 0, flex: data.today_request.length === 0 ? 1 : 0}}>
         <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(40)}}>
           <Text style={styles.new}>
-            Today's <Text style={{fontFamily: 'Roboto-Medium'}}>{userType === 'M' ? 'Pickups' : 'Send-Outs'} : </Text>
+            Today's <Text style={{fontFamily: 'Roboto-Medium'}}>{userType !== 'B' ? 'Send-Outs' : 'Pickups'} : </Text>
             <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}>{data.today_request_total_count}</Text>
           </Text>
           <TouchableOpacity
             style={styles.layout}
             onPress={() => {
               // eslint-disable-next-line quotes
-              this.pushTo('HomeDetailScreen', {type: false, title: userType === 'M' ? "Today's Pickups" : "Today's Send-Outs"})
+              this.pushTo('HomeDetailScreen', {type: false, title: userType !== 'B' ? "Today's Send-Outs" : "Today's Pickups"})
             }}
           >
             <Text style={styles.more}>More</Text>
@@ -135,7 +135,11 @@ class HomeScreen extends PureComponent {
           {data.today_request.length > 0 ? (
             data.today_request.map((item, index) => {
               return (
-                <TouchableOpacity key={index} style={styles.layout3} onPress={() => this.pushTo('SendOutScreen', {reqNo: item.req_no})}>
+                <TouchableOpacity
+                  key={index}
+                  style={styles.layout3}
+                  onPress={() => this.pushTo(userType === 'B' ? 'SendOutScreen' : 'PickupsScreen', {reqNo: item.req_no})}
+                >
                   <FastImage
                     resizeMode={'contain'}
                     style={styles.brandImg}
