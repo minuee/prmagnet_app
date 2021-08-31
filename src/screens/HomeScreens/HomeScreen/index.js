@@ -135,7 +135,7 @@ class HomeScreen extends PureComponent {
           {data.today_request.length > 0 ? (
             data.today_request.map((item, index) => {
               return (
-                <View key={index} style={styles.layout3}>
+                <TouchableOpacity key={index} style={styles.layout3} onPress={() => this.pushTo('SendOutScreen', {reqNo: item.req_no})}>
                   <FastImage
                     resizeMode={'contain'}
                     style={styles.brandImg}
@@ -152,7 +152,7 @@ class HomeScreen extends PureComponent {
                   ) : (
                     <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>{item.brand_nm}</Text>
                   )}
-                </View>
+                </TouchableOpacity>
               )
             })
           ) : (
