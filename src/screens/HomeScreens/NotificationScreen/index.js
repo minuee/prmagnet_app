@@ -120,7 +120,7 @@ class NotificationScreen extends PureComponent {
           onPress={() => this.handleMove(item.notice_type, item.req_no, item.notice_id, item.brand_id)}
         >
           <View style={styles.items}>
-            <FastImage resizeMode={'contain'} style={styles.listImg} source={userType === 'M' ? notiSky : notiBlack} />
+            <FastImage resizeMode={'contain'} style={styles.listImg} source={userType !== 'B' ? notiSky : notiBlack} />
             <View style={{marginTop: mUtils.wScale(5), width: '80%'}}>
               <Text style={styles.title}>{item.subj}</Text>
               <Text style={styles.desc}>{item.cntent}</Text>

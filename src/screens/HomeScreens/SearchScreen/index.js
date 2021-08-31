@@ -63,7 +63,7 @@ class SearchScreen extends PureComponent {
       console.log('getAllSearch>>>', response)
       if (response.success) {
         this.setState({loading: false})
-        if (userType === 'M') {
+        if (userType !== 'B') {
           this.setState({magazine: response})
         } else {
           this.setState({brand: response})
@@ -108,7 +108,7 @@ class SearchScreen extends PureComponent {
           </View>
         </TouchableWithoutFeedback>
         <View style={{paddingHorizontal: mUtils.wScale(20), flex: 1}}>
-          <Text style={styles.result}>총 {userType === 'M' ? magazine.net_count_app : brand.net_count_app}건의 검색결과가 있습니다</Text>
+          <Text style={styles.result}>총 {userType !== 'B' ? magazine.net_count_app : brand.net_count_app}건의 검색결과가 있습니다</Text>
           {loading ? (
             <Loading />
           ) : (

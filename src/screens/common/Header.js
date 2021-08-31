@@ -33,7 +33,7 @@ export default class CommonHeader extends PureComponent {
     return (
       <View style={styles.upperWrapper}>
         <TouchableWithoutFeedback onPress={() => this.keywordInput.focus()}>
-          <View style={styles.inputTextWrapper(mUserType === 'M')}>
+          <View style={styles.inputTextWrapper(mUserType !== 'B')}>
             <TouchableOpacity style={styles.inputIconWrapper} onPress={null}>
               <FastImage source={searchImage} style={styles.inputIcon} />
             </TouchableOpacity>
@@ -46,7 +46,7 @@ export default class CommonHeader extends PureComponent {
               <TextInput
                 editable={false}
                 ref={comp => (this.keywordInput = comp)}
-                style={styles.input(mUserType === 'M')}
+                style={styles.input(mUserType !== 'B')}
                 placeholderTextColor={mConst.textPhColor}
                 value={keyword}
                 onChangeText={text => this.setState({keyword: text})}
@@ -64,7 +64,7 @@ export default class CommonHeader extends PureComponent {
           </View>
         </TouchableWithoutFeedback>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          {mUserType === 'M' && (
+          {mUserType !== 'B' && (
             <TouchableOpacity style={styles.inputIconWrapper} onPress={() => pushTo('FavoritesScreen')}>
               <FastImage resizeMode={'contain'} source={like2Image} style={styles.inputIcon} />
             </TouchableOpacity>

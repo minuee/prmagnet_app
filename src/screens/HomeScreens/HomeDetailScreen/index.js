@@ -122,7 +122,7 @@ class HomeDetailScreen extends PureComponent {
         onPress={() => {
           this.pushTo('SampleRequestsDetailScreen', {no: item.req_no})
         }}
-        disabled={userType === 'M' && title === 'Confirmed Requests' ? false : true}
+        disabled={userType !== 'B' && title === 'Confirmed Requests' ? false : true}
         style={styles.layout3}
       >
         <FastImage
@@ -157,14 +157,14 @@ class HomeDetailScreen extends PureComponent {
           {type ? (
             <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(30)}}>
               <Text style={styles.new}>
-                {mConst.getUserType() === 'M' ? 'Confirmed' : 'New'} <Text style={{fontFamily: 'Roboto-Medium'}}>Sample Requests : </Text>
+                {mConst.getUserType() !== 'B' ? 'Confirmed' : 'New'} <Text style={{fontFamily: 'Roboto-Medium'}}>Sample Requests : </Text>
                 <Text style={{fontFamily: 'Roboto-Bold', color: '#7ea1b2'}}>{total_count}</Text>
               </Text>
             </View>
           ) : (
             <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(30)}}>
               <Text style={styles.new}>
-                Today's <Text style={{fontFamily: 'Roboto-Medium'}}>{mConst.getUserType() === 'M' ? 'Pickups' : 'Send-Outs'} : </Text>
+                Today's <Text style={{fontFamily: 'Roboto-Medium'}}>{mConst.getUserType() !== 'B' ? 'Pickups' : 'Send-Outs'} : </Text>
                 <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}>{total_count}</Text>
               </Text>
             </View>

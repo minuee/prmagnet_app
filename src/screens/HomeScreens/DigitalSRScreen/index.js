@@ -298,7 +298,7 @@ class DigitalSRScreen extends PureComponent {
             <FastImage resizeMode={'contain'} style={styles.newImg} source={newImg} />
           ) : null}
 
-          {userType === 'M' &&
+          {userType !== 'B' &&
             (item?.is_fav ? (
               <TouchableOpacity
                 style={styles.likeTouch}
@@ -349,7 +349,7 @@ class DigitalSRScreen extends PureComponent {
               <Text style={{...styles.mainTitle}}>Digital</Text>
               <Text style={styles.mainTitle1}>Showroom</Text>
             </View>
-            {userType === 'M' && (
+            {userType !== 'B' && (
               <View style={styles.layout2}>
                 <TouchableOpacity
                   style={{...styles.selectBox, backgroundColor: selectOnOff ? mConst.black : mConst.white, marginRight: mUtils.wScale(5)}}
@@ -380,7 +380,7 @@ class DigitalSRScreen extends PureComponent {
             <>
               <View style={{...styles.layout, justifyContent: 'space-between', paddingTop: mUtils.wScale(20), paddingBottom: mUtils.wScale(15)}}>
                 <View>
-                  {userType === 'M' && <Text style={styles.brandText}>{data.current_brand_info.brand_nm}</Text>}
+                  {userType !== 'B' && <Text style={styles.brandText}>{data.current_brand_info.brand_nm}</Text>}
                   <Menu>
                     <MenuTrigger
                       customStyles={{
@@ -416,7 +416,7 @@ class DigitalSRScreen extends PureComponent {
                   </Menu>
                 </View>
                 <View style={{...styles.layout}}>
-                  {userType === 'M' ? (
+                  {userType !== 'B' ? (
                     <TouchableOpacity
                       onPress={() => {
                         this.pushTo('FilterScreen', {setFilter: this.setFilter, data: filterData, info: filterInfo})

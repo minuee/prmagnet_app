@@ -38,7 +38,7 @@ export default StyleSheet.create({
     height: mUtils.wScale(27),
     borderStyle: 'solid',
     borderWidth: 0.7,
-    borderColor: mConst.getUserType() === 'M' ? '#7ea1b2' : mConst.borderGray,
+    borderColor: mConst.getUserType() !== 'B' ? '#7ea1b2' : mConst.borderGray,
     alignItems: 'center',
     justifyContent: 'center',
   },

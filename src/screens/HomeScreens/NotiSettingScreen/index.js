@@ -141,7 +141,7 @@ class NotiSettingScreen extends PureComponent {
     this.pushOption('알림 설정')
     const {info} = this.props.route.params
     const arr =
-      userType === 'M' ? [false, false, false, false, false] : [info.req_notifi_recv_yn, info.notice_notifi_recv_yn, info.not_disturb_mode_yn]
+      userType !== 'B' ? [false, false, false, false, false] : [info.req_notifi_recv_yn, info.notice_notifi_recv_yn, info.not_disturb_mode_yn]
     this.setState({
       isEnabled: arr,
       from: _.defaultTo(new Date(moment.unix(info.not_disturb_begin_dt).format()), new Date()),
@@ -158,7 +158,7 @@ class NotiSettingScreen extends PureComponent {
       <>
         <SafeAreaView style={styles.container}>
           <ScrollView contentContainerStyle={styles.scroll}>
-            {_.map(userType === 'M' ? magazine : brand, (item, index) => {
+            {_.map(userType !== 'B' ? magazine : brand, (item, index) => {
               return (
                 <View key={index} style={styles.listBox}>
                   <View>

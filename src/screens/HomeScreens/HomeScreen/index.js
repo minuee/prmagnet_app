@@ -32,10 +32,10 @@ class HomeScreen extends PureComponent {
     const {data} = this.state
     const userType = mConst.getUserType()
     return (
-      <View style={{flex: _.get(data, userType === 'M' ? 'cnfirm_request' : 'new_request', []).length === 0 ? 1 : 0}}>
+      <View style={{flex: _.get(data, userType !== 'B' ? 'cnfirm_request' : 'new_request', []).length === 0 ? 1 : 0}}>
         <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20)}}>
           <Text style={styles.new}>
-            {userType === 'M' ? 'Confirmed' : 'New'} <Text style={{fontFamily: 'Roboto-Medium'}}>Sample Requests : </Text>
+            {userType !== 'B' ? 'Confirmed' : 'New'} <Text style={{fontFamily: 'Roboto-Medium'}}>Sample Requests : </Text>
             <Text style={{fontFamily: 'Roboto-Bold', color: '#7ea1b2'}}>
               {userType === 'B' ? data.new_request_total_count : data.cnfirm_request_total_count}
             </Text>
@@ -43,7 +43,7 @@ class HomeScreen extends PureComponent {
           <TouchableOpacity
             style={styles.layout}
             onPress={() => {
-              this.pushTo('HomeDetailScreen', {type: true, title: userType === 'M' ? 'Confirmed Requests' : 'New Sample Requests'})
+              this.pushTo('HomeDetailScreen', {type: true, title: userType !== 'B' ? 'Confirmed Requests' : 'New Sample Requests'})
             }}
           >
             <Text style={styles.more}>More</Text>
@@ -54,20 +54,20 @@ class HomeScreen extends PureComponent {
           style={{
             ...styles.layout2,
             backgroundColor: 'rgba(126, 161, 178, 0.2)',
-            flex: _.get(data, userType === 'M' ? 'cnfirm_request' : 'new_request', []).length === 0 ? 1 : 0,
-            flexDirection: _.get(data, userType === 'M' ? 'cnfirm_request' : 'new_request', []).length === 0 ? 'column' : 'row',
-            justifyContent: _.get(data, userType === 'M' ? 'cnfirm_request' : 'new_request', []).length === 0 ? 'center' : 'space-between',
-            flexWrap: _.get(data, userType === 'M' ? 'cnfirm_request' : 'new_request', []).length === 0 ? 'nowrap' : 'wrap',
+            flex: _.get(data, userType !== 'B' ? 'cnfirm_request' : 'new_request', []).length === 0 ? 1 : 0,
+            flexDirection: _.get(data, userType !== 'B' ? 'cnfirm_request' : 'new_request', []).length === 0 ? 'column' : 'row',
+            justifyContent: _.get(data, userType !== 'B' ? 'cnfirm_request' : 'new_request', []).length === 0 ? 'center' : 'space-between',
+            flexWrap: _.get(data, userType !== 'B' ? 'cnfirm_request' : 'new_request', []).length === 0 ? 'nowrap' : 'wrap',
           }}
         >
-          {_.get(data, userType === 'M' ? 'cnfirm_request' : 'new_request', []).length > 0 ? (
-            _.get(data, userType === 'M' ? 'cnfirm_request' : 'new_request', []).map((item, index) => {
+          {_.get(data, userType !== 'B' ? 'cnfirm_request' : 'new_request', []).length > 0 ? (
+            _.get(data, userType !== 'B' ? 'cnfirm_request' : 'new_request', []).map((item, index) => {
               return (
                 <TouchableOpacity
                   onPress={() => {
                     this.pushTo('SampleRequestsDetailScreen', {no: item.req_no})
                   }}
-                  disabled={userType === 'M' ? false : true}
+                  disabled={userType !== 'B' ? false : true}
                   key={index}
                   style={styles.layout3}
                 >
