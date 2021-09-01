@@ -3,14 +3,18 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "android": "react-native run-android --appIdSuffix=debug --variant=debug",
+    "android": "react-native run-android --variant=debug",
     "ios": "react-native run-ios --simulator='iPhone 12'",
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
     "storybook": "start-storybook -p 7007",
     "build-storybook": "build-storybook",
-    "prestorybook": "rnstl"
+    "prestorybook": "rnstl",
+    "aas": "./release.sh stg android; appcenter codepush release-react -a compert-svcorps.dev/PRMagnet-Android -d Staging",
+    "aar": "./release.sh android; appcenter codepush release-react -a compert-svcorps.dev/PRMagnet-Android -d Production",
+    "ais": "./release.sh stg; appcenter codepush release-react -a compert-svcorps.dev/PRMagnet-iOS -d Staging",
+    "air": "./release.sh; appcenter codepush release-react -a compert-svcorps.dev/PRMagnet-iOS -d Production"
   },
   "dependencies": {
     "@psyrenpark/api": "1.0.43",
