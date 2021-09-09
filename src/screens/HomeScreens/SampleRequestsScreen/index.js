@@ -640,9 +640,7 @@ class SampleRequestsScreen extends PureComponent {
                 }}
               >
                 <View style={{width: '49%'}}>
-                  <Text style={styles.smallTitle}>
-                    촬영 시작 시각 <Text style={{color: '#7eb2b2'}}>*</Text>
-                  </Text>
+                  <Text style={styles.smallTitle}>촬영 시작 시각</Text>
                   <ModalDropdown
                     dropdownStyle={{width: '44%'}}
                     onSelect={(i, v) => this.setState({startTime: v})}
@@ -660,9 +658,7 @@ class SampleRequestsScreen extends PureComponent {
                   </ModalDropdown>
                 </View>
                 <View style={{width: '49%'}}>
-                  <Text style={styles.smallTitle}>
-                    촬영 종료 시각 <Text style={{color: '#7eb2b2'}}>*</Text>
-                  </Text>
+                  <Text style={styles.smallTitle}>촬영 종료 시각</Text>
                   <ModalDropdown
                     dropdownStyle={{width: '44%'}}
                     onSelect={(i, v) => this.setState({endTime: v})}
@@ -727,9 +723,7 @@ class SampleRequestsScreen extends PureComponent {
                 }}
               />
 
-              <Text style={styles.smallTitle}>
-                배송 관련 메모 <Text style={{color: '#7eb2b2'}}>*</Text>
-              </Text>
+              <Text style={styles.smallTitle}>배송 관련 메모</Text>
               <TextInput
                 style={{...styles.inputBox, height: mUtils.wScale(75), marginTop: mUtils.wScale(6)}}
                 multiline={true}
@@ -748,9 +742,7 @@ class SampleRequestsScreen extends PureComponent {
                 }}
               >
                 <View style={{width: '100%'}}>
-                  <Text style={styles.smallTitle}>
-                    촬영컨셉 <Text style={{color: '#7eb2b2'}}>*</Text>
-                  </Text>
+                  <Text style={styles.smallTitle}>촬영컨셉</Text>
                   <TextInput
                     style={{...styles.inputBox}}
                     placeholder={'컨셉'}
@@ -942,9 +934,7 @@ class SampleRequestsScreen extends PureComponent {
                   )
                 })}
               </View>
-              <Text style={styles.smallTitle}>
-                페이지 수 <Text style={{color: '#7eb2b2'}}>*</Text>
-              </Text>
+              <Text style={styles.smallTitle}>페이지 수</Text>
               <TextInput
                 style={{...styles.inputBox, marginTop: mUtils.wScale(3), marginBottom: mUtils.wScale(18)}}
                 placeholder={'Number of pages'}
