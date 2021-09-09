@@ -147,8 +147,13 @@ class FilterScreen extends PureComponent {
                     hide={section !== 'Size'}
                     setFilter={this.toggleStateList('size')}
                   />
-                  <FlagGroup value={sample} hide={section !== 'Sample'} setFilter={this.handleSetState('sample')} />
-                  <FlagGroup value={stillLifeImg} hide={section !== 'Still Life Image'} setFilter={this.handleSetState('stillLifeImg')} />
+                  <FlagGroup value={sample} hide={section !== 'Sample'} name={'샘플'} setFilter={this.handleSetState('sample')} />
+                  <FlagGroup
+                    value={stillLifeImg}
+                    hide={section !== 'Still Life Image'}
+                    name={'누끼컷'}
+                    setFilter={this.handleSetState('stillLifeImg')}
+                  />
                   <MaterialGroup data={data.material} value={material} hide={section !== 'Material'} setFilter={this.toggleStateList('material')} />
                 </Col>
               </Row>

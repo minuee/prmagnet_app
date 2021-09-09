@@ -12,12 +12,12 @@ const selectedImage = require('../../images/common/selected.png')
 
 const data = [
   {key: 'All', value: null},
-  {key: 'Possession', value: true},
-  {key: 'Not Possession', value: false},
+  {key: '보유', value: true},
+  {key: '미보유', value: false},
 ]
 
 export default FlagGroup = props => {
-  const {value, hide, setFilter} = props
+  const {value, hide, name, setFilter} = props
   if (hide) return null
   return (
     <>
@@ -25,7 +25,10 @@ export default FlagGroup = props => {
         return (
           <TouchableOpacity key={index} onPress={() => setFilter(item.value)}>
             <Row style={styles.itemWrapper}>
-              <Text style={styles.itemText}>{item.key}</Text>
+              <Text style={styles.itemText}>
+                {item.key !== 'All' ? `${name} ` : ''}
+                {item.key}
+              </Text>
               {value == item.value && <FastImage source={selectedImage} style={styles.selectedImage} />}
             </Row>
           </TouchableOpacity>
