@@ -109,7 +109,7 @@ const API = {
   setPushToken: ({token_value}) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/push-token`
-    console.log('>>>>>0000', path)
+    //console.log('>>>>>0000', path)
     const myInit = {
       body: {
         token_value,
@@ -370,7 +370,7 @@ const API = {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/fav-show/${showroom_no}` // TODO 임시 주석처리
     //const path = '/stylist/fav-show' // TODO 테스트용
-    console.log('>>>>>>>', path)
+    //console.log('>>>>>>>', path)
     const myInit = {
       body: {
         showroom_no,
@@ -393,7 +393,7 @@ const API = {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/fav-show/${showroom_no}` // TODO 임시 주석처리
     //const path = '/stylist/fav-show' // TODO 테스트용
-    console.log('>>>>>>>', path)
+    //console.log('>>>>>>>', path)
     const myInit = {
       body: {
         showroom_no: showroom_no,
@@ -563,10 +563,10 @@ const API = {
     return Api.put(apiName, path, myInit)
   },
   getShare: ({lookbook_no}) => {
-    console.log('>>>', lookbook_no)
+    //console.log('>>>', lookbook_no)
     const apiName = v1Api
     const path = `/brand/lookbook/${lookbook_no}/share-uuid`
-    console.log('???', path)
+    //console.log('???', path)
     const init = {}
     return Api.get(apiName, path, init)
   },
@@ -775,6 +775,7 @@ const API = {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/showroom/${showroom_no}`
     const init = {}
+    console.log('path',path)
     return Api.get(apiName, path, init)
   },
   getLookBookSRDetail: (lookbook_no, showroom_no) => {
@@ -865,6 +866,7 @@ const API = {
     etc_brand,
     today_connect,
     add_req_cntent,
+    dlvy_adres_no,
     dlvy_adres_nm,
     adres_detail,
     dlvy_atent_matter,
@@ -891,6 +893,7 @@ const API = {
         etc_brand: etc_brand,
         today_connect: today_connect,
         add_req_cntent: add_req_cntent,
+        dlvy_adres_no : dlvy_adres_no,
         dlvy_adres_nm: dlvy_adres_nm,
         adres_detail: adres_detail,
         dlvy_atent_matter: dlvy_atent_matter,
@@ -904,7 +907,7 @@ const API = {
     return Api.post(apiName, path, myInit)
   },
   deleteMyRequests: ({req_no}) => {
-    console.log('>>>>>', req_no)
+    //console.log('>>>>>', req_no)
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/showroom-request-delete`
     const init = {
@@ -915,6 +918,7 @@ const API = {
     return Api.del(apiName, path, init)
   },
   getSampleRequests: ({req_no}) => {
+    console.log('>>>>>', req_no)
     var apiName = v1Api
     var path = `${mConst.getApiPath()}/showroom-request/${req_no}`
     var init = {
@@ -938,6 +942,7 @@ const API = {
     etc_brand,
     today_connect,
     add_req_cntent,
+    dlvy_adres_no,
     dlvy_adres_nm,
     adres_detail,
     dlvy_atent_matter,
@@ -964,6 +969,7 @@ const API = {
         etc_brand: etc_brand,
         today_connect: today_connect,
         add_req_cntent: add_req_cntent,
+        dlvy_adres_no : dlvy_adres_no,
         dlvy_adres_nm: dlvy_adres_nm,
         adres_detail: adres_detail,
         dlvy_atent_matter: dlvy_atent_matter,
@@ -977,7 +983,7 @@ const API = {
     return Api.post(apiName, path, myInit)
   },
   getSchedular: ({min_date, max_date, season_year, season_cd_id, gender}) => {
-    console.log('>>>>>>>>>', min_date, max_date)
+    //console.log('>>>>>>>>>', min_date, max_date)
     var apiName = v1Api
     var path = `${mConst.getApiPath()}/my-schedule`
     var init = {
@@ -1025,7 +1031,7 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getMemo: ({showroom_no, date}) => {
-    console.log('?!?', showroom_no, date)
+    //console.log('?!?', showroom_no, date)
     var apiName = v1Api
     var path = `${mConst.getApiPath()}/memo`
     var init = {
@@ -1037,7 +1043,7 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getShowRoomList: ({date}) => {
-    console.log('>>>>', date)
+    //console.log('>>>>', date)
     var apiName = v1Api
     var path = `${mConst.getApiPath()}/showroom-list/for-memo`
     var init = {

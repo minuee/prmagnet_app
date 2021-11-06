@@ -35,7 +35,7 @@ class NotificationScreen extends PureComponent {
   deleteAlarm = async (notice_id, i, notifi_type) => {
     try {
       const response = await API.deleteAlarm({notice_id: notice_id, notifi_type: notifi_type})
-      console.log('deleteAlarm>>>', response)
+      //console.log('deleteAlarm>>>', response)
       if (response.success) {
         this.setState(state => {
           const resetList = state.list.filter((item, j) => i !== j)
@@ -45,7 +45,7 @@ class NotificationScreen extends PureComponent {
         })
       }
     } catch (error) {
-      console.log('deleteAlarm>>>', error)
+      //console.log('deleteAlarm>>>', error)
     }
   }
 
@@ -54,7 +54,7 @@ class NotificationScreen extends PureComponent {
     const {setAlarm} = this.props
     try {
       const response = await API.getAlarm({page})
-      console.log('getAlarm>>>', response)
+      //console.log('getAlarm>>>', response)
       if (response.success) {
         setAlarm({alarm: false})
         if (response.list.length > 0) {
@@ -65,7 +65,7 @@ class NotificationScreen extends PureComponent {
       }
     } catch (error) {
       this.setState({loading: false})
-      console.log('getAlarm>>>', error)
+      //console.log('getAlarm>>>', error)
     }
   }
 

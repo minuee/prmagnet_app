@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity, TextInput, KeyboardAvoidingView} from 'react-native'
+import {Alert,SafeAreaView, View, ScrollView, FlatList, TouchableOpacity, TextInput, KeyboardAvoidingView} from 'react-native'
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import Modal from 'react-native-modal'
@@ -95,6 +95,7 @@ class SampleRequestsScreen extends PureComponent {
       rtDate: '',
       startTime: '',
       endTime: '',
+      dlvy_adres_no: 0,
       destination: '',
       destinationDetail: '',
       shippingNote: '',
@@ -120,13 +121,13 @@ class SampleRequestsScreen extends PureComponent {
   getBrandHoliday = async (year, brand_id) => {
     try {
       const response = await API.getBrandHoliday({year, brand_id})
-      console.log('getBrandHoliday>>>>', JSON.stringify(response))
+      //console.log('getBrandHoliday>>>>', JSON.stringify(response))
       if (response.success) {
         this.setState({holidays: _.get(response, 'list', []).map(d => dayjs.unix(d).format('YYYY-MM-DD'))})
       }
       // this.setState({data: response, start: params ? params.start : this.state.start, end: params ? params.end : this.state.end})
     } catch (error) {
-      console.log('getBrandHoliday>>>>', error)
+      //console.log('getBrandHoliday>>>>', error)
     }
   }
 
@@ -140,6 +141,7 @@ class SampleRequestsScreen extends PureComponent {
       rtDate,
       startTime,
       endTime,
+      dlvy_adres_no,
       destination,
       destinationDetail,
       shippingNote,
@@ -156,7 +158,7 @@ class SampleRequestsScreen extends PureComponent {
     } = this.state
     const {brandId} = this.props.route.params
     let list = selected.map((item, index) => item.showroom_no)
-    console.log('>>>>>', selected)
+    //console.log('>>>>>', selected)
     if (!selectContact) return this.alert('', '연결 연락처를 선택해 주세요.')
     if (!shDate) return this.alert('', '촬영일을 선택해 주세요.')
     if (!pkDate) return this.alert('', '픽업일을 선택해 주세요.')
@@ -186,6 +188,7 @@ class SampleRequestsScreen extends PureComponent {
         etc_brand: togetherBrand,
         today_connect: todayConnect,
         add_req_cntent: message,
+        dlvy_adres_no: dlvy_adres_no,
         dlvy_adres_nm: destination,
         adres_detail: destinationDetail,
         dlvy_atent_matter: shippingNote,
@@ -195,12 +198,15 @@ class SampleRequestsScreen extends PureComponent {
         own_paid_pictorial_content: myPay,
         other_paid_pictorial_content: otherPay,
       })
-      console.log('postSRRequestSend>>>>', response)
+      //console.log('postSRRequestSend>>>>', response)
       if (response.success) {
-        this.goBack()
+        mUtils.fn_call_toast('정상적으로 신청되었습니다.');
+          setTimeout(() => {
+            this.goBack()
+          }, 1500);
       }
     } catch (error) {
-      console.log('postSRRequestSend>>>>', error)
+      //console.log('postSRRequestSend>>>>', error)
     }
   }
 
@@ -213,6 +219,7 @@ class SampleRequestsScreen extends PureComponent {
       rtDate,
       startTime,
       endTime,
+      dlvy_adres_no,
       destination,
       destinationDetail,
       shippingNote,
@@ -228,7 +235,8 @@ class SampleRequestsScreen extends PureComponent {
       otherPay,
     } = this.state
     const {no} = this.props.route.params
-    let list = selected.map((item, index) => item.showroom_no)
+    let list = selected.map((item, index) => item.showroom_no);
+    
     try {
       const response = await API.editSRRequestSend({
         req_no: no,
@@ -244,6 +252,7 @@ class SampleRequestsScreen extends PureComponent {
         etc_brand: togetherBrand,
         today_connect: todayConnect,
         add_req_cntent: message,
+        dlvy_adres_no: dlvy_adres_no,
         dlvy_adres_nm: destination,
         adres_detail: destinationDetail,
         dlvy_atent_matter: shippingNote,
@@ -253,12 +262,15 @@ class SampleRequestsScreen extends PureComponent {
         own_paid_pictorial_content: myPay,
         other_paid_pictorial_content: otherPay,
       })
-      console.log('editSRRequestSend>>>>', response)
+      console.log('editSRRequestSend222>>>>', response)
       if (response.success) {
-        this.goBack()
+        mUtils.fn_call_toast('정상적으로 수정되었습니다.');
+        setTimeout(() => {
+          this.goBack()
+        }, 1500);
       }
     } catch (error) {
-      console.log('editSRRequestSend>>>>', error)
+      //console.log('editSRRequestSend>>>>', error)
     }
   }
 
@@ -268,7 +280,10 @@ class SampleRequestsScreen extends PureComponent {
       const result = state.selected.filter((e, j) => index !== j)
       if (type) {
         if (result.length === 0) {
-          this.goBack()
+          mUtils.fn_call_toast('정상적으로 삭제되었습니다.');
+          setTimeout(() => {
+            this.goBack()
+          }, 1500);
         }
       }
       return {selected: result}
@@ -348,10 +363,10 @@ class SampleRequestsScreen extends PureComponent {
       const response = await API.postSRRequest({
         brand_id: brandId,
       })
-      console.log('postSRRequest>>>>', response)
+      //console.log('postSRRequest>>>>', response)
       this.setState({defaultInfo: response})
     } catch (error) {
-      console.log('postSRRequest>>>', error)
+      //console.log('postSRRequest>>>', error)
     }
   }
 
@@ -386,6 +401,7 @@ class SampleRequestsScreen extends PureComponent {
         },
         startTime: response.shooting_start_time,
         endTime: response.shooting_end_time,
+        dlvy_adres_no: response.dlvy_adres_no,
         destination: response.dlvy_adres_nm,
         destinationDetail: response.adres_detail,
         shippingNote: response.dlvy_atent_matter,
@@ -401,7 +417,7 @@ class SampleRequestsScreen extends PureComponent {
         otherPay: response.other_paid_pictorial_content,
       })
     } catch (error) {
-      console.log('getSampleRequests>>>>', error)
+      //console.log('getSampleRequests>>>>', error)
     }
   }
 
@@ -427,6 +443,15 @@ class SampleRequestsScreen extends PureComponent {
     }
   }
 
+  updateAddress = (v) => {
+    console.log('vvvvv>>>>', v)
+    this.setState({
+      dlvy_adres_no:v.dlvy_adres_no,
+      destination: v.dlvy_adres_nm,
+      destinationDetail: v.adres_detail
+    })
+  }
+
   render() {
     const {
       selected,
@@ -437,6 +462,7 @@ class SampleRequestsScreen extends PureComponent {
       rtDate,
       startTime,
       endTime,
+      dlvy_adres_no,
       destination,
       destinationDetail,
       shippingNote,
@@ -683,7 +709,7 @@ class SampleRequestsScreen extends PureComponent {
                 <ModalDropdown
                   style={{width: '100%'}}
                   dropdownStyle={{width: '91%'}}
-                  onSelect={(i, v) => this.setState({destination: v.dlvy_adres_nm, destinationDetail: v.adres_detail})}
+                  onSelect={(i, v) => this.updateAddress(v)}
                   renderRow={item => (
                     <View style={styles.contactList}>
                       <Text style={styles.contactText}>{item.dlvy_adres_nm}</Text>
@@ -969,9 +995,26 @@ class SampleRequestsScreen extends PureComponent {
               style={{...styles.bottomButton, backgroundColor: mConst.black}}
               onPress={() => {
                 if (type) {
-                  this.postSRRequestSend()
+                  Alert.alert(
+                    mConst.appName,
+                    '샘플신청을 하시겠습니까?',
+                    [
+                      {text: '네', onPress: () => this.postSRRequestSend()},
+                      {text: '아니오', onPress: () => console.log('no')},
+                    ],
+                    {cancelable: false},
+                  );
                 } else {
-                  this.editSRRequestSend()
+                  
+                  Alert.alert(
+                    mConst.appName,
+                    '정보를 수정하시겠습니까?',
+                    [
+                      {text: '네', onPress: () => this.editSRRequestSend()},
+                      {text: '아니오', onPress: () => console.log('no')},
+                    ],
+                    {cancelable: false},
+                  );
                 }
               }}
             >
@@ -989,7 +1032,7 @@ class SampleRequestsScreen extends PureComponent {
                 style={{flex: 1}}
                 jsOptions={{animated: false}}
                 onSelected={data => {
-                  this.setState({destination: data.address, isvisible: false})
+                  this.setState({dlvy_adres_no:'0',destination: data.address, isvisible: false})
                 }}
               />
             </View>

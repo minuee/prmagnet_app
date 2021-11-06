@@ -77,10 +77,10 @@ class TermsScreen extends PureComponent {
     try {
       const response = await API.getTos()
       this.setState({data: _.get(response, 'tos', ''), loading: false})
-      console.log('TOS:', JSON.stringify(response))
+      //console.log('TOS:', JSON.stringify(response))
     } catch (error) {
       this.setState({loading: false})
-      console.log('TOS error:', error)
+      //console.log('TOS error:', error)
     }
   }
 

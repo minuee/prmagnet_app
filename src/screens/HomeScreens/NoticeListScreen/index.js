@@ -43,7 +43,7 @@ class NoticeListScreen extends PureComponent {
     const {page, limit, list} = this.state
     try {
       const response = await API.getNoticeList({page})
-      console.log('getNoticeList>>>', response)
+      //console.log('getNoticeList>>>', response)
       if (response.success) {
         if (response.list.length > 0) {
           this.setState({list: list.concat(response.list), page: page + 1, loading: false})
@@ -53,7 +53,7 @@ class NoticeListScreen extends PureComponent {
       }
     } catch (error) {
       this.setState({loading: false})
-      console.log('getNoticeList>>>', error)
+      //console.log('getNoticeList>>>', error)
     }
   }
 

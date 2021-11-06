@@ -32,12 +32,12 @@ class FilterSettingScreen extends PureComponent {
       const response = await API.postNotice({
         notice: notice,
       })
-      console.log('postNotice>>>', response)
+      //console.log('postNotice>>>', response)
       if (response.success) {
         this.postInquiryNum()
       }
     } catch (error) {
-      console.log('postNotice>>>', error)
+      //console.log('postNotice>>>', error)
     }
   }
 
@@ -47,12 +47,12 @@ class FilterSettingScreen extends PureComponent {
       const response = await API.postInquiryNum({
         inquiryNum: inquiryNum,
       })
-      console.log('postInquiryNum>>>', response)
+      //console.log('postInquiryNum>>>', response)
       if (response.success) {
         this.postSRInquiry()
       }
     } catch (error) {
-      console.log('postInquiryNum>>>', error)
+      //console.log('postInquiryNum>>>', error)
     }
   }
 
@@ -63,48 +63,48 @@ class FilterSettingScreen extends PureComponent {
         SRInquiryNum: SRInquiryNum,
         email: email,
       })
-      console.log('postSRInquiry>>>', response)
+      //console.log('postSRInquiry>>>', response)
       if (response.success) {
         this.goBack()
       }
     } catch (error) {
-      console.log('postSRInquiry>>>', error)
+      //console.log('postSRInquiry>>>', error)
     }
   }
 
   getNotice = async () => {
     try {
       const response = await API.getNotice()
-      console.log('getNotice>>>', response)
+      //console.log('getNotice>>>', response)
       if (response.success) {
         this.setState({notice: response.notice_contents})
       }
     } catch (error) {
-      console.log('getNotice>>>', error)
+      //console.log('getNotice>>>', error)
     }
   }
 
   getInquiryNum = async () => {
     try {
       const response = await API.getInquiryNum()
-      console.log('getInquiryNum>>>', response)
+      //console.log('getInquiryNum>>>', response)
       if (response.success) {
         this.setState({inquiryNum: response.inquiry_number})
       }
     } catch (error) {
-      console.log('getInquiryNum>>>', error)
+      //console.log('getInquiryNum>>>', error)
     }
   }
 
   getSRInquiry = async () => {
     try {
       const response = await API.getSRInquiry()
-      console.log('getSRInquiry>>>', response)
+      //console.log('getSRInquiry>>>', response)
       if (response.success) {
         this.setState({SRInquiryNum: response.showroom_inquiry_contact, email: response.showroom_inquiry_email})
       }
     } catch (error) {
-      console.log('getSRInquiry>>>', error)
+      //console.log('getSRInquiry>>>', error)
     }
   }
 

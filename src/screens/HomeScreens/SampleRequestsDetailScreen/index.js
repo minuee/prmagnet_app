@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity, TextInput} from 'react-native'
+import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity, TextInput, Alert} from 'react-native'
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import ModalDropdown from 'react-native-modal-dropdown'
@@ -24,37 +24,9 @@ const checkImg2 = require('../../../images/navi/check_2.png')
 const checkImg3 = require('../../../images/navi/check_3.png')
 const selectImg2 = require('../../../images/navi/select_2.png')
 const delImg = require('../../../images/navi/del_1.png')
-const yesNo = [
-  {boolean: true, text: 'Yes'},
-  {boolean: false, text: 'No'},
-]
+const yesNo = [{boolean: true, text: 'Yes'},{boolean: false, text: 'No'},];
 
-const time = [
-  '00',
-  '01',
-  '02',
-  '03',
-  '04',
-  '05',
-  '06',
-  '07',
-  '08',
-  '09',
-  '10',
-  '11',
-  '12',
-  '13',
-  '14',
-  '15',
-  '16',
-  '17',
-  '18',
-  '19',
-  '20',
-  '21',
-  '22',
-  '23',
-]
+const time = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23']
 
 class SampleRequestsDetailScreen extends PureComponent {
   constructor(props) {
@@ -85,7 +57,21 @@ class SampleRequestsDetailScreen extends PureComponent {
       drop: false,
       drop1: false,
       drop2: false,
+      acceptCount : 0
     }
+  }
+
+  setConfirmCount = async(data) => {
+    console.log('response.showroom_list>>>', data.showroom_list)
+    let acceptCount = 0;
+    
+    await data.showroom_list.forEach((d, i) => {          
+      if (d.showroom_status === 'selected') acceptCount++;
+    });
+    
+    this.setState({        
+      acceptCount
+    })
   }
 
   getSampleRequests = async () => {
@@ -96,7 +82,10 @@ class SampleRequestsDetailScreen extends PureComponent {
       })
       console.log('getSampleRequests>>>', response)
       if (response.success) {
-        this.setState({data: response})
+        this.setConfirmCount(response);
+        this.setState({
+          data: response
+        })
       }
     } catch (error) {
       console.log('getSampleRequests>>>', error)
@@ -140,6 +129,7 @@ class SampleRequestsDetailScreen extends PureComponent {
       drop,
       drop1,
       drop2,
+      acceptCount
     } = this.state
     return data ? (
       <SafeAreaView style={styles.container}>
@@ -148,7 +138,7 @@ class SampleRequestsDetailScreen extends PureComponent {
             <Text style={{...styles.mainTitle, marginTop: mUtils.wScale(25)}}>My</Text>
             <Text style={styles.mainTitle1}>Requests</Text>
             <Text style={{...styles.subTitle, marginTop: mUtils.wScale(30)}}>
-              Request product : <Text style={{color: '#7ea1b2'}}>{data.showroom_list.length}</Text>
+              Request product : <Text style={{color: '#7ea1b2'}}>{data.showroom_list.length} 승인 : {acceptCount}</Text>
             </Text>
           </View>
           <ScrollView
@@ -162,11 +152,20 @@ class SampleRequestsDetailScreen extends PureComponent {
                 <View key={index} style={{marginRight: mUtils.wScale(5), alignItems: 'center'}}>
                   <View>
                     <FastImage resizeMode={'contain'} style={styles.modelImg} source={{uri: item.image_url}} />
-                    <View style={{...styles.select, backgroundColor: 'rgba(126, 161, 178, 0.8)'}}>
-                      <FastImage resizeMode={'contain'} style={styles.selectImg} source={selectImg2} />
-                    </View>
+                    {
+                      item.showroom_status === 'selected' &&
+                      <View style={{...styles.select, backgroundColor: 'rgba(126, 161, 178, 0.8)'}}>
+                        <FastImage resizeMode={'contain'} style={styles.selectImg} source={selectImg2} />
+                      </View>
+                    }
                   </View>
-                  <Text style={{...styles.modelTitle, marginTop: mUtils.wScale(8)}}>{item.showroom_nm}</Text>
+                  <Text style={{...styles.modelTitle, marginTop: mUtils.wScale(8)}}>
+                    {item.showroom_nm}
+                    
+                  </Text>
+                  {item.showroom_status === 'rejected' &&
+                    <Text style={{...styles.modelTitle2, marginTop: mUtils.wScale(3)}}>(상태 : 거절)</Text>
+                  }
                 </View>
               )
             })}
@@ -201,7 +200,7 @@ class SampleRequestsDetailScreen extends PureComponent {
                 style={{width: '49%'}}
                 dropdownStyle={{width: '44%'}}
                 onSelect={(i, v) => this.setState({selectContact: v})}
-                options={defaultInfo?.contact_info}
+                options={defaultInfo.contact_info}
                 renderRow={item => (
                   <View style={styles.contactList}>
                     <Text style={styles.contactText}>{`${item.mgzn_user_nm}(${mUtils.allNumber(item.phone_no)})`}</Text>

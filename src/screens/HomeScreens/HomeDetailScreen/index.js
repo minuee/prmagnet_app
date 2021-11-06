@@ -24,7 +24,7 @@ class HomeDetailScreen extends PureComponent {
     const {page, limit, data} = this.state
     try {
       const response = mConst.getUserType() === 'B' ? await API.getHomeNR({page: page, limit}) : await API.getHomeCR({page: page, limit})
-      console.log('getHomeNR>>>', response)
+      //console.log('getHomeNR>>>', response)
       if (response.success) {
         this.setState({loading: false}, () => {
           if (mConst.getUserType() === 'B') {
@@ -49,7 +49,7 @@ class HomeDetailScreen extends PureComponent {
         })
       }
     } catch (error) {
-      console.log('getHomeNR>>>1', JSON.stringify(error))
+      //console.log('getHomeNR>>>1', JSON.stringify(error))
     }
   }
 
@@ -58,7 +58,7 @@ class HomeDetailScreen extends PureComponent {
     const {page, limit, data} = this.state
     try {
       const response = await API.getHomeTR({date: date, page: page, limit: limit})
-      console.log('getHomeTR>>>', response)
+      //console.log('getHomeTR>>>', response)
       if (response.success) {
         this.setState({loading: false}, () => {
           if (mConst.getUserType() === 'B') {
@@ -81,7 +81,7 @@ class HomeDetailScreen extends PureComponent {
         })
       }
     } catch (error) {
-      console.log('getHomeTR>>>1', error)
+      //console.log('getHomeTR>>>1', error)
     }
   }
 

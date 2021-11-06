@@ -59,22 +59,47 @@ class PickupsScreen extends PureComponent {
     try {
       const response = await API.getPickupDetail(pReqNo)
       this.setState({data: _.get(response, 'right'), listIndex, loading: false})
-      console.log('픽업 스케쥴 상세 조회 성공', JSON.stringify(response))
+      await this.allSendOutCheck(_.get(response, 'right'))
+      //console.log('픽업 스케쥴 상세 조회 성공', JSON.stringify(response))
     } catch (error) {
       // this.setState({loading: false})
-      console.log('픽업 스케쥴 상세 조회 실패', error)
+      //console.log('픽업 스케쥴 상세 조회 실패', error)
     }
+  }
+  allSendOutCheck = async(data,sampleNo=0) => {
+    //console.log('allSendOutCheck',data.showroom_list[1].sample_list)
+    let AllData = 0;
+    let sendOutData = 0;
+    await data.showroom_list.forEach(function(element,index){     
+      //console.log('element.sample_list',element.sample_list)
+      if ( element.sample_list != null ) {
+        element.sample_list.forEach(function(element2,index2){            
+          if ( element2.sample_no ) {
+            AllData++;
+            if ( element2.check_yn || sampleNo === element2.sample_no ) {
+              sendOutData++;
+              if ( sampleNo > 0 ) {
+                this.state.data.showroom_list[index].sample_list[index2].check_yn = true;
+              }
+            }
+          }
+        })
+      }
+    }); 
+    //console.log('AllData',AllData)
+    //console.log('sendOutData',sendOutData)
+    this.setState({allChecked : AllData === sendOutData ? true :false})
   }
   handlePress = (name, sampleNo) => {
     const {data} = this.state
-    console.log('###reqNo:', _.get(data, 'req_no'))
+    //console.log('###reqNo:', _.get(data, 'req_no'))
     const sendPush = async () => {
       try {
         const response = await API.pushPickupOneFail(_.get(data, 'req_no'), sampleNo)
         this.alert('미수령 알림 전송 완료', '미수령 알림을 전송하였습니다.')
-        console.log('픽업 단일 미수령 푸시 완료')
+        //console.log('픽업 단일 미수령 푸시 완료')
       } catch (error) {
-        console.log('픽업 단일 미수령 푸시 실패', error)
+        //console.log('픽업 단일 미수령 푸시 실패', error)
       }
     }
     this.alert('상품 미수령 알림', `'${name}'님께 상품미수령 알림을 보내시겠습니까?`, [{onPress: sendPush}, {}])
@@ -88,9 +113,10 @@ class PickupsScreen extends PureComponent {
       const sendPush = async () => {
         try {
           const response = await API.pushPickupOneSuccess(_.get(data, 'req_no'), sampleNo)
-          console.log('픽업 단일 수령 푸시 완료')
+          //console.log('픽업 단일 수령 푸시 완료')
+          await this.allSendOutCheck(data,sampleNo)
         } catch (error) {
-          console.log('픽업 단일 수령 푸시 실패', error)
+          //console.log('픽업 단일 수령 푸시 실패', error)
         }
       }
       this.alert('수령완료', `${name}님께 ${sampleName} 수령 완료`, [
@@ -109,9 +135,9 @@ class PickupsScreen extends PureComponent {
       try {
         const response = await API.pushPickupSuccess(_.get(data, 'req_no'))
         this.setState({allChecked: true})
-        console.log('전체 수령 푸시 완료')
+        //console.log('전체 수령 푸시 완료')
       } catch (error) {
-        console.log('전체 수령 푸시 실패', error)
+        //console.log('전체 수령 푸시 실패', error)
       }
     }
     if (!this.state.allChecked) {
@@ -252,9 +278,16 @@ class PickupsScreen extends PureComponent {
             })}
           </Grid>
         </ScrollView>
-        <TouchableOpacity onPress={this.handleCheckItemAll} style={styles.bottom}>
-          <Text style={styles.bottomText}>All Picked Up</Text>
-        </TouchableOpacity>
+        {
+          allChecked ?
+          <View style={styles.bottom2}>
+            <Text style={styles.bottomText}>All Picked Up(Completed)</Text>
+          </View>
+          :
+          <TouchableOpacity onPress={this.handleCheckItemAll} style={styles.bottom}>
+            <Text style={styles.bottomText}>All Picked Up</Text>
+          </TouchableOpacity>
+        }
         <Modal style={styles.modal} isVisible={this.state.isvisible.open} useNativeDriver={true}>
           <View style={styles.modalView}>
             <Text style={styles.modalName}>{this.state.isvisible.name}</Text>

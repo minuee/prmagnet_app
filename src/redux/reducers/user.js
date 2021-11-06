@@ -1,11 +1,12 @@
 import _ from 'lodash'
 
-import {LOGIN, LOGOUT, SIGNUP, WITHDRAW, USER_TYPE} from '../actions'
+import {LOGIN, LOGOUT, SIGNUP, WITHDRAW, USER_TYPE,SUBSCRIBE_TYPE} from '../actions'
 import API from '../../common/services'
 
 const initialState = {
   isLogged: false,
   userType: 'B',
+  subScrbeStatus : false,
   alarm: false,
 }
 
@@ -35,6 +36,15 @@ export default function user(state = initialState, action) {
         userType,
       }
     }
+    case SUBSCRIBE_TYPE.SUCCESS: {
+      const data = API.getData(action);
+      global.subScrbeStatus = data;
+      return {
+        ...state,
+        subScrbeStatus : data,
+      }
+    }
+
     case 'setAlarm':
       const data = API.getData(action)
       return {

@@ -77,10 +77,10 @@ class PrivacyScreen extends PureComponent {
     try {
       const response = await API.getPrivacyPolicy()
       this.setState({data: _.get(response, 'privacy_policy', ''), loading: false})
-      console.log('TOS:', JSON.stringify(response))
+      //console.log('TOS:', JSON.stringify(response))
     } catch (error) {
       this.setState({loading: false})
-      console.log('TOS error:', error)
+      //console.log('TOS error:', error)
     }
   }
 

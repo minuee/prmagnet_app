@@ -57,8 +57,15 @@ class DigitalSRScreen extends PureComponent {
     }
   }
   componentDidMount() {
-    this.onFocus(this.handleOnFocus)
-    this.getSampleInfo()
+    
+  
+    if ( this.props.user.subScrbeStatus ) {
+      this.onFocus(this.handleOnFocus)
+      this.getSampleInfo()
+    }else{
+      this.setState({data: null,loading:false})
+    }
+    
   }
   componentWillUnmount() {
     this.removeFocus()
@@ -82,12 +89,12 @@ class DigitalSRScreen extends PureComponent {
   getSampleInfo = async () => {
     try {
       const response = await API.getSampleInfo()
-      console.log('getSampleInfo>>>', JSON.stringify(response))
+      //console.log('getSampleInfo>>>', JSON.stringify(response))
       if (response.success) {
         this.setState({filterData: response})
       }
     } catch (error) {
-      console.log('getSampleInfo>>>', error)
+      //console.log('getSampleInfo>>>', error)
       await API.postErrLog({error: JSON.stringify(error), desc: 'getSampleInfo'})
     }
   }
@@ -104,7 +111,7 @@ class DigitalSRScreen extends PureComponent {
       const response = await API.postFavShowroom({
         showroom_no: no,
       })
-      console.log('postFavShowroom>>>>>', response)
+      //console.log('postFavShowroom>>>>>', response)
       if (response.success) {
         this.setState(state => {
           const list = state.data.list.map((item, index) => {
@@ -125,7 +132,7 @@ class DigitalSRScreen extends PureComponent {
         })
       }
     } catch (error) {
-      console.log('postFavShowroom>>>>>', error)
+      //console.log('postFavShowroom>>>>>', error)
     }
   }
 
@@ -134,7 +141,7 @@ class DigitalSRScreen extends PureComponent {
       const response = await API.deleteFavShowroom({
         showroom_no: no,
       })
-      console.log('deleteFavShowroom>>>>>', response)
+      //console.log('deleteFavShowroom>>>>>', response)
       if (response.success) {
         this.setState(state => {
           const list = state.data.list.map((item, index) => {
@@ -155,7 +162,7 @@ class DigitalSRScreen extends PureComponent {
         })
       }
     } catch (error) {
-      console.log('deleteFavShowroom>>>>>', error)
+      //console.log('deleteFavShowroom>>>>>', error)
     }
   }
 
@@ -186,7 +193,7 @@ class DigitalSRScreen extends PureComponent {
         season_cd_id: season_year.season_cd_id,
         brand_id: brand_id,
       })
-      console.log('postDigitalSR>>>', response)
+      //console.log('postDigitalSR>>>', response)
       if (response.success) {
         if (page === 1) {
           if (userType === 'B') {
@@ -210,7 +217,7 @@ class DigitalSRScreen extends PureComponent {
       }
     } catch (error) {
       this.setState({loading: true})
-      console.log('postDigitalSR>>>', error)
+      //console.log('postDigitalSR>>>', error)
     }
   }
 
@@ -233,7 +240,7 @@ class DigitalSRScreen extends PureComponent {
         still_life_img_yn: filterInfo.stillLifeImg,
         material_list: filterInfo.material,
       })
-      console.log('postDigitalSRReset>>>', response)
+      //console.log('postDigitalSRReset>>>', response)
       if (response.success) {
         if (userType === 'B') {
           this.setState({
@@ -255,27 +262,27 @@ class DigitalSRScreen extends PureComponent {
       }
     } catch (error) {
       this.setState({loading: true})
-      console.log('postDigitalSRReset>>>', error)
+      //console.log('postDigitalSRReset>>>', error)
     }
   }
 
   getNotice = async () => {
     try {
       const response = await API.getNotice()
-      console.log('getNotice>>>', response)
+      //console.log('getNotice>>>', response)
       this.setState({notice: response.notice_contents})
     } catch (error) {
-      console.log('getNotice>>>', error)
+      //console.log('getNotice>>>', error)
     }
   }
 
   getInquiryNum = async () => {
     try {
       const response = await API.getInquiryNum()
-      console.log('getInquiryNum>>>', response)
+      //console.log('getInquiryNum>>>', response)
       this.setState({inquiryNum: response.inquiry_number})
     } catch (error) {
-      console.log('getInquiryNum>>>', error)
+      //console.log('getInquiryNum>>>', error)
     }
   }
 
@@ -331,6 +338,10 @@ class DigitalSRScreen extends PureComponent {
             ))}
         </TouchableOpacity>
         <Text style={styles.title}>{item.showroom_nm}</Text>
+        { 
+          item.now_req_status_nm === '대여중' &&           
+            <Text style={styles.redTitle}>{item.now_req_status_nm}{"\n"}({mUtils.dateToDate(item.duty_recpt_dt)}~{mUtils.dateToDate(item.return_prearnge_dt)})</Text>
+        }
       </View>
     )
   }

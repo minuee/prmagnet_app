@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {sha256} from 'react-native-sha256'
 import _ from 'lodash'
 
-import {actionLogin, actionUserType} from '../../../redux/actions'
+import {actionLogin, actionUserType,actionSubScrbeStatus} from '../../../redux/actions'
 import CodePush from '../../common/CodePush'
 import API from '../../../common/aws-api'
 import mConst from '../../../common/constants'
@@ -37,7 +37,7 @@ class LoginScreen extends PureComponent {
   }
   handleLogin = callOnce(async () => {
     const {email, pw} = this.state
-    const {loginSuccess, loginFailure, userTypeSuccess} = this.props
+    const {loginSuccess, loginFailure, userTypeSuccess,userSubScrbeStatus} = this.props
     const hash = await sha256(pw.toString())
     const pushKey = await mUtils.getFcmToken()
     const data = {
@@ -52,14 +52,25 @@ class LoginScreen extends PureComponent {
       cbSuccess: async response => {
         API.getUserType()
           .then(resUserType => {
-            // console.log('###UserType:', resUserType)
+            console.log('###UserType:', resUserType)
+            let isSubscrYN = false;
+            if ( resUserType.is_brand_user ) {
+              if ( resUserType.subscr_yn){
+                isSubscrYN = true;
+              }else{
+                isSubscrYN = false;
+              }
+            }else{
+              isSubscrYN = true;
+            }
+            userSubScrbeStatus(isSubscrYN);
             userTypeSuccess(resUserType)
             loginSuccess(response)
           })
           .then(() => API.setPushToken({token_value: pushKey}))
 
         console.log('###로그인 성공:', response)
-        // console.log('로그인 시 props 확인 : ', this.props)
+         //console.log('로그인 시 props 확인 : ', this.props)
       },
       cbFailure: e => {
         loginFailure(e)
@@ -158,8 +169,8 @@ class LoginScreen extends PureComponent {
                 <Text style={styles.itemText}>M:bazzar</Text>
               </TouchableOpacity>
               <Text style={styles.fence}>|</Text>
-              <TouchableOpacity style={styles.itemTextWrapper} onPress={() => this.setState({email: 'cosmo@ruu.kr', pw: '1234qwer'})}>
-                <Text style={styles.itemText}>M:cosmo</Text>
+              <TouchableOpacity style={styles.itemTextWrapper} onPress={() => this.setState({email: 'minuee@nate.com', pw: 'lenapark47##'})}>
+                <Text style={styles.itemText}>M:minuee</Text>
               </TouchableOpacity>
               <Text style={styles.fence}>|</Text>
               <TouchableOpacity style={styles.itemTextWrapper} onPress={() => this.setState({email: 'dazed@ruu.kr', pw: '1234qwer'})}>
@@ -181,11 +192,12 @@ class LoginScreen extends PureComponent {
 
 export default connect(
   state => ({
-    user: state.user,
+    user: state.user
   }),
   dispatch => ({
     loginSuccess: data => dispatch(actionLogin.success(data)),
     loginFailure: data => dispatch(actionLogin.failure(data)),
     userTypeSuccess: data => dispatch(actionUserType.success(data)),
+    userSubScrbeStatus: data => dispatch(actionSubScrbeStatus.success(data)),
   })
 )(LoginScreen)

@@ -31,12 +31,13 @@ export const LOGOUT = createRequestTypes('LOGOUT')
 export const SIGNUP = createRequestTypes('SIGNUP')
 export const WITHDRAW = createRequestTypes('WITHDRAW')
 export const USER_TYPE = createRequestTypes('USER_TYPE')
+export const SUBSCRIBE_TYPE = createRequestTypes('SUBSCRIBE_TYPE')
 
 export const actionLogin = createActionObject(LOGIN)
 export const actionLogout = createActionObject(LOGOUT)
 export const actionSignup = createActionObject(SIGNUP)
 export const actionWithdraw = createActionObject(WITHDRAW)
 export const actionUserType = createActionObject(USER_TYPE)
-
+export const actionSubScrbeStatus = createActionObject(SUBSCRIBE_TYPE)
 /* 사용자 정의 액션 */
 export const actionSetAlarm = data => actionCreator('setAlarm', data)

@@ -90,3 +90,8 @@ React Native Tools
 # iOS 단말 실행
 
 > ./release.sh dev;react-native run-ios --device --configuration Debug
+
+
+## 라이브러리 추가 2021.11.05
+> yarn add react-native-version-check
+> yarn add react-native-exit-app

@@ -45,7 +45,7 @@ class ContactConfirm extends PureComponent {
     const userType = mConst.getUserType()
     try {
       const response = await API.getQnaList({page: page, limit: limit, search_text: search_text, userType: userType})
-      console.log('getQnaList>>>', response)
+      //console.log('getQnaList>>>', response)
       if (response.success) {
         if (response.list.length > 0) {
           this.setState({list: list.concat(response.list), page: page + 1, loading: false})
@@ -55,7 +55,7 @@ class ContactConfirm extends PureComponent {
       }
     } catch (error) {
       this.setState({loading: false})
-      console.log('getQnaList>>>', error)
+      //console.log('getQnaList>>>', error)
     }
   }
   handleLoadMore = async () => {

@@ -13,6 +13,7 @@ import Text from '../../common/Text'
 import LinkSheetUnit from '../../common/LinkSheetUnit'
 import Loading from '../../common/Loading'
 import styles from './styles'
+import { utils } from '@react-native-firebase/app'
 
 const goLeftImage = require('../../../images/navi/go_left.png')
 const goRightImage = require('../../../images/navi/go_right.png')
@@ -31,6 +32,7 @@ class SendOutScreen extends PureComponent {
       loading: true,
     }
   }
+  
   componentDidMount() {
     const {reqNo} = this.params
     if (reqNo) {
@@ -59,11 +61,36 @@ class SendOutScreen extends PureComponent {
     try {
       const response = await API.getSendoutDetail(pReqNo)
       this.setState({data: _.get(response, 'right'), listIndex, loading: false})
-      console.log('Send Out 스케쥴 상세 조회 성공', JSON.stringify(response))
+      await this.allSendOutCheck(_.get(response, 'right'))
+      //console.log('Send Out 스케쥴 상세 조회 성공', JSON.stringify(response))
     } catch (error) {
       // this.setState({loading: false})
-      console.log('Send Out 스케쥴 상세 조회 실패', error)
+      //console.log('Send Out 스케쥴 상세 조회 실패', error)
     }
+  }
+  allSendOutCheck = async(data,sampleNo=0) => {
+    //console.log('allSendOutCheck',data.showroom_list[1].sample_list)
+    let AllData = 0;
+    let sendOutData = 0;
+    await data.showroom_list.forEach(function(element,index){     
+      //console.log('element.sample_list',element.sample_list)
+      if ( element.sample_list != null ) {
+        element.sample_list.forEach(function(element2,index2){            
+          if ( element2.sample_no ) {
+            AllData++;
+            if ( element2.check_yn || sampleNo === element2.sample_no ) {
+              sendOutData++;
+              if ( sampleNo > 0 ) {
+                this.state.data.showroom_list[index].sample_list[index2].check_yn = true;
+              }
+            }
+          }
+        })
+      }
+    }); 
+    //console.log('AllData',AllData)
+    //console.log('sendOutData',sendOutData)
+    this.setState({allChecked : AllData === sendOutData ? true :false})
   }
   handlePressPhone = (name, phone) => {
     this.setState({isvisible: {open: true, name, phone}})
@@ -74,9 +101,10 @@ class SendOutScreen extends PureComponent {
       const sendPush = async () => {
         try {
           const response = await API.pushSendoutOne(_.get(data, 'req_no'), _.get(data, 'showroom_list.length'), sampleNo)
-          console.log('Send Out 단일 발송 완료')
+          await this.allSendOutCheck(data,sampleNo)
+          //console.log('Send Out 단일 발송 완료')
         } catch (error) {
-          console.log('Send Out 단일 발송 실패', error)
+          //console.log('Send Out 단일 발송 실패', error)
         }
       }
       this.alert('발송완료', `${name}님께 ${roomName}${mConst.lf}${sampleName} 발송 완료하였습니다.`, [
@@ -106,14 +134,17 @@ class SendOutScreen extends PureComponent {
     }
   }
   render() {
-    const {reqNo} = this.params
-    const {data, checkedList, allChecked, loading} = this.state
-    const loaningDate = mUtils.getShowDate(mUtils.get(data, 'loaning_date'))
-    const fromName = mUtils.get(data, 'from_user_nm')
-    const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'from_user_phone'))
-    const toName = mUtils.get(data, 'to_user_nm')
-    const toPhone = mUtils.phoneFormat(mUtils.get(data, 'to_user_phone'))
-    if (loading) return <Loading />
+    const {reqNo} = this.params;
+    const {data, checkedList, allChecked, loading} = this.state;
+    const loaningDate = mUtils.getShowDate(mUtils.get(data, 'loaning_date'));
+    const fromName = mUtils.get(data, 'from_user_nm');
+    const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'from_user_phone'));
+    const toName = mUtils.get(data, 'to_user_nm');
+    const toPhone = mUtils.phoneFormat(mUtils.get(data, 'to_user_phone'));
+    if (loading) return <Loading />;
+
+    
+
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={{paddingVertical: 10}}>
@@ -260,9 +291,16 @@ class SendOutScreen extends PureComponent {
             })}
           </Grid>
         </ScrollView>
-        <TouchableOpacity onPress={this.handleCheckItemAll} style={styles.bottom}>
-          <Text style={styles.bottomText}>All Sent Out</Text>
-        </TouchableOpacity>
+        {
+          allChecked ?
+          <View style={styles.bottom2}>
+            <Text style={styles.bottomText}>All Sent Out(Completed)</Text>
+          </View>
+          :
+          <TouchableOpacity onPress={this.handleCheckItemAll} style={styles.bottom}>
+            <Text style={styles.bottomText}>All Sent Out</Text>
+          </TouchableOpacity>
+        }
         <Modal style={styles.modal} isVisible={this.state.isvisible.open} useNativeDriver={true}>
           <View style={styles.modalView}>
             <Text style={styles.modalName}>{this.state.isvisible.name}</Text>

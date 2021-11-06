@@ -24,12 +24,14 @@ const shadow = {
 }
 
 export default {
+  appName : "PR MAGNET",
   PRODUCTION,
   STAGE,
   STORYBOOK: !PRODUCTION && !STAGE && STORYBOOK,
   TESTLOGGING,
   getApiUri: () => (PRODUCTION ? PROD_APIURI : STAGE ? STG_APIURI : DEV_APIURI),
   getUserType: () => global.mUserType || 'B',
+  getSubScrbeStatus: () => global.subScrbeStatus || false,
   getBaseColor: () => (global.mUserType === 'B' ? '#7ea1b2' : '#000000'),
   getBaseXColor: () => (global.mUserType === 'B' ? '#000000' : '#7ea1b2'),
   getBaseXColorDirect: userType => (userType === 'B' ? '#000000' : '#7ea1b2'),

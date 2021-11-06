@@ -40,10 +40,10 @@ class DigitalSRDetailScreen extends PureComponent {
     const {no} = this.props.route.params
     try {
       const response = await API.getSRDetail(no)
-      console.log('getSRDetail>>>', JSON.stringify(response))
+      //console.log('getSRDetail>>>', JSON.stringify(response))
       this.setState({data: response})
     } catch (error) {
-      console.log('getSRDetail>>>', error)
+      //console.log('getSRDetail>>>', error)
     }
   }
 
@@ -51,10 +51,10 @@ class DigitalSRDetailScreen extends PureComponent {
     const {no, lookNo} = this.props.route.params
     try {
       const response = await API.getLookBookSRDetail(lookNo, no)
-      console.log('getSRDetail>>>', JSON.stringify(response))
+      //console.log('getSRDetail>>>', JSON.stringify(response))
       this.setState({data: response})
     } catch (error) {
-      console.log('getSRDetail>>>', error)
+      //console.log('getSRDetail>>>', error)
     }
   }
 
@@ -62,12 +62,12 @@ class DigitalSRDetailScreen extends PureComponent {
     const {no, lookNo} = this.props.route.params
     try {
       const response = await API.getShare({lookbook_no: lookNo})
-      console.log('getShare>>>', response)
+      //console.log('getShare>>>', response)
       if (response.success) {
         this.setState({...this.state, share_uuid: response.share_uuid})
       }
     } catch (error) {
-      console.log('getShare>>>', error)
+      //console.log('getShare>>>', error)
     }
   }
 
@@ -86,7 +86,7 @@ class DigitalSRDetailScreen extends PureComponent {
   }
 
   render() {
-    const {data, link, share_uuid} = this.state
+    const {data, link, share_uuid} = this.state;
     const {type} = this.props.route.params
     return data ? (
       <SafeAreaView style={styles.container}>
@@ -139,6 +139,21 @@ class DigitalSRDetailScreen extends PureComponent {
                   <View style={styles.layout}>
                     <Text style={styles.left}>Sample name</Text>
                     <Text style={{...styles.right}}>{item.sample_nm}</Text>
+                                      
+                  </View>
+                  <View style={styles.layout}>
+                    <Text style={styles.left}>이용 상태</Text>
+                    { 
+                      item.now_req_status_nm === '대여중' ?
+                      <Text style={{...styles.rightRed}}>
+                        {item.now_req_status_nm}{"\n"}
+                        {mUtils.dateToDate(item.duty_recpt_dt)} ~ {mUtils.dateToDate(item.return_prearnge_dt)}
+                      </Text>
+                      :
+                      <Text style={{...styles.right}}>
+                        {item.now_req_status_nm}
+                      </Text>
+                    }  
                   </View>
                   <View style={styles.layout}>
                     <Text style={styles.left}>Season</Text>

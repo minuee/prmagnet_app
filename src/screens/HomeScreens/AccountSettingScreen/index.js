@@ -39,12 +39,12 @@ class AccountSettingScreen extends PureComponent {
         team_user_id: info.teammate_id,
         img_url_adres: `public/${url}`,
       })
-      console.log('putProfile>>>', response)
+      //console.log('putProfile>>>', response)
       //this.goBack()
-      console.log('????', uri)
+      //console.log('????', uri)
       this.setState({img: uri})
     } catch (error) {
-      console.log('putProfile>>>', error)
+      //console.log('putProfile>>>', error)
     }
   }
 
@@ -59,7 +59,7 @@ class AccountSettingScreen extends PureComponent {
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         this.profile(type)
       } else {
-        console.log('Camera permission denied')
+        //console.log('Camera permission denied')
       }
     } catch (err) {
       console.warn(err)
@@ -77,7 +77,7 @@ class AccountSettingScreen extends PureComponent {
             maxWidth: 200,
           },
           response => {
-            console.log('camera', response)
+            //console.log('camera', response)
             this.putImageFunction(response)
           }
         )
@@ -90,7 +90,7 @@ class AccountSettingScreen extends PureComponent {
             maxWidth: 200,
           },
           response => {
-            console.log('gallery', response)
+            //console.log('gallery', response)
             this.putImageFunction(response)
           }
         )
@@ -101,7 +101,7 @@ class AccountSettingScreen extends PureComponent {
     this.setState({isvisible: false})
     const response = await fetch(image.uri)
     const file = await response.blob()
-    console.log('>>>>>>', file)
+    //console.log('>>>>>>', file)
     const date = new Date()
     try {
       var data = await Storage.put(
@@ -115,10 +115,10 @@ class AccountSettingScreen extends PureComponent {
         }
         //loadingFunction
       )
-      console.log(data.key)
+      //console.log(data.key)
       this.putProfile(data.key, image.uri)
     } catch (error) {
-      console.log('putImageFunction>>>', error)
+      //console.log('putImageFunction>>>', error)
     }
   }
 
@@ -131,11 +131,11 @@ class AccountSettingScreen extends PureComponent {
     logout({
       cbSuccess: async response => {
         logoutSuccess(response)
-        console.log('###로그아웃 성공:', response)
+        //console.log('###로그아웃 성공:', response)
       },
       cbFailure: async e => {
         logoutFailure(e)
-        console.log('###로그아웃 실패', e)
+        //console.log('###로그아웃 실패', e)
       },
     })
   })
@@ -147,7 +147,7 @@ class AccountSettingScreen extends PureComponent {
   render() {
     const {isvisible, img} = this.state
     const {info} = this.props.route.params
-    console.log('info', img)
+    //console.log('info', img)
     return (
       <>
         <SafeAreaView style={styles.container}>

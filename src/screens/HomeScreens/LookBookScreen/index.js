@@ -34,7 +34,7 @@ class LookBookScreen extends PureComponent {
   putLookBook = async lookbook_no_list => {
     try {
       const response = await API.putLookBook({lookbook_no_list: [lookbook_no_list]})
-      console.log('putLookBook>>>', response)
+      //console.log('putLookBook>>>', response)
       if (response.success) {
         setTimeout(() => {
           this.alert('삭제 완료', '룩북을 삭제 하였습니다.', [
@@ -52,7 +52,7 @@ class LookBookScreen extends PureComponent {
         }, 100)
       }
     } catch (error) {
-      console.log('putLookBook>>>', error)
+      //console.log('putLookBook>>>', error)
     }
   }
 
@@ -60,7 +60,7 @@ class LookBookScreen extends PureComponent {
     const {list, page, limit, search_text} = this.state
     try {
       const response = await API.getLookBook({page: page, limit: limit, search_text: search_text})
-      console.log('getLookBook>>>', response)
+      //console.log('getLookBook>>>', response)
       if (response.success) {
         this.setState({loading: false}, () => {
           if (response.list.length > 0) {
@@ -69,7 +69,7 @@ class LookBookScreen extends PureComponent {
         })
       }
     } catch (error) {
-      console.log('getLookBook>>>', error)
+      //console.log('getLookBook>>>', error)
     }
   }
 

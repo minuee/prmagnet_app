@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react'
+import React from 'react'
 import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity} from 'react-native'
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
@@ -18,7 +18,8 @@ import styles from './styles'
 const moreImage1 = require('../../../images/navi/more_1.png')
 const moreImage3 = require('../../../images/navi/more_3.png')
 
-class SampleRequestsListScreen extends PureComponent {
+
+class SampleRequestsListScreen extends React.Component {
   constructor(props) {
     super(props)
     cBind(this)
@@ -29,21 +30,23 @@ class SampleRequestsListScreen extends PureComponent {
       search_text: '',
       loading: false,
     }
+
   }
 
+  
   deleteMyRequests = async (no, index) => {
     try {
       const response = await API.deleteMyRequests({
         req_no: [no],
       })
-      console.log('deleteMyRequests>>>>', response)
+      //console.log('deleteMyRequests>>>>', response)
       setTimeout(() => {
         this.alert('요청삭제 완료', '요청이 삭제되었습니다.', [
           {
             onPress: () =>
               this.setState(state => {
                 const result = state.list.filter((item, i) => i !== index)
-                console.log('>>>>>>>>>>>', result)
+                //console.log('>>>>>>>>>>>', result)
                 return {
                   list: result,
                 }
@@ -52,27 +55,27 @@ class SampleRequestsListScreen extends PureComponent {
         ])
       }, 100)
     } catch (error) {
-      console.log('deleteMyRequests>>>', error)
+      //console.log('deleteMyRequests>>>', error)
     }
   }
 
   getMagazineSample = async () => {
     const {list, page, limit, search_text} = this.state
-    console.log('??>?>?', page)
+    //console.log('??>?>?', page)
     try {
       const response = await API.getMagazineSample({
         page: page,
         limit: limit,
         search_text: search_text,
       })
-      console.log('getMagazineSample>>>', response)
+      //console.log('getMagazineSample>>>', response)
       if (response.success) {
         if (response.list.length > 0) {
           this.setState({list: list.concat(response.list), page: page + 1})
         }
       }
     } catch (error) {
-      console.log('getMagazineSample>>>', error)
+      //console.log('getMagazineSample>>>', error)
     }
   }
 
@@ -85,7 +88,7 @@ class SampleRequestsListScreen extends PureComponent {
         search_text: search_text,
         loading: false,
       })
-      console.log('getMagazineSampleReset>>>', response)
+      //console.log('getMagazineSampleReset>>>', response)
       if (response.success) {
         if (response.list.length > 0) {
           this.setState({list: response.list, page: 2, loading: false})
@@ -95,7 +98,7 @@ class SampleRequestsListScreen extends PureComponent {
       }
     } catch (error) {
       this.setState({loading: false})
-      console.log('getMagazineSampleReset>>>', error)
+      //console.log('getMagazineSampleReset>>>', error)
     }
   }
 
@@ -116,9 +119,11 @@ class SampleRequestsListScreen extends PureComponent {
     })
   }
 
+
   renderItem = ({item, index}) => {
     return (
       <React.Fragment key={index}>
+
         <TouchableOpacity
           style={styles.layout3}
           onPress={() => {
@@ -148,6 +153,7 @@ class SampleRequestsListScreen extends PureComponent {
                     style={{paddingTop: mUtils.wScale(17), paddingBottom: mUtils.wScale(12), paddingHorizontal: mUtils.wScale(15)}}
                     onSelect={() => {
                       this.pushTo('SampleRequestsScreen', {type: false, brandId: item.brand_id, no: item.req_no, brandName: item.brand_nm})
+                      
                     }}
                   >
                     <Text style={styles.delete}>Edit</Text>

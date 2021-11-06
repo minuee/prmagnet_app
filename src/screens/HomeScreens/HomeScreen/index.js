@@ -25,12 +25,16 @@ class HomeScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
-    this.state = {data: ''}
+    this.state = {
+      loading : true,
+      data: ''
+    }
   }
-
+  
   requests = () => {
-    const {data} = this.state
-    const userType = mConst.getUserType()
+    const {data} = this.state;
+    const userType = mConst.getUserType();
+    
     return (
       <View style={{flex: _.get(data, userType !== 'B' ? 'cnfirm_request' : 'new_request', []).length === 0 ? 1 : 0}}>
         <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20)}}>
@@ -169,19 +173,23 @@ class HomeScreen extends PureComponent {
 
   getHome = async () => {
     const date = Math.floor(new Date().getTime() / 1000)
+    console.log('getHomedatedate>>>', date)
     try {
       const response = await API.getHome({date: date})
       console.log('getHome>>>', JSON.stringify(response))
-      this.setState({data: response})
+      this.setState({data: response,loading:false})
     } catch (error) {
       console.log('getHome>>>', error)
+      this.setState({data: null,loading:false})
       await API.postErrLog({error: JSON.stringify(error), desc: 'getHomeError'})
     }
   }
 
   componentDidMount() {
     const {user} = this.props
-    global.mUserType = user.userType
+    global.mUserType = user.userType;
+    global.subScrbeStatus = user.subScrbeStatus;
+    //console.log('user.subScrbeStatus:', user.subScrbeStatus)
     // FCM 설정(PUSH 권한 요청)
     this.setupFcm()
     this.onFocus(this.handleOnFocus)
@@ -190,7 +198,12 @@ class HomeScreen extends PureComponent {
     this.removeFocus()
   }
   handleOnFocus = async () => {
-    this.getHome()
+    if ( this.props.user.subScrbeStatus ) {
+      this.getHome()
+    }else{
+      this.setState({data: null,loading:false})
+    }
+    
     if (!(await isLoggedIn())) {
       this.props.logout()
     }
@@ -203,7 +216,7 @@ class HomeScreen extends PureComponent {
         this.alert(_.get(msg, 'data.title'), _.get(msg, 'data.body'))
       }
       messaging().onMessage(message => {
-        console.log('fcm-msg:', message)
+        //console.log('fcm-msg:', message)
         setAlarm({alarm: true})
         if (_.isEmpty(message.data)) {
           this.alert(_.get(message, 'notification.title'), _.get(message, 'notification.body'))
@@ -212,7 +225,7 @@ class HomeScreen extends PureComponent {
         }
       })
       messaging().setBackgroundMessageHandler(message => {
-        console.log('fcm-bg-msg:', message)
+        //console.log('fcm-bg-msg:', message)
         setAlarm({alarm: true})
         if (!_.isEmpty(message.data)) {
           handleDataMessage(message)
@@ -221,21 +234,29 @@ class HomeScreen extends PureComponent {
     }
   }
   render() {
-    const {user} = this.props
-    const {data} = this.state
+    const {user} = this.props;
+    const {data} = this.state;
     return (
       <SafeAreaView style={styles.container}>
         <Header pushTo={this.pushTo} userType={user.userType} alarmSet={user.alarm} />
         <ScrollView contentContainerStyle={{flexGrow: 1, marginBottom: mUtils.wScale(37.5)}} bounces={false}>
           <Text style={styles.screenTitleText}>Home</Text>
-          {data ? (
-            <>
-              {this.requests()}
-              {this.sendOuts()}
-            </>
-          ) : (
+          <>
+          {
+            this.state.loading
+            ?
             <Loading />
-          )}
+            :
+            data 
+            ? 
+              <>
+                {this.requests()}
+                {this.sendOuts()}
+              </>
+            :
+            <Empty />
+          }
+          </>
         </ScrollView>
         <CodePush />
       </SafeAreaView>

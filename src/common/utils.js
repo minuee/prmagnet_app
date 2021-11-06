@@ -1,6 +1,7 @@
 import messaging from '@react-native-firebase/messaging'
 import moment from 'moment'
 import _ from 'lodash'
+import Toast from 'react-native-simple-toast';
 
 import mConst from './constants'
 import mStorage from './storage'
@@ -11,6 +12,22 @@ const MOBILE_FORMAT = /^01([0|1|6|7|8|9]+)-?([0-9]{3,4})-?([0-9]{4})$/i
 const TO_FIXED_POS = 3
 
 const utils = {
+
+  fn_call_toast(message) {
+    Toast.showWithGravity(message, Toast.SHORT, Toast.BOTTOM);
+  },
+  isEmpty(str){
+    return str === null || str === undefined || str === '' || (typeof str === 'object' && Array.isArray(str) === false && Object.keys(str).length === 0);
+  },  
+  dateToDate(val) {
+    const happyNewYear = new Date(val);
+    const year = happyNewYear.getFullYear(); 
+    const month = happyNewYear.getMonth() + 1; 
+    const date = happyNewYear.getDate();
+
+    const result = `${year}-${month >= 10 ? month : '0' + month}-${date >= 10 ? date : '0' + date}`
+    return result;
+  } ,
   get(object, path, defaultValue = '') {
     return _.defaultTo(_.get(object, path, defaultValue), defaultValue)
   },
@@ -453,7 +470,7 @@ const utils = {
         fcmToken = 'DEFAULT_FCM_TOKEN'
       }
     }
-    console.log('fcmToken:', fcmToken)
+    //console.log('fcmToken:', fcmToken)
     return fcmToken
   },
   async getFcmEnabled() {

@@ -60,7 +60,7 @@ class SearchScreen extends PureComponent {
       const response = await API.getAllSearch({
         search_text: keyword,
       })
-      console.log('getAllSearch>>>', response)
+      //console.log('getAllSearch>>>', response)
       if (response.success) {
         this.setState({loading: false})
         if (userType !== 'B') {
@@ -70,7 +70,7 @@ class SearchScreen extends PureComponent {
         }
       }
     } catch (error) {
-      console.log('getAllSearch>>>', error)
+      //console.log('getAllSearch>>>', error)
       await API.postErrLog({error: JSON.stringify(error), desc: 'getAllSearch'})
     }
   }

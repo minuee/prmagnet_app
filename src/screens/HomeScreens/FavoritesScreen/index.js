@@ -60,22 +60,22 @@ class FavoritesScreen extends PureComponent {
           material_list: filterInfo.material,
         })
         this.setState({favShowroom: _.get(response, 'list', []), loading: false})
-        console.log('쇼룸 즐겨찾기 조회 성공', JSON.stringify(response))
+        //console.log('쇼룸 즐겨찾기 조회 성공', JSON.stringify(response))
       } catch (error) {
         this.setState({loading: false})
-        console.log('쇼룸 즐겨찾기 조회 실패', error)
+        //console.log('쇼룸 즐겨찾기 조회 실패', error)
       }
     })
   }
   getSampleInfo = async () => {
     try {
       const response = await API.getSampleInfo()
-      console.log('getSampleInfo>>>', JSON.stringify(response))
+      //console.log('getSampleInfo>>>', JSON.stringify(response))
       if (response.success) {
         this.setState({filterData: response})
       }
     } catch (error) {
-      console.log('getSampleInfo>>>', error)
+      //console.log('getSampleInfo>>>', error)
       await API.postErrLog({error: JSON.stringify(error), desc: 'getSampleInfo'})
     }
   }
@@ -92,7 +92,7 @@ class FavoritesScreen extends PureComponent {
       const response = await API.deleteFavShowroom({
         showroom_no: no,
       })
-      console.log('deleteFavShowroom>>>>>', response)
+      //console.log('deleteFavShowroom>>>>>', response)
       if (response.success) {
         this.setState(state => {
           const list = state.favShowroom.filter((e, i) => e.showroom_no !== no)
@@ -103,7 +103,7 @@ class FavoritesScreen extends PureComponent {
         //this.handleOnFocus()
       }
     } catch (error) {
-      console.log('deleteFavShowroom>>>>>', error)
+      //console.log('deleteFavShowroom>>>>>', error)
     }
   }
   render() {

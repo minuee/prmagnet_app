@@ -135,6 +135,13 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  bottom2: {
+    width: '100%',
+    height: mUtils.hScale(50),
+    backgroundColor: '#ccc',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   bottomText: {
     fontSize: 15,
     fontWeight: 'bold',

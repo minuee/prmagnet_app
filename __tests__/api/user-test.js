@@ -13,12 +13,12 @@ const userFn = () =>
       API.login(loginData(), {
         cbSuccess: response => {
           // if (TESTLOGGING) {
-          console.log('회원 로그인 성공', response)
+          //console.log('회원 로그인 성공', response)
           // }
           expect(true).toBe(true)
         },
         cbFailure: e => {
-          console.log('###로그인 실패', e)
+          //console.log('###로그인 실패', e)
           expect(false).toBe(true)
         },
       })
@@ -26,7 +26,7 @@ const userFn = () =>
     it('회원 정보 조회 성공', async () => {
       const response = await API.getUserType()
       if (TESTLOGGING) {
-        console.log('회원 정보 조회 성공', response)
+        //console.log('회원 정보 조회 성공', response)
       }
       expect(API.getTestResult(response)).toBe(true)
     })

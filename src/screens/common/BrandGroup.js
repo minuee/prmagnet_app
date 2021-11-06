@@ -38,10 +38,10 @@ export default class BrandGroup extends PureComponent {
     if (search) {
       try {
         const response = await API.getBrandSearch(search)
-        console.log('getBrandSearch>>>', response)
+        //console.log('getBrandSearch>>>', response)
         this.setState({searchResult: response.list})
       } catch (error) {
-        console.log('getBrandSearch>>>', JSON.stringify(error))
+        //console.log('getBrandSearch>>>', JSON.stringify(error))
         await API.postErrLog({error: error, desc: 'getBrandSearch'})
       }
     } else {
@@ -105,10 +105,10 @@ export default class BrandGroup extends PureComponent {
                 _.filter(item.each_list, e => !favoriteItems.includes(e)),
                 (item1, index1) => {
                   return (
-                    <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item1.brand_id)}>
+                    <TouchableOpacity key={index1} onPress={() => this.toggleSelectItem(item1.brand_id)}>
                       <Row style={styles.itemWrapper}>
                         <View style={styles.itemSubWrapper}>
-                          <TouchableOpacity key={index} onPress={() => this.toggleFavoriteItem(item1)} style={styles.touch}>
+                          <TouchableOpacity onPress={() => this.toggleFavoriteItem(item1)} style={styles.touch}>
                             <FastImage resizeMode={'contain'} source={heartImage} style={styles.heartImage} />
                           </TouchableOpacity>
                           <Text style={styles.itemText}>{item1.brand_nm}</Text>

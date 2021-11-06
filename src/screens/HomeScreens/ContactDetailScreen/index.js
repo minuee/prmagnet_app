@@ -24,12 +24,12 @@ class ContactDetailScreen extends PureComponent {
     const userType = mConst.getUserType()
     try {
       const response = await API.getQnaDetail({sys_inqry_no: sys_inqry_no, userType: userType})
-      console.log('getQnaDetail>>>', response)
+      //console.log('getQnaDetail>>>', response)
       if (response.success) {
         this.setState({desc: response})
       }
     } catch (error) {
-      console.log('getQnaDetail>>>', error)
+      //console.log('getQnaDetail>>>', error)
     }
   }
 

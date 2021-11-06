@@ -46,14 +46,14 @@ class LookBookDetailScreen extends PureComponent {
     const {page, limit, list} = this.state
     try {
       const response = await API.getLookBookDetail({lookbook_no: lookbook_no, page: page, limit: limit})
-      console.log('getLookBookDetail>>>', JSON.stringify(response))
+      //console.log('getLookBookDetail>>>', JSON.stringify(response))
       if (response.success) {
         if (response.list.length > 0) {
           this.setState({list: list.concat(response.list), page: page + 1})
         }
       }
     } catch (error) {
-      console.log('getLookBookDetail>>>', error)
+      //console.log('getLookBookDetail>>>', error)
     }
   }
 
@@ -61,12 +61,12 @@ class LookBookDetailScreen extends PureComponent {
     const {lookbook_nm, lookbook_no} = this.props.route.params
     try {
       const response = await API.getShare({lookbook_no: lookbook_no})
-      console.log('getShare>>>', response)
+      //console.log('getShare>>>', response)
       if (response.success) {
         this.setState({...this.state, share_uuid: response.share_uuid})
       }
     } catch (error) {
-      console.log('getShare>>>', error)
+      //console.log('getShare>>>', error)
     }
   }
 
@@ -84,7 +84,7 @@ class LookBookDetailScreen extends PureComponent {
   }
 
   renderItem = ({item}) => {
-    console.log('????', item)
+    //console.log('????', item)
     const {lookbook_no} = this.props.route.params
     return (
       <View style={{width: '49%', height: mUtils.wScale(310)}}>

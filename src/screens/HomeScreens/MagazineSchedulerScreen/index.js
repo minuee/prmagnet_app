@@ -37,10 +37,10 @@ class MagazineSchedulerScreen extends PureComponent {
         min_date: params?.start || this.state.start,
         max_date: params?.end || this.state.end,
       })
-      console.log('getMagazineSchedular>>>>', JSON.stringify(response))
+      //console.log('getMagazineSchedular>>>>', JSON.stringify(response))
       this.setState({data: response, start: params?.start || this.state.start, end: params?.end || this.state.end})
     } catch (error) {
-      console.log('getMagazineSchedular>>>>', error)
+      //console.log('getMagazineSchedular>>>>', error)
     }
   }
 
@@ -50,10 +50,10 @@ class MagazineSchedulerScreen extends PureComponent {
         min_date: params?.start || this.state.start,
         max_date: params?.end || this.state.end,
       })
-      console.log('getBrandMagazineSchedular>>>>', JSON.stringify(response))
+      //console.log('getBrandMagazineSchedular>>>>', JSON.stringify(response))
       this.setState({data: response, start: params?.start || this.state.start, end: params?.end || this.state.end})
     } catch (error) {
-      console.log('getBrandMagazineSchedular>>>>', error)
+      //console.log('getBrandMagazineSchedular>>>>', error)
     }
   }
 
@@ -78,7 +78,7 @@ class MagazineSchedulerScreen extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log('>>>>>>>>>>', prevState.boolean, this.state.boolean)
+    //console.log('>>>>>>>>>>', prevState.boolean, this.state.boolean)
     if (prevState.boolean !== this.state.boolean) {
       if (!this.state.boolean) {
         this.getBrandMagazineSchedular()

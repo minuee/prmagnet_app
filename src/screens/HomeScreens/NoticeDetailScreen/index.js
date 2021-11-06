@@ -22,13 +22,13 @@ class NoticeDetailScreen extends PureComponent {
     const {no} = this.params
     try {
       const response = await API.getNoticeDetail({notice_no: no})
-      console.log('getNoticeDetail>>>', response)
+      //console.log('getNoticeDetail>>>', response)
       if (response.success) {
         this.setState({data: response, loading: false})
       }
     } catch (error) {
       this.setState({loading: false})
-      console.log('getNoticeDetail>>>', error)
+      //console.log('getNoticeDetail>>>', error)
     }
   }
 

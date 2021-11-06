@@ -42,7 +42,7 @@ class LinkSheetScreen extends PureComponent {
   }
   async componentDidMount() {
     this.onFocus(this.handleOnFocus)
-    console.log('###apiPath:', mConst.getApiPath())
+    //console.log('###apiPath:', mConst.getApiPath())
   }
   componentWillUnmount() {
     this.removeFocus()
@@ -66,30 +66,30 @@ class LinkSheetScreen extends PureComponent {
         // console.log('###Return 스케쥴 조회 params:', {start_date: start, fin_date: end, brand_id: brandId})
         const response = await API.getReturnSchedule({start_date: start, fin_date: end})
         this.setState({dataList: _.get(response, 'list', []), loading: false})
-        console.log('Return 스케쥴 조회 성공', JSON.stringify(response))
+        //console.log('Return 스케쥴 조회 성공', JSON.stringify(response))
       } catch (error) {
         this.setState({loading: false})
-        console.log('Return 스케쥴 조회 실패', JSON.stringify(error))
+        //console.log('Return 스케쥴 조회 실패', JSON.stringify(error))
       }
     } else if (selectTitle === 'Pickups') {
       try {
         // console.log('###Pickup 스케쥴 조회 params:', {start_date: start, fin_date: end, brand_id: brandId})
         const response = await API.getPickupSchedule({start_date: start, fin_date: end, brand_id: brandId})
         this.setState({dataList: _.get(response, 'list', []), loading: false})
-        console.log('Pickup 스케쥴 조회 성공', JSON.stringify(response))
+        //console.log('Pickup 스케쥴 조회 성공', JSON.stringify(response))
       } catch (error) {
         this.setState({loading: false})
-        console.log('Pickup 스케쥴 조회 실패', JSON.stringify(error))
+        //console.log('Pickup 스케쥴 조회 실패', JSON.stringify(error))
       }
     } else if (selectTitle === 'Send Out') {
       try {
         // console.log('###Sendout 스케쥴 조회 params:', {start_date: start, fin_date: end, brand_id: brandId})
         const response = await API.getSendoutSchedule({start_date: start, fin_date: end, brand_id: brandId})
         this.setState({dataList: _.get(response, 'list', []), loading: false})
-        console.log('Sendout 스케쥴 조회 성공', JSON.stringify(response))
+        //console.log('Sendout 스케쥴 조회 성공', JSON.stringify(response))
       } catch (error) {
         this.setState({loading: false})
-        console.log('Sendout 스케쥴 조회 실패', error)
+        //console.log('Sendout 스케쥴 조회 실패', error)
       }
     }
   }
@@ -100,7 +100,7 @@ class LinkSheetScreen extends PureComponent {
   }
   handleChangeSchedule = () => {
     const {start, end} = this.state
-    console.log('>>>>>>', start, end)
+    //console.log('>>>>>>', start, end)
     this.pushTo('SelectScheduleScreen', {setDate: this.handleSetDates, start, end, caller: 'LinkSheetScreen'})
   }
   handleChangeTitle = item => {
@@ -204,7 +204,7 @@ class LinkSheetScreen extends PureComponent {
                   </TouchableOpacity>
                   <View style={{...styles.layout, flexWrap: 'wrap', paddingHorizontal: mUtils.wScale(20)}}>
                     {_.map(item.each_list, (subItem, subIndex) => {
-                      console.log('#매거진색깔:', subItem.mgzn_color)
+                      //console.log('#매거진색깔:', subItem.mgzn_color)
                       return (
                         <TouchableOpacity
                           key={subIndex}

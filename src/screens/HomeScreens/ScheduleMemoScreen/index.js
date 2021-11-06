@@ -65,19 +65,19 @@ class ScheduleMemoScreen extends PureComponent {
   }
 
   getShowRoomList = async date => {
-    console.log('?!?!!!!!', date)
+    //console.log('?!?!!!!!', date)
     try {
       const response = await API.getShowRoomList({
         date: date,
       })
-      console.log('getShowRoomList>>>', response)
+      //console.log('getShowRoomList>>>', response)
       if (response.success) {
         this.setState({
           look: response.list,
         })
       }
     } catch (error) {
-      console.log('getShowRoomList>>>', error)
+      //console.log('getShowRoomList>>>', error)
     }
   }
 
@@ -88,7 +88,7 @@ class ScheduleMemoScreen extends PureComponent {
         showroom_no: select ? select.showroom_no : '',
         date: selectedTimeStamp,
       })
-      console.log('getMemo>>>>>>', response)
+      //console.log('getMemo>>>>>>', response)
       if (response.memo) {
         this.setState({
           desc: response.memo.content,
@@ -105,7 +105,7 @@ class ScheduleMemoScreen extends PureComponent {
         })
       }
     } catch (error) {
-      console.log('getMemo>>>>>>', error)
+      //console.log('getMemo>>>>>>', error)
     }
   }
 
@@ -137,14 +137,14 @@ class ScheduleMemoScreen extends PureComponent {
         color: selectedColor,
         content: desc,
       })
-      console.log('postMemo>>>>', response)
+      //console.log('postMemo>>>>', response)
       if (response.success) {
         setTimeout(() => {
           this.alert('추가 완료', '메모를 추가 완료하였습니다.', [{onPress: () => this.goBack()}])
         }, 100)
       }
     } catch (error) {
-      console.log('postMemo>>>>', error)
+      //console.log('postMemo>>>>', error)
     }
   }
 
@@ -158,14 +158,14 @@ class ScheduleMemoScreen extends PureComponent {
         color: selectedColor,
         content: desc,
       })
-      console.log('putMemo>>>>', response)
+      //console.log('putMemo>>>>', response)
       if (response.success) {
         setTimeout(() => {
           this.alert('수정 완료', '메모를 수정 완료하였습니다.', [{onPress: () => this.goBack()}])
         }, 100)
       }
     } catch (error) {
-      console.log('putMemo>>>>', error)
+      //console.log('putMemo>>>>', error)
     }
   }
 
@@ -175,14 +175,14 @@ class ScheduleMemoScreen extends PureComponent {
       const response = await API.delMemo({
         memo_no: memo_no,
       })
-      console.log('delMemo>>>>', response)
+      //console.log('delMemo>>>>', response)
       if (response.success) {
         setTimeout(() => {
           this.alert('삭제 완료', '메모를 삭제 완료하였습니다.', [{onPress: () => this.goBack()}])
         }, 100)
       }
     } catch (error) {
-      console.log('delMemo>>>>', error)
+      //console.log('delMemo>>>>', error)
     }
   }
 

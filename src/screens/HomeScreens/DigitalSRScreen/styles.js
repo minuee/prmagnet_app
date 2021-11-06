@@ -8,6 +8,12 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: mConst.white,
   },
+  redTitle: {    
+    fontSize: 13,
+    textAlign: 'center',
+    color: '#ff0000',
+    marginTop: mUtils.wScale(5),
+  },
   title: {
     fontFamily: 'Roboto-Medium',
     fontSize: 15,

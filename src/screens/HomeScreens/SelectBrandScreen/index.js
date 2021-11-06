@@ -24,7 +24,7 @@ class SelectBrandScreen extends PureComponent {
   componentDidMount() {
     this.modalOption('Brands')
     this.getBrandSearchCompanyAZ()
-    console.log('###SelectBrandScreen-brandId:', this.params.brandId)
+    //console.log('###SelectBrandScreen-brandId:', this.params.brandId)
   }
   setBrand = brandId => {
     this.setState({brandId})
@@ -35,10 +35,10 @@ class SelectBrandScreen extends PureComponent {
   getBrandSearchCompanyAZ = async () => {
     try {
       const response = await API.getBrandSearchCompanyAZ()
-      console.log('getBrandSearchCompanyAZ>>>', JSON.stringify(response))
+      //console.log('getBrandSearchCompanyAZ>>>', JSON.stringify(response))
       this.setState({brands: _.get(response, 'list', [])})
     } catch (error) {
-      console.log('getBrandSearchCompanyAZ>>>', error)
+      //console.log('getBrandSearchCompanyAZ>>>', error)
       await API.postErrLog({error: JSON.stringify(error), desc: 'getBrandSearchCompanyAZError'})
     }
   }

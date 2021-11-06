@@ -25,13 +25,13 @@ class Contact extends PureComponent {
     const userType = mConst.getUserType()
     try {
       const response = await API.postQna({subject: title, content: desc, userType: userType})
-      console.log('postQna>>>>', response)
+      //console.log('postQna>>>>', response)
       if (response.success) {
         this.setState({title: '', desc: ''})
         this.alert('문의하기 완료', '문의가 정상적으로 접수되었습니다.', [{onPress: () => null}])
       }
     } catch (error) {
-      console.log('postQna>>>>', error)
+      //console.log('postQna>>>>', error)
     }
   }
 

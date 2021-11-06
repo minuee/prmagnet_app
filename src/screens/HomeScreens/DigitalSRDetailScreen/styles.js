@@ -62,6 +62,12 @@ export default StyleSheet.create({
     textAlign: 'right',
     color: '#555555',
   },
+  rightRed: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 14,
+    textAlign: 'right',
+    color: '#ff0000',
+  },
   desc: {
     fontFamily: 'Roboto-Regular',
     fontSize: 13,

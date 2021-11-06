@@ -33,6 +33,11 @@ export default StyleSheet.create({
     textAlign: 'center',
     color: '#070708',
   },
+  modelTitle2: {    
+    fontSize: 12,
+    textAlign: 'center',
+    color: '#ff0000',
+  },
   buttonText: {
     fontFamily: 'Roboto-Bold',
     fontSize: 16,

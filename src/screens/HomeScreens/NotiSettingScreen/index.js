@@ -41,45 +41,45 @@ class NotiSettingScreen extends PureComponent {
   putSampleRequests = async switchValue => {
     try {
       const response = await API.putSampleRequests({recv_yn: switchValue})
-      console.log('putSampleRequests>>>', response)
+      //console.log('putSampleRequests>>>', response)
     } catch (error) {
-      console.log('putSampleRequests>>>', error)
+      //console.log('putSampleRequests>>>', error)
     }
   }
 
   putSampleRequestsConfirm = async switchValue => {
     try {
       const response = await API.putSampleRequestsConfirm({recv_yn: switchValue})
-      console.log('putSampleRequestsConfirm>>>', response)
+      //console.log('putSampleRequestsConfirm>>>', response)
     } catch (error) {
-      console.log('putSampleRequestsConfirm>>>', error)
+      //console.log('putSampleRequestsConfirm>>>', error)
     }
   }
 
   putNotReceive = async switchValue => {
     try {
       const response = await API.putNotReceive({recv_yn: switchValue})
-      console.log('putNotReceive>>>', response)
+      //console.log('putNotReceive>>>', response)
     } catch (error) {
-      console.log('putNotReceive>>>', error)
+      //console.log('putNotReceive>>>', error)
     }
   }
 
   putSampleSend = async switchValue => {
     try {
       const response = await API.putSampleSend({recv_yn: switchValue})
-      console.log('putSampleSend>>>', response)
+      //console.log('putSampleSend>>>', response)
     } catch (error) {
-      console.log('putSampleSend>>>', error)
+      //console.log('putSampleSend>>>', error)
     }
   }
 
   putBrandNotice = async switchValue => {
     try {
       const response = await API.putBrandNotice({recv_yn: switchValue})
-      console.log('putBrandNotice>>>', response)
+      //console.log('putBrandNotice>>>', response)
     } catch (error) {
-      console.log('putBrandNotice>>>', error)
+      //console.log('putBrandNotice>>>', error)
     }
   }
 
@@ -92,12 +92,12 @@ class NotiSettingScreen extends PureComponent {
         begin_dt: switchValue ? (from > to ? to : from) : null,
         end_dt: switchValue ? (from > to ? from : to) : null,
       })
-      console.log('putNotDis>>>', response)
+      //console.log('putNotDis>>>', response)
       if (response.success) {
         this.setState({isvisible: {open: false, in: ''}})
       }
     } catch (error) {
-      console.log('putNotDis>>>', error)
+      //console.log('putNotDis>>>', error)
     }
   }
 
