@@ -114,16 +114,30 @@ class SampleRequestsScreen extends PureComponent {
       drop2: false,
       isvisible: false,
       year: dayjs().format('YYYY'),
+      reservation_list : [],
       holidays: [],
+      holidays2: [],
     }
   }
+  
 
   getBrandHoliday = async (year, brand_id) => {
+    //console.log('this.state.reservation_list>>>>', this.state.reservation_list)
+    let reservationArray =  [];
+    this.state.reservation_list.forEach((d2, i2) => {
+      if ( !mUtils.isEmpty(d2.photogrf_dt)) reservationArray = reservationArray.concat(d2.photogrf_dt);
+      if ( !mUtils.isEmpty(d2.duty_recpt_dt)) reservationArray = reservationArray.concat(d2.duty_recpt_dt);
+      if ( !mUtils.isEmpty(d2.return_prearnge_dt)) reservationArray = reservationArray.concat(d2.return_prearnge_dt);
+    });
+    
     try {
       const response = await API.getBrandHoliday({year, brand_id})
       //console.log('getBrandHoliday>>>>', JSON.stringify(response))
       if (response.success) {
-        this.setState({holidays: _.get(response, 'list', []).map(d => dayjs.unix(d).format('YYYY-MM-DD'))})
+        const holidayArray = await _.get(response, 'list', []).map(d => dayjs.unix(d).format('YYYY-MM-DD'));
+        const unavailDt = reservationArray.concat(holidayArray);
+        this.setState({holidays:unavailDt,holidays2:holidayArray});
+        //this.setState({holidays: _.get(response, 'list', []).map(d => dayjs.unix(d).format('YYYY-MM-DD'))})
       }
       // this.setState({data: response, start: params ? params.start : this.state.start, end: params ? params.end : this.state.end})
     } catch (error) {
@@ -293,67 +307,85 @@ class SampleRequestsScreen extends PureComponent {
     }
   }
 
-  onDaySelect = date => {
-    const {drop, drop1, drop2, holidays} = this.state
-    if (drop) {
-      this.setState({shDate: date, drop: false})
-      let pDt =
-        moment(date.timestamp).subtract({day: 1}).day() === 0
-          ? moment(date.timestamp).subtract({day: 3}).format('YYYY-MM-DD')
-          : moment(date.timestamp).subtract({day: 1}).day() === 6
-          ? moment(date.timestamp).subtract({day: 2}).format('YYYY-MM-DD')
-          : moment(date.timestamp).subtract({day: 1}).format('YYYY-MM-DD')
-      for (let i = 0; i < holidays.length; i++) {
-        holidays.find(
-          v =>
-            v === pDt &&
-            (pDt =
-              moment(pDt).subtract({day: 1}).day() === 0
-                ? moment(pDt).subtract({day: 3}).format('YYYY-MM-DD')
-                : moment(pDt).subtract({day: 1}).day() === 6
-                ? moment(pDt).subtract({day: 2}).format('YYYY-MM-DD')
-                : moment(pDt).subtract({day: 1}).format('YYYY-MM-DD'))
-        )
-      }
+  onDaySelect = async(date) => {
+    const {drop, drop1, drop2, holidays,holidays2} = this.state;
+    console.log('onDaySelect',date,drop1,drop2)
+    const dateFormat = date.dateString;
+    const TodayFormat = moment().format("YYYY-MM-DD");
+    let reservationArray =  [];
+    await this.state.reservation_list.forEach((d2, i2) => {
+      reservationArray = reservationArray.concat(d2);
+    });        
+    const isCheck = (element) => ( element.photogrf_dt == dateFormat || element.duty_recpt_dt == dateFormat || element.return_prearnge_dt == dateFormat);
+    if ( reservationArray.some(isCheck) ) {
+      alert('해당일자에는 이미 예약이 되어 있습니다.');
+      setShootingDt(dayjs.unix(data.shooting_date).toISOString())       
+      return false;
+    }else if ( TodayFormat >=  dateFormat) {
+      alert('오늘보다 이전일자로는 예약이 불가합니다.');
+      setShootingDt(dayjs.unix(data.shooting_date).toISOString())  
+      return false;
+    }else{
+      if (drop) {      
+        this.setState({shDate: date, drop: false})
+        let pDt =
+          moment(date.timestamp).subtract({day: 1}).day() === 0
+            ? moment(date.timestamp).subtract({day: 3}).format('YYYY-MM-DD')
+            : moment(date.timestamp).subtract({day: 1}).day() === 6
+            ? moment(date.timestamp).subtract({day: 2}).format('YYYY-MM-DD')
+            : moment(date.timestamp).subtract({day: 1}).format('YYYY-MM-DD')
+        for (let i = 0; i < holidays2.length; i++) {
+          holidays2.find(
+            v =>
+              v === pDt &&
+              (pDt =
+                moment(pDt).subtract({day: 1}).day() === 0
+                  ? moment(pDt).subtract({day: 3}).format('YYYY-MM-DD')
+                  : moment(pDt).subtract({day: 1}).day() === 6
+                  ? moment(pDt).subtract({day: 2}).format('YYYY-MM-DD')
+                  : moment(pDt).subtract({day: 1}).format('YYYY-MM-DD'))
+          )
+        }
 
-      let rDt =
-        moment(date.timestamp).add({day: 1}).day() === 6
-          ? moment(date.timestamp).add({day: 3}).format('YYYY-MM-DD')
-          : moment(date.timestamp).add({day: 1}).day() === 0
-          ? moment(date.timestamp).add({day: 2}).format('YYYY-MM-DD')
-          : moment(date.timestamp).add({day: 1}).format('YYYY-MM-DD')
-      for (let i = 0; i < holidays.length; i++) {
-        holidays.find(
-          v =>
-            v === rDt &&
-            (rDt =
-              moment(rDt).add({day: 1}).day() === 6
-                ? moment(rDt).add({day: 3}).format('YYYY-MM-DD')
-                : moment(rDt).add({day: 1}).day() === 0
-                ? moment(rDt).add({day: 2}).format('YYYY-MM-DD')
-                : moment(rDt).add({day: 1}).format('YYYY-MM-DD'))
-        )
+        let rDt =
+          moment(date.timestamp).add({day: 1}).day() === 6
+            ? moment(date.timestamp).add({day: 3}).format('YYYY-MM-DD')
+            : moment(date.timestamp).add({day: 1}).day() === 0
+            ? moment(date.timestamp).add({day: 2}).format('YYYY-MM-DD')
+            : moment(date.timestamp).add({day: 1}).format('YYYY-MM-DD')
+        for (let i = 0; i < holidays2.length; i++) {
+          holidays2.find(
+            v =>
+              v === rDt &&
+              (rDt =
+                moment(rDt).add({day: 1}).day() === 6
+                  ? moment(rDt).add({day: 3}).format('YYYY-MM-DD')
+                  : moment(rDt).add({day: 1}).day() === 0
+                  ? moment(rDt).add({day: 2}).format('YYYY-MM-DD')
+                  : moment(rDt).add({day: 1}).format('YYYY-MM-DD'))
+          )
+        }
+        const pDtObj = moment(pDt)
+        const rDtObj = moment(rDt)
+        this.setState({
+          shDate: date,
+          drop: false,
+          pkDate: {
+            month: pDtObj.format('M'),
+            day: pDtObj.format('D'),
+            timestamp: pDtObj.valueOf(),
+          },
+          rtDate: {
+            month: rDtObj.format('M'),
+            day: rDtObj.format('D'),
+            timestamp: rDtObj.valueOf(),
+          },
+        })
+      } else if (drop1) {
+        this.setState({pkDate: date, drop1: false})
+      } else if (drop2) {
+        this.setState({rtDate: date, drop2: false})
       }
-      const pDtObj = moment(pDt)
-      const rDtObj = moment(rDt)
-      this.setState({
-        shDate: date,
-        drop: false,
-        pkDate: {
-          month: pDtObj.format('M'),
-          day: pDtObj.format('D'),
-          timestamp: pDtObj.valueOf(),
-        },
-        rtDate: {
-          month: rDtObj.format('M'),
-          day: rDtObj.format('D'),
-          timestamp: rDtObj.valueOf(),
-        },
-      })
-    } else if (drop1) {
-      this.setState({pkDate: date, drop1: false})
-    } else if (drop2) {
-      this.setState({rtDate: date, drop2: false})
     }
   }
 
@@ -363,7 +395,7 @@ class SampleRequestsScreen extends PureComponent {
       const response = await API.postSRRequest({
         brand_id: brandId,
       })
-      //console.log('postSRRequest>>>>', response)
+      
       this.setState({defaultInfo: response})
     } catch (error) {
       //console.log('postSRRequest>>>', error)
@@ -415,32 +447,40 @@ class SampleRequestsScreen extends PureComponent {
         message: response.message,
         myPay: response.own_paid_pictorial_content,
         otherPay: response.other_paid_pictorial_content,
+        reservation_list : response.reservation_list
       })
     } catch (error) {
       //console.log('getSampleRequests>>>>', error)
     }
   }
 
-  componentDidMount() {
+  async UNSAFE_componentWillMount () {
     const {modelList, type, brandName, brandId} = this.props.route.params
-    const {year} = this.state
+    
     this.pushOption(brandName ? brandName : 'Sample Request')
     if (type) {
       this.setState({selected: modelList})
     }
-    this.onFocus(this.handleOnFocus)
-    this.getBrandHoliday(year, brandId)
+    await this.onFocus(this.handleOnFocus)
+  }
+
+  componentDidMount() {    
+   
   }
   componentWillUnmount() {
     this.removeFocus()
   }
 
-  handleOnFocus = () => {
+  handleOnFocus = async() => {
     const {modelList, type, brandName} = this.props.route.params
-    this.postSRRequest()
-    if (!type) {
-      this.getSampleRequests()
+    await this.postSRRequest();
+    
+    if (!type) {      
+      await this.getSampleRequests()
     }
+    const {brandId} = this.props.route.params
+    const {year} = this.state;
+    this.getBrandHoliday(year, brandId)
   }
 
   updateAddress = (v) => {
@@ -557,8 +597,8 @@ class SampleRequestsScreen extends PureComponent {
                 <ModalDropdown
                   style={{width: '49%'}}
                   dropdownStyle={{width: '44%'}}
-                  onSelect={(i, v) => this.setState({selectContact: v})}
-                  options={defaultInfo.contact_info}
+                  onSelect={(i, v) => this.setState({selectContact: v})}                  
+                  options={mUtils.isEmpty(defaultInfo.contact_info) ?[] :defaultInfo.contact_info}
                   renderRow={item => (
                     <View style={styles.contactList}>
                       <Text style={styles.contactText}>{`${item.mgzn_user_nm}(${mUtils.allNumber(item.phone_no)})`}</Text>
@@ -674,8 +714,8 @@ class SampleRequestsScreen extends PureComponent {
                       <View style={styles.contactList}>
                         <Text style={styles.contactText}>{item}:00</Text>
                       </View>
-                    )}
-                    options={time}
+                    )}                    
+                    options={mUtils.isEmpty(time) ?[] : time}
                   >
                     <View style={{...styles.box1, justifyContent: 'space-between'}}>
                       <Text style={styles.boxText}>{startTime ? `${startTime}:00` : '00:00'}</Text>
@@ -692,8 +732,8 @@ class SampleRequestsScreen extends PureComponent {
                       <View style={styles.contactList}>
                         <Text style={styles.contactText}>{item}:00</Text>
                       </View>
-                    )}
-                    options={time}
+                    )}                    
+                    options={mUtils.isEmpty(time) ?[] : time}
                   >
                     <View style={{...styles.box1, justifyContent: 'space-between'}}>
                       <Text style={styles.boxText}>{endTime ? `${endTime}:00` : '00:00'}</Text>
@@ -715,8 +755,8 @@ class SampleRequestsScreen extends PureComponent {
                       <Text style={styles.contactText}>{item.dlvy_adres_nm}</Text>
                       <Text style={styles.contactText}>{item.adres_detail}</Text>
                     </View>
-                  )}
-                  options={defaultInfo.user}
+                  )}                  
+                  options={mUtils.isEmpty(defaultInfo.user) ?[] : defaultInfo.user}
                 >
                   <View style={{...styles.box1, justifyContent: 'space-between'}}>
                     <Text style={styles.boxText1}>최근 배송지</Text>

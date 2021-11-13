@@ -1,37 +1,38 @@
-import React, {PureComponent} from 'react'
-import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity, Pressable} from 'react-native'
-import {connect} from 'react-redux'
-import FastImage from 'react-native-fast-image'
-import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-menu'
-import _ from 'lodash'
+import React, {PureComponent} from 'react';
+import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity, Pressable} from 'react-native';
+import {connect} from 'react-redux';
+import FastImage from 'react-native-fast-image';
+import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-menu';
+import _ from 'lodash';
 
-import mConst from '../../../common/constants'
-import mUtils from '../../../common/utils'
-import cBind, {callOnce} from '../../../common/navigation'
-import Text from '../../common/Text'
-import Header from '../../common/Header'
-import styles from './styles'
-import API from '../../../common/aws-api'
-import Loading from '../../common/Loading'
-import Empty from '../../common/Empty'
+import mConst from '../../../common/constants';
+import mUtils from '../../../common/utils';
+import cBind, {callOnce} from '../../../common/navigation';
+import Text from '../../common/Text';
+import Header from '../../common/Header';
+import styles from './styles';
+import API from '../../../common/aws-api';
+import Loading from '../../common/Loading';
+import Empty from '../../common/Empty';
+import NonSubscribe from '../../common/NonSubscribe';
 
-const newImg = require('../../../images/navi/new_1.png')
-const notiImg = require('../../../images/navi/noti_1.png')
-const telImg = require('../../../images/navi/tel_1.png')
-const fixImg = require('../../../images/navi/fix_1.png')
-const settingImg = require('../../../images/navi/setting_1.png')
-const bookImg = require('../../../images/navi/book_1.png')
-const moreImg = require('../../../images/navi/more_4.png')
-const crownImg = require('../../../images/navi/crown_1.png')
-const selectImg1 = require('../../../images/navi/select_1.png')
-const selectImg2 = require('../../../images/navi/select_2.png')
-const likeImg = require('../../../images/navi/like_2_1.png')
-const likeImgOn = require('../../../images/navi/like_2.png')
+const newImg = require('../../../images/navi/new_1.png');
+const notiImg = require('../../../images/navi/noti_1.png');
+const telImg = require('../../../images/navi/tel_1.png');
+const fixImg = require('../../../images/navi/fix_1.png');
+const settingImg = require('../../../images/navi/setting_1.png');
+const bookImg = require('../../../images/navi/book_1.png');
+const moreImg = require('../../../images/navi/more_4.png');
+const crownImg = require('../../../images/navi/crown_1.png');
+const selectImg1 = require('../../../images/navi/select_1.png');
+const selectImg2 = require('../../../images/navi/select_2.png');
+const likeImg = require('../../../images/navi/like_2_1.png');
+const likeImgOn = require('../../../images/navi/like_2.png');
 
 class DigitalSRScreen extends PureComponent {
   constructor(props) {
     super(props)
-    cBind(this)
+    cBind(this);
     this.state = {
       data: '',
       select: [],
@@ -44,6 +45,7 @@ class DigitalSRScreen extends PureComponent {
       inquiryNum: '',
       brand_id: '',
       loading: true,
+      isSubScrbing : this.props.user.subScrbeStatus,
       filterData: {},
       filterInfo: {
         gender: [],
@@ -56,19 +58,17 @@ class DigitalSRScreen extends PureComponent {
       },
     }
   }
+
   componentDidMount() {
-    
-  
     if ( this.props.user.subScrbeStatus ) {
-      this.onFocus(this.handleOnFocus)
-      this.getSampleInfo()
+      this.onFocus(this.handleOnFocus);
+      this.getSampleInfo();
     }else{
-      this.setState({data: null,loading:false})
-    }
-    
+      this.setState({data: null,loading:false});
+    }    
   }
   componentWillUnmount() {
-    this.removeFocus()
+    this.removeFocus();
   }
   handleOnFocus = () => {
     const userType = mConst.getUserType()
@@ -84,7 +84,7 @@ class DigitalSRScreen extends PureComponent {
     } else {
       this.postDigitalSRReset()
     }
-    this.setState({selectOnOff: false, select: []})
+    this.setState({selectOnOff: false, select: [],loading:false})
   }
   getSampleInfo = async () => {
     try {
@@ -94,12 +94,11 @@ class DigitalSRScreen extends PureComponent {
         this.setState({filterData: response})
       }
     } catch (error) {
-      //console.log('getSampleInfo>>>', error)
       await API.postErrLog({error: JSON.stringify(error), desc: 'getSampleInfo'})
+      this.setState({filterData: null})
     }
   }
   setFilter = filterInfo => {
-    // console.log('@@@filterInfo:', JSON.stringify(filterInfo))
     this.setState({filterInfo}, () => this.postDigitalSRReset())
   }
   setBrand = brand_id => {
@@ -111,7 +110,6 @@ class DigitalSRScreen extends PureComponent {
       const response = await API.postFavShowroom({
         showroom_no: no,
       })
-      //console.log('postFavShowroom>>>>>', response)
       if (response.success) {
         this.setState(state => {
           const list = state.data.list.map((item, index) => {
@@ -347,10 +345,11 @@ class DigitalSRScreen extends PureComponent {
   }
 
   render() {
-    const {data, brand_id} = this.state
-    const {notice, inquiryNum, season_year, selectOnOff, isvisible, loading, select, filterData, filterInfo} = this.state
-    const {user} = this.props
-    const userType = mConst.getUserType()
+    const {data, brand_id} = this.state;    
+    const {notice, inquiryNum, season_year, selectOnOff, isvisible, loading, select, filterData, filterInfo} = this.state;
+    const {user} = this.props;
+    const userType = mConst.getUserType();
+    
     return (
       <SafeAreaView style={styles.container}>
         <Header pushTo={this.pushTo} userType={userType} alarmSet={user.alarm} />
@@ -359,7 +358,7 @@ class DigitalSRScreen extends PureComponent {
             <View>
               <Text style={{...styles.mainTitle}}>Digital</Text>
               <Text style={styles.mainTitle1}>Showroom</Text>
-            </View>
+            </View>              
             {userType !== 'B' && (
               <View style={styles.layout2}>
                 <TouchableOpacity
@@ -379,15 +378,22 @@ class DigitalSRScreen extends PureComponent {
               </View>
             )}
           </View>
-          <View style={{...styles.layout, marginTop: mUtils.wScale(10)}}>
-            <FastImage resizeMode={'contain'} style={styles.notiImg} source={notiImg} />
-            <Text style={styles.noti}>{notice}</Text>
-          </View>
-          <View style={{...styles.layout, marginTop: mUtils.wScale(3)}}>
-            <FastImage resizeMode={'contain'} style={styles.telImg} source={telImg} />
-            <Text style={styles.tel}>{mUtils.phoneFormat(inquiryNum)}</Text>
-          </View>
-          {data && loading ? (
+          {
+            this.props.user.subScrbeStatus &&
+            <>
+            <View style={{...styles.layout, marginTop: mUtils.wScale(10)}}>
+              <FastImage resizeMode={'contain'} style={styles.notiImg} source={notiImg} />
+              <Text style={styles.noti}>{notice}</Text>
+            </View>
+            <View style={{...styles.layout, marginTop: mUtils.wScale(3)}}>
+              <FastImage resizeMode={'contain'} style={styles.telImg} source={telImg} />
+              <Text style={styles.tel}>{mUtils.phoneFormat(inquiryNum)}</Text>
+            </View>
+            </>
+          }
+          {
+          this.props.user.subScrbeStatus ?
+          data && this.state.loading ? (
             <>
               <View style={{...styles.layout, justifyContent: 'space-between', paddingTop: mUtils.wScale(20), paddingBottom: mUtils.wScale(15)}}>
                 <View>
@@ -456,7 +462,7 @@ class DigitalSRScreen extends PureComponent {
                   )}
                 </View>
               </View>
-              {data?.list?.length > 0 ? (
+              {data.list.length > 0 ? (
                 <FlatList
                   bounces={false}
                   data={data.list}
@@ -475,7 +481,10 @@ class DigitalSRScreen extends PureComponent {
             </>
           ) : (
             <Loading />
-          )}
+          )
+          :
+          <NonSubscribe />
+        }
         </View>
         {selectOnOff && (
           <View style={styles.bottomSheet}>

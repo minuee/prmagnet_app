@@ -65,32 +65,29 @@ class ReturnScreen extends PureComponent {
       const response = await API.getReturnDetail(pReqNo)
       this.setState({data: _.get(response, 'right'), listIndex, loading: false})
       await this.allSendOutCheck(_.get(response, 'right'))
-      //console.log('Return 스케쥴 상세 조회 성공', JSON.stringify(response))
+      console.log('Return 스케쥴 상세 조회 성공', JSON.stringify(response))
     } catch (error) {
       // this.setState({loading: false})
-      //console.log('Return 스케쥴 상세 조회 실패', error)
+      console.log('Return 스케쥴 상세 조회 실패', error)
     }
   }
   handlePress = (name, sampleNo) => {
-    const {data} = this.state
-    //console.log('###reqNo:', _.get(data, 'req_no'))
+    const {data} = this.state;    
     const sendPush = async () => {
       try {
-        const response = await API.pushReturnOneFail(_.get(data, 'req_no'), sampleNo)
-        this.alert('미수령 알림 전송 완료', '미수령 알림을 전송하였습니다.')
-        //console.log('리턴 단일 미수령 푸시 완료')
+        const response = await API.pushReturnOneFail(_.get(data, 'req_no'), sampleNo);
+        this.alert('미수령 알림 전송 완료', '미수령 알림을 전송하였습니다.');
       } catch (error) {
-        //console.log('리턴 선택 미수령 푸시 실패', error)
+        
       }
     }
     this.alert('상품 미수령 알림', `'${name}'님께 상품미수령 알림을 보내시겠습니까?`, [{onPress: sendPush}, {}])
   }
   handlePressPhone = (name, phone) => {
-    this.setState({isvisible: {open: true, name, phone}})
+    this.setState({isvisible: {open: true, name, phone}});
   }
 
-  allSendOutCheck = async(data,sampleNo=0) => {
-    //console.log('allSendOutCheck',data.showroom_list[0].sample_list)
+  allSendOutCheck = async(data,sampleNo=0) => {    
     let AllData = 0;
     let sendOutData = 0;
     await data.showroom_list.forEach(function(element,index){     
@@ -108,8 +105,6 @@ class ReturnScreen extends PureComponent {
         })
       }
     }); 
-    //console.log('AllData',AllData)
-    //console.log('sendOutData',sendOutData)
     this.setState({allChecked : AllData === sendOutData ? true :false})
   }
 
@@ -119,10 +114,8 @@ class ReturnScreen extends PureComponent {
       const sendPush = async () => {
         try {
           const response = await API.pushReturnOneSuccess(_.get(data, 'req_no'), sampleNo)
-          //console.log('리턴 단일 수령 푸시 완료')
           await this.allSendOutCheck(data,sampleNo)
         } catch (error) {
-          //console.log('리턴 단일 수령 푸시 실패', error)
         }
       }
       this.alert('수령완료', `${name}님께 ${sampleName} 수령 완료`, [
@@ -158,6 +151,10 @@ class ReturnScreen extends PureComponent {
     const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'from_user_phone'))
     const toName = mUtils.get(data, 'to_user_nm')
     const toPhone = mUtils.phoneFormat(mUtils.get(data, 'to_user_phone'))
+
+    console.log('datadatadata',data)
+
+
     if (loading) return <Loading />
     return (
       <SafeAreaView style={styles.container}>
@@ -261,6 +258,8 @@ class ReturnScreen extends PureComponent {
                           key={subIndex}
                           name={fromName}
                           phone={fromPhone}
+                          sendUser={subItem?.use_user_info[0]}
+                          returnUser={subItem?.return_user_info[0]}
                           onPressPhone={() => this.handlePressPhone(fromName, fromPhone)}
                           color={mConst.bgBlue}
                         />
@@ -275,6 +274,8 @@ class ReturnScreen extends PureComponent {
                           checked={checkedList.includes(subItem.sample_no) || subItem.check_yn || allChecked}
                           name={toName}
                           phone={toPhone}
+                          sendUser={subItem?.use_user_info[0]}
+                          returnUser={subItem?.return_user_info[0]}
                           onPress={() => this.handlePress(toName, subItem.sample_no)}
                           onPressPhone={() => this.handlePressPhone(toName, toPhone)}
                           onSwipeCheck={() => this.handleCheckItem(toName, subItem.category, subItem.sample_no)}

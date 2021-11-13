@@ -25,7 +25,7 @@ const CommonDropDown = props => {
         </View>
       )}
       renderSeparator={() => null}
-      options={options}
+      options={mUtils.isEmpty(options) ?[] :options}
     >
       <View style={half ? styles.dropdownTextHalfWrapper : styles.dropdownTextWrapper}>
         {value ? <Text style={styles.dropdownItemText}>{value.showroom_nm}</Text> : <Text style={styles.dropdownItemText}>{placeholder}</Text>}

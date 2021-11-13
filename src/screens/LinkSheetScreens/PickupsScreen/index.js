@@ -54,10 +54,10 @@ class PickupsScreen extends PureComponent {
     }
   }
   handleLoadData = async listIndex => {
-    const {selectEachList, reqNo} = this.params
+    const {selectEachList, reqNo,showroom_no} = this.params
     const pReqNo = reqNo || _.get(selectEachList, `[${listIndex}].req_no`)
     try {
-      const response = await API.getPickupDetail(pReqNo)
+      const response = await API.getPickupDetail(pReqNo,showroom_no)
       this.setState({data: _.get(response, 'right'), listIndex, loading: false})
       await this.allSendOutCheck(_.get(response, 'right'))
       //console.log('픽업 스케쥴 상세 조회 성공', JSON.stringify(response))
@@ -251,6 +251,8 @@ class PickupsScreen extends PureComponent {
                           checked={checkedList.includes(subItem.sample_no) || subItem.check_yn || allChecked}
                           name={fromName}
                           phone={fromPhone}
+                          sendUser={subItem?.send_user_info[0]}
+                          returnUser={subItem?.send_user_info[0]}
                           onPress={() => this.handlePress(fromName, subItem.sample_no)}
                           onPressPhone={() => this.handlePressPhone(fromName, fromPhone)}
                           onSwipeCheck={() => this.handleCheckItem(fromName, subItem.category, subItem.sample_no)}
@@ -267,6 +269,8 @@ class PickupsScreen extends PureComponent {
                           key={subIndex}
                           name={toName}
                           phone={toPhone}
+                          sendUser={subItem?.use_user_info[0]}
+                          returnUser={subItem?.use_user_info[0]}
                           onPressPhone={() => this.handlePressPhone(toName, toPhone)}
                           color={mConst.bgOrange}
                         />

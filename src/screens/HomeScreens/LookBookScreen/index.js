@@ -14,6 +14,7 @@ import styles from './styles'
 import Loading from '../../common/Loading'
 import API from '../../../common/aws-api'
 import Empty from '../../common/Empty'
+import NonSubscribe from '../../common/NonSubscribe';
 
 const moreImage1 = require('../../../images/navi/more_1.png')
 const moreImage3 = require('../../../images/navi/more_3.png')
@@ -86,7 +87,11 @@ class LookBookScreen extends PureComponent {
 
   handleOnFocus = () => {
     this.setState({loading: true}, () => {
-      this.getLookBook()
+      if ( this.props.user.subScrbeStatus ) {
+        this.getLookBook()
+      }else{
+        this.setState({list: [],loading:false,isSubScrbing:false})
+      }
     })
   }
 
@@ -153,32 +158,41 @@ class LookBookScreen extends PureComponent {
   }
 
   render() {
-    const {list, loading} = this.state
-    const {user} = this.props
-    return (
-      <SafeAreaView style={styles.container}>
-        <Header pushTo={this.pushTo} userType={user.userType} alarmSet={user.alarm} />
-
-        <Text style={styles.mainTitle}>LookBook</Text>
-        {loading ? (
+    const {list, loading} = this.state;
+    const {user} = this.props;
+    if ( this.state.loading  ) {
+      return (
           <Loading />
-        ) : _.size(list) > 0 ? (
-          <FlatList
-            bounces={false}
-            style={styles.list}
-            data={list}
-            renderItem={this.renderItem}
-            keyExtractor={item => `${item.dt}_${Math.random()}`}
-            onEndReached={this.handleLoadMore}
-            onEndReachedThreshold={1}
-          />
-        ) : (
-          <View style={{flex: 1, paddingBottom: mUtils.wScale(100)}}>
-            <Empty />
-          </View>
-        )}
-      </SafeAreaView>
-    )
+      )
+    }else{
+      return (
+        <SafeAreaView style={styles.container}>
+          <Header pushTo={this.pushTo} userType={user.userType} alarmSet={user.alarm} />
+
+          <Text style={styles.mainTitle}>LookBook</Text>
+          {
+            this.props.user.subScrbeStatus ?
+            _.size(list) > 0 ? (
+              <FlatList
+                bounces={false}
+                style={styles.list}
+                data={list}
+                renderItem={this.renderItem}
+                keyExtractor={item => `${item.dt}_${Math.random()}`}
+                onEndReached={this.handleLoadMore}
+                onEndReachedThreshold={1}
+              />
+            ) : (
+              <View style={{flex: 1, paddingBottom: mUtils.wScale(100)}}>
+                <Empty />
+              </View>
+            )
+            :
+            <NonSubscribe />
+          }
+        </SafeAreaView>
+      )
+    }
   }
 }
 

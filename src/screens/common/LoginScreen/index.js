@@ -173,8 +173,8 @@ class LoginScreen extends PureComponent {
                 <Text style={styles.itemText}>M:minuee</Text>
               </TouchableOpacity>
               <Text style={styles.fence}>|</Text>
-              <TouchableOpacity style={styles.itemTextWrapper} onPress={() => this.setState({email: 'dazed@ruu.kr', pw: '1234qwer'})}>
-                <Text style={styles.itemText}>M:dazed</Text>
+              <TouchableOpacity style={styles.itemTextWrapper} onPress={() => this.setState({email: 'lena47@naver.com', pw: 'lenapark47##'})}>
+                <Text style={styles.itemText}>M:lena47</Text>
               </TouchableOpacity>
               <Text style={styles.fence}>|</Text>
               <TouchableOpacity style={styles.itemTextWrapper} onPress={() => this.setState({email: 'elle@ruu.kr', pw: '1234qwer'})}>

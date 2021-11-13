@@ -48,9 +48,13 @@ class SearchScreen extends PureComponent {
   }
 
   search = text => {
-    this.setState({loading: true, keyword: text}, () => {
-      this.getAllSearch()
-    })
+    if ( this.props.user.subScrbeStatus ) {
+      this.setState({loading: true, keyword: text}, () => {
+        this.getAllSearch()
+      })
+    }else{
+      mUtils.fn_call_toast('구독 후 이용해 주세요');
+    }
   }
 
   getAllSearch = async () => {
@@ -155,7 +159,9 @@ class SearchScreen extends PureComponent {
                 </>
               ) : (
                 <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                  <Text style={{fontSize: 18, color: mConst.textGray, marginBottom: mUtils.wScale(100)}}>검색어를 입력해 주세요.</Text>
+                  <Text style={{fontSize: 18, color: mConst.textGray, marginBottom: mUtils.wScale(100)}}>
+                   {this.props.user.subScrbeStatus ? "검색어를 입력해 주세요." : "검색어를 입력해 주세요. \n   ( 구독후 이용가능 )"}
+                  </Text>
                 </View>
               )}
             </>
@@ -167,6 +173,6 @@ class SearchScreen extends PureComponent {
 }
 
 export default connect(
-  state => ({}),
+  state => ({user: state.user,}),
   dispatch => ({})
 )(SearchScreen)

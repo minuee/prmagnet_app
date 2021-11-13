@@ -1,24 +1,25 @@
-import React, {PureComponent} from 'react'
-import {SafeAreaView, FlatList, View, TouchableOpacity} from 'react-native'
-import {connect} from 'react-redux'
-import FastImage from 'react-native-fast-image'
-import _ from 'lodash'
-import moment from 'moment'
+import React, {PureComponent} from 'react';
+import {SafeAreaView, FlatList, View, TouchableOpacity} from 'react-native';
+import {connect} from 'react-redux';
+import FastImage from 'react-native-fast-image';
+import _ from 'lodash';
+import moment from 'moment';
 
-import {actionSetAlarm} from '../../../redux/actions'
-import mConst from '../../../common/constants'
-import mUtils from '../../../common/utils'
-import cBind, {callOnce} from '../../../common/navigation'
-import Text from '../../common/Text'
-import styles from './styles'
-import API from '../../../common/aws-api'
-import Loading from '../../common/Loading'
-import Empty from '../../common/Empty'
+import {actionSetAlarm} from '../../../redux/actions';
+import mConst from '../../../common/constants';
+import mUtils from '../../../common/utils';
+import cBind, {callOnce} from '../../../common/navigation';
+import Text from '../../common/Text';
+import styles from './styles';
+import API from '../../../common/aws-api';
+import Loading from '../../common/Loading';
+import Empty from '../../common/Empty';
+import NonSubscribe from '../../common/NonSubscribe';
 
-const closeBtnImage = require('../../../images/navi/close.png')
-const notiSky = require('../../../images/navi/noti_sky.png')
-const notiBlack = require('../../../images/navi/noti_black.png')
-const userType = mConst.getUserType()
+const closeBtnImage = require('../../../images/navi/close.png');
+const notiSky = require('../../../images/navi/noti_sky.png');
+const notiBlack = require('../../../images/navi/noti_black.png');
+const userType = mConst.getUserType();
 
 class NotificationScreen extends PureComponent {
   constructor(props) {
@@ -28,7 +29,7 @@ class NotificationScreen extends PureComponent {
       list: [],
       page: 1,
       limit: 10,
-      loading: false,
+      loading: true,
     }
   }
 
@@ -82,9 +83,13 @@ class NotificationScreen extends PureComponent {
   }
 
   handleOnFocus = () => {
-    this.setState({loading: true}, () => {
-      this.getAlarm()
-    })
+    if ( this.props.user.subScrbeStatus ) {
+      this.setState({loading: true}, () => {
+        this.getAlarm()
+      })
+    }else{
+      this.setState({data: null,loading:false})
+    }
   }
 
   handleMove = (type, reqNo, noticeId, brandId) => {
@@ -148,36 +153,41 @@ class NotificationScreen extends PureComponent {
     )
   }
   render() {
-    const {list, loading} = this.state
-    return (
-      <>
-        <SafeAreaView style={styles.container}>
-          {loading ? (
-            <Loading />
-          ) : (
-            <>
-              {_.size(list) === 0 ? (
-                <Empty />
-              ) : (
-                <FlatList
-                  style={styles.list}
-                  data={list}
-                  renderItem={this.renderItem}
-                  keyExtractor={item => `_${item.notice_id}_${Math.random()}`}
-                  onEndReached={this.handleLoadMore}
-                  onEndReachedThreshold={1}
-                />
-              )}
-            </>
-          )}
-        </SafeAreaView>
-      </>
-    )
+    const {list, loading} = this.state;
+    if ( this.state.loading  ) {
+      return (
+          <Loading />
+      )
+    }else{
+      return (
+        <>
+          <SafeAreaView style={styles.container}>
+              {
+                this.props.user.subScrbeStatus ?
+                _.size(list) === 0 ? (
+                  <Empty />
+                ) : (
+                  <FlatList
+                    style={styles.list}
+                    data={list}
+                    renderItem={this.renderItem}
+                    keyExtractor={item => `_${item.notice_id}_${Math.random()}`}
+                    onEndReached={this.handleLoadMore}
+                    onEndReachedThreshold={1}
+                  />
+                )
+                :
+                <NonSubscribe />
+              }
+          </SafeAreaView>
+        </>
+      )
+    }
   }
 }
 
 export default connect(
-  state => ({}),
+  state => ({ user: state.user,}),
   dispatch => ({
     setAlarm: data => dispatch(actionSetAlarm(data)),
   })

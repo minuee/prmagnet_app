@@ -421,7 +421,7 @@ const API = {
   },
   getPickupSchedule: ({start_date, fin_date, brand_id}) => {
     const apiName = v1Api
-    const path = `${mConst.getApiPath()}/pickup-schedule`
+    const path = `${mConst.getApiPath()}/pickup-schedule-mobile`
     const init = {
       queryStringParameters: {
         start_date,
@@ -442,15 +442,17 @@ const API = {
     }
     return Api.get(apiName, path, init)
   },
-  getSendoutDetail: req_no => {
+  getSendoutDetail: (req_no,showroom_no) => {
     const apiName = v1Api
-    const path = `${mConst.getApiPath()}/sendout-detailed/req/${req_no}`
+    //const path = `${mConst.getApiPath()}/sendout-detailed/req/${req_no}`
+    const path = `${mConst.getApiPath()}/sendout-detailed/req/${req_no}?showroom_no=` + showroom_no;
     const init = {}
     return Api.get(apiName, path, init)
   },
-  getPickupDetail: req_no => {
+  getPickupDetail: (req_no,showroom_no) => {
     const apiName = v1Api
-    const path = `${mConst.getApiPath()}/pickup-detailed/req/${req_no}`
+    const path = `${mConst.getApiPath()}/pickup-detailed/req/${req_no}?showroom_no=` + showroom_no;
+    console.log('path',path)
     const init = {}
     return Api.get(apiName, path, init)
   },
@@ -843,8 +845,9 @@ const API = {
     return Api.get(apiName, path, init)
   },
   postSRRequest: ({brand_id}) => {
-    const apiName = v1Api
-    const path = `${mConst.getApiPath()}/showroom-request`
+    const apiName = v1Api;
+    const path = `${mConst.getApiPath()}/showroom-request`;
+    //console.log('ewww',mConst.getApiPath())
     const myInit = {
       body: {
         brand_id: brand_id,

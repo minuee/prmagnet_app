@@ -1,9 +1,10 @@
-import React, {PureComponent} from 'react'
-import {SafeAreaView, ScrollView, View, TouchableOpacity, Linking} from 'react-native'
-import FastImage from 'react-native-fast-image'
-import {Grid, Col, Row} from 'react-native-easy-grid'
-import Modal from 'react-native-modal'
-import _ from 'lodash'
+import React, {PureComponent} from 'react';
+import {SafeAreaView, ScrollView, View, TouchableOpacity, Linking} from 'react-native';
+import FastImage from 'react-native-fast-image';
+import {Grid, Col, Row} from 'react-native-easy-grid';
+import Modal from 'react-native-modal';
+import {connect} from 'react-redux';
+import _ from 'lodash';
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -34,7 +35,8 @@ class SendOutScreen extends PureComponent {
   }
   
   componentDidMount() {
-    const {reqNo} = this.params
+    const {reqNo,showroom_no} = this.params;
+    console.log('showroom_noshowroom_noshowroom_no',showroom_no)
     if (reqNo) {
       this.modalOption('Send Out', false)
     } else {
@@ -56,16 +58,16 @@ class SendOutScreen extends PureComponent {
     }
   }
   handleLoadData = async listIndex => {
-    const {selectEachList, reqNo} = this.params
+    const {selectEachList, reqNo,showroom_no} = this.params
     const pReqNo = reqNo || _.get(selectEachList, `[${listIndex}].req_no`)
     try {
-      const response = await API.getSendoutDetail(pReqNo)
+      const response = await API.getSendoutDetail(pReqNo,showroom_no)
       this.setState({data: _.get(response, 'right'), listIndex, loading: false})
       await this.allSendOutCheck(_.get(response, 'right'))
       //console.log('Send Out 스케쥴 상세 조회 성공', JSON.stringify(response))
     } catch (error) {
       // this.setState({loading: false})
-      //console.log('Send Out 스케쥴 상세 조회 실패', error)
+      console.log('Send Out 스케쥴 상세 조회 실패', error)
     }
   }
   allSendOutCheck = async(data,sampleNo=0) => {
@@ -143,7 +145,7 @@ class SendOutScreen extends PureComponent {
     const toPhone = mUtils.phoneFormat(mUtils.get(data, 'to_user_phone'));
     if (loading) return <Loading />;
 
-    
+    console.log('AllDdatadataata',data,this.props.user.userType)
 
     return (
       <SafeAreaView style={styles.container}>
@@ -165,7 +167,9 @@ class SendOutScreen extends PureComponent {
           </View>
           <View style={styles.middleWrapper}>
             <Text style={styles.middleText}>매체명</Text>
-            <Text style={styles.middleDescText}>{mUtils.get(data, 'mgzn_nm', '-')}</Text>
+            <Text style={styles.middleDescText}>
+              {mUtils.isEmpty(data.mgzn_nm) ? mUtils.get(data, 'stylist_compy_nm', '-') : mUtils.get(data, 'mgzn_nm', '-')}
+            </Text>
           </View>
           <View style={styles.middleGroupWrapper}>
             <View style={styles.middleSubWrapper()}>
@@ -261,6 +265,8 @@ class SendOutScreen extends PureComponent {
                           checked={checkedList.includes(subItem.sample_no) || subItem.check_yn || allChecked}
                           name={fromName}
                           phone={fromPhone}
+                          sendUser={subItem?.use_user_info[0]}
+                          returnUser={subItem?.use_user_info[0]}
                           onPress={() => null}
                           onPressPhone={() => this.handlePressPhone(fromName, fromPhone)}
                           onSwipeCheck={() => this.handleCheckItem(toName, roomName, subItem.category, subItem.sample_no)}
@@ -278,6 +284,8 @@ class SendOutScreen extends PureComponent {
                           checked={checkedList.includes(subItem.sample_no) || subItem.check_yn || allChecked}
                           name={toName}
                           phone={toPhone}
+                          sendUser={subItem?.return_user_info[0]}
+                          returnUser={subItem?.return_user_info[0]}
                           onPress={() => null}
                           onPressPhone={() => this.handlePressPhone(toName, toPhone)}
                           onSwipeCheck={() => this.handleCheckItem(toName, roomName, subItem.category, subItem.sample_no)}
@@ -330,4 +338,13 @@ class SendOutScreen extends PureComponent {
   }
 }
 
-export default SendOutScreen
+
+export default connect(
+  state => ({
+      user: state.user,
+  }),
+  dispatch => ({
+      logout: (data, rest) => dispatch(actionLogout.success(data, rest)),
+      setAlarm: data => dispatch(actionSetAlarm(data)),
+  })
+)(SendOutScreen)
