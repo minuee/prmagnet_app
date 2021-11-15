@@ -309,7 +309,7 @@ class SampleRequestsScreen extends PureComponent {
 
   onDaySelect = async(date) => {
     const {drop, drop1, drop2, holidays,holidays2} = this.state;
-    console.log('onDaySelect',date,drop1,drop2)
+    /* console.log('onDaySelect',date,drop1,drop2)
     const dateFormat = date.dateString;
     const TodayFormat = moment().format("YYYY-MM-DD");
     let reservationArray =  [];
@@ -325,7 +325,7 @@ class SampleRequestsScreen extends PureComponent {
       alert('오늘보다 이전일자로는 예약이 불가합니다.');
       setShootingDt(dayjs.unix(data.shooting_date).toISOString())  
       return false;
-    }else{
+    }else{ */
       if (drop) {      
         this.setState({shDate: date, drop: false})
         let pDt =
@@ -334,8 +334,8 @@ class SampleRequestsScreen extends PureComponent {
             : moment(date.timestamp).subtract({day: 1}).day() === 6
             ? moment(date.timestamp).subtract({day: 2}).format('YYYY-MM-DD')
             : moment(date.timestamp).subtract({day: 1}).format('YYYY-MM-DD')
-        for (let i = 0; i < holidays2.length; i++) {
-          holidays2.find(
+        for (let i = 0; i < holidays.length; i++) {
+          holidays.find(
             v =>
               v === pDt &&
               (pDt =
@@ -353,8 +353,8 @@ class SampleRequestsScreen extends PureComponent {
             : moment(date.timestamp).add({day: 1}).day() === 0
             ? moment(date.timestamp).add({day: 2}).format('YYYY-MM-DD')
             : moment(date.timestamp).add({day: 1}).format('YYYY-MM-DD')
-        for (let i = 0; i < holidays2.length; i++) {
-          holidays2.find(
+        for (let i = 0; i < holidays.length; i++) {
+          holidays.find(
             v =>
               v === rDt &&
               (rDt =
@@ -386,7 +386,7 @@ class SampleRequestsScreen extends PureComponent {
       } else if (drop2) {
         this.setState({rtDate: date, drop2: false})
       }
-    }
+    //}
   }
 
   postSRRequest = async () => {
@@ -928,7 +928,7 @@ class SampleRequestsScreen extends PureComponent {
 
                 <TextInput
                   style={{...styles.inputBox, width: '65%'}}
-                  placeholder={'Brand'}
+                  placeholder={'자사유가'}
                   placeholderTextColor={mConst.borderGray}
                   value={myPay}
                   onChangeText={text => {
@@ -943,7 +943,7 @@ class SampleRequestsScreen extends PureComponent {
                 </View>
                 <TextInput
                   style={{...styles.inputBox, width: '65%'}}
-                  placeholder={'Brand'}
+                  placeholder={'타사유가'}
                   placeholderTextColor={mConst.borderGray}
                   value={otherPay}
                   onChangeText={text => {

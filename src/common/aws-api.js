@@ -799,10 +799,10 @@ const API = {
     const init = {}
     return Api.get(apiName, path, init)
   },
-  putProfile: ({user_nm, post_no, adres, brand_pos_cd, phone_no, team_user_id, img_url_adres}) => {
+  putProfile: ({user_type ='B',user_nm, post_no, adres, brand_pos_cd, phone_no, team_user_id, img_url_adres}) => {
     const apiName = v1Api
-    const path = `${mConst.getApiPath()}/my-profile`
-    const myInit = {
+    const path = `${mConst.getApiPath()}/my-profile`;
+    let myInit = {
       body: {
         user_nm: user_nm,
         post_no: post_no,
@@ -813,6 +813,21 @@ const API = {
         img_url_adres: img_url_adres,
       },
     }
+    if ( user_type !== 'B') {
+      myInit = {
+        body: {
+          user_nm: user_nm,
+          post_no: post_no,
+          adres: adres,
+          mgzn_pos_cd: brand_pos_cd,
+          phone_no: phone_no,
+          team_user_id: team_user_id,
+          img_url_adres: img_url_adres,
+        },
+      }
+    }
+    
+    console.log('putProfile path',path,myInit)
     return Api.put(apiName, path, myInit)
   },
   getAllSearch: ({search_text}) => {
@@ -920,6 +935,7 @@ const API = {
         other_paid_pictorial_content: other_paid_pictorial_content,
       },
     }
+    console.log('postSRRequestSend>>>>>', path,myInit)
     return Api.post(apiName, path, myInit)
   },
   deleteMyRequests: ({req_no}) => {

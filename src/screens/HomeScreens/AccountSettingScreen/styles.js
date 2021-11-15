@@ -96,4 +96,12 @@ export default StyleSheet.create({
     textAlign: 'left',
     color: '#1d1d1d',
   },
+  bottomButtonWarp : {
+    height:120,
+    justifyContent:'center',
+    paddingTop:10,paddingBottom:20,paddingHorizontal:20
+  },
+  buttonWrapOn : {
+    backgroundColor:'#000',padding:10,justifyContent:'center',alignItems:'center',borderRadius:25
+  },
 })

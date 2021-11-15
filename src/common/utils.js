@@ -28,6 +28,14 @@ const utils = {
     }
     return strTemp;
   },
+  getExtensionOfFilename(filename) { 
+    var _fileLen = filename.length;
+    var _lastDot = filename.lastIndexOf('.');
+    // 확장자 명만 추출한 후 소문자로 변경
+    var _fileExt = filename.substring(_lastDot, _fileLen).toLowerCase();
+    return _fileExt;
+  },
+  
   dateToDate(val) {
     const happyNewYear = new Date(val);
     const year = happyNewYear.getFullYear(); 
