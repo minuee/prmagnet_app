@@ -336,10 +336,10 @@ class DigitalSRScreen extends PureComponent {
             ))}
         </TouchableOpacity>
         <Text style={styles.title}>{item.showroom_nm}</Text>
-        { 
+        {/* { 
           item.now_req_status_nm === '대여중' &&           
             <Text style={styles.redTitle}>{item.now_req_status_nm}{"\n"}({mUtils.dateToDate(item.duty_recpt_dt)}~{mUtils.dateToDate(item.return_prearnge_dt)})</Text>
-        }
+        } */}
       </View>
     )
   }
@@ -383,7 +383,9 @@ class DigitalSRScreen extends PureComponent {
             <>
             <View style={{...styles.layout, marginTop: mUtils.wScale(10)}}>
               <FastImage resizeMode={'contain'} style={styles.notiImg} source={notiImg} />
-              <Text style={styles.noti}>{notice}</Text>
+              <Text style={styles.noti} numberOfLines={2} ellipsizeMode={'tail'}>
+                {mUtils.replaceAll(notice,"\n","")}
+              </Text>
             </View>
             <View style={{...styles.layout, marginTop: mUtils.wScale(3)}}>
               <FastImage resizeMode={'contain'} style={styles.telImg} source={telImg} />
@@ -397,8 +399,9 @@ class DigitalSRScreen extends PureComponent {
             <>
               <View style={{...styles.layout, justifyContent: 'space-between', paddingTop: mUtils.wScale(20), paddingBottom: mUtils.wScale(15)}}>
                 <View>
-                  {userType !== 'B' && <Text style={styles.brandText}>{data.current_brand_info.brand_nm}</Text>}
+                  {userType !== 'B' && <Text style={styles.brandText}>{data.current_brand_info?.brand_nm}</Text>}
                   <Menu>
+                    {data.season_list.length > 0 ?
                     <MenuTrigger
                       customStyles={{
                         TriggerTouchableComponent: TouchableOpacity,
@@ -408,9 +411,12 @@ class DigitalSRScreen extends PureComponent {
                         <Text style={styles.season}>
                           {season_year.season_year} {season_year.season_simple_text}
                         </Text>
-                        <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                        <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />                        
                       </View>
                     </MenuTrigger>
+                    :
+                    <Text style={styles.bottomText1}>no find data </Text>
+                    }
                     <MenuOptions optionsContainerStyle={styles.menuOptions}>
                       {data.season_list.map((item, index) => {
                         return (

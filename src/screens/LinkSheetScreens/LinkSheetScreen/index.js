@@ -119,38 +119,52 @@ class LinkSheetScreen extends React.Component {
         this.setState({selectTitle: item, selectDate: [], totalCount: 0}, this.handleOnFocus)
     }
 
-    handleLinkSheetDetail = () => {
+    handleLinkSheetDetail = async() => {
         const {selectTitle, selectDate, dataList} = this.state;
-        const selectEachList = dataList.flatMap(data => (selectDate.includes(data.date) ? data.each_list : []))
+        //const selectEachList = dataList.flatMap(data => (selectDate.includes(data.date) ? data.each_list : []))
+        //console.log('handleLinkSheetDetail', selectEachList)
+        const selectDate2 = await selectDate.sort(function(a, b) {
+            return a.date > b.date;
+          });
+          console.log('selectDate2selectDate2', selectDate2)
         if (selectTitle === 'Send Out') {
-            this.pushTo('SendOutScreen', {selectEachList})
+            this.pushTo('SendOutScreen', {selectEachList:selectDate2})
         } else if (selectTitle === 'Pickups') {
-            this.pushTo('PickupsScreen', {selectEachList})
+            this.pushTo('PickupsScreen', {selectEachList:selectDate2})
         } else if (selectTitle === 'Return') {
-            this.pushTo('ReturnScreen', {selectEachList})
+            this.pushTo('ReturnScreen', {selectEachList:selectDate2})
         }
     }
 
-    selectDate = (date, count) => {
+    fn_selectDate = async(data) => {
+        const count = data.each_list.length;        
         const {selectDate, totalCount} = this.state;
-        if (selectDate.indexOf(date) > -1) {
-            this.setState(state => {
-                const list = state.selectDate.filter((e, i) => e !== date)
-                return {
-                    selectDate: list,
-                    totalCount: totalCount - Number(count),
-                }
+        console.log('seledDAte',data,totalCount)
+        let showroomData = [];
+        await data.each_list.forEach((item,i) => 
+            showroomData.push(item.showroom_list[0].showroom_no)
+        )
+        
+        let op = await selectDate.filter(item => (item.date === data.date));
+
+
+        if (op.length === 0) {
+            this.setState({
+                selectDate: [...selectDate,{date:data.date,showroom_list : showroomData}],
+                totalCount: totalCount + Number(count)                
             })
-        } else {
-            let result = selectDate.concat(date);
-            this.setState({selectDate: result, totalCount: totalCount + Number(count)})
+        } else {            
+            this.setState({
+                selectDate:  selectDate.filter((d) => d.date !== data.date), 
+                totalCount: totalCount - Number(count)
+            })
         }
     }
 
     render() {
         const {start, end, brandId, dataList, brands, selectTitle, loading, selectDate, totalCount} = this.state;
         const {user} = this.props;
-        console.log('dataListdataList',dataList.showroom_list)
+        //console.log('dataListdataList',dataList.showroom_list)
         if ( this.state.loading  ) {
             return (
                 <Loading />
@@ -208,16 +222,16 @@ class LinkSheetScreen extends React.Component {
                             </View>
                             <ScrollView style={{paddingBottom: mUtils.wScale(25)}}>
                                 {
-                                _.map(dataList, (item, index) => {
-                                    console.log('item',item.each_list[0])
+                                _.map(dataList, (item, index) => {     
+                                let op2 = selectDate.filter(dItems => (dItems.date === item.date));                               
                                 return (
                                     <View key={index} style={{width: '100%', marginTop: mUtils.wScale(25)}}>
                                         <TouchableOpacity
-                                            onPress={() => {this.selectDate(item.date, item.each_count)}}
+                                            onPress={() => this.fn_selectDate(item)}
                                             style={{...styles.layout1, marginBottom: mUtils.wScale(15), paddingHorizontal: mUtils.wScale(20)}}
                                         >
                                         {
-                                            selectDate.indexOf(item.date) > -1 ? (
+                                            op2.length > 0 ? (
                                                 <FastImage resizeMode={'contain'} style={styles.checkImg} source={checkImg} />
                                             ) : (
                                                 <FastImage resizeMode={'contain'} style={styles.checkImg} source={noCheckImg} />
@@ -226,7 +240,7 @@ class LinkSheetScreen extends React.Component {
                                             <Text style={{...styles.subDt}}>
                                                 {mUtils.getShowDate(item.date)}
                                                 <Text style={{fontSize: 16}}>
-                                                    : <Text style={{fontSize: 16, color: '#7ea1b2'}}>{item.each_count}</Text>
+                                                    : <Text style={{fontSize: 16, color: '#7ea1b2'}}>{item.each_list.length}</Text>
                                                 </Text>
                                             </Text>
                                         </TouchableOpacity>
@@ -262,10 +276,11 @@ class LinkSheetScreen extends React.Component {
                                                     ) : selectTitle === 'Send Out' ? (
                                                     <>
                                                         <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
-                                                            {subItem.target_user_nm} ({mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}) →
+                                                            {subItem.req_user_nm}  →
+                                                            
                                                         </Text>
                                                         <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
-                                                            {subItem.req_user_nm}
+                                                            {subItem.target_user_nm} ({mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position})
                                                         </Text>
                                                     </>
                                                     ) : (

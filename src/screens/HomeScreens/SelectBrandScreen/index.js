@@ -36,9 +36,11 @@ class SelectBrandScreen extends PureComponent {
     try {
       const response = await API.getBrandSearchCompanyAZ()
       //console.log('getBrandSearchCompanyAZ>>>', JSON.stringify(response))
-      this.setState({brands: _.get(response, 'list', [])})
+      const brands = _.get(response, 'list', []);
+      const brandDatas = brands.filter((item) =>  item.each_list.length > 0 )
+      this.setState({brands:brandDatas })
     } catch (error) {
-      //console.log('getBrandSearchCompanyAZ>>>', error)
+      console.log('getBrandSearchCompanyAZ>>>', error)
       await API.postErrLog({error: JSON.stringify(error), desc: 'getBrandSearchCompanyAZError'})
     }
   }
@@ -52,7 +54,8 @@ class SelectBrandScreen extends PureComponent {
     this.goBack()
   }
   render() {
-    const {brandId, brands} = this.state
+    const {brandId, brands} = this.state;
+    
     return (
       <SafeAreaView style={styles.container}>
         <Grid>

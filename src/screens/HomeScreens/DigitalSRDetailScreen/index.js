@@ -141,7 +141,7 @@ class DigitalSRDetailScreen extends PureComponent {
                     <Text style={{...styles.right}}>{item.sample_nm}</Text>
                                       
                   </View>
-                  <View style={styles.layout}>
+                  {/* <View style={styles.layout}>
                     <Text style={styles.left}>이용 상태</Text>
                     { 
                       item.now_req_status_nm === '대여중' ?
@@ -154,7 +154,7 @@ class DigitalSRDetailScreen extends PureComponent {
                         {item.now_req_status_nm}
                       </Text>
                     }  
-                  </View>
+                  </View> */}
                   <View style={styles.layout}>
                     <Text style={styles.left}>Season</Text>
                     <Text style={{...styles.right}}>{data.season_text}</Text>

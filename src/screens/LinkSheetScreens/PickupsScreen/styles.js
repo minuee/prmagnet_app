@@ -34,8 +34,8 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
   },
   goImage: {
-    width: mUtils.wScale(24),
-    height: mUtils.wScale(24),
+    width: mUtils.wScale(30),
+    height: mUtils.wScale(30),
   },
   titleSubWrapper: {
     flexDirection: 'row',

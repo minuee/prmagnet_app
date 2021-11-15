@@ -449,16 +449,29 @@ const API = {
     const init = {}
     return Api.get(apiName, path, init)
   },
+  getSendoutArrayDetail: (date,showroom_no) => {
+    const apiName = v1Api;        
+    const path = `${mConst.getApiPath()}/sendout-detailed/${date}?date=${date}&showroomList=` + JSON.stringify(showroom_no);
+    const init = {}
+    return Api.get(apiName, path, init)
+  },
   getPickupDetail: (req_no,showroom_no) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/pickup-detailed/req/${req_no}?showroom_no=` + showroom_no;
-    console.log('path',path)
+   
     const init = {}
     return Api.get(apiName, path, init)
   },
   getReturnDetail: req_no => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/return-detailed/req/${req_no}`
+    const init = {}
+    return Api.get(apiName, path, init)
+  },
+  getPickupArrayDetail: (date,showroom_no) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/pickup-detailed/${date}?date=${date}&showroomList=` + JSON.stringify(showroom_no);
+    console.log('path2',path)
     const init = {}
     return Api.get(apiName, path, init)
   },

@@ -13,6 +13,7 @@ import API from '../../../common/aws-api'
 import Text from '../../common/Text'
 import LinkSheetUnit from '../../common/LinkSheetUnit'
 import Loading from '../../common/Loading'
+import MoreLoading from '../../common/MoreLoading';
 import styles from './styles'
 import { utils } from '@react-native-firebase/app'
 
@@ -31,32 +32,67 @@ class SendOutScreen extends PureComponent {
       checkedList: [],
       isvisible: {open: false, phone: '', name: ''},
       loading: true,
+      moreLoading : false
     }
   }
   
-  componentDidMount() {
-    const {reqNo,showroom_no} = this.params;
-    console.log('showroom_noshowroom_noshowroom_no',showroom_no)
+  async UNSAFE_componentWillMount () {
+    const {reqNo, selectEachList = []} = this.params;
+    console.log('this.paramsselectEachList',selectEachList)
     if (reqNo) {
       this.modalOption('Send Out', false)
     } else {
       this.pushOption('Send Out', false)
     }
-    this.handleLoadData(0)
+    if ( selectEachList.length > 0 )  {      
+      this.setState({selectEachList:selectEachList})
+      this.handleLoadDataArray(selectEachList[0],0);
+      
+    }else{
+      this.handleLoadData(0)
+    }
+  }
+
+  componentDidMount() {    
   }
   moveLeft = () => {
     const {listIndex} = this.state
     if (listIndex > 0) {
-      this.handleLoadData(listIndex - 1)
+      if ( this.state.selectEachList.length > 0  ) {
+        this.setState({moreLoading:true})
+        this.handleLoadDataArray(this.state.selectEachList[listIndex-1],listIndex-1);
+      }else{
+        this.handleLoadData(listIndex - 1)
+      }
     }
   }
-  moveRight = () => {
-    const {listIndex} = this.state
-    const {selectEachList} = this.params
-    if (listIndex < _.size(selectEachList) - 1) {
-      this.handleLoadData(listIndex + 1)
+  moveRight = () => {    
+    const {listIndex,selectEachList} = this.state;        
+    if (listIndex < (this.state.selectEachList.length)-1) {
+      if ( this.state.selectEachList.length > 0  ) {
+        this.setState({moreLoading:true})
+        this.handleLoadDataArray(this.state.selectEachList[listIndex+1],listIndex+1);
+      }else{
+        this.handleLoadData(listIndex + 1);
+      }
+      
     }
   }
+
+  handleLoadDataArray = async(item,nextIndex) => {      
+    console.log('handleLoadDataArray222', item)
+    try {
+      const response = await API.getSendoutArrayDetail(item.date,item.showroom_list);
+      const dataTmp = await _.get(response, 'right');
+      console.log('픽업 스케쥴 상세 조회 성공', dataTmp)
+      await this.allSendOutCheck(dataTmp);
+      this.setState({data: dataTmp[0], listIndex : nextIndex, loading: false,moreLoading:false})
+      
+    } catch (error) {      
+      console.log('픽업 스케쥴 상세 조회 실패', error)
+    }
+  }
+
   handleLoadData = async listIndex => {
     const {selectEachList, reqNo,showroom_no} = this.params
     const pReqNo = reqNo || _.get(selectEachList, `[${listIndex}].req_no`)
@@ -74,7 +110,7 @@ class SendOutScreen extends PureComponent {
     //console.log('allSendOutCheck',data.showroom_list[1].sample_list)
     let AllData = 0;
     let sendOutData = 0;
-    await data.showroom_list.forEach(function(element,index){     
+    await data[sampleNo].showroom_list.forEach(function(element,index){     
       //console.log('element.sample_list',element.sample_list)
       if ( element.sample_list != null ) {
         element.sample_list.forEach(function(element2,index2){            
@@ -138,7 +174,7 @@ class SendOutScreen extends PureComponent {
   render() {
     const {reqNo} = this.params;
     const {data, checkedList, allChecked, loading} = this.state;
-    const loaningDate = mUtils.getShowDate(mUtils.get(data, 'loaning_date'));
+    const returning_date = mUtils.getShowDate(mUtils.get(data, 'returning_date'));
     const fromName = mUtils.get(data, 'from_user_nm');
     const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'from_user_phone'));
     const toName = mUtils.get(data, 'to_user_nm');
@@ -157,7 +193,7 @@ class SendOutScreen extends PureComponent {
               </TouchableOpacity>
             )}
             <View style={styles.titleSubWrapper}>
-              <Text style={styles.titleSubText}>{loaningDate}</Text>
+              <Text style={styles.titleSubText}>{returning_date}</Text>
             </View>
             {_.isEmpty(reqNo) && (
               <TouchableOpacity onPress={this.moveRight}>
@@ -333,6 +369,9 @@ class SendOutScreen extends PureComponent {
             </TouchableOpacity>
           </View>
         </Modal>
+        { this.state.moreLoading &&
+            <MoreLoading />
+        }
       </SafeAreaView>
     )
   }

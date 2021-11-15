@@ -19,6 +19,15 @@ const utils = {
   isEmpty(str){
     return str === null || str === undefined || str === '' || (typeof str === 'object' && Array.isArray(str) === false && Object.keys(str).length === 0);
   },  
+  replaceAll(strTemp, strValue1, strValue2){ 
+    while(1){
+        if( strTemp.indexOf(strValue1) != -1 )
+            strTemp = strTemp.replace(strValue1, strValue2);
+        else
+            break;
+    }
+    return strTemp;
+  },
   dateToDate(val) {
     const happyNewYear = new Date(val);
     const year = happyNewYear.getFullYear(); 

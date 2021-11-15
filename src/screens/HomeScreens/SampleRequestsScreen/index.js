@@ -967,7 +967,7 @@ class SampleRequestsScreen extends PureComponent {
                   }}
                 />
               </View>
-              <Text style={styles.smallTitle}>당일연결 희망/ 가능 여부</Text>
+              {/* <Text style={styles.smallTitle}>당일연결 희망/ 가능 여부</Text>
               <View
                 style={{
                   ...styles.layout2,
@@ -999,7 +999,7 @@ class SampleRequestsScreen extends PureComponent {
                     </TouchableOpacity>
                   )
                 })}
-              </View>
+              </View> */}
               <Text style={styles.smallTitle}>페이지 수</Text>
               <TextInput
                 style={{...styles.inputBox, marginTop: mUtils.wScale(3), marginBottom: mUtils.wScale(18)}}
