@@ -14,7 +14,7 @@ const TO_FIXED_POS = 3
 const utils = {
 
   fn_call_toast(message) {
-    Toast.showWithGravity(message, Toast.SHORT, Toast.BOTTOM);
+    Toast.showWithGravity(message, Toast.SHORT, Toast.CENTER);
   },
   isEmpty(str){
     return str === null || str === undefined || str === '' || (typeof str === 'object' && Array.isArray(str) === false && Object.keys(str).length === 0);
@@ -35,7 +35,14 @@ const utils = {
     var _fileExt = filename.substring(_lastDot, _fileLen).toLowerCase();
     return _fileExt;
   },
-  
+  getConvertToday(){
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = ("0" + (1 + date.getMonth())).slice(-2);
+    var day = ("0" + date.getDate()).slice(-2);
+
+    return year + "-" + month + "-" + day;
+  },
   dateToDate(val) {
     const happyNewYear = new Date(val);
     const year = happyNewYear.getFullYear(); 

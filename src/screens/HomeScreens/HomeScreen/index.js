@@ -32,157 +32,6 @@ class HomeScreen extends PureComponent {
         }
     }
 
-    requests = () => {
-    const {data} = this.state;
-    const userType = mConst.getUserType();
-
-    return (
-    <View style={{flex: _.get(data, userType !== 'B' ? 'cnfirm_request' : 'new_request', []).length === 0 ? 1 : 0}}>
-    <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20)}}>
-    <Text style={styles.new}>
-    {userType !== 'B' ? 'Confirmed' : 'New'} <Text style={{fontFamily: 'Roboto-Medium'}}>Sample Requests : </Text>
-    <Text style={{fontFamily: 'Roboto-Bold', color: '#7ea1b2'}}>
-    {userType === 'B' ? data.new_request_total_count : data.cnfirm_request_total_count}
-    </Text>
-    </Text>
-    <TouchableOpacity
-    style={styles.layout}
-    onPress={() => {
-    this.pushTo('HomeDetailScreen', {type: true, title: userType !== 'B' ? 'Confirmed Requests' : 'New Sample Requests'})
-    }}
-    >
-    <Text style={styles.more}>More</Text>
-    <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
-    </TouchableOpacity>
-    </View>
-    <View
-    style={{
-    ...styles.layout2,
-    backgroundColor: 'rgba(126, 161, 178, 0.2)',
-    flex: _.get(data, userType !== 'B' ? 'cnfirm_request' : 'new_request', []).length === 0 ? 1 : 0,
-    flexDirection: _.get(data, userType !== 'B' ? 'cnfirm_request' : 'new_request', []).length === 0 ? 'column' : 'row',
-    justifyContent: _.get(data, userType !== 'B' ? 'cnfirm_request' : 'new_request', []).length === 0 ? 'center' : 'space-between',
-    flexWrap: _.get(data, userType !== 'B' ? 'cnfirm_request' : 'new_request', []).length === 0 ? 'nowrap' : 'wrap',
-    }}
-    >
-    {_.get(data, userType !== 'B' ? 'cnfirm_request' : 'new_request', []).length > 0 ? (
-    _.get(data, userType !== 'B' ? 'cnfirm_request' : 'new_request', []).map((item, index) => {
-    return (
-    <TouchableOpacity
-    onPress={() => {
-    this.pushTo('SampleRequestsDetailScreen', {no: item.req_no})
-    }}
-    disabled={userType !== 'B' ? false : true}
-    key={index}
-    style={styles.layout3}
-    >
-    <FastImage
-    resizeMode={'contain'}
-    style={styles.brandImg}
-    source={{uri: userType === 'B' ? item.mgzn_logo_url_adres : item.brand_logo_url_adres}}
-    />
-    <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>
-    {item.editor_nm} {item.editor_posi}
-    </Text>
-    <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>
-    {mUtils.getShowDate(userType === 'B' ? item.req_dt : item.brand_cnfirm_dt, 'YYYY-MM-DD')}
-    </Text>
-    {userType === 'B' ? (
-    <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
-    {item.mgzn_nm} • {item.celeb_list ? item.celeb_list[0] : item.model_list[0]}
-    </Text>
-    ) : (
-    <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>{item.brand_nm}</Text>
-    )}
-    </TouchableOpacity>
-    )
-    })
-    ) : (
-    <Empty />
-    )}
-    </View>
-    </View>
-    )
-    }
-
-    sendOuts = () => {
-    const {data} = this.state
-    const userType = mConst.getUserType()
-    return (
-    <View style={{flex: _.get(data, 'today_request', []).length === 0 ? 1 : 0, flex: data.today_request.length === 0 ? 1 : 0}}>
-    <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(40)}}>
-    <Text style={styles.new}>
-    Today's <Text style={{fontFamily: 'Roboto-Medium'}}>{userType === 'B' ? 'Send-Outs' : 'Pickups'} : </Text>
-    <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}>{data.today_request_total_count}</Text>
-    </Text>
-    <TouchableOpacity
-    style={styles.layout}
-    onPress={() => {
-    // eslint-disable-next-line quotes
-    this.pushTo('HomeDetailScreen', {type: false, title: userType === 'B' ? "Today's Send-Outs" : "Today's Pickups"})
-    }}
-    >
-    <Text style={styles.more}>More</Text>
-    <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
-    </TouchableOpacity>
-    </View>
-    <View
-    style={{
-    ...styles.layout2,
-    backgroundColor: 'rgba(178, 126, 126, 0.2)',
-    flex: _.get(data, 'today_request', []).length === 0 ? 1 : 0,
-    flex: data.today_request.length === 0 ? 1 : 0,
-    flexDirection: data.today_request.length === 0 ? 'column' : 'row',
-    justifyContent: data.today_request.length === 0 ? 'center' : 'space-between',
-    flexWrap: data.today_request.length === 0 ? 'nowrap' : 'wrap',
-    }}
-    >
-    {data.today_request.length > 0 ? (
-    data.today_request.map((item, index) => {
-    return (
-    <TouchableOpacity
-    key={index}
-    style={styles.layout3}
-    onPress={() => this.pushTo(userType === 'B' ? 'SendOutScreen' : 'PickupsScreen', {reqNo: item.req_no})}
-    >
-    <FastImage
-    resizeMode={'contain'}
-    style={styles.brandImg}
-    source={{uri: userType === 'B' ? item.mgzn_logo_url_adres : item.brand_logo_url_adres}}
-    />
-    <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>
-    {item.editor_nm} {item.editor_posi}
-    </Text>
-    <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>{mUtils.getShowDate(item.date, 'YYYY-MM-DD')}</Text>
-    {userType === 'B' ? (
-    <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
-    {item.mgzn_nm} • {item.celeb_list ? item.celeb_list[0] : item.model_list[0]}
-    </Text>
-    ) : (
-    <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>{item.brand_nm}</Text>
-    )}
-    </TouchableOpacity>
-    )
-    })
-    ) : (
-    <Empty />
-    )}
-    </View>
-    </View>
-    )
-    }
-
-    getHome = async () => {
-        const date = Math.floor(new Date().getTime() / 1000)        
-        try {
-            const response = await API.getHome({date: date})                
-            this.setState({data: response,loading:false,isSubScrbing:true})
-        } catch (error) {
-            this.setState({data: null,loading:false,isSubScrbing:false})
-            await API.postErrLog({error: JSON.stringify(error), desc: 'getHomeError'})
-        }
-    }
-
     componentDidMount() {
         const {user} = this.props
         global.mUserType = user.userType;
@@ -206,6 +55,224 @@ class HomeScreen extends PureComponent {
         if (!(await isLoggedIn())) {
             this.props.logout()
         }
+    }
+
+    getHome = async () => {
+        //const date = Math.floor(new Date().getTime() / 1000);
+        const date = mUtils.getToday();
+        try {
+            const response = await API.getHome({date: date})
+            //console.log('getHome111',_.get(response, 'today_request', []))
+            //console.log('getHome222each_list',_.get(response, 'today_request', [])[0].each_list)
+            //console.log('getHome333showroom_list',_.get(response, 'today_request', [])[0].each_list[0].showroom_list)
+            this.setState({data: response,loading:false,isSubScrbing:true})
+        } catch (error) {
+            this.setState({data: null,loading:false,isSubScrbing:false})
+            await API.postErrLog({error: JSON.stringify(error), desc: 'getHomeError'})
+        }
+    }
+
+
+    requests = () => {
+        const {data} = this.state;
+        const userType = mConst.getUserType();
+        const requestData =  _.get(data, userType !== 'B' ? 'cnfirm_request' : 'new_request', []);
+        return (
+            <View style={{flex: requestData.length === 0 ? 1 : 0}}>
+                <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20)}}>
+                    <Text style={styles.new}>
+                    {userType !== 'B' ? 'Confirmed' : 'New'} <Text style={{fontFamily: 'Roboto-Medium'}}>Sample Requests : </Text>
+                        <Text style={{fontFamily: 'Roboto-Bold', color: '#7ea1b2'}}>
+                            {requestData.length}
+                        </Text>
+                    </Text>
+                    <TouchableOpacity
+                        style={styles.layout}
+                        onPress={() => {this.pushTo('HomeDetailScreen', {type: 'request', title: userType !== 'B' ? 'Confirmed Requests' : 'New Sample Requests'})}}
+                    >
+                        <Text style={styles.more}>More</Text>
+                        <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                    </TouchableOpacity>
+                </View>
+            <View style={{...styles.layout2,backgroundColor: 'rgba(126, 161, 178, 0.2)',flex: requestData.length === 0 ? 1 : 0,flexDirection: requestData.length === 0 ? 'column' : 'row',justifyContent: requestData.length === 0 ? 'center' : 'space-between',flexWrap: requestData.length === 0 ? 'nowrap' : 'wrap'}}>
+                {requestData.length > 0 ? (
+                    requestData.map((item, index) => {
+                    if ( index < 4) {
+                    return (
+                    <TouchableOpacity
+                        onPress={() => {this.pushTo('SampleRequestsDetailScreen', {no: item.req_no})}}
+                        //disabled={userType !== 'B' ? false : true}
+                        key={index}
+                        style={styles.layout3}
+                    >
+                        <FastImage 
+                            resizeMode={'contain'} 
+                            style={styles.brandImg}
+                            source={{uri: userType === 'B' ? item.mgzn_logo_url_adres : item.brand_logo_url_adres}}
+                        />
+                        <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>
+                            {item.editor_nm} {item.editor_posi}
+                        </Text>
+                        <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>
+                            {mUtils.getShowDate(userType === 'B' ? item.req_dt : item.brand_cnfirm_dt, 'YYYY-MM-DD')}
+                        </Text>
+                        {userType === 'B' ? (
+                            <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
+                                {item.mgzn_nm} • {item.celeb_list ? item.celeb_list[0] : item.model_list[0]}
+                            </Text>
+                        ) : (
+                            <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>{item.brand_nm}</Text>
+                        )}
+                    </TouchableOpacity>
+                    )
+                    }
+                })
+                ) : (
+                    <Empty />
+                )}
+            </View>
+        </View>
+        )
+    }
+
+    todayPickups = () => {
+        const {data} = this.state;
+        const userType = mConst.getUserType();
+        const today_request = _.get(data, 'today_request', []);
+        return (
+            <View style={{flex: today_request.length === 0 ? 1 : 0, flex: today_request.length === 0 ? 1 : 0}}>
+                <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(40)}}>
+                    <Text style={styles.new}>
+                        Today's <Text style={{fontFamily: 'Roboto-Medium'}}>Pickups</Text>
+                        <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}> {today_request.length}</Text>
+                    </Text>
+                    <TouchableOpacity
+                        style={styles.layout}
+                        onPress={() => {this.pushTo('HomeDetailScreen', {type: 'pickups', title: "Today's Pickups"})}}
+                    >
+                        <Text style={styles.more}>More</Text>
+                        <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                    </TouchableOpacity>
+                </View>
+            <View
+                style={{...styles.layout2,backgroundColor: 'rgba(178, 126, 126, 0.2)',flex: today_request.length === 0 ? 1 : 0,flex: today_request.length === 0 ? 1 : 0,flexDirection: today_request.length === 0 ? 'column' : 'row',justifyContent:today_request.length === 0 ? 'center' : 'space-between',flexWrap: today_request.length === 0 ? 'nowrap' : 'wrap',}}
+            >
+                {today_request.length > 0 ? (
+                    today_request[0].each_list.map((item, index) => {
+                    const subItem = item.showroom_list[0];
+                    if ( index < 4) {
+                        return (
+                            <TouchableOpacity
+                                key={index}
+                                style={styles.layout3}
+                                onPress={() => this.pushTo('PickupsScreen', {reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
+                            >
+                                {
+                                    subItem.target_id_type === 'RUS000' ?
+                                    <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />
+                                    :
+                                    <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
+                                }                            
+                                <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>
+                                    {/* {item.editor_nm} {item.editor_posi} */}
+                                    {subItem.target_user_nm} ({mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}) → 
+                                </Text>
+                                <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>
+                                    {"   "} {subItem.req_user_nm}{subItem.req_user_position}
+                                </Text>
+                                {/* <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>{mUtils.getShowDate(today_request[0].date, 'YYYY-MM-DD')}</Text>
+                                {userType === 'B' ? (
+                                    <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
+                                        {item.mgzn_nm} • {item.celeb_list ? item.celeb_list[0] : item.model_list[0]}
+                                    </Text>
+                                ) : (
+                                    <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>{item.brand_nm}</Text>
+                                )} */}
+                            </TouchableOpacity>
+                        )
+                    }
+                    })
+                ) : (
+                <Empty />
+                )}
+            </View>
+        </View>
+        )
+    }
+
+    todaySendOuts = () => {
+        const {data} = this.state;
+        const userType = mConst.getUserType();
+        const today_sendout = _.get(data, 'today_sendout', []);
+        return (
+            <View style={{flex: today_sendout.length === 0 ? 1 : 0, flex: today_sendout.length === 0 ? 1 : 0}}>
+                <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(40)}}>
+                    <Text style={styles.new}>
+                        Today's <Text style={{fontFamily: 'Roboto-Medium'}}>Sendouts</Text>
+                        <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}> {today_sendout[0]?.each_list?.length}</Text>
+                    </Text>
+                    <TouchableOpacity
+                        style={styles.layout}
+                        onPress={() => {this.pushTo('HomeDetailScreen', {type: 'sendout', title: "Today's Send Outs"})}}
+                    >
+                        <Text style={styles.more}>More</Text>
+                        <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                    </TouchableOpacity>
+                </View>
+            <View
+                style={{...styles.layout2,backgroundColor: 'rgba(178, 126, 126, 0.2)',flex: today_sendout.length === 0 ? 1 : 0,flex: today_sendout.length === 0 ? 1 : 0,flexDirection: today_sendout.length === 0 ? 'column' : 'row',justifyContent:today_sendout.length === 0 ? 'center' : 'space-between',flexWrap: today_sendout.length === 0 ? 'nowrap' : 'wrap',}}
+            >
+                {!mUtils.isEmpty(today_sendout[0]?.each_list) ? (
+                    today_sendout[0]?.each_list.map((item, index) => {
+                    if ( index < 4) {
+                        const subItem = item.showroom_list[0];
+                        if ( userType === 'B') {
+                            return (
+                                <TouchableOpacity
+                                    key={index}
+                                    style={styles.layout3}
+                                    onPress={() => this.pushTo(mConst.getUserType() == 'B' ? 'SendOutBScreen' : 'SendOutScreen', {reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
+                                >
+                                    <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
+                                    <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
+                                        {subItem.target_user_nm} ({subItem.target_user_position}) →
+                                    </Text>
+                                    <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}>
+                                        {subItem.req_user_nm} ({mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position})
+                                    </Text>                          
+                                </TouchableOpacity>
+                                
+                            )
+                        }else{
+                            return (
+                                <TouchableOpacity
+                                    key={index}
+                                    style={styles.layout3}
+                                    onPress={() => this.pushTo(mConst.getUserType() == 'B' ? 'SendOutBScreen' : 'SendOutScreen', {reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
+                                >
+                                    {
+                                        subItem.target_id_type === 'RUS000' ?
+                                        <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />
+                                        :
+                                        <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
+                                    }                            
+                                    <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
+                                        {subItem.req_user_nm}  →
+                                    </Text>
+                                    <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}>
+                                        {subItem.target_user_nm} ({mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position})
+                                    </Text>                          
+                                </TouchableOpacity>
+                            )
+                        }
+                    }
+                    })
+                ) : (
+                <Empty />
+                )}
+            </View>
+        </View>
+        )
     }
 
     setupFcm = async () => {
@@ -253,7 +320,8 @@ class HomeScreen extends PureComponent {
                             ? 
                             <>
                                 {this.requests()}
-                                {this.sendOuts()}
+                                {mConst.getUserType() != 'B' && this.todayPickups()}
+                                {this.todaySendOuts()}
                             </>
                             :
                             <Empty />
@@ -261,6 +329,7 @@ class HomeScreen extends PureComponent {
                             <NonSubscribe />
                         }
                         </>
+                        <View style={{height:50,width:'100%'}} />
                     </ScrollView>
                     <CodePush />
                 </SafeAreaView>

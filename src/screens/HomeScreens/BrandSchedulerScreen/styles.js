@@ -19,7 +19,7 @@ export default StyleSheet.create({
   },
   title: {
     fontFamily: 'Roboto-Medium',
-    fontSize: 15,
+    fontSize: 11,
     textAlign: 'center',
     color: '#070708',
   },
@@ -74,9 +74,9 @@ export default StyleSheet.create({
   },
   desc: {
     fontFamily: 'NotoSansKR-Regular',
-    fontSize: 12,
+    fontSize: 10,
     textAlign: 'left',
-    color: mConst.black,
+    color: '#555',
   },
   menuGroup: {
     flexDirection: 'row',
@@ -127,7 +127,7 @@ export default StyleSheet.create({
   dayTextWrapper: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: mUtils.wScale(190),
+    width: mUtils.wScale(290)/3,
     backgroundColor: mConst.black,
     marginBottom: mUtils.wScale(5),
   },
@@ -137,7 +137,7 @@ export default StyleSheet.create({
     paddingVertical: mUtils.wScale(5),
   },
   dayMemoUnit: {
-    width: mUtils.wScale(190),
+    width: mUtils.wScale(290)/3,
     height: mUtils.wScale(54.5),
     borderRadius: mUtils.wScale(5),
     backgroundColor: mConst.white,
@@ -149,14 +149,14 @@ export default StyleSheet.create({
     paddingVertical: mUtils.wScale(10),
   },
   dayReqUnit: {
-    width: mUtils.wScale(190),
+    width: mUtils.wScale(290)/3,
     borderStyle: 'solid',
     borderWidth: 1,
     borderColor: mConst.borderGray,
     borderRadius: mUtils.wScale(5),
   },
   moreUnit: {
-    width: mUtils.wScale(190),
+    width: mUtils.wScale(290)/3,
     alignItems: 'center',
   },
   layout4: {
@@ -213,7 +213,7 @@ export default StyleSheet.create({
   },
   modelImg: {
     width: '100%',
-    height: mUtils.wScale(250),
+    height: mUtils.wScale(130),
   },
   moreImg: {
     width: mUtils.wScale(12),

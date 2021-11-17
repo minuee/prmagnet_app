@@ -1,96 +1,30 @@
-import React, {PureComponent} from 'react'
-import {SafeAreaView, FlatList, View, TouchableOpacity, ListView} from 'react-native'
-import {connect} from 'react-redux'
-import FastImage from 'react-native-fast-image'
-import _ from 'lodash'
+import React, {PureComponent} from 'react';
+import {SafeAreaView, FlatList, View, TouchableOpacity, ListView} from 'react-native';
+import {connect} from 'react-redux';
+import FastImage from 'react-native-fast-image';
+import _ from 'lodash';
 
-import mConst from '../../../common/constants'
-import mUtils from '../../../common/utils'
-import cBind, {callOnce} from '../../../common/navigation'
-import Text from '../../common/Text'
-import styles from './styles'
-import API from '../../../common/aws-api'
-import Loading from '../../common/Loading'
-import Empty from '../../common/Empty'
+import mConst from '../../../common/constants';
+import mUtils from '../../../common/utils';
+import cBind, {callOnce} from '../../../common/navigation';
+import Text from '../../common/Text';
+import styles from './styles';
+import API from '../../../common/aws-api';
+import Loading from '../../common/Loading';
+import MoreLoading from '../../common/MoreLoading';
+import Empty from '../../common/Empty';
 
 class HomeDetailScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
-    this.state = {data: [], page: 1, limit: 30, total_count: 0, loading: false}
-  }
-
-  getHomeNR = async () => {
-    const {page, limit, data} = this.state
-    try {
-      const response = mConst.getUserType() === 'B' ? await API.getHomeNR({page: page, limit}) : await API.getHomeCR({page: page, limit})
-      //console.log('getHomeNR>>>', response)
-      if (response.success) {
-        this.setState({loading: false}, () => {
-          if (mConst.getUserType() === 'B') {
-            if (response.new_request.length > 0) {
-              this.setState({
-                data: data.concat(response.new_request),
-                page: page + 1,
-                total_count: response.total_count,
-                loading: false,
-              })
-            }
-          } else {
-            if (response.list.length > 0) {
-              this.setState({
-                data: data.concat(response.list),
-                page: page + 1,
-                total_count: response.total_count,
-                loading: false,
-              })
-            }
-          }
-        })
-      }
-    } catch (error) {
-      //console.log('getHomeNR>>>1', JSON.stringify(error))
-    }
-  }
-
-  getHomeTR = async () => {
-    const date = Math.floor(new Date().getTime() / 1000)
-    const {page, limit, data} = this.state
-    try {
-      const response = await API.getHomeTR({date: date, page: page, limit: limit})
-      //console.log('getHomeTR>>>', response)
-      if (response.success) {
-        this.setState({loading: false}, () => {
-          if (mConst.getUserType() === 'B') {
-            if (response.today_request.length > 0) {
-              this.setState({
-                data: data.concat(response.today_request),
-                page: page + 1,
-                total_count: response.total_count,
-              })
-            }
-          } else {
-            if (response.list.length > 0) {
-              this.setState({
-                data: data.concat(response.list),
-                page: page + 1,
-                total_count: response.total_count,
-              })
-            }
-          }
-        })
-      }
-    } catch (error) {
-      //console.log('getHomeTR>>>1', error)
-    }
-  }
-
-  handleLoadMore = async () => {
-    const {type} = this.props.route.params
-    if (type) {
-      this.getHomeNR()
-    } else {
-      this.getHomeTR()
+    this.state = {
+      data: [], 
+      page: 0, 
+      limit: 30, 
+      total_count: 0, 
+      loading: false,
+      moreLoading : false
     }
   }
 
@@ -104,15 +38,109 @@ class HomeDetailScreen extends PureComponent {
   }
 
   handleOnFocus = () => {
-    const {type} = this.props.route.params
+    const {type} = this.props.route.params;
     this.setState({loading: true}, () => {
-      if (type) {
-        this.getHomeNR()
+      if (type === 'request') {
+        this.getHomeNR(1);//M :confirm B : New Request
       } else {
-        this.getHomeTR()
+        this.getHomeTR(1,type);//Pickup
       }
     })
   }
+
+  getHomeNR = async (nextpage = 0) => {
+    const {page, limit, total_count,data} = this.state;
+    console.log('page, limit,>>>', page, limit,)
+    if ( page * limit <= total_count ) {
+      try {
+        const response = mConst.getUserType() === 'B' ? await API.getHomeNR({page: nextpage, limit}) : await API.getHomeCR({page: nextpage, limit})
+        console.log('getHomeNR>>>', response)
+        if (response.success) {
+          this.setState({loading: false}, () => {
+            if (mConst.getUserType() === 'B') {
+              if (response.new_request.length > 0) {
+                this.setState({
+                  data: data.concat(response.new_request),
+                  page: nextpage + 1,
+                  total_count: response.total_count,
+                  loading: false,
+                })
+              }
+            } else {
+              if (response.list.length > 0) {
+                this.setState({
+                  data: data.concat(response.list),
+                  page: nextpage + 1,
+                  total_count: response.total_count,
+                  loading: false,
+                })
+              }
+            }
+          })
+        }
+      } catch (error) {
+        console.log('getHomeNR>>>1', JSON.stringify(error))
+      }
+    }else{
+      this.setState({loading:false})
+    }
+  }
+
+  getHomeTR = async (nextpage = 1,type) => {
+    console.log('getHomeTR',type);
+    const date = Math.floor(new Date().getTime() / 1000);
+    const {page, limit, data} = this.state;
+    let strType = 'SENDOUT';
+    if ( mConst.getUserType() === 'B' ) {
+      strType = type == 'sendout' ? 'SENDOUT' : 'RETURN';
+    }else{
+      strType = type == 'pickups' ? 'SENDOUT' : 'RETURN';
+    }
+    try {
+      const response = await API.getHomeTR({date: date, type : strType,page: nextpage, limit: limit})
+      console.log('getHomeTR>>>', response)
+      if (response.success) {
+        this.setState({loading: false}, () => {
+          /* if (mConst.getUserType() === 'B') {
+            if (response.today_request.length > 0) {
+              this.setState({
+                data: data.concat(response.today_request),
+                page: nextpage + 1,
+                total_count: response.total_count,
+              })
+            }
+          } else { */
+            if (response.list.length > 0) {
+              this.setState({
+                data: data.concat(response.list),
+                page: nextpage + 1,
+                total_count: response.total_count,
+              })
+            }
+          //}
+        })
+      }
+    } catch (error) {
+      console.log('getHomeTR>>>1', error)
+    }
+  }
+
+  handleLoadMore = async () => {
+    const {type} = this.props.route.params;
+    const {limit, total_count, page} = this.state;
+    console.log('handleLoadMore>>>1', limit, total_count, page)
+    if ( page * limit < total_count ) {
+      const nextpage = page + 1;
+      if (type === 'request') {
+        this.getHomeNR(nextpage);
+      } else {
+        this.getHomeTR(nextpage,type);
+
+      }
+    }
+  }
+
+  
 
   renderItem = ({item}) => {
     const {type, title} = this.props.route.params
@@ -122,7 +150,7 @@ class HomeDetailScreen extends PureComponent {
         onPress={() => {
           this.pushTo('SampleRequestsDetailScreen', {no: item.req_no})
         }}
-        disabled={userType !== 'B' && title === 'Confirmed Requests' ? false : true}
+        //disabled={title === 'Confirmed Requests' ? false : true}
         style={styles.layout3}
       >
         <FastImage
@@ -148,31 +176,93 @@ class HomeDetailScreen extends PureComponent {
     )
   }
 
+  renderPickupItem = ({item}) => {
+    //console.log('rederrederreder',item);
+    const {type, title} = this.props.route.params;
+    const userType = mConst.getUserType();
+    const subItem = item.each_list[0];
+    if (  type === 'pickups' ) {
+      return (
+        <TouchableOpacity
+            key={subItem.req_no+'_'+subItem.showroom_no}
+            style={styles.layout3}
+            onPress={() => this.pushTo('PickupsScreen', {reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
+        >
+            {
+                subItem.target_id_type === 'RUS000' ?
+                <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />
+                :
+                <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
+            }                            
+            <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>              
+                {subItem.target_user_nm} ({mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}) → 
+            </Text>
+            <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>
+                {"   "} {subItem.req_user_nm}{subItem.req_user_position}
+            </Text>          
+        </TouchableOpacity>
+      )
+    }else{
+      return (
+        <TouchableOpacity
+            key={subItem.req_no+'_'+subItem.showroom_no}
+            style={styles.layout3}
+            onPress={() => this.pushTo('SendOutScreen', {reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
+        >
+            {
+                subItem.target_id_type === 'RUS000' ?
+                <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />
+                :
+                <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
+            }                            
+            <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
+                {subItem.req_user_nm}  →
+            </Text>
+            <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}>
+                {subItem.target_user_nm} ({mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position})
+            </Text>                          
+        </TouchableOpacity>
+      )
+    }
+  }
+
   render() {
     const {data, total_count, loading} = this.state
     const {type} = this.props.route.params
     return (
       <>
         <SafeAreaView style={styles.container}>
-          {type ? (
+          {type === 'request' ? (
             <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(30)}}>
               <Text style={styles.new}>
                 {mConst.getUserType() !== 'B' ? 'Confirmed' : 'New'} <Text style={{fontFamily: 'Roboto-Medium'}}>Sample Requests : </Text>
-                <Text style={{fontFamily: 'Roboto-Bold', color: '#7ea1b2'}}>{total_count}</Text>
+                <Text style={{fontFamily: 'Roboto-Bold', color: '#7ea1b2'}}> {total_count}</Text>
               </Text>
             </View>
-          ) : (
+          ) : 
+          type === 'pickups' ?
+          (
             <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(30)}}>
               <Text style={styles.new}>
-                Today's <Text style={{fontFamily: 'Roboto-Medium'}}>{mConst.getUserType() !== 'B' ? 'Pickups' : 'Send-Outs'} : </Text>
-                <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}>{total_count}</Text>
+                Today's <Text style={{fontFamily: 'Roboto-Medium'}}>Pickups</Text>
+                <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}> {data.length }</Text>
               </Text>
             </View>
-          )}
+          )
+          :
+          (
+            <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(30)}}>
+              <Text style={styles.new}>
+                Today's <Text style={{fontFamily: 'Roboto-Medium'}}>Send-Outs</Text>
+                <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}> {data.length}</Text>
+              </Text>
+            </View>
+          )
+          }
           <View
             style={{
               ...styles.layout2,
-              backgroundColor: type ? 'rgba(126, 161, 178, 0.2)' : 'rgba(178, 126, 126, 0.2)',
+              backgroundColor: type === 'request' ? 'rgba(126, 161, 178, 0.2)' : 'rgba(178, 126, 126, 0.2)',
               marginBottom: mUtils.wScale(50),
               flex: data.length === 0 ? 1 : 0,
             }}
@@ -188,9 +278,9 @@ class HomeDetailScreen extends PureComponent {
                 showsVerticalScrollIndicator={false}
                 numColumns={2}
                 data={data}
-                renderItem={this.renderItem}
+                renderItem={type === 'request' ? this.renderItem : this.renderPickupItem}
                 keyExtractor={item => `_${item.req_no}_${Math.random()}`}
-                onEndReached={this.handleLoadMore}
+                //onEndReached={this.handleLoadMore}
                 onEndReachedThreshold={1}
               />
             )}

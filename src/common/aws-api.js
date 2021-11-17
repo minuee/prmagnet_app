@@ -253,13 +253,14 @@ const API = {
   },
   postQna: ({subject, content}) => {
     const apiName = v1Api
-    const path = `${mConst.getApiPath()}/brand/qna`
+    const path = `${mConst.getApiPath()}/qna`
     const myInit = {
       body: {
         subject: subject,
         content: content,
       },
     }
+    console.log('postQna',myInit);
     return Api.post(apiName, path, myInit)
   },
   getQnaList: ({page, limit, search_text}) => {
@@ -462,9 +463,16 @@ const API = {
     const init = {}
     return Api.get(apiName, path, init)
   },
-  getReturnDetail: req_no => {
+  getReturnDetail: (req_no,showroom_no) => {
     const apiName = v1Api
-    const path = `${mConst.getApiPath()}/return-detailed/req/${req_no}`
+    const path = `${mConst.getApiPath()}/return-detailed/req/${req_no}?showroom_no=` + showroom_no;
+    const init = {}
+    console.log('apiName path2',path)
+    return Api.get(apiName, path, init)
+  },
+  getReturnArrayDetail: (date,showroom_no) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/return-detailed/${date}?date=${date}&showroomList=` + JSON.stringify(showroom_no);
     const init = {}
     return Api.get(apiName, path, init)
   },
@@ -475,11 +483,11 @@ const API = {
     const init = {}
     return Api.get(apiName, path, init)
   },
-  pushSendout: (req_no, showroom_len) => {
+  pushSendout: (req_no, showroom_len,targetSampleList) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/sendout-push`
     const myInit = {
-      body: {req_no, len: showroom_len},
+      body: {req_no, len: showroom_len,targetSampleList},
     }
     return Api.post(apiName, path, myInit)
   },
@@ -491,11 +499,11 @@ const API = {
     }
     return Api.post(apiName, path, myInit)
   },
-  pushPickupSuccess: req_no => {
+  pushPickupSuccess: (req_no,targetSampleList) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/pickup-success`
     const myInit = {
-      body: {req_no},
+      body: {req_no,targetSampleList},
     }
     return Api.post(apiName, path, myInit)
   },
@@ -523,11 +531,11 @@ const API = {
     }
     return Api.post(apiName, path, myInit)
   },
-  pushReturnSuccess: req_no => {
+  pushReturnSuccess: (req_no,targetSampleList) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/return-success`
     const myInit = {
-      body: {req_no},
+      body: {req_no,targetSampleList},
     }
     return Api.post(apiName, path, myInit)
   },
@@ -629,16 +637,18 @@ const API = {
     }
     return Api.get(apiName, path, init)
   },
-  getHomeTR: ({date, page, limit}) => {
+  getHomeTR: ({date, type,page, limit}) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/home/today-request`
     const init = {
       queryStringParameters: {
         date: date,
+        type,
         page: page,
         limit: limit,
       },
     }
+    console.log('getHomeT222R',init,path)
     return Api.get(apiName, path, init)
   },
   postDigitalSR: ({
@@ -958,6 +968,7 @@ const API = {
         req_no: req_no,
       },
     }
+    console.log('pathpathpath>>>>>', path)
     return Api.get(apiName, path, init)
   },
   editSRRequestSend: ({

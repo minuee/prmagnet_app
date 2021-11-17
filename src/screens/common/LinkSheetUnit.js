@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {TouchableWithoutFeedback, Pressable, StyleSheet} from 'react-native';
+import {TouchableWithoutFeedback, TouchableOpacity,Pressable, StyleSheet} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Col, Row} from 'react-native-easy-grid';
 import _ from 'lodash';
@@ -26,75 +26,146 @@ export default class LinkSheetUnit extends PureComponent {
 
     render() {
         const {swiped} = this.state;
-        const {name, phone, onPress, onPressPhone, onSwipeCheck, color, checked, readOnly,sendUser,returnUser} = this.props;
-        console.log('this.props',readOnly,this.props)
-        if (readOnly) {
-            return (
-                <>
-                    <Row style={styles.row(color)}>
-                        <Text style={styles.sText()} numberOfLines={1}>              
-                            {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm} {!mUtils.isEmpty(sendUser.mgzn_nm) && sendUser.mgzn_nm}
-                        </Text>
-                    </Row>
-                    <Pressable onPress={onPressPhone}>
-                    {
-                        ({pressed}) => (
-                            <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : mConst.white)}>
-                                <Text style={styles.sText(mConst.darkGray)}>
-                                    {mUtils.isEmpty(sendUser.phone_no) ? phone : mUtils.phoneFormat(sendUser.phone_no)}
-                                </Text>
-                            </Row>
-                        )
-                    }
-                    </Pressable>
-                </>
-            )
-        }
-        return (
-            <>
-                <SwiperUnit onSwipeLeft={() => this.onSwipe('left')} onSwipeRight={() => this.onSwipe('right')}>
-                    {
-                        swiped || checked ? (
-                        <TouchableWithoutFeedback onPress={swiped ? onSwipeCheck : null}>
-                            <Row style={styles.row(color)}>
-                                <Col style={styles.col(1, true, color, checked)} size={3}>
-                                    <Text style={styles.sText()} numberOfLines={1}>                                        
-                                        {mUtils.isEmpty(returnUser.user_nm) ? name :  returnUser.user_nm} {!mUtils.isEmpty(returnUser.mgzn_nm) && returnUser.mgzn_nm}
-                                    </Text>
-                                </Col>
-                                <Col style={styles.col(1, true, checked ? color : mConst.white, checked)} size={1}>
-                                    <FastImage source={checked ? circleCheckOnImage : circleCheckImage} style={styles.checkImage} />
-                                </Col>
-                            </Row>
-                        </TouchableWithoutFeedback>
-                        ) : (
-                        <Pressable onPress={onPress}>
+        const {name, phone, unitType,viewType,onPress, onPressPhone, onSwipeCheck, color, checked, readOnly,sendUser,returnUser} = this.props;        
+        if ( viewType === 'sendout' ) {
+            if (unitType === 'to') {
+                return (
+                    <>
+                        <Row style={styles.row(color)}>
+                            <Text style={styles.sText()} numberOfLines={1}>              
+                                {mUtils.isEmpty(returnUser.user_nm) ? name :  returnUser.user_nm} {!mUtils.isEmpty(returnUser.mgzn_nm) && returnUser.mgzn_nm}
+                            </Text>
+                        </Row>
+                        <Pressable onPress={onPressPhone}>
                         {
                             ({pressed}) => (
-                                <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : color)}>
-                                    <Text style={styles.sText()} numberOfLines={1}>
-                                        {mUtils.isEmpty(returnUser.user_nm) ? name :  returnUser.user_nm} ({!mUtils.isEmpty(returnUser.mgzn_nm) && returnUser.mgzn_nm})
+                                <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : mConst.white)}>
+                                    <Text style={styles.sText(mConst.darkGray)}>
+                                        {mUtils.isEmpty(sendUser.phone_no) ? phone : mUtils.phoneFormat(sendUser.phone_no)}
                                     </Text>
                                 </Row>
                             )
                         }
                         </Pressable>
-                        )
-                    }
-                </SwiperUnit>
-                <Pressable onPress={onPressPhone}>
-                    {
-                        ({pressed}) => (
-                        <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : mConst.white)}>
-                            <Text style={styles.sText(mConst.darkGray)}>
-                                {mUtils.isEmpty(sendUser.phone_no) ? phone : mUtils.phoneFormat(sendUser.phone_no)}
+                    </>
+                )
+            }
+            return (
+                <>
+                    <SwiperUnit onSwipeLeft={() => this.onSwipe('left')} onSwipeRight={() => this.onSwipe('right')}>
+                        {
+                            swiped || checked ? (
+                            <TouchableWithoutFeedback onPress={swiped ? onSwipeCheck : null}>
+                                <Row style={styles.row(color)}>
+                                    <Col style={styles.col(1, true, color, checked)} size={3}>
+                                        <Text style={styles.sText()} numberOfLines={1}>
+                                            {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm} {!mUtils.isEmpty(sendUser.mgzn_nm) && sendUser.mgzn_nm}
+                                            
+                                        </Text>
+                                    </Col>
+                                    <Col style={styles.col(1, true, checked ? color : mConst.white, checked)} size={1}>
+                                        <FastImage source={checked ? circleCheckOnImage : circleCheckImage} style={styles.checkImage} />
+                                    </Col>
+                                </Row>
+                            </TouchableWithoutFeedback>
+                            ) : (
+                            <Pressable onPress={onPress}>
+                            {
+                                ({pressed}) => (
+                                    <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : color)}>
+                                        <Text style={styles.sText()} numberOfLines={1}>
+                                            {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm} {!mUtils.isEmpty(sendUser.mgzn_nm) && sendUser.mgzn_nm}
+                                        </Text>
+                                    </Row>
+                                )
+                            }
+                            </Pressable>
+                            )
+                        }
+                    </SwiperUnit>
+                    <Pressable onPress={onPressPhone}>
+                        {
+                            ({pressed}) => (
+                            <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : mConst.white)}>
+                                <Text style={styles.sText(mConst.darkGray)}>
+                                    
+                                    {mUtils.isEmpty(sendUser.phone_no) ? phone : mUtils.phoneFormat(sendUser.phone_no)}
+                                </Text>
+                            </Row>
+                            )
+                        }
+                    </Pressable>
+                </>
+            )
+        }else{
+            if (unitType === 'from') {
+                return (
+                    <>
+                        <Row style={styles.row(color)}>
+                            <Text style={styles.sText()} numberOfLines={1}>              
+                                {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm} {!mUtils.isEmpty(sendUser.mgzn_nm) && sendUser.mgzn_nm}
                             </Text>
                         </Row>
-                        )
-                    }
-                </Pressable>
-            </>
-        )
+                        <Pressable onPress={onPressPhone}>
+                        {
+                            ({pressed}) => (
+                                <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : mConst.white)}>
+                                    <Text style={styles.sText(mConst.darkGray)}>
+                                        {mUtils.isEmpty(sendUser.phone_no) ? phone : mUtils.phoneFormat(sendUser.phone_no)}
+                                    </Text>
+                                </Row>
+                            )
+                        }
+                        </Pressable>
+                    </>
+                )
+            }
+            return (
+                <>
+                    <SwiperUnit onSwipeLeft={() => this.onSwipe('left')} onSwipeRight={() => this.onSwipe('right')}>
+                        {
+                            swiped || checked ? (
+                            <TouchableWithoutFeedback onPress={swiped ? onSwipeCheck : null}>
+                                <Row style={styles.row(color)}>
+                                    <Col style={styles.col(1, true, color, checked)} size={3}>
+                                        <Text style={styles.sText()} numberOfLines={1}>                                        
+                                            {mUtils.isEmpty(returnUser.user_nm) ? name :  returnUser.user_nm} {!mUtils.isEmpty(returnUser.position) && returnUser.position}
+                                        </Text>
+                                    </Col>
+                                    <Col style={styles.col(1, true, checked ? color : mConst.white, checked)} size={1}>
+                                        <FastImage source={checked ? circleCheckOnImage : circleCheckImage} style={styles.checkImage} />
+                                    </Col>
+                                </Row>
+                            </TouchableWithoutFeedback>
+                            ) : (
+                            <Pressable onPress={onPress}>
+                            {
+                                ({pressed}) => (
+                                    <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : color)}>
+                                        <Text style={styles.sText()} numberOfLines={1}>
+                                            {mUtils.isEmpty(returnUser.user_nm) ? name :  returnUser.user_nm} {!mUtils.isEmpty(returnUser.position) && returnUser.position}
+                                        </Text>
+                                    </Row>
+                                )
+                            }
+                            </Pressable>
+                            )
+                        }
+                    </SwiperUnit>
+                    <Pressable onPress={onPressPhone}>
+                        {
+                            ({pressed}) => (
+                            <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : mConst.white)}>
+                                <Text style={styles.sText(mConst.darkGray)}>
+                                    {mUtils.isEmpty(sendUser.phone_no) ? phone : mUtils.phoneFormat(sendUser.phone_no)}
+                                </Text>
+                            </Row>
+                            )
+                        }
+                    </Pressable>
+                </>
+            )
+        }
     }
 }
 

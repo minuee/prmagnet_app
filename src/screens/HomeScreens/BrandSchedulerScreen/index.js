@@ -95,6 +95,11 @@ class BrandSchedulerScreen extends PureComponent {
     })
   }
 
+  moveDetail = async(item,idx) => {
+    //console.log('moveDetail>>>>', item);
+    this.pushTo('SampleRequestsDetailScreen', {no: item.req_no});
+  }
+
   render() {
     const {data, toggle, start, end, season_year, gender} = this.state;
     const {user} = this.props;
@@ -205,21 +210,23 @@ class BrandSchedulerScreen extends PureComponent {
                   <>
                     <ScrollView style={{paddingHorizontal: mUtils.wScale(20), paddingVertical: mUtils.wScale(25)}}>
                       {mUtils.get(data, 'list', []).map((dItem, dIndex) => {
-                        const memoList = mUtils.get(dItem, 'memo_list', [])
-                        const reqList = mUtils.get(dItem, 'req_list', [])
+                        const memoList = mUtils.get(dItem, 'memo_list', []);
+                        const reqList = mUtils.get(dItem, 'req_list', []);
+                        //console.log('reqListreqList',reqList)
                         return (
                           <View key={dIndex} style={{...styles.layout4}}>
-                            <View style={{width: mUtils.wScale(180)}}>
+                            <View style={{width: mUtils.wScale(80)}}>
                               <FastImage resizeMode={'cover'} style={styles.modelImg} source={{uri: dItem.image_list}} />
                               <Text style={{...styles.title, marginVertical: mUtils.wScale(10)}}>{dItem.showroom_nm}</Text>
                             </View>
-                            <View style={{width: mUtils.wScale(190)}}>
+                            <View style={{width: mUtils.wScale(290),}}>
                               {(memoList.length > 0 || reqList.length > 0) && (
                                 <FlatList
                                   ref={ref => (this.swiperRef = ref)}
                                   horizontal={true}
+                                  nestedScrollEnabled={true}
                                   showsHorizontalScrollIndicator={false}
-                                  style={{width: mUtils.wScale(190)}}
+                                  style={{width: mUtils.wScale(290)}}
                                   pagingEnabled={true}
                                   keyExtractor={(item, index) => index.toString()}
                                   data={dates}
@@ -227,7 +234,10 @@ class BrandSchedulerScreen extends PureComponent {
                                     const curMemos = memoList.filter(m => mUtils.isSameDay(item, m.memo_dt))
                                     const curReqs = reqList.filter(r => mUtils.isDayBetween(item, r.start_dt, r.end_dt))
                                     return (
-                                      <View style={{flexDirection: 'column'}}>
+                                      <View 
+                                        
+                                        style={{flexDirection: 'column'}}
+                                      >
                                         {(curMemos.length > 0 || curReqs.length > 0) && (
                                           <View style={styles.dayTextWrapper}>
                                             <Text style={styles.dayText}>{mUtils.getShowDate(Math.floor(item.valueOf() / 1000))}</Text>
@@ -253,8 +263,10 @@ class BrandSchedulerScreen extends PureComponent {
                                           )
                                         })}
                                         {curReqs.map((rItem, rIndex) => {
-                                          const key = `${dItem.showroom_no}_${mUtils.getDateString(item)}`
+                                          const key = `${dItem.showroom_no}_${mUtils.getDateString(item)}`;
+                                          
                                           if (!toggle.includes(key)) {
+                                            //console.log('toggle.includes(key)22',rIndex,toggle.includes(key))
                                             if (rIndex === 2)
                                               return (
                                                 <View key={rIndex} style={styles.moreUnit}>
@@ -275,21 +287,24 @@ class BrandSchedulerScreen extends PureComponent {
                                                     <FastImage resizeMode={'contain'} style={styles.airplaneImg} source={airplaneImg} />
                                                   </View>
                                                 </View>
-                                                <View style={styles.layout7}>
+                                                <TouchableOpacity 
+                                                  onPress={() => this.moveDetail(rItem,rIndex)}
+                                                  style={styles.layout7}
+                                                >
                                                   <Text style={{...styles.name}}>{rItem.req_user_nm}</Text>
-                                                  <Text style={{...styles.brandDate, marginTop: mUtils.wScale(3)}}>
+                                                  {/* <Text style={{...styles.brandDate, marginTop: mUtils.wScale(3)}}>
                                                     {rItem.company_name} / {'\n'}
                                                     {mUtils.getShowDate(rItem.start_dt, 'YYYY-MM-DD')} ~{' '}
                                                     {mUtils.getShowDate(rItem.end_dt, 'YYYY-MM-DD')}
                                                   </Text>
-                                                  <Text style={{...styles.desc, marginTop: mUtils.wScale(8)}}>{rItem.address}</Text>
+                                                  <Text style={{...styles.desc, marginTop: mUtils.wScale(8)}}>{rItem.address}</Text> */}
 
                                                   <Text style={{...styles.desc, marginTop: mUtils.wScale(3)}}>
                                                     {rItem.contact_user_nm}
                                                     {'\n'}
-                                                    {mUtils.allNumber(mUtils.get(rItem.contact_user_phone))}
+                                                    {mUtils.allNumber(rItem.contact_user_phone)}
                                                   </Text>
-                                                </View>
+                                                </TouchableOpacity>
                                               </View>
                                               {toggle.includes(key) && curReqs.length - 1 === rIndex && (
                                                 <View key={rIndex} style={styles.moreUnit}>

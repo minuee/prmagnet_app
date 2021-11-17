@@ -62,7 +62,7 @@ class SampleRequestsDetailScreen extends PureComponent {
   }
 
   setConfirmCount = async(data) => {
-    console.log('response.showroom_list>>>', data.showroom_list)
+    //console.log('response.showroom_list>>>', data.showroom_list)
     let acceptCount = 0;
     
     await data.showroom_list.forEach((d, i) => {          
@@ -80,7 +80,7 @@ class SampleRequestsDetailScreen extends PureComponent {
       const response = await API.getSampleRequests({
         req_no: no,
       })
-      console.log('getSampleRequests>>>', response)
+      //console.log('getSampleRequests>>>', response)
       if (response.success) {
         this.setConfirmCount(response);
         this.setState({
@@ -88,12 +88,12 @@ class SampleRequestsDetailScreen extends PureComponent {
         })
       }
     } catch (error) {
-      console.log('getSampleRequests>>>', error)
+      //console.log('getSampleRequests>>>', error)
     }
   }
 
   componentDidMount() {
-    this.pushOption('My Request')
+    this.pushOption(mConst.getUserType() === 'B' ? 'Request Detail' : 'My Request Detail')
     this.onFocus(this.handleOnFocus)
   }
   componentWillUnmount() {
@@ -135,10 +135,11 @@ class SampleRequestsDetailScreen extends PureComponent {
       <SafeAreaView style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{paddingHorizontal: mUtils.wScale(20)}}>
-            <Text style={{...styles.mainTitle, marginTop: mUtils.wScale(25)}}>My</Text>
-            <Text style={styles.mainTitle1}>Requests</Text>
+            <Text style={{...styles.mainTitle, marginTop: mUtils.wScale(25)}}>
+              {mConst.getUserType() !== 'B' && "My " }
+            <Text style={styles.mainTitle1}>Request Detail</Text></Text>
             <Text style={{...styles.subTitle, marginTop: mUtils.wScale(30)}}>
-              Request product : <Text style={{color: '#7ea1b2'}}>{data.showroom_list.length} 승인 : {acceptCount}</Text>
+              Request product : <Text style={{color: '#7ea1b2'}}>{data.showroom_list.length} {/* 승인 : {acceptCount} */}</Text>
             </Text>
           </View>
           <ScrollView
@@ -425,7 +426,7 @@ class SampleRequestsDetailScreen extends PureComponent {
                 }}
               />
             </View>
-            <Text style={styles.smallTitle}>당일연결 희망/ 가능 여부</Text>
+            {/* <Text style={styles.smallTitle}>당일연결 희망/ 가능 여부</Text>
             <View
               style={{
                 ...styles.layout2,
@@ -457,7 +458,7 @@ class SampleRequestsDetailScreen extends PureComponent {
                   </TouchableOpacity>
                 )
               })}
-            </View>
+            </View> */}
             <Text style={styles.smallTitle}>페이지 수</Text>
             <TextInput
               style={{...styles.inputBox, marginTop: mUtils.wScale(3), marginBottom: mUtils.wScale(18)}}

@@ -12,9 +12,11 @@ import cBind, {callOnce} from '../../../common/navigation';
 import API from '../../../common/aws-api';
 import Text from '../../common/Text';
 import Header from '../../common/Header';
+import Empty from '../../common/Empty';
 import Loading from '../../common/Loading';
 import NonSubscribe from '../../common/NonSubscribe';
 import styles from './styles';
+import MoreLoading from '../../common/MoreLoading';
 
 const moreImg = require('../../../images/navi/more_4.png');
 const schedulerImg = require('../../../images/navi/scheduler_1.png');
@@ -37,6 +39,7 @@ class LinkSheetScreen extends React.Component {
             titles,
             selectTitle: titles[0],
             loading: true,
+            moreLoading:false,
             selectDate: [],
             totalCount: 0,
         }
@@ -52,8 +55,9 @@ class LinkSheetScreen extends React.Component {
     }
 
     handleOnFocus = params => {
+        const moreLoading = this.state.moreLoading;
         if ( this.props.user.subScrbeStatus ) {
-            this.setState({loading: true}, () => {
+            this.setState({loading: moreLoading? false : true}, () => {
                 const {brandId} = this.state;
                 const {start, end} = _.get(this.props, 'route.params', {}) // onFocus에서는 이렇게 불러와야 함 navigation.js 33번째 줄 참조
                 if (start && end) {
@@ -74,30 +78,30 @@ class LinkSheetScreen extends React.Component {
             try {
                 // console.log('###Return 스케쥴 조회 params:', {start_date: start, fin_date: end, brand_id: brandId})
                 const response = await API.getReturnSchedule({start_date: start, fin_date: end})
-                this.setState({dataList: _.get(response, 'list', []), loading: false})
+                this.setState({dataList: _.get(response, 'list', []), loading: false,moreLoading:false})
                 //console.log('Return 스케쥴 조회 성공', JSON.stringify(response))
             } catch (error) {
-                this.setState({loading: false})
+                this.setState({loading: false,moreLoading:false})
                 //console.log('Return 스케쥴 조회 실패', JSON.stringify(error))
             }
         } else if (selectTitle === 'Pickups') {
             try {
-                // console.log('###Pickup 스케쥴 조회 params:', {start_date: start, fin_date: end, brand_id: brandId})
+                 //console.log('###Pickup 스케쥴 조회 params:', {start_date: start, fin_date: end, brand_id: brandId})
                 const response = await API.getPickupSchedule({start_date: start, fin_date: end, brand_id: brandId})
-                this.setState({dataList: _.get(response, 'list', []), loading: false})
+                this.setState({dataList: _.get(response, 'list', []), loading: false,moreLoading:false})
                 //console.log('Pickup 스케쥴 조회 성공', JSON.stringify(response))
             } catch (error) {
-                this.setState({loading: false})
+                this.setState({loading: false,moreLoading:false})
                 //console.log('Pickup 스케쥴 조회 실패', JSON.stringify(error))
             }
         } else if (selectTitle === 'Send Out') {
             try {
                 // console.log('###Sendout 스케쥴 조회 params:', {start_date: start, fin_date: end, brand_id: brandId})
                 const response = await API.getSendoutSchedule({start_date: start, fin_date: end, brand_id: brandId})
-                this.setState({dataList: _.get(response, 'list', []), loading: false})
+                this.setState({dataList: _.get(response, 'list', []), loading: false,moreLoading:false})
                 //console.log('Sendout 스케쥴 조회 성공', JSON.stringify(response))
             } catch (error) {
-                this.setState({loading: false});
+                this.setState({loading: false,moreLoading:false})
                 //console.log('Sendout 스케쥴 조회 실패', error)
             }
         }
@@ -116,7 +120,7 @@ class LinkSheetScreen extends React.Component {
     }
 
     handleChangeTitle = item => {
-        this.setState({selectTitle: item, selectDate: [], totalCount: 0}, this.handleOnFocus)
+        this.setState({selectTitle: item, selectDate: [], totalCount: 0,moreLoading:true}, this.handleOnFocus)
     }
 
     handleLinkSheetDetail = async() => {
@@ -126,9 +130,14 @@ class LinkSheetScreen extends React.Component {
         const selectDate2 = await selectDate.sort(function(a, b) {
             return a.date > b.date;
           });
-          console.log('selectDate2selectDate2', selectDate2)
+          //console.log('selectDate2selectDate2', selectDate2)
         if (selectTitle === 'Send Out') {
-            this.pushTo('SendOutScreen', {selectEachList:selectDate2})
+            if ( mConst.getUserType() == 'B' ) {
+                this.pushTo('SendOutBScreen', {selectEachList:selectDate2})
+            }else{
+                this.pushTo('SendOutScreen', {selectEachList:selectDate2})
+            }
+            
         } else if (selectTitle === 'Pickups') {
             this.pushTo('PickupsScreen', {selectEachList:selectDate2})
         } else if (selectTitle === 'Return') {
@@ -139,7 +148,7 @@ class LinkSheetScreen extends React.Component {
     fn_selectDate = async(data) => {
         const count = data.each_list.length;        
         const {selectDate, totalCount} = this.state;
-        console.log('seledDAte',data,totalCount)
+        //console.log('seledDAte',data,totalCount)
         let showroomData = [];
         await data.each_list.forEach((item,i) => 
             showroomData.push(item.showroom_list[0].showroom_no)
@@ -161,10 +170,97 @@ class LinkSheetScreen extends React.Component {
         }
     }
 
+    renderData = (subItem,idx,selectTitle) => {
+        if (  mConst.getUserType() === 'B'  ) {
+            if ( selectTitle === 'Send Out' ) {
+                return (
+                    <>
+                        <Text style={{...styles.brand, marginTop: mUtils.wScale(5)}} >
+                            {mUtils.isEmpty(subItem.target_user_nm) ? '-' : subItem.target_user_nm}
+                            { subItem.target_id_type === 'RUS001' ?  
+                                subItem.req_user_position + "("+subItem.mgzn_nm +")"
+                            :
+                            subItem.target_user_position
+                            }
+                        </Text>
+                        <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
+                        → {subItem.req_user_nm} {subItem.req_user_position}
+                        </Text>
+                        
+                    </>
+                )
+            }else{
+                return (
+                    <>
+                        <Text style={{...styles.brand, marginTop: mUtils.wScale(5)}} >
+                            {subItem.req_user_nm} {subItem.req_user_position} → 
+                        </Text>
+                        <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
+                            {mUtils.isEmpty(subItem.target_user_nm) ? '-' : subItem.target_user_nm}
+                            {subItem.target_id_type === 'RUS001' ? subItem.req_user_position + "("+subItem.mgzn_nm +")" :subItem.target_user_position}
+                        </Text>
+                        
+                    </>
+                )
+            }
+        }else{
+            if ( selectTitle === 'Send Out' ) {
+                return (
+                    <>
+                        <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
+                            {subItem.req_user_nm}  →
+                            
+                        </Text>
+                        <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
+                            {subItem.target_user_nm} ({mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position})
+                        </Text>
+                    </>
+                )
+            }else{
+                return (
+                    <>
+                        <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
+                            {subItem.target_user_nm} ({mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}) →
+                        </Text>
+                        <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
+                            {subItem.req_user_nm} {/* {subItem.req_user_position} */}
+                        </Text>
+                    </>
+                )
+
+            }
+        }       
+    }
+
+    renderLogo =(subItem,idx,selectTitle) => {
+        if (  mConst.getUserType() === 'B'  ) {
+            if ( subItem.target_id_type === 'RUS000' ) {
+                return (
+                    <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
+                )
+            }else{
+                return (
+                    <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
+                )
+            }
+        }else{
+            if ( subItem.target_id_type === 'RUS000' ) {
+                return (
+                    <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />
+                )
+            }else{
+                return (
+                    <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
+                )
+            }
+
+        }
+    }
+
     render() {
         const {start, end, brandId, dataList, brands, selectTitle, loading, selectDate, totalCount} = this.state;
         const {user} = this.props;
-        //console.log('dataListdataList',dataList.showroom_list)
+        console.log('selectTitleselectTitle',selectTitle)
         if ( this.state.loading  ) {
             return (
                 <Loading />
@@ -222,6 +318,9 @@ class LinkSheetScreen extends React.Component {
                             </View>
                             <ScrollView style={{paddingBottom: mUtils.wScale(25)}}>
                                 {
+                                dataList.length == 0 ?
+                                <Empty />
+                                :
                                 _.map(dataList, (item, index) => {     
                                 let op2 = selectDate.filter(dItems => (dItems.date === item.date));                               
                                 return (
@@ -247,56 +346,25 @@ class LinkSheetScreen extends React.Component {
                                         <View style={{...styles.layout, flexWrap: 'wrap', paddingHorizontal: mUtils.wScale(20)}}>
                                     {
                                     _.map(item.each_list, (subItem2, subIndex) => {
-                                        const subItem = subItem2.showroom_list[0];
-            
-                                        return (
-                                            <TouchableOpacity
-                                                key={subIndex}
-                                                style={styles.brandBox}
-                                                onPress={() =>this.pushTo(selectTitle === 'Send Out' ? 'SendOutScreen' : mConst.getUserType() === 'B' ? 'ReturnScreen' : 'PickupsScreen',{reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
-                                            >
-                                                <View style={{...styles.box1, backgroundColor: mUtils.isEmpty(subItem.mgzn_color) ? '#ddd' :subItem.mgzn_color}}>
-                                                    {
-                                                        subItem.target_id_type === 'RUS000' ?
-                                                        <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />
-                                                        :
-                                                        <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
-                                                    }
-                                                    
-                                                </View>
-                                                <View style={styles.box2}>
-                                                    {
-                                                    mConst.getUserType() === 'B' ? (
-                                                    <>
-                                                        <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
-                                                            {subItem.req_user_nm} {subItem.req_user_position}
-                                                        </Text>
-                                                        <Text style={{...styles.brand, marginTop: mUtils.wScale(5)}}>{mUtils.isEmpty(subItem.mgzn_nm) ? mUtils.get(subItem, 'stylist_company_name', '-') : mUtils.get(subItem, 'mgzn_nm', '-')}</Text>
-                                                    </>
-                                                    ) : selectTitle === 'Send Out' ? (
-                                                    <>
-                                                        <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
-                                                            {subItem.req_user_nm}  →
-                                                            
-                                                        </Text>
-                                                        <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
-                                                            {subItem.target_user_nm} ({mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position})
-                                                        </Text>
-                                                    </>
-                                                    ) : (
-                                                    <>
-                                                        <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
-                                                            {subItem.target_user_nm} ({mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}) →
-                                                        </Text>
-                                                        <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
-                                                            {subItem.req_user_nm} {/* {subItem.req_user_position} */}
-                                                        </Text>
-                                                    </>
-                                                    )
-                                                    }
-                                                </View>
-                                            </TouchableOpacity>
-                                        )
+                                        
+                                        if ( !mUtils.isEmpty(subItem2.showroom_list[0])) {
+                                            const subItem = subItem2.showroom_list[0];
+                                            console.log('subItem.showroom_no', subItem.req_no,subItem.showroom_no)
+                                            return (
+                                                <TouchableOpacity
+                                                    key={subIndex}
+                                                    style={styles.brandBox}
+                                                    onPress={() =>this.pushTo(selectTitle === 'Send Out' ? mConst.getUserType() == 'B' ? 'SendOutBScreen' : 'SendOutScreen' : mConst.getUserType() === 'B' ? 'ReturnScreen' : 'PickupsScreen',{reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
+                                                >
+                                                    <View style={{...styles.box1, backgroundColor: mUtils.isEmpty(subItem.mgzn_color) ? '#ddd' :subItem.mgzn_color}}>
+                                                        {this.renderLogo(subItem,subIndex,selectTitle)}
+                                                    </View>
+                                                    <View style={styles.box2}>
+                                                        {this.renderData(subItem,subIndex,selectTitle)}
+                                                    </View>
+                                                </TouchableOpacity>
+                                            )
+                                        }
                                         })
                                     }
                                     </View>
@@ -322,6 +390,9 @@ class LinkSheetScreen extends React.Component {
                         </TouchableOpacity>
                     </View>
                     )
+                }
+                { this.state.moreLoading &&
+                    <MoreLoading />
                 }
             </SafeAreaView>
             )

@@ -1,57 +1,58 @@
-import React, {PureComponent} from 'react'
-import {connect} from 'react-redux'
-import {NavigationContainer} from '@react-navigation/native'
-import {createStackNavigator, TransitionPresets} from '@react-navigation/stack'
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
-import {createDrawerNavigator} from '@react-navigation/drawer'
-import SplashScreen from 'react-native-splash-screen'
-import FastImage from 'react-native-fast-image'
+import React, {PureComponent} from 'react';
+import {connect} from 'react-redux';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import SplashScreen from 'react-native-splash-screen';
+import FastImage from 'react-native-fast-image';
 
-import mConst from '../common/constants'
-import mUtils from '../common/utils'
-import Text from './common/Text'
-import CustomBottomTabBar from './common/CustomBottomTabBar'
+import mConst from '../common/constants';
+import mUtils from '../common/utils';
+import Text from './common/Text';
+import CustomBottomTabBar from './common/CustomBottomTabBar';
 
-import StartScreen from './HomeScreens/StartScreen'
-import FilterScreen from './HomeScreens/FilterScreen'
-import LoginScreen from './common/LoginScreen'
-import HomeScreen from './HomeScreens/HomeScreen'
-import HomeDetailScreen from './HomeScreens/HomeDetailScreen'
-import SelectScheduleScreen from './HomeScreens/SelectScheduleScreen'
-import SelectBrandScreen from './HomeScreens/SelectBrandScreen'
-import ContactScreen from './HomeScreens/ContactScreen'
-import ContactDetailScreen from './HomeScreens/ContactDetailScreen'
-import NotificationScreen from './HomeScreens/NotificationScreen'
-import MyPageScreen from './HomeScreens/MyPageScreen'
-import NotiSettingScreen from './HomeScreens/NotiSettingScreen'
-import AccountSettingScreen from './HomeScreens/AccountSettingScreen'
-import LookBookScreen from './HomeScreens/LookBookScreen'
-import LookBookDetailScreen from './HomeScreens/LookBookDetailScreen'
-import FilterSettingScreen from './HomeScreens/FilterSettingScreen'
-import DigitalSRScreen from './HomeScreens/DigitalSRScreen'
-import DigitalSRDetailScreen from './HomeScreens/DigitalSRDetailScreen'
-import FavoritesScreen from './HomeScreens/FavoritesScreen'
-import BrandSchedulerScreen from './HomeScreens/BrandSchedulerScreen'
-import ScheduleMemoScreen from './HomeScreens/ScheduleMemoScreen'
-import NoticeScreen from './HomeScreens/NoticeScreen'
-import SampleRequestsScreen from './HomeScreens/SampleRequestsScreen'
-import SampleRequestsListScreen from './HomeScreens/SampleRequestsListScreen'
-import LinkSheetScreen from './LinkSheetScreens/LinkSheetScreen'
-import LinkSheetDetailScreen from './LinkSheetScreens/LinkSheetDetailScreen'
-import SendOutScreen from './LinkSheetScreens/SendOutScreen'
-import PickupsScreen from './LinkSheetScreens/PickupsScreen'
-import ReturnScreen from './LinkSheetScreens/ReturnScreen'
-import MagazineSchedulerScreen from './HomeScreens/MagazineSchedulerScreen'
-import ByBrandsSearchScreen from './HomeScreens/ByBrandsSearchScreen'
-import SearchScreen from './HomeScreens/SearchScreen'
-import NoticeListScreen from './HomeScreens/NoticeListScreen'
-import NoticeDetailScreen from './HomeScreens/NoticeDetailScreen'
-import TermsScreen from './HomeScreens/TermsScreen'
-import PrivacyScreen from './HomeScreens/PrivacyScreen'
-import SampleRequestsDetailScreen from './HomeScreens/SampleRequestsDetailScreen'
+import StartScreen from './HomeScreens/StartScreen';
+import FilterScreen from './HomeScreens/FilterScreen';
+import LoginScreen from './common/LoginScreen';
+import HomeScreen from './HomeScreens/HomeScreen';
+import HomeDetailScreen from './HomeScreens/HomeDetailScreen';
+import SelectScheduleScreen from './HomeScreens/SelectScheduleScreen';
+import SelectBrandScreen from './HomeScreens/SelectBrandScreen';
+import ContactScreen from './HomeScreens/ContactScreen';
+import ContactDetailScreen from './HomeScreens/ContactDetailScreen';
+import NotificationScreen from './HomeScreens/NotificationScreen';
+import MyPageScreen from './HomeScreens/MyPageScreen';
+import NotiSettingScreen from './HomeScreens/NotiSettingScreen';
+import AccountSettingScreen from './HomeScreens/AccountSettingScreen';
+import LookBookScreen from './HomeScreens/LookBookScreen';
+import LookBookDetailScreen from './HomeScreens/LookBookDetailScreen';
+import FilterSettingScreen from './HomeScreens/FilterSettingScreen';
+import DigitalSRScreen from './HomeScreens/DigitalSRScreen';
+import DigitalSRDetailScreen from './HomeScreens/DigitalSRDetailScreen';
+import FavoritesScreen from './HomeScreens/FavoritesScreen';
+import BrandSchedulerScreen from './HomeScreens/BrandSchedulerScreen';
+import ScheduleMemoScreen from './HomeScreens/ScheduleMemoScreen';
+import NoticeScreen from './HomeScreens/NoticeScreen';
+import SampleRequestsScreen from './HomeScreens/SampleRequestsScreen';
+import SampleRequestsListScreen from './HomeScreens/SampleRequestsListScreen';
+import LinkSheetScreen from './LinkSheetScreens/LinkSheetScreen';
+import LinkSheetDetailScreen from './LinkSheetScreens/LinkSheetDetailScreen';
+import SendOutScreen from './LinkSheetScreens/SendOutScreen';
+import SendOutBScreen from './LinkSheetScreens/SendOutBScreen';
+import PickupsScreen from './LinkSheetScreens/PickupsScreen';
+import ReturnScreen from './LinkSheetScreens/ReturnScreen';
+import MagazineSchedulerScreen from './HomeScreens/MagazineSchedulerScreen';
+import ByBrandsSearchScreen from './HomeScreens/ByBrandsSearchScreen';
+import SearchScreen from './HomeScreens/SearchScreen';
+import NoticeListScreen from './HomeScreens/NoticeListScreen';
+import NoticeDetailScreen from './HomeScreens/NoticeDetailScreen';
+import TermsScreen from './HomeScreens/TermsScreen';
+import PrivacyScreen from './HomeScreens/PrivacyScreen';
+import SampleRequestsDetailScreen from './HomeScreens/SampleRequestsDetailScreen';
 
-import DevNavigationScreen from './HomeScreens/DevNavigationScreen'
-import {Platform} from 'react-native'
+import DevNavigationScreen from './HomeScreens/DevNavigationScreen';
+import {Platform} from 'react-native';
 
 // 스크린 기본 설정
 const basicScreenOptions = (headerShown = true, gestureEnabled = mConst.bIos) => ({
@@ -117,6 +118,7 @@ class RootScreen extends PureComponent {
         <MemberStack.Screen name="LinkSheetScreen" component={LinkSheetScreen} options={{headerShown: false}} />
         <MemberStack.Screen name="LinkSheetDetailScreen" component={LinkSheetDetailScreen} />
         <MemberStack.Screen name="SendOutScreen" component={SendOutScreen} />
+        <MemberStack.Screen name="SendOutBScreen" component={SendOutBScreen} />
         <MemberStack.Screen name="PickupsScreen" component={PickupsScreen} />
         <MemberStack.Screen name="ReturnScreen" component={ReturnScreen} />
         <MemberStack.Screen name="MagazineSchedulerScreen" component={MagazineSchedulerScreen} options={{headerShown: false}} />

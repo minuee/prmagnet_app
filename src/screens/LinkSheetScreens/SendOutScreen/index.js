@@ -1,24 +1,25 @@
 import React, {PureComponent} from 'react';
-import {SafeAreaView, ScrollView, View, TouchableOpacity, Linking} from 'react-native';
+import {SafeAreaView, ScrollView, View, TouchableOpacity, Linking, Alert} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Grid, Col, Row} from 'react-native-easy-grid';
 import Modal from 'react-native-modal';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 
-import mConst from '../../../common/constants'
-import mUtils from '../../../common/utils'
-import cBind, {callOnce} from '../../../common/navigation'
-import API from '../../../common/aws-api'
-import Text from '../../common/Text'
-import LinkSheetUnit from '../../common/LinkSheetUnit'
-import Loading from '../../common/Loading'
-import MoreLoading from '../../common/MoreLoading';
-import styles from './styles'
-import { utils } from '@react-native-firebase/app'
+import mConst from '../../../common/constants';
+import mUtils from '../../../common/utils';
+import cBind, {callOnce} from '../../../common/navigation';
+import API from '../../../common/aws-api';
+import Text from '../../common/Text';
+import LinkSheetUnit from '../../common/LinkSheetUnit';
+import LinkSheetBrandUnit from '../../common/LinkSheetBrandUnit';
+import Loading from '../../common/Loading';
+import MoreLoading from '../../common/MoreLoading';;
+import styles from './styles';
+import { utils } from '@react-native-firebase/app';
 
-const goLeftImage = require('../../../images/navi/go_left.png')
-const goRightImage = require('../../../images/navi/go_right.png')
+const goLeftImage = require('../../../images/navi/go_left.png');
+const goRightImage = require('../../../images/navi/go_right.png');
 
 class SendOutScreen extends PureComponent {
   constructor(props) {
@@ -30,6 +31,8 @@ class SendOutScreen extends PureComponent {
       allChecked: false,
       data: {},
       checkedList: [],
+      selectEachList : [],
+      targetSampleList : [],
       isvisible: {open: false, phone: '', name: ''},
       loading: true,
       moreLoading : false
@@ -80,108 +83,163 @@ class SendOutScreen extends PureComponent {
   }
 
   handleLoadDataArray = async(item,nextIndex) => {      
-    console.log('handleLoadDataArray222', item)
+    //console.log('handleLoadDataArray222', item)
     try {
       const response = await API.getSendoutArrayDetail(item.date,item.showroom_list);
       const dataTmp = await _.get(response, 'right');
-      console.log('픽업 스케쥴 상세 조회 성공', dataTmp)
+      //console.log('픽업 스케쥴 상세 조회 성공', dataTmp)
       await this.allSendOutCheck(dataTmp);
-      this.setState({data: dataTmp[0], listIndex : nextIndex, loading: false,moreLoading:false})
+      this.setState({data: dataTmp[0], listIndex : nextIndex})
       
     } catch (error) {      
-      console.log('픽업 스케쥴 상세 조회 실패', error)
+      //console.log('픽업 스케쥴 상세 조회 실패', error)
     }
   }
 
   handleLoadData = async listIndex => {
     const {selectEachList, reqNo,showroom_no} = this.params
     const pReqNo = reqNo || _.get(selectEachList, `[${listIndex}].req_no`)
+    console.log('handleLoadDatapReqNo',pReqNo)
     try {
       const response = await API.getSendoutDetail(pReqNo,showroom_no)
-      this.setState({data: _.get(response, 'right'), listIndex, loading: false})
+      this.setState({data: _.get(response, 'right'), listIndex})
       await this.allSendOutCheck(_.get(response, 'right'))
       //console.log('Send Out 스케쥴 상세 조회 성공', JSON.stringify(response))
     } catch (error) {
       // this.setState({loading: false})
-      console.log('Send Out 스케쥴 상세 조회 실패', error)
+      console.log('Send Out 스케쥴 상세 조회 실패33', error)
     }
   }
-  allSendOutCheck = async(data,sampleNo=0) => {
-    //console.log('allSendOutCheck',data.showroom_list[1].sample_list)
+  
+  allSendOutCheck = async(data) => {
+    console.log('allSendOutCheck',data)
     let AllData = 0;
     let sendOutData = 0;
-    await data[sampleNo].showroom_list.forEach(function(element,index){     
-      //console.log('element.sample_list',element.sample_list)
+    let targetList = [];
+    let targetSampleList = [];
+    if ( data.length === undefined ) {
+      targetList = data.showroom_list;
+    }else{
+      targetList = data[0].showroom_list;
+    }
+    await targetList.forEach(function(element,index){
       if ( element.sample_list != null ) {
         element.sample_list.forEach(function(element2,index2){            
           if ( element2.sample_no ) {
             AllData++;
-            if ( element2.check_yn || sampleNo === element2.sample_no ) {
+            targetSampleList.push(element2.sample_no);
+            if ( element2.return_yn ) {
               sendOutData++;
-              if ( sampleNo > 0 ) {
-                this.state.data.showroom_list[index].sample_list[index2].check_yn = true;
-              }
             }
           }
         })
       }
     }); 
-    //console.log('AllData',AllData)
+    //console.log('targetSampleList',targetSampleList)
     //console.log('sendOutData',sendOutData)
-    this.setState({allChecked : AllData === sendOutData ? true :false})
+    this.setState({
+      allChecked : AllData === sendOutData ? true :false,
+      targetSampleList,
+      loading: false,
+      moreLoading: false
+    })
   }
   handlePressPhone = (name, phone) => {
     this.setState({isvisible: {open: true, name, phone}})
   }
-  handleCheckItem = (name, roomName, sampleName, sampleNo) => {
-    const {data} = this.state
-    if (!this.state.checkedList.includes(sampleNo)) {
-      const sendPush = async () => {
-        try {
-          const response = await API.pushSendoutOne(_.get(data, 'req_no'), _.get(data, 'showroom_list.length'), sampleNo)
-          await this.allSendOutCheck(data,sampleNo)
-          //console.log('Send Out 단일 발송 완료')
-        } catch (error) {
-          //console.log('Send Out 단일 발송 실패', error)
-        }
+
+  actionHandleCheckItem = async(item,len,name,sampleNo,sampleName,roomName) => {
+    /* const {data} = this.state;
+    const sendPush = async() => {
+      try {
+        const response = await API.pushSendoutOne(data.req_no, len, sampleNo);
+        await this.allSendOutCheck(data,sampleNo);
+      } catch (error) {
+        console.log('error',error);
       }
-      this.alert('발송완료', `${name}님께 ${roomName}${mConst.lf}${sampleName} 발송 완료하였습니다.`, [
-        {
-          onPress: () => {
-            sendPush()
-            this.setState(prevstate => ({checkedList: prevstate.checkedList.concat(sampleNo)}))
-          },
-        },
-      ])
     }
+    this.alert('발송완료', `${name}님께 ${roomName}${mConst.lf}${sampleName} 발송 완료하였습니다.`, [
+      {
+        onPress: () => {
+          sendPush()
+          this.setState(prevstate => ({checkedList: prevstate.checkedList.concat(sampleNo)}))
+        },
+      },
+    ]) */
+
+    const {data,selectEachList} = this.state;    
+    try {
+      const response = await API.pushSendoutOne(data.req_no, len, sampleNo);        
+      if ( response.success ) {
+          this.alert('발송완료', `${name}님께 ${roomName}${mConst.lf}${sampleName} 발송 완료하였습니다.`, [
+          {
+            onPress: async() => {     
+              if ( selectEachList.length > 0  ) {
+                this.setState({moreLoading:true})
+                await this.handleLoadDataArray(selectEachList[0],0);
+              }else{
+                this.setState({moreLoading:true})
+                await this.handleLoadData(0);
+              }    
+              setTimeout(async() => {
+                await this.allSendOutCheck(this.state.data);
+              }, 200)
+              this.setState(prevstate => ({checkedList: prevstate.checkedList.concat(sampleNo)}))
+            },
+          },
+        ])
+      }else{
+        mUtils.fn_call_toast('처리중 에러가 발생하였습니다.');  
+      }
+    } catch (error) {
+      console.log('처리중 에러', error)
+      mUtils.fn_call_toast('처리중 에러가 발생하였습니다.');
+    }  
+  }
+  handleCheckItem = async(item,roomName,name) => {    
+    const sampleNo = item.sample_no;
+    const sampleName = item.category;    
+    //console.log('sampleNo',item.req_no,sampleNo);
+    if (!this.state.checkedList.includes(sampleNo)) {
+      Alert.alert(
+        mConst.appName,
+        sampleName + '을(를) 반납(발송)처리하시겠습니까?',
+        [
+          {text: '네', onPress: () => this.actionHandleCheckItem(item,1,name,sampleNo,sampleName,roomName)},
+          {text: '아니오', onPress: () => console.log('no')},
+        ],
+        {cancelable: false},
+      );
+    } 
   }
   handleCheckItemAll = () => {
-    const {data} = this.state
-    console.log('###req_no, len:', _.get(data, 'req_no'), _.get(data, 'showroom_list.length'))
+    const {data,targetSampleList} = this.state;
     const sendPush = async () => {
       try {
-        const response = await API.pushSendout(_.get(data, 'req_no'), _.get(data, 'showroom_list.length'))
+        const response = await API.pushSendout(_.get(data, 'req_no'), _.get(data, 'showroom_list.length'),targetSampleList)
         this.setState({allChecked: true})
-        console.log('전체 발송 완료')
+        mUtils.fn_call_toast('정상적으로 처리되었습니다.')
       } catch (error) {
-        console.log('전체 발송 실패', error)
+        //console.log('전체 발송 실패', error)
+        mUtils.fn_call_toast('처리중 에러가 발생하였습니다.')
       }
     }
     if (!this.state.allChecked) {
-      this.alert('전체 상품 발송 확인', '전체 상품을 발송 하셨습니까?', [{onPress: sendPush}, {}])
+      this.alert('전체 상품 반납/발송 확인', '전체 상품을 반납(발송) 하셨습니까?', [{onPress: sendPush}, {}])
     }
   }
   render() {
     const {reqNo} = this.params;
     const {data, checkedList, allChecked, loading} = this.state;
     const returning_date = mUtils.getShowDate(mUtils.get(data, 'returning_date'));
+    const loaning_date = mUtils.getShowDate(mUtils.get(data, 'loaning_date'));
     const fromName = mUtils.get(data, 'from_user_nm');
     const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'from_user_phone'));
     const toName = mUtils.get(data, 'to_user_nm');
     const toPhone = mUtils.phoneFormat(mUtils.get(data, 'to_user_phone'));
     if (loading) return <Loading />;
 
-    console.log('AllDdatadataata',data,this.props.user.userType)
+    //console.log('AllDdatadataata',data,this.props.user.userType)
 
     return (
       <SafeAreaView style={styles.container}>
@@ -193,7 +251,9 @@ class SendOutScreen extends PureComponent {
               </TouchableOpacity>
             )}
             <View style={styles.titleSubWrapper}>
-              <Text style={styles.titleSubText}>{returning_date}</Text>
+              <Text style={styles.titleSubText}>
+                {returning_date}
+              </Text>
             </View>
             {_.isEmpty(reqNo) && (
               <TouchableOpacity onPress={this.moveRight}>
@@ -222,33 +282,16 @@ class SendOutScreen extends PureComponent {
               </View>
             </View>
           </View>
-          {mConst.getUserType() === 'B' ? (
-            <View style={styles.middleGroupWrapper}>
-              <View style={styles.middleSubWrapper(3)}>
-                <Text style={styles.middleText}>픽업일</Text>
-                <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'loaning_date'))}</Text>
-              </View>
-              <View style={styles.middleSubWrapper(3)}>
-                <Text style={styles.middleText}>촬영일</Text>
-                <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'shooting_date'))}</Text>
-              </View>
-              <View style={styles.middleSubWrapper(3)}>
-                <Text style={styles.middleText}>반납일</Text>
-                <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'returning_date'))}</Text>
-              </View>
+          <View style={styles.middleGroupWrapper}>
+            <View style={styles.middleSubWrapper(2)}>
+              <Text style={styles.middleText}>픽업일</Text>
+              <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'loaning_date'))}</Text>
             </View>
-          ) : (
-            <View style={styles.middleGroupWrapper}>
-              <View style={styles.middleSubWrapper(2)}>
-                <Text style={styles.middleText}>픽업일</Text>
-                <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'loaning_date'))}</Text>
-              </View>
-              <View style={styles.middleSubWrapper(2)}>
-                <Text style={styles.middleText}>촬영일</Text>
-                <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'shooting_date'))}</Text>
-              </View>
+            <View style={styles.middleSubWrapper(2)}>
+              <Text style={styles.middleText}>촬영일</Text>
+              <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'shooting_date'))}</Text>
             </View>
-          )}
+          </View>
           <View style={styles.middleWrapper}>
             <Text style={styles.middleText}>수령 주소</Text>
             <Text style={styles.middleDescText}>{mUtils.get(data, 'studio', '-')}</Text>
@@ -259,10 +302,10 @@ class SendOutScreen extends PureComponent {
               <Col style={styles.col()} size={2}></Col>
               <Col style={styles.col()} size={2}></Col>
               <Col style={styles.col(1, true)} size={6}>
-                <Text>{mConst.getUserType() === 'B' ? 'From' : 'Shoot'}</Text>
+                <Text>Shoot</Text>
               </Col>
               <Col style={styles.col(1, true)} size={6}>
-                <Text>{mConst.getUserType() === 'B' ? 'Shoot' : 'To'}</Text>
+                <Text>To</Text>
               </Col>
             </Row>
             {_.map(mUtils.get(data, 'showroom_list', []), (item, index) => {
@@ -294,38 +337,46 @@ class SendOutScreen extends PureComponent {
                   </Col>
                   <Col style={styles.col(rowSize * 2)} size={6}>
                     {_.map(samples, (subItem, subIndex) => {
+                      //console.log('subItem',subItem)
+                      const newfromName = subItem?.use_user_info[0].user_nm;
+                      const newfromPhone = mUtils.phoneFormat(subItem?.use_user_info[0].phone_no);
                       return (
                         <LinkSheetUnit
-                          key={`${subItem.sample_no}${subIndex}`}
-                          readOnly={mConst.getUserType() !== 'B'}
-                          checked={checkedList.includes(subItem.sample_no) || subItem.check_yn || allChecked}
+                          key={`${subItem.sample_no}${subIndex}`}                            
+                          checked={checkedList.includes(subItem.sample_no) || subItem.return_yn || allChecked}
                           name={fromName}
                           phone={fromPhone}
-                          sendUser={subItem?.use_user_info[0]}
-                          returnUser={subItem?.use_user_info[0]}
+                          unitType={'from'}    
+                          viewType={'sendout'}                        
+                          sendUser={subItem?.use_user_info[0] }
+                          returnUser={subItem?.return_user_info[0]}
                           onPress={() => null}
-                          onPressPhone={() => this.handlePressPhone(fromName, fromPhone)}
-                          onSwipeCheck={() => this.handleCheckItem(toName, roomName, subItem.category, subItem.sample_no)}
-                          color={mConst.getUserType() === 'B' ? '#e1c668' : '#d78979'}
+                          onPressPhone={() => this.handlePressPhone(newfromName, newfromPhone)}
+                          onSwipeCheck={() => this.handleCheckItem(subItem,roomName,newfromName)}
+                          color={'#d78979'}
                         />
                       )
                     })}
                   </Col>
                   <Col style={styles.col(rowSize * 2)} size={6}>
                     {_.map(samples, (subItem, subIndex) => {
+                      const newtoName = subItem?.return_user_info[0].user_nm;
+                      const newtoPhone = mUtils.phoneFormat(subItem?.return_user_info[0].phone_no);
                       return (
                         <LinkSheetUnit
                           key={`${subItem.sample_no}${subIndex}`}
-                          readOnly={mConst.getUserType() === 'B'}
-                          checked={checkedList.includes(subItem.sample_no) || subItem.check_yn || allChecked}
+                          readOnly={false}
+                          checked={checkedList.includes(subItem.sample_no) || subItem.return_yn || allChecked}
                           name={toName}
                           phone={toPhone}
+                          unitType={'to'}
+                          viewType={'sendout'}
                           sendUser={subItem?.return_user_info[0]}
                           returnUser={subItem?.return_user_info[0]}
                           onPress={() => null}
-                          onPressPhone={() => this.handlePressPhone(toName, toPhone)}
-                          onSwipeCheck={() => this.handleCheckItem(toName, roomName, subItem.category, subItem.sample_no)}
-                          color={mConst.getUserType() === 'B' ? '#7ea1b2' : '#b8c18c'}
+                          onPressPhone={() => this.handlePressPhone(newtoName, newtoPhone)}
+                          onSwipeCheck={() => this.handleCheckItem(subItem,roomName,newtoName)}
+                          color={'#b8c18c'}
                         />
                       )
                     })}
