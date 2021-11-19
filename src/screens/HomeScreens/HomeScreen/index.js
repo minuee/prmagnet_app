@@ -8,7 +8,7 @@ import _ from 'lodash';
 
 import {isLoggedIn} from '../../../common/aws-auth';
 import {actionLogout, actionSetAlarm} from '../../../redux/actions';
-import CodePush from '../../common/CodePush';
+import CodePush from '../../common/CodePushNew';
 import mConst from '../../../common/constants';
 import mUtils from '../../../common/utils';
 import cBind, {callOnce} from '../../../common/navigation';

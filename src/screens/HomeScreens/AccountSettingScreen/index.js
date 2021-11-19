@@ -52,6 +52,7 @@ class AccountSettingScreen extends PureComponent {
         user_nm: info.brand_user_nm,
         post_no: info.post_no,
         adres: info.adres,
+        adres_detail: info.adres_detail,
         brand_pos_cd: info.user_position_id,
         phone_no: info.phone_no,
         team_user_id: info.teammate_id,
@@ -70,6 +71,7 @@ class AccountSettingScreen extends PureComponent {
       }
 
     }
+    console.log('sendParams>>>', sendParams)
     try {
       const response = await API.putProfile(sendParams)
       console.log('putProfile>>>', response)
@@ -143,7 +145,7 @@ class AccountSettingScreen extends PureComponent {
     try {
       var data = await Storage.put(
         {
-          key: mConst.getUserType() === 'B' ? `profile/brand/${date.getTime()}.` + fileType : `profile/magazine/${date.getTime()}.` + fileType,
+          key: mConst.getUserType() === 'B' ? `profile/brand/${date.getTime()}` + fileType : `profile/magazine/${date.getTime()}` + fileType,
           object: file,
           config: {
             contentType: 'image',
@@ -323,7 +325,10 @@ class AccountSettingScreen extends PureComponent {
                 </Text>
               </View>
             </View>
-            <Text style={{...styles.alert}}>* 프로필수정은 PC에서만 가능합니다.</Text>
+            <Text style={{...styles.alert}}>
+              * 프로필이미지 수정 가능합니다.{"\n"}
+              * 그외 프로필수정은 PC에서만 가능합니다.
+            </Text>            
           </ScrollView>
           <Modal
             isVisible={isvisible}

@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react'
 import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity, Pressable, Image} from 'react-native'
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
+import Header from '../../common/Header'
 import _ from 'lodash'
 import Swiper from 'react-native-swiper'
 import Modal from 'react-native-modal'
@@ -71,8 +72,9 @@ class DigitalSRDetailScreen extends PureComponent {
     }
   }
 
-  componentDidMount() {
-    this.pushOption('')
+  componentDidMount() {    
+    const {title} = this.props.route.params;
+    this.titleOption(title || '')
     this.onFocus(this.handleOnFocus)
   }
   componentWillUnmount() {
@@ -90,6 +92,7 @@ class DigitalSRDetailScreen extends PureComponent {
     const {type} = this.props.route.params
     return data ? (
       <SafeAreaView style={styles.container}>
+        {/*  <Header pushTo={this.pushTo} userType={this.props.user.userType}  /> */}
         <ScrollView>
           {type !== 'digital' && (
             <TouchableOpacity
@@ -240,6 +243,6 @@ class DigitalSRDetailScreen extends PureComponent {
 }
 
 export default connect(
-  state => ({}),
+  state => ({user: state.user,}),
   dispatch => ({})
 )(DigitalSRDetailScreen)

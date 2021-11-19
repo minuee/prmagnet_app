@@ -56,6 +56,7 @@ class LinkSheetScreen extends React.Component {
 
     handleOnFocus = params => {
         const moreLoading = this.state.moreLoading;
+        this.setState({selectDate:[]})
         if ( this.props.user.subScrbeStatus ) {
             this.setState({loading: moreLoading? false : true}, () => {
                 const {brandId} = this.state;
@@ -259,8 +260,7 @@ class LinkSheetScreen extends React.Component {
 
     render() {
         const {start, end, brandId, dataList, brands, selectTitle, loading, selectDate, totalCount} = this.state;
-        const {user} = this.props;
-        console.log('selectTitleselectTitle',selectTitle)
+        const {user} = this.props;        
         if ( this.state.loading  ) {
             return (
                 <Loading />

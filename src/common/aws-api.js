@@ -305,6 +305,7 @@ const API = {
         notifi_type: notifi_type,
       },
     }
+    console.log('deleteAlarm>>>', init)
     return Api.del(apiName, path, init)
   },
   getFavShowroom: ({
@@ -537,6 +538,7 @@ const API = {
     const myInit = {
       body: {req_no,targetSampleList},
     }
+    console.log('pushReturnSuccess',path,myInit)
     return Api.post(apiName, path, myInit)
   },
   pushReturnOneSuccess: (req_no, sample_no) => {
@@ -809,7 +811,7 @@ const API = {
     const init = {}
     return Api.get(apiName, path, init)
   },
-  putProfile: ({user_type ='B',user_nm, post_no, adres, brand_pos_cd, phone_no, team_user_id, img_url_adres}) => {
+  putProfile: ({user_type ='B',user_nm, post_no, adres, adres_detail,brand_pos_cd, phone_no, team_user_id, img_url_adres}) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/my-profile`;
     let myInit = {
@@ -817,6 +819,7 @@ const API = {
         user_nm: user_nm,
         post_no: post_no,
         adres: adres,
+        adres_detail : adres_detail,
         brand_pos_cd: brand_pos_cd,
         phone_no: phone_no,
         team_user_id: team_user_id,
@@ -828,7 +831,7 @@ const API = {
         body: {
           user_nm: user_nm,
           post_no: post_no,
-          adres: adres,
+          adres: adres,          
           mgzn_pos_cd: brand_pos_cd,
           phone_no: phone_no,
           team_user_id: team_user_id,

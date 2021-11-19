@@ -1,5 +1,5 @@
-import {useEffect} from 'react'
-import codePush from 'react-native-code-push'
+import {useEffect} from 'react';
+import codePush from 'react-native-code-push';
 
 const codePushOptions = {
   installMode: codePush.InstallMode.IMMEDIATE,

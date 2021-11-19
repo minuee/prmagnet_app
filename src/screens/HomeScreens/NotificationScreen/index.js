@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {SafeAreaView, FlatList, View, TouchableOpacity} from 'react-native';
+import {SafeAreaView, FlatList, View, TouchableOpacity,Alert} from 'react-native';
 import {connect} from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import _ from 'lodash';
@@ -33,10 +33,23 @@ class NotificationScreen extends PureComponent {
     }
   }
 
-  deleteAlarm = async (notice_id, i, notifi_type) => {
+  deleteAlarm = async(notice_id, i, notifi_type) => {
+    console.log('deleteAlarm>>>', notice_id,notifi_type)
+    Alert.alert(
+      mConst.appName,
+      '정말로 삭제하시겠습니까?',
+      [
+        {text: '네', onPress: () => this.actionDeleteAlarm(notice_id, i, notifi_type)},
+        {text: '아니오', onPress: () => console.log('no')},
+      ],
+      {cancelable: false},
+    );
+}
+  actionDeleteAlarm = async (notice_id, i, notifi_type) => {
+  
     try {
       const response = await API.deleteAlarm({notice_id: notice_id, notifi_type: notifi_type})
-      //console.log('deleteAlarm>>>', response)
+      console.log('deleteAlarm>>>', response)
       if (response.success) {
         this.setState(state => {
           const resetList = state.list.filter((item, j) => i !== j)
@@ -44,9 +57,11 @@ class NotificationScreen extends PureComponent {
             list: resetList,
           }
         })
+        mUtils.fn_call_toast('삭제되었습니다.');
       }
     } catch (error) {
-      //console.log('deleteAlarm>>>', error)
+      console.log('deleteAlarm>>>', error)
+      mUtils.fn_call_toast('오류가 발생하였습니다.');
     }
   }
 
@@ -117,7 +132,7 @@ class NotificationScreen extends PureComponent {
     }
   }
 
-  renderItem = ({item, index}) => {
+  renderItem = ({item, index}) => {    
     return (
       <View style={styles.itemBox}>
         <TouchableOpacity
@@ -144,7 +159,7 @@ class NotificationScreen extends PureComponent {
         <TouchableOpacity
           hitSlop={{top: 35, bottom: 35, left: 40, right: 40}}
           onPress={() => {
-            this.deleteAlarm(item.notice_id, index, item.notifi_type)
+            this.deleteAlarm(item.notice_id, index, item.notice_type)
           }}
         >
           <FastImage resizeMode={'contain'} style={styles.closeImg} source={closeBtnImage} />

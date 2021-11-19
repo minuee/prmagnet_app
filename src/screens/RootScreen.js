@@ -93,7 +93,9 @@ const tabIconLinkOn2 = require('../images/tabs/tab_link_on_2.png')
 class RootScreen extends PureComponent {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {};
+
+    console.log('RootScreenRootScreen',this.props.simples)
   }
   componentDidMount() {
     SplashScreen.hide()
@@ -269,7 +271,8 @@ class RootScreen extends PureComponent {
 
 export default connect(
   state => ({
-    user: state.user,
+    simples: state.simples,
+    user: state.user
   }),
   dispatch => ({})
 )(RootScreen)

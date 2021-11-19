@@ -118,10 +118,11 @@ class PickupsScreen extends PureComponent {
         element.sample_list.forEach(function(element2,index2){            
           if ( element2.sample_no ) {
             AllData++;
-            targetSampleList.push(element2.sample_no);
-            if ( element2.pickup_yn  ) {
+            if ( element2.pickup_yn ) {
               sendOutData++;
-            }            
+            }else{
+              targetSampleList.push(element2.sample_no);
+            }                
           }
         })
       }
@@ -248,10 +249,11 @@ class PickupsScreen extends PureComponent {
       const {reqNo} = this.params;
       const {data, checkedList, allChecked, loading} = this.state;
       const loaningDate = mUtils.getShowDate(mUtils.get(data, 'loaning_date'));
-      const fromName = mUtils.get(data, 'from_user_nm');
+      const fromName = mUtils.get(data, 'contact_user_nm');
       const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'from_user_phone'));
       const toName = mUtils.get(data, 'to_user_nm');
       const toPhone = mUtils.phoneFormat(mUtils.get(data, 'to_user_phone'));
+      console.log('data',data)
       
       return (
         <SafeAreaView style={styles.container}>

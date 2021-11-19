@@ -11,6 +11,7 @@ const initialState = {
 }
 
 export default function user(state = initialState, action) {
+ 
   switch (action.type) {
     case LOGIN.REQUEST: {
       const data = API.getData(action)
@@ -56,7 +57,8 @@ export default function user(state = initialState, action) {
     case LOGOUT.FAILURE:
     case SIGNUP.FAILURE:
     case WITHDRAW.SUCCESS:
-    case WITHDRAW.FAILURE:
+    case SUBSCRIBE_TYPE.FAILURE:
+    case SIGNUP.FAILURE:
       return initialState
     default:
       return state

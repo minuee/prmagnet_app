@@ -213,7 +213,7 @@ class SampleRequestsListScreen extends React.Component {
           <Loading />
         ) : (
           <>
-            {list ? (
+            {list.length > 0 ? (
               <FlatList
                 bounces={false}
                 style={styles.list}

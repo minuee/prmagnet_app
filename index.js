@@ -26,9 +26,8 @@ Storage.setConfigure(awsmobile)
 
 LogBox.ignoreAllLogs()
 
-const store = configureStore()
-const persistor = persistStore(store)
-
+const store = configureStore();
+const persistor = persistStore(store);
 const App = () => {
   return (
     <MenuProvider>

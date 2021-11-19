@@ -126,11 +126,12 @@ class SendOutScreen extends PureComponent {
       //console.log('data.sample_list',element.sample_list)
       if ( element.sample_list != null ) {
         element.sample_list.forEach(function(element2,index2){            
-          if ( element2.sample_no ) {
+          if ( element2.sample_no ) {      
             AllData++;
-            targetSampleList.push(element2.sample_no);
             if ( element2.sendout_yn ) {
               sendOutData++;
+            }else{
+              targetSampleList.push(element2.sample_no);
             }
           }
         })

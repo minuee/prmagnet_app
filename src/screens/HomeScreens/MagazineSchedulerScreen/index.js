@@ -173,7 +173,7 @@ class MagazineSchedulerScreen extends PureComponent {
                             key={index1}
                             style={{...styles.layout, justifyContent: 'space-between', height: mUtils.wScale(290), marginBottom: mUtils.wScale(35)}}
                           >
-                            <FastImage resizeMode={'contain'} style={styles.modelImg} source={{uri: item1.img_url_adres_array[0]}} />
+                            <FastImage resizeMode={'cover'} style={styles.modelImg} source={{uri: item1.img_url_adres_array[0]}} />
                             <View style={{width: '49%'}}>
                               <View style={{paddingRight: mUtils.wScale(20)}}>
                                 <View style={{...styles.layout1}}>

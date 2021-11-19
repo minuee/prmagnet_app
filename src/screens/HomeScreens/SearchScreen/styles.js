@@ -12,12 +12,28 @@ export default StyleSheet.create({
     paddingBottom: mUtils.wScale(30),
   },
   layout: {
+    flex:1,
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: mUtils.wScale(15),
+    backgroundColor:'#ffff00'
   },
   layout1: {
     marginLeft: mUtils.wScale(16),
+    backgroundColor:'#ff0000'
+  },
+  layoutWrap : {
+    flex:1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: mUtils.wScale(15),    
+  },
+  layoutLeft : {
+    flex:1
+  },
+  layoutRight : {
+    paddingHorizontal: 10,
+    flex:2
   },
   inputTextWrapper: {
     width: '100%',
@@ -43,8 +59,9 @@ export default StyleSheet.create({
     height: mUtils.wScale(18),
   },
   modelImg: {
-    width: 100,
-    height: 100,
+    width: mUtils.wScale(130),
+    maxWidth : '100%',
+    height: mUtils.wScale(150),
     borderStyle: 'solid',
     borderWidth: 0.5,
     borderColor: mConst.borderGray,

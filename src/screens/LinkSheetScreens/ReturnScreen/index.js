@@ -152,9 +152,10 @@ class ReturnScreen extends PureComponent {
         element.sample_list.forEach(function(element2,index2){            
           if ( element2.sample_no ) {
             AllData++;
-            targetSampleList.push(element2.sample_no);
             if ( element2.returncheck_yn ) {
-              sendOutData++;              
+              sendOutData++;
+            }else{
+              targetSampleList.push(element2.sample_no);
             }
           }
         })
@@ -218,21 +219,22 @@ class ReturnScreen extends PureComponent {
     } 
   }
 
-  handleCheckItemAll = () => {
-    const {data,targetSampleList} = this.state
-    const sendPush = async () => {
+  handleCheckItemAll = async() => {
+    const {data,targetSampleList} = this.state;
+    const sendAllPush = async () => {
       try {
-        const response = await API.pushReturnSuccess(_.get(data, 'req_no'),targetSampleList)
+        const response = await API.pushReturnSuccess(_.get(data, 'req_no'),targetSampleList);
         this.setState({allChecked: true});
-        mUtils.fn_call_toast('정상적으로 처리되었습니다.')
+        console.log('전체 수령 푸시 완료22',response);
+        mUtils.fn_call_toast('정상적으로 처리되었습니다.');
         //console.log('전체 수령 푸시 완료')
       } catch (error) {
-        console.log('전체 수령 푸시 실패', error)
-        mUtils.fn_call_toast('처리중 에러가 발생하였습니다.')
+        console.log('전체 수령 푸시 실패', error);
+        mUtils.fn_call_toast('처리중 에러가 발생하였습니다.');
       }
     }
     if (!this.state.allChecked) {
-      this.alert('전체 상품 반납 확인', '전체 상품을 수령(반납확인)하셨습니까?', [{onPress: sendPush}, {}])
+      this.alert('전체 상품 반납 확인', '전체 상품을 수령(반납확인)하셨습니까?', [{onPress: sendAllPush}, {}])
     }
   }
   render() {
@@ -376,7 +378,7 @@ class ReturnScreen extends PureComponent {
                           sendUser={subItem?.use_user_info[0]}
                           returnUser={subItem?.return_user_info[0]}
                           //onPress={() => this.handlePress(toName, subItem.sample_no)}
-                          onPress={() => this.handlePressUnPickup(subItem,roomName,newfromName)}
+                          onPress={() => this.handlePressUnPickup(subItem,roomName,newSendName)}
                           onPressPhone={() => this.handlePressPhone(newtoName, newtoPhone)}                          
                           onSwipeCheck={() => this.handleCheckItem(subItem,roomName,newSendName)}
                           color={mConst.bgKhaki}

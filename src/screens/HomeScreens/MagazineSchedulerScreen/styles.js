@@ -27,7 +27,7 @@ export default StyleSheet.create({
     height: mUtils.wScale(14),
   },
   modelImg: {
-    width: '49%',
+    width: '49%',    
     height: mUtils.wScale(290),
   },
   airplaneImg: {

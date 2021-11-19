@@ -1,21 +1,22 @@
-import React, {PureComponent} from 'react'
-import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity, Pressable, Image, TextInput} from 'react-native'
-import {connect} from 'react-redux'
-import FastImage from 'react-native-fast-image'
-import _ from 'lodash'
-import {Calendar, LocaleConfig} from 'react-native-calendars'
-import moment from 'moment'
+import React, {PureComponent} from 'react';
+import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity, Pressable, Image, TextInput} from 'react-native';
+import {connect} from 'react-redux';
+import {actionSetIsMemoUpdate} from '../../../redux/actions';
+import FastImage from 'react-native-fast-image';
+import _ from 'lodash';
+import {Calendar, LocaleConfig} from 'react-native-calendars';
+import moment from 'moment';
 
-import mConst from '../../../common/constants'
-import mUtils from '../../../common/utils'
-import cBind, {callOnce} from '../../../common/navigation'
-import Text from '../../common/Text'
-import styles from './styles'
-import DropDown from '../../common/DropDown'
-import API from '../../../common/aws-api'
+import mConst from '../../../common/constants';
+import mUtils from '../../../common/utils';
+import cBind, {callOnce} from '../../../common/navigation';
+import Text from '../../common/Text';
+import styles from './styles';
+import DropDown from '../../common/DropDown';
+import API from '../../../common/aws-api';
 
-const moreImg = require('../../../images/navi/more_3.png')
-const checkImg = require('../../../images/navi/check_5.png')
+const moreImg = require('../../../images/navi/more_3.png');
+const checkImg = require('../../../images/navi/check_5.png');
 
 LocaleConfig.locales['en'] = {
   monthNames: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
@@ -24,7 +25,7 @@ LocaleConfig.locales['en'] = {
   dayNamesShort: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
   today: 'Today',
 }
-LocaleConfig.defaultLocale = 'en'
+LocaleConfig.defaultLocale = 'en';
 
 class ScheduleMemoScreen extends PureComponent {
   constructor(props) {
@@ -137,8 +138,9 @@ class ScheduleMemoScreen extends PureComponent {
         color: selectedColor,
         content: desc,
       })
-      //console.log('postMemo>>>>', response)
+      console.log('postMemo>>>>', response)
       if (response.success) {
+        this.props.setIsMemoUpdate(true)
         setTimeout(() => {
           this.alert('추가 완료', '메모를 추가 완료하였습니다.', [{onPress: () => this.goBack()}])
         }, 100)
@@ -158,8 +160,9 @@ class ScheduleMemoScreen extends PureComponent {
         color: selectedColor,
         content: desc,
       })
-      //console.log('putMemo>>>>', response)
+      console.log('putMemo>>>>', response)
       if (response.success) {
+        this.props.setIsMemoUpdate(true)
         setTimeout(() => {
           this.alert('수정 완료', '메모를 수정 완료하였습니다.', [{onPress: () => this.goBack()}])
         }, 100)
@@ -170,13 +173,14 @@ class ScheduleMemoScreen extends PureComponent {
   }
 
   delMemo = async () => {
-    const {memo_no} = this.state
+    const {memo_no} = this.state;
     try {
       const response = await API.delMemo({
         memo_no: memo_no,
       })
       //console.log('delMemo>>>>', response)
       if (response.success) {
+        this.props.setIsMemoUpdate(true)
         setTimeout(() => {
           this.alert('삭제 완료', '메모를 삭제 완료하였습니다.', [{onPress: () => this.goBack()}])
         }, 100)
@@ -338,6 +342,10 @@ class ScheduleMemoScreen extends PureComponent {
 }
 
 export default connect(
-  state => ({}),
-  dispatch => ({})
+  state => ({
+    simples: state.simples,
+  }),
+  dispatch => ({
+    setIsMemoUpdate: data => dispatch(actionSetIsMemoUpdate.request(data)),
+  })
 )(ScheduleMemoScreen)

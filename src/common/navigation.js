@@ -42,6 +42,18 @@ const cBind = reactComp => {
         </View>
       ),
     })
+  reactComp.titleOption = (screenName) =>
+    navigation.setOptions({
+      title: screenName,
+      headerStyle: {backgroundColor: mConst.white, shadowColor: 'transparent', elevation: 0},
+      headerTitleStyle: {fontSize: mUtils.wScale(17), alignSelf: 'center', fontFamily: fontCheck(screenName) ? 'NotoSansKR-Medium' : 'Roboto-Bold'},
+      headerLeft: () => (
+        <TouchableOpacity style={{paddingHorizontal: 20}} onPress={reactComp.pop}>
+          <FastImage style={{width: 9, height: 16}} source={backBtnImage} />
+        </TouchableOpacity>
+      ),
+      headerRight: () => null,
+    })
   reactComp.pushOption = (screenName, headerRight) =>
     navigation.setOptions({
       title: screenName,

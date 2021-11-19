@@ -1,7 +1,7 @@
 import {call, put, takeEvery, all, fork} from 'redux-saga/effects'
 import _ from 'lodash'
 
-import {actionLogin, actionSignup} from './actions'
+import {actionLogin, actionSignup,actionSetIsMemoUpdate} from './actions'
 import API from '../common/services'
 
 /** *************************************************************************** */
@@ -31,10 +31,9 @@ function* login(data) {
     // yield commonFn(actionProfile, API.getProfile, {token})
   }
 }
-function* signup(data) {
+function* signup(data) {  
   yield commonFn(actionSignup, API.signup, data)
 }
-
 /** *************************************************************************** */
 /** ***************************** WATCHERS ************************************ */
 /** *************************************************************************** */
@@ -45,6 +44,7 @@ function* watchLogin() {
 function* watchSignup() {
   yield takeEvery(actionSignup.request().type, signup)
 }
+
 
 export default function* rootSaga() {
   yield all([fork(watchLogin), fork(watchSignup)])

@@ -2,6 +2,7 @@
 import React, {PureComponent} from 'react';
 import {SafeAreaView, View, TouchableWithoutFeedback, TouchableOpacity, TextInput, FlatList, ScrollView, Pressable} from 'react-native';
 import {connect} from 'react-redux';
+import {actionSetIsMemoUpdate} from '../../../redux/actions';
 import FastImage from 'react-native-fast-image';
 import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-menu';
 import _ from 'lodash';
@@ -52,6 +53,18 @@ class BrandSchedulerScreen extends PureComponent {
       toggle: [],
     }
   }
+  
+  async UNSAFE_componentWillMount() {    
+    this.props.navigation.addListener('focus', () => {   
+        console.log('focusfocusfocusfocussimples',this.props.simples.isMemoUpdate);        
+        if ( this.props.simples.isMemoUpdate ) {
+          this.getSchedular();
+          this.props.setIsMemoUpdate(false)
+        }
+        
+    })
+  }
+
   componentDidMount() {
     
     if ( this.props.user.subScrbeStatus ) {
@@ -350,6 +363,9 @@ class BrandSchedulerScreen extends PureComponent {
 export default connect(
   state => ({
     user: state.user,
+    simples: state.simples,
   }),
-  dispatch => ({})
+  dispatch => ({
+    setIsMemoUpdate: data => dispatch(actionSetIsMemoUpdate(data)),
+  })
 )(BrandSchedulerScreen)

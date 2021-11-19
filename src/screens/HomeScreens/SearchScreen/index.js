@@ -36,13 +36,18 @@ class SearchScreen extends PureComponent {
   mapList = list => {
     return list.map((item, index) => {
       return (
-        <View key={index} style={styles.layout}>
-          <FastImage resizeMode={'contain'} style={styles.modelImg} source={{uri: item.img_url_adres}} />
-          <View style={styles.layout1}>
+        <TouchableOpacity 
+          key={index} style={styles.layoutWrap}
+          onPress={() => {this.pushTo('DigitalSRDetailScreen', {no: item.showroom_no, type: 'digital',title:item.title})}}
+        >
+          <View style={styles.layoutLeft}>
+            <FastImage resizeMode={'cover'} style={styles.modelImg} source={{uri: item.img_url_adres}} />
+          </View>          
+          <View style={styles.layoutRight}>
             <Text style={styles.brand}>{item.title}</Text>
             <Text style={styles.dt}>{item.subtitle}</Text>
           </View>
-        </View>
+        </TouchableOpacity>
       )
     })
   }

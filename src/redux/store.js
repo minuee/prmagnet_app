@@ -1,13 +1,13 @@
-import {createStore, applyMiddleware} from 'redux'
-import {composeWithDevTools} from 'redux-devtools-extension'
-import createSagaMiddleware, {END} from 'redux-saga'
-import {persistReducer} from 'redux-persist'
-import hardSet from 'redux-persist/lib/stateReconciler/hardSet'
-import AsyncStorage from '@react-native-community/async-storage'
+import {createStore, applyMiddleware} from 'redux';
+import {composeWithDevTools} from 'redux-devtools-extension';
+import createSagaMiddleware, {END} from 'redux-saga';
+import {persistReducer} from 'redux-persist';
+import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
+import AsyncStorage from '@react-native-community/async-storage';
 
-import rootSaga from './sagas'
-import reducer from './reducers'
-import mkConst from '../common/constants'
+import rootSaga from './sagas';
+import reducer from './reducers';
+import mkConst from '../common/constants';
 
 const persistConfig = {
   key: 'root',
@@ -15,7 +15,7 @@ const persistConfig = {
   stateReconciler: hardSet,
 }
 
-const persistedReducer = persistReducer(persistConfig, reducer)
+const persistedReducer = persistReducer(persistConfig, reducer);
 
 export default function configureStore(initialState) {
   const sagaMiddleware = createSagaMiddleware()
@@ -26,8 +26,9 @@ export default function configureStore(initialState) {
     initialState,
     mkConst.PRODUCTION || mkConst.STAGE ? applyMiddleware(...middlewares) : composeWithDevTools(applyMiddleware(...middlewares))
   )
-
-  sagaMiddleware.run(rootSaga)
-  store.close = () => store.dispatch(END)
+ 
+  sagaMiddleware.run(rootSaga);
+  store.close = () => store.dispatch(END);
+  //console.log('store.getStatestore.getStatestore.222',store.getState())
   return store
 }
