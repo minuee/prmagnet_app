@@ -9,10 +9,30 @@ export default StyleSheet.create({
     backgroundColor: mConst.white,
   },
   layout: {
+    flex:1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: mUtils.wScale(10),
+  },
+  layout2: {
+    flex:1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: mUtils.wScale(20),
+  },
+  layoutLeft : {
+    flex:1,
+    alignItems:'flex-start',
+    minHeight:35
+  },
+  layoutRight : {
+    flex:3,
+    alignItems:'flex-end', 
+    
+    justifyContent:'center',
+    minHeight:35
   },
   layout1: {
     width: '100%',
@@ -55,6 +75,7 @@ export default StyleSheet.create({
     fontSize: 14,
     textAlign: 'left',
     color: mConst.black,
+   
   },
   right: {
     fontFamily: 'Roboto-Regular',

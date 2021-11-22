@@ -91,7 +91,7 @@ class LookBookDetailScreen extends PureComponent {
         <View style={{width: '100%', height: mUtils.wScale(275)}}>
           <Pressable
             onPressOut={() => {
-              this.pushTo('DigitalSRDetailScreen', {no: item.showroom_no, lookNo: lookbook_no, type: 'lookbook'})
+              this.pushTo('DigitalSRDetailScreen', {no: item.showroom_no, lookNo: lookbook_no, type: 'lookbook',title:item.showroom_nm})
             }}
           >
             {({pressed}) => (

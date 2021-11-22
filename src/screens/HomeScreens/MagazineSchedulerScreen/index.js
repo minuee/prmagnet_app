@@ -119,7 +119,7 @@ class MagazineSchedulerScreen extends PureComponent {
               }}
               style={{...styles.byBox, backgroundColor: boolean ? '#070708' : 'rgba(0, 0, 0, 0.2)'}}
             >
-              <Text style={styles.by}>By Dates</Text>
+              <Text style={styles.by}>날짜 별</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
@@ -127,7 +127,7 @@ class MagazineSchedulerScreen extends PureComponent {
               }}
               style={{...styles.byBox, backgroundColor: !boolean ? '#070708' : 'rgba(0, 0, 0, 0.2)', marginLeft: mUtils.wScale(5)}}
             >
-              <Text style={styles.by}>By Brands</Text>
+              <Text style={styles.by}>브랜드 별</Text>
             </TouchableOpacity>
           </View>
         </View>

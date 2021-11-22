@@ -140,8 +140,12 @@ class DigitalSRDetailScreen extends PureComponent {
 
                   <View style={styles.emptyBar} />
                   <View style={styles.layout}>
-                    <Text style={styles.left}>Sample name</Text>
-                    <Text style={{...styles.right}}>{item.sample_nm}</Text>
+                    <View style={styles.layoutLeft}> 
+                      <Text style={styles.left}>Sample name</Text>
+                    </View>
+                    <View style={styles.layoutRight}> 
+                      <Text style={{...styles.right}}>{item.sample_nm}</Text>
+                    </View>
                                       
                   </View>
                   {/* <View style={styles.layout}>
@@ -159,46 +163,82 @@ class DigitalSRDetailScreen extends PureComponent {
                     }  
                   </View> */}
                   <View style={styles.layout}>
-                    <Text style={styles.left}>Season</Text>
-                    <Text style={{...styles.right}}>{data.season_text}</Text>
+                    <View style={styles.layoutLeft}> 
+                      <Text style={styles.left}>Season</Text>
+                    </View>
+                    <View style={styles.layoutRight}> 
+                      <Text style={{...styles.right}}>{data.season_text}</Text>
+                    </View>
                   </View>
                   <View style={styles.layout}>
-                    <Text style={styles.left}>Gender</Text>
-                    <Text style={{...styles.right}}>{item.gender_text}</Text>
+                    <View style={styles.layoutLeft}> 
+                      <Text style={styles.left}>Gender</Text>
+                    </View>
+                    <View style={styles.layoutRight}> 
+                      <Text style={{...styles.right}}>{item.gender_text}</Text>
+                    </View>
                   </View>
                   <View style={styles.layout}>
-                    <Text style={styles.left}>Category</Text>
-                    <Text style={{...styles.right}}>{item.category_middle_text}</Text>
+                    <View style={styles.layoutLeft}> 
+                      <Text style={styles.left}>Category</Text>
+                    </View>
+                    <View style={styles.layoutRight}> 
+                      <Text style={{...styles.right}}>{item.category_middle_text}</Text>
+                    </View>
                   </View>
                   <View style={styles.layout}>
-                    <Text style={styles.left}>Color</Text>
-                    <Text style={{...styles.right}}>{item.color_text}</Text>
+                    <View style={styles.layoutLeft}> 
+                      <Text style={styles.left}>Color</Text>
+                    </View>
+                    <View style={styles.layoutRight}> 
+                      <Text style={{...styles.right}}>
+                        {item.color_text.map((d, i) =>
+                          i === item.color_text.length - 1 ? d : d + ", "
+                        )}
+                       </Text>
+                    </View>
                   </View>
                   <View style={styles.layout}>
-                    <Text style={styles.left}>Size</Text>
-                    <Text style={{...styles.right}}>{item.size_direct_input}</Text>
+                    <View style={styles.layoutLeft}> 
+                      <Text style={styles.left}>Size</Text>
+                    </View>
+                    <View style={styles.layoutRight}> 
+                      <Text style={{...styles.right}}>{item.size_direct_input}</Text>
+                    </View>
                   </View>
                   <View style={styles.layout}>
-                    <Text style={styles.left}>Material</Text>
-                    <Text style={{...styles.right}}>{item.material_text}</Text>
+                    <View style={styles.layoutLeft}> 
+                      <Text style={styles.left}>Material</Text>
+                    </View>
+                    <View style={styles.layoutRight}> 
+                      <Text style={{...styles.right}}>{item.material_text}</Text>
+                    </View>
                   </View>
                   <View style={styles.layout}>
-                    <Text style={styles.left}>Price</Text>
-                    <Text style={{...styles.right}}>{mUtils.numberWithCommas(item.price)}원</Text>
+                    <View style={styles.layoutLeft}> 
+                      <Text style={styles.left}>Price</Text>
+                    </View>
+                    <View style={styles.layoutRight}> 
+                      <Text style={{...styles.right}}>{mUtils.numberWithCommas(item.price)}원</Text>
+                    </View>
                   </View>
                   <View style={styles.layout}>
-                    <Text style={styles.left}>샘플 입고</Text>
-                    <FastImage resizeMode={'contain'} style={styles.checkImg} source={item.in_yn ? checkImg : noCheckImg} />
+                    <View style={styles.layoutLeft}> 
+                      <Text style={styles.left}>샘플 입고</Text>
+                    </View>
+                    <View style={styles.right}> 
+                      <FastImage resizeMode={'contain'} style={styles.checkImg} source={item.in_yn ? checkImg : noCheckImg} />
+                    </View>
                   </View>
 
-                  <Text style={styles.left}>Caption</Text>
+                  <Text style={styles.left2}>Caption</Text>
                   <View style={{...styles.layout1, marginTop: mUtils.wScale(10)}}>
                     <Text style={styles.desc}>{item.caption_korean}</Text>
                   </View>
                   <View style={{...styles.layout1, marginTop: mUtils.wScale(6), marginBottom: mUtils.wScale(13)}}>
                     <Text style={styles.desc}>{item.caption_english}</Text>
                   </View>
-                  <Text style={styles.left}>기타 사항</Text>
+                  <Text style={styles.left2}>기타 사항</Text>
                   <View style={{...styles.layout2, marginTop: mUtils.wScale(10), marginBottom: mUtils.wScale(30)}}>
                     <Text style={styles.desc}>{item.etc}</Text>
                   </View>

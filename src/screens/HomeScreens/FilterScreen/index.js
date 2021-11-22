@@ -18,7 +18,8 @@ import BrandGroup from '../../common/BrandGroup'
 import styles from './styles'
 
 const genderSection = {여성: 'Women', 남성: 'Men', 유니섹스: 'Unisex'}
-const sections = ['Brand', 'Category', 'Color', 'Size', 'Sample', 'Still Life Image', 'Material']
+//const sections = ['Brand', 'Category', 'Color', 'Size', 'Sample', 'Still Life Image', 'Material']
+const sections = ['Brand', 'Category', 'Color', 'Size', 'Material']
 
 class FilterScreen extends PureComponent {
   constructor(props) {
@@ -147,13 +148,13 @@ class FilterScreen extends PureComponent {
                     hide={section !== 'Size'}
                     setFilter={this.toggleStateList('size')}
                   />
-                  <FlagGroup value={sample} hide={section !== 'Sample'} name={'샘플'} setFilter={this.handleSetState('sample')} />
+                  {/* <FlagGroup value={sample} hide={section !== 'Sample'} name={'샘플'} setFilter={this.handleSetState('sample')} />
                   <FlagGroup
                     value={stillLifeImg}
                     hide={section !== 'Still Life Image'}
                     name={'누끼컷'}
                     setFilter={this.handleSetState('stillLifeImg')}
-                  />
+                  /> */}
                   <MaterialGroup data={data.material} value={material} hide={section !== 'Material'} setFilter={this.toggleStateList('material')} />
                 </Col>
               </Row>

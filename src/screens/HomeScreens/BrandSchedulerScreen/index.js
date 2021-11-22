@@ -82,7 +82,7 @@ class BrandSchedulerScreen extends PureComponent {
         season_cd_id: this.state.season_year.season_cd_id || null,
         gender: this.state.gender.value || null,
       })
-      //console.log('getSchedular>>>>', JSON.stringify(response))
+      console.log('getSchedular>>>>', JSON.stringify(response))
       this.setState(prevState => ({
         data: response,
         start: params?.start || this.state.start,

@@ -74,6 +74,14 @@ export default StyleSheet.create({
     left: 6,
     zIndex: 1,
   },
+  mainImg: {
+    width: mUtils.wScale(30),
+    height: mUtils.wScale(30),
+    position: 'absolute',
+    top: 2,
+    right: 2,
+    zIndex: 1,
+  },
   likeTouch: {
     position: 'absolute',
     top: 6,

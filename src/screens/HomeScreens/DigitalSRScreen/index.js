@@ -17,6 +17,7 @@ import Empty from '../../common/Empty';
 import NonSubscribe from '../../common/NonSubscribe';
 
 const newImg = require('../../../images/navi/new_1.png');
+const MainIcon = require('../../../images/navi/main_icon.png');
 const notiImg = require('../../../images/navi/noti_1.png');
 const telImg = require('../../../images/navi/tel_1.png');
 const fixImg = require('../../../images/navi/fix_1.png');
@@ -302,6 +303,11 @@ class DigitalSRScreen extends PureComponent {
           ) : item.is_new ? (
             <FastImage resizeMode={'contain'} style={styles.newImg} source={newImg} />
           ) : null}
+          { (userType == 'B' && item.mfrc_sample_yn ) && (
+            <FastImage resizeMode={'contain'} style={styles.mainImg} source={MainIcon} />
+          )
+          }
+
 
           {userType !== 'B' &&
             (item?.is_fav ? (

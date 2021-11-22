@@ -150,7 +150,7 @@ class FilterSettingScreen extends PureComponent {
               style={styles.numberBox}
               placeholder={'02-2222-2222'}
               placeholderTextColor={mConst.gray}
-              value={mUtils.allNumber(inquiryNum)}
+              value={mUtils.isEmpty(inquiryNum) ? null : mUtils.allNumber(inquiryNum)}
               onChangeText={text => {
                 this.setState({inquiryNum: text})
               }}
@@ -164,8 +164,8 @@ class FilterSettingScreen extends PureComponent {
               keyboardType={'number-pad'}
               style={styles.numberBox}
               placeholder={'02-2222-2222'}
-              placeholderTextColor={mConst.gray}
-              value={mUtils.allNumber(SRInquiryNum)}
+              placeholderTextColor={mConst.gray}              
+              value={mUtils.isEmpty(SRInquiryNum) ? null : mUtils.allNumber(SRInquiryNum)}
               onChangeText={text => {
                 this.setState({SRInquiryNum: text})
               }}
