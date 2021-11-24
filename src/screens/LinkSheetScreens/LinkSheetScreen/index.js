@@ -56,7 +56,7 @@ class LinkSheetScreen extends React.Component {
 
     handleOnFocus = params => {
         const moreLoading = this.state.moreLoading;
-        this.setState({selectDate:[]})
+        this.setState({selectDate:[],totalCount:0})
         if ( this.props.user.subScrbeStatus ) {
             this.setState({loading: moreLoading? false : true}, () => {
                 const {brandId} = this.state;
@@ -100,10 +100,10 @@ class LinkSheetScreen extends React.Component {
                 // console.log('###Sendout 스케쥴 조회 params:', {start_date: start, fin_date: end, brand_id: brandId})
                 const response = await API.getSendoutSchedule({start_date: start, fin_date: end, brand_id: brandId})
                 this.setState({dataList: _.get(response, 'list', []), loading: false,moreLoading:false})
-                //console.log('Sendout 스케쥴 조회 성공', JSON.stringify(response))
+                console.log('Sendout 스케쥴 조회 성공22', JSON.stringify(response))
             } catch (error) {
                 this.setState({loading: false,moreLoading:false})
-                //console.log('Sendout 스케쥴 조회 실패', error)
+                console.log('Sendout 스케쥴 조회 실패', error)
             }
         }
     }
@@ -127,10 +127,11 @@ class LinkSheetScreen extends React.Component {
     handleLinkSheetDetail = async() => {
         const {selectTitle, selectDate, dataList} = this.state;
         //const selectEachList = dataList.flatMap(data => (selectDate.includes(data.date) ? data.each_list : []))
-        //console.log('handleLinkSheetDetail', selectEachList)
+        
         const selectDate2 = await selectDate.sort(function(a, b) {
             return a.date > b.date;
           });
+          console.log('handleLinkSheetDetail', selectDate2)
           //console.log('selectDate2selectDate2', selectDate2)
         if (selectTitle === 'Send Out') {
             if ( mConst.getUserType() == 'B' ) {
@@ -149,10 +150,14 @@ class LinkSheetScreen extends React.Component {
     fn_selectDate = async(data) => {
         const count = data.each_list.length;        
         const {selectDate, totalCount} = this.state;
-        //console.log('seledDAte',data,totalCount)
+        console.log('seledDAte',data,totalCount)
         let showroomData = [];
+        let reqNoData = [];
         await data.each_list.forEach((item,i) => 
-            showroomData.push(item.showroom_list[0].showroom_no)
+            {
+                showroomData.push(item.showroom_list[0].showroom_no);
+                reqNoData.push(item.showroom_list[0].req_no);;
+            }
         )
         
         let op = await selectDate.filter(item => (item.date === data.date));
@@ -160,7 +165,7 @@ class LinkSheetScreen extends React.Component {
 
         if (op.length === 0) {
             this.setState({
-                selectDate: [...selectDate,{date:data.date,showroom_list : showroomData}],
+                selectDate: [...selectDate,{date:data.date,showroom_list : showroomData,req_no_list : reqNoData}],
                 totalCount: totalCount + Number(count)                
             })
         } else {            
@@ -348,8 +353,7 @@ class LinkSheetScreen extends React.Component {
                                     _.map(item.each_list, (subItem2, subIndex) => {
                                         
                                         if ( !mUtils.isEmpty(subItem2.showroom_list[0])) {
-                                            const subItem = subItem2.showroom_list[0];
-                                            console.log('subItem.showroom_no', subItem.req_no,subItem.showroom_no)
+                                            const subItem = subItem2.showroom_list[0];                                            
                                             return (
                                                 <TouchableOpacity
                                                     key={subIndex}

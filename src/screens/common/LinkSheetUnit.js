@@ -26,14 +26,15 @@ export default class LinkSheetUnit extends PureComponent {
 
     render() {
         const {swiped} = this.state;
-        const {name, phone, unitType,viewType,onPress, onPressPhone, onSwipeCheck, color, checked, readOnly,sendUser,returnUser} = this.props;        
+        const {name, phone, unitType,viewType,onPress, onPressPhone, onSwipeCheck, color, checked, readOnly,sendUser,returnUser,subData,loaningDate} = this.props;        
         if ( viewType === 'sendout' ) {
             if (unitType === 'to') {
+                console.log('ddddd222',mUtils.convertUnixToDate(loaningDate),mUtils.dateToDate(subData.sendout_dt))
                 return (
                     <>
                         <Row style={styles.row(color)}>
                             <Text style={styles.sText()} numberOfLines={1}>              
-                                {mUtils.isEmpty(returnUser.user_nm) ? name :  returnUser.user_nm} {!mUtils.isEmpty(returnUser.mgzn_nm) && returnUser.mgzn_nm}
+                                {mUtils.isEmpty(returnUser.user_nm) ? name :  returnUser.user_nm} {!mUtils.isEmpty(returnUser.mgzn_nm) && returnUser.mgzn_nm}                              
                             </Text>
                         </Row>
                         <Pressable onPress={onPressPhone}>
@@ -50,6 +51,7 @@ export default class LinkSheetUnit extends PureComponent {
                     </>
                 )
             }
+            console.log('ddddd',sendUser)
             return (
                 <>
                     <SwiperUnit onSwipeLeft={() => this.onSwipe('left')} onSwipeRight={() => this.onSwipe('right')}>
@@ -60,7 +62,11 @@ export default class LinkSheetUnit extends PureComponent {
                                     <Col style={styles.col(1, true, color, checked)} size={3}>
                                         <Text style={styles.sText()} numberOfLines={1}>
                                             {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm} {!mUtils.isEmpty(sendUser.mgzn_nm) && sendUser.mgzn_nm}
-                                            
+                                            { mUtils.convertUnixToDate(loaningDate) != mUtils.dateToDate(subData.sendout_dt) &&
+                                                <Text style={styles.sText()}>
+                                                    {"\n"}발송일({mUtils.dateToDate(subData.sendout_dt)})
+                                                </Text>
+                                            }
                                         </Text>
                                     </Col>
                                     <Col style={styles.col(1, true, checked ? color : mConst.white, checked)} size={1}>
@@ -73,9 +79,21 @@ export default class LinkSheetUnit extends PureComponent {
                             {
                                 ({pressed}) => (
                                     <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : color)}>
-                                        <Text style={styles.sText()} numberOfLines={1}>
-                                            {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm} {!mUtils.isEmpty(sendUser.mgzn_nm) && sendUser.mgzn_nm}
+                                        { 
+                                        mUtils.convertUnixToDate(loaningDate) != mUtils.dateToDate(subData.sendout_dt) ?
+                                        <Text style={styles.sText()} numberOfLines={2}>
+                                            {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm} {!mUtils.isEmpty(sendUser.position) && sendUser.position}
+                                            { mUtils.convertUnixToDate(loaningDate) != mUtils.dateToDate(subData.sendout_dt) &&
+                                                <Text style={styles.sText()}>
+                                                    {"\n"}발송일({mUtils.dateToDate(subData.sendout_dt)})
+                                                </Text>
+                                            }
                                         </Text>
+                                        :
+                                        <Text style={styles.sText()} numberOfLines={1}>
+                                            {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm} {!mUtils.isEmpty(sendUser.position) && sendUser.position}
+                                        </Text>
+                                        }
                                     </Row>
                                 )
                             }
@@ -88,7 +106,6 @@ export default class LinkSheetUnit extends PureComponent {
                             ({pressed}) => (
                             <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : mConst.white)}>
                                 <Text style={styles.sText(mConst.darkGray)}>
-                                    
                                     {mUtils.isEmpty(sendUser.phone_no) ? phone : mUtils.phoneFormat(sendUser.phone_no)}
                                 </Text>
                             </Row>
@@ -99,13 +116,26 @@ export default class LinkSheetUnit extends PureComponent {
             )
         }else{
             if (unitType === 'from') {
+                
                 return (
                     <>
                         <Row style={styles.row(color)}>
-                            <Text style={styles.sText()} numberOfLines={1}>              
-                                {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm} {!mUtils.isEmpty(sendUser.mgzn_nm) && sendUser.mgzn_nm}
+                            { mUtils.convertUnixToDate(loaningDate) != mUtils.dateToDate(subData.sendout_dt) ?
+                            <Text style={styles.sText()} numberOfLines={2}>              
+                                {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm} {!mUtils.isEmpty(sendUser.mgzn_nm) && sendUser.mgzn_nm} 
+                                { mUtils.convertUnixToDate(loaningDate) != mUtils.dateToDate(subData.sendout_dt) &&
+                                    <Text style={styles.sText()}>
+                                        {"\n"}픽업일({mUtils.dateToDate(subData.sendout_dt)})
+                                    </Text>
+                                }
                             </Text>
+                            :
+                            <Text style={styles.sText()} numberOfLines={1}>
+                                {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm} {!mUtils.isEmpty(sendUser.mgzn_nm) && sendUser.mgzn_nm}                                 
+                            </Text>
+                            }
                         </Row>
+                        
                         <Pressable onPress={onPressPhone}>
                         {
                             ({pressed}) => (

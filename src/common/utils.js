@@ -101,6 +101,9 @@ const utils = {
       (Math.floor(parseFloat(x) * Math.pow(10, TO_FIXED_POS)) - Math.floor(parseFloat(y) * Math.pow(10, TO_FIXED_POS))) / Math.pow(10, TO_FIXED_POS)
     )
   },
+  convertUnixToDate(unix,reform) {
+    return moment.unix(unix).format("YYYY-MM-DD");
+  },
   getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min
   },

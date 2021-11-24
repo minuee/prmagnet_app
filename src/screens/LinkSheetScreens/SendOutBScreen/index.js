@@ -83,16 +83,16 @@ class SendOutScreen extends PureComponent {
   }
 
   handleLoadDataArray = async(item,nextIndex) => {      
-    //console.log('handleLoadDataArray222', item)
+    console.log('handleLoadDataArrayy', item)
     try {
-      const response = await API.getSendoutArrayDetail(item.date,item.showroom_list);
+      const response = await API.getSendoutArrayDetail(item.date,item.showroom_list,item.req_no_list);
       const dataTmp = await _.get(response, 'right');
-      //console.log('픽업 스케쥴 상세 조회 성공', dataTmp)
+      console.log('handleLoadDataArray픽업 스케쥴 상세 조회 성공', dataTmp)
       await this.allSendOutCheck(dataTmp);
       this.setState({data: dataTmp[0], listIndex : nextIndex})
       
     } catch (error) {      
-      //console.log('픽업 스케쥴 상세 조회 실패', error)
+      console.log('센드아웃 스케쥴 상세 조회 실패', error)
     }
   }
 
@@ -123,12 +123,13 @@ class SendOutScreen extends PureComponent {
       targetList = data[0].showroom_list;
     }
     await targetList.forEach(function(element,index){     
-      //console.log('data.sample_list',element.sample_list)
+      
       if ( element.sample_list != null ) {
         element.sample_list.forEach(function(element2,index2){            
+          console.log('data.element2',element2)
           if ( element2.sample_no ) {      
             AllData++;
-            if ( element2.sendout_yn ) {
+            if ( element2.sendout_yn || element2.sendout_userid_type !== 'RUS000' ) {
               sendOutData++;
             }else{
               targetSampleList.push(element2.sample_no);
@@ -201,7 +202,7 @@ class SendOutScreen extends PureComponent {
     const {data,targetSampleList} = this.state;
     const sendPush = async () => {
       try {
-        const response = await API.pushSendout(_.get(data, 'req_no'), _.get(data, 'showroom_list.length'),targetSampleList)
+        const response = await API.pushSendout(_.get(data, 'req_no'),targetSampleList.length,targetSampleList)
         this.setState({allChecked: true})
         mUtils.fn_call_toast('정상적으로 처리되었습니다.')
       } catch (error) {
@@ -216,6 +217,7 @@ class SendOutScreen extends PureComponent {
   render() {
     const {reqNo} = this.params;
     const {data, checkedList, allChecked, loading} = this.state;
+
     const returning_date = mUtils.getShowDate(mUtils.get(data, 'returning_date'));
     const loaning_date = mUtils.getShowDate(mUtils.get(data, 'loaning_date'));
     const fromName = mUtils.get(data, 'from_user_nm');
@@ -236,8 +238,8 @@ class SendOutScreen extends PureComponent {
               </TouchableOpacity>
             )}
             <View style={styles.titleSubWrapper}>
-              <Text style={styles.titleSubText}>
-                {returning_date}
+              <Text style={styles.titleSubText}>                
+                {this.props.user.userType === 'B' ? loaning_date : returning_date}
               </Text>
             </View>
             {_.isEmpty(reqNo) && (

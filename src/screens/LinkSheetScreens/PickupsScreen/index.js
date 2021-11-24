@@ -80,13 +80,13 @@ class PickupsScreen extends PureComponent {
   }
   handleLoadDataArray = async(item,nextIndex) => {      
     try {
-      const response = await API.getPickupArrayDetail(item.date,item.showroom_list);
+      const response = await API.getPickupArrayDetail(item.date,item.showroom_list,item.req_no_list);
       const dataTmp = await _.get(response, 'right');
       await this.allSendOutCheck(dataTmp)
       this.setState({data: dataTmp[0], listIndex : nextIndex})
       //console.log('픽업 스케쥴 상세 조회 성공', JSON.stringify(_.get(response, 'right')))
     } catch (error) {      
-      //console.log('픽업 스케쥴 상세 조회 실패', error)
+      console.log('픽업 스케쥴 상세 조회 실패 Ma', error)
     }
   }
   handleLoadData = async listIndex => {
@@ -248,7 +248,8 @@ class PickupsScreen extends PureComponent {
     }else{
       const {reqNo} = this.params;
       const {data, checkedList, allChecked, loading} = this.state;
-      const loaningDate = mUtils.getShowDate(mUtils.get(data, 'loaning_date'));
+      const srcLoaningDate = mUtils.get(data, 'loaning_date');
+      const loaningDate = mUtils.getShowDate(srcLoaningDate);
       const fromName = mUtils.get(data, 'contact_user_nm');
       const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'from_user_phone'));
       const toName = mUtils.get(data, 'to_user_nm');
@@ -357,6 +358,8 @@ class PickupsScreen extends PureComponent {
                             phone={fromPhone}
                             viewType={'pickup'}
                             unitType={'from'}
+                            loaningDate={srcLoaningDate}
+                            subData={subItem}
                             sendUser={subItem?.send_user_info[0]}
                             returnUser={subItem?.send_user_info[0]}
                             onPress={() => this.handlePressUnPickup(subItem,roomName,newfromName)}
@@ -382,6 +385,8 @@ class PickupsScreen extends PureComponent {
                             phone={toPhone}
                             unitType={'to'}
                             viewType={'pickup'}
+                            loaningDate={srcLoaningDate}
+                            subData={subItem}
                             sendUser={subItem?.use_user_info[0]}
                             returnUser={subItem?.use_user_info[0]}
                             onSwipeCheck={() => this.handleCheckItem(subItem,roomName,newtoName)}

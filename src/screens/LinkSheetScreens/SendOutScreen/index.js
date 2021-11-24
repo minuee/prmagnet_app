@@ -12,7 +12,6 @@ import cBind, {callOnce} from '../../../common/navigation';
 import API from '../../../common/aws-api';
 import Text from '../../common/Text';
 import LinkSheetUnit from '../../common/LinkSheetUnit';
-import LinkSheetBrandUnit from '../../common/LinkSheetBrandUnit';
 import Loading from '../../common/Loading';
 import MoreLoading from '../../common/MoreLoading';;
 import styles from './styles';
@@ -83,16 +82,16 @@ class SendOutScreen extends PureComponent {
   }
 
   handleLoadDataArray = async(item,nextIndex) => {      
-    //console.log('handleLoadDataArray222', item)
+    console.log('handleLoadDataArray222 Magazine', item,nextIndex)
     try {
-      const response = await API.getSendoutArrayDetail(item.date,item.showroom_list);
+      const response = await API.getSendoutArrayDetail(item.date,item.showroom_list,item.req_no_list);
       const dataTmp = await _.get(response, 'right');
-      //console.log('픽업 스케쥴 상세 조회 성공', dataTmp)
+      console.log('픽업 스케쥴 상세 조회 성공', dataTmp)
       await this.allSendOutCheck(dataTmp);
       this.setState({data: dataTmp[0], listIndex : nextIndex})
       
     } catch (error) {      
-      //console.log('픽업 스케쥴 상세 조회 실패', error)
+      console.log('픽업 스케쥴 상세 조회 실패 Magazine', error)
     }
   }
 
@@ -217,7 +216,7 @@ class SendOutScreen extends PureComponent {
     const {data,targetSampleList} = this.state;
     const sendPush = async () => {
       try {
-        const response = await API.pushSendout(_.get(data, 'req_no'), _.get(data, 'showroom_list.length'),targetSampleList)
+        const response = await API.pushSendout(_.get(data, 'req_no'), targetSampleList.length,targetSampleList)
         this.setState({allChecked: true})
         mUtils.fn_call_toast('정상적으로 처리되었습니다.')
       } catch (error) {
@@ -232,8 +231,10 @@ class SendOutScreen extends PureComponent {
   render() {
     const {reqNo} = this.params;
     const {data, checkedList, allChecked, loading} = this.state;
-    const returning_date = mUtils.getShowDate(mUtils.get(data, 'returning_date'));
-    const loaning_date = mUtils.getShowDate(mUtils.get(data, 'loaning_date'));
+    const srcReturning_date = mUtils.get(data, 'returning_date');
+    const returning_date = mUtils.getShowDate(srcReturning_date);
+    const srcLoaningDate = mUtils.get(data, 'loaning_date');
+    const loaningDate = mUtils.getShowDate(srcLoaningDate);
     const fromName = mUtils.get(data, 'from_user_nm');
     const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'from_user_phone'));
     const toName = mUtils.get(data, 'to_user_nm');
@@ -348,7 +349,9 @@ class SendOutScreen extends PureComponent {
                           name={fromName}
                           phone={fromPhone}
                           unitType={'from'}    
-                          viewType={'sendout'}                        
+                          viewType={'sendout'}     
+                          loaningDate={srcReturning_date}
+                          subData={subItem}                   
                           sendUser={subItem?.use_user_info[0] }
                           returnUser={subItem?.return_user_info[0]}
                           onPress={() => null}
@@ -372,6 +375,8 @@ class SendOutScreen extends PureComponent {
                           phone={toPhone}
                           unitType={'to'}
                           viewType={'sendout'}
+                          loaningDate={srcReturning_date}
+                          subData={subItem}
                           sendUser={subItem?.return_user_info[0]}
                           returnUser={subItem?.return_user_info[0]}
                           onPress={() => null}

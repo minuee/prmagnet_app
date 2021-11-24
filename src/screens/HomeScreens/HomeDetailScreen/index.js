@@ -89,39 +89,43 @@ class HomeDetailScreen extends PureComponent {
   getHomeTR = async (nextpage = 1,type) => {
     console.log('getHomeTR',type);
     const date = Math.floor(new Date().getTime() / 1000);
-    const {page, limit, data} = this.state;
+    const {page, limit, data,total_count} = this.state;
     let strType = 'SENDOUT';
     if ( mConst.getUserType() === 'B' ) {
       strType = type == 'sendout' ? 'SENDOUT' : 'RETURN';
     }else{
       strType = type == 'pickups' ? 'SENDOUT' : 'RETURN';
     }
-    try {
-      const response = await API.getHomeTR({date: date, type : strType,page: nextpage, limit: limit})
-      console.log('getHomeTR>>>', response)
-      if (response.success) {
-        this.setState({loading: false}, () => {
-          /* if (mConst.getUserType() === 'B') {
-            if (response.today_request.length > 0) {
-              this.setState({
-                data: data.concat(response.today_request),
-                page: nextpage + 1,
-                total_count: response.total_count,
-              })
-            }
-          } else { */
-            if (response.list.length > 0) {
-              this.setState({
-                data: data.concat(response.list),
-                page: nextpage + 1,
-                total_count: response.total_count,
-              })
-            }
-          //}
-        })
+    if ( page * limit <= total_count ) {
+      try {
+        const response = await API.getHomeTR({date: date, type : strType,page: nextpage, limit: limit})
+        console.log('getHomeTR>>>', response)
+        if (response.success) {
+          this.setState({loading: false}, () => {
+            /* if (mConst.getUserType() === 'B') {
+              if (response.today_request.length > 0) {
+                this.setState({
+                  data: data.concat(response.today_request),
+                  page: nextpage + 1,
+                  total_count: response.total_count,
+                })
+              }
+            } else { */
+              if (response.list.length > 0) {
+                this.setState({
+                  data: data.concat(response.list),
+                  page: nextpage + 1,
+                  total_count: response.total_count,
+                })
+              }
+            //}
+          })
+        }
+      } catch (error) {
+        console.log('getHomeTR>>>1', error)
       }
-    } catch (error) {
-      console.log('getHomeTR>>>1', error)
+    }else{
+      this.setState({loading: false,moreLoading:false});
     }
   }
 

@@ -34,7 +34,7 @@ export default class LinkSheetBrandUnit extends PureComponent {
                     <>
                         <Row style={styles.row(color)}>
                             <Text style={styles.sText()} numberOfLines={1}>              
-                                {mUtils.isEmpty(returnUser.user_nm) ? name :  returnUser.user_nm} {!mUtils.isEmpty(returnUser.position) && returnUser.position})
+                                {mUtils.isEmpty(returnUser.user_nm) ? name :  returnUser.user_nm} {!mUtils.isEmpty(returnUser.position) && "("+returnUser.position+")"}
                             </Text>
                         </Row>
                         <Pressable onPress={onPressPhone}>

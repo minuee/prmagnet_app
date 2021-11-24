@@ -81,7 +81,7 @@ class NotificationScreen extends PureComponent {
       }
     } catch (error) {
       this.setState({loading: false})
-      //console.log('getAlarm>>>', error)
+      console.log('getAlarm>>>', error)
     }
   }
 
@@ -106,28 +106,78 @@ class NotificationScreen extends PureComponent {
       this.setState({data: null,loading:false})
     }
   }
+ //showroom_no: subItem.showroom_no
+  handleMove = async(item) => {    
+ 
+    const notice_type = item.notice_type;
+    const reqNo = item.req_no;
+    const noticeId = item.notice_id;
+    const brandId = item.brand_id;
+    const date_info = item.date_info;
 
-  handleMove = (type, reqNo, noticeId, brandId) => {
+    console.log('reqNoreqNoreqNo',date_info);
+    console.log('notice_type',notice_type);
+    //console.log('handleMove22',date_info[0]);
+    let showroomData = [];
+    let pickup_date = null;
+    let return_date = null;
+    let shoting_date = null;
+    let selectEachList = null;
+    if ( !mUtils.isEmpty(date_info)) {
+      await date_info.forEach((subItem,i) => {
+          showroomData.push(subItem.showroom_no);
+          pickup_date = subItem.pickup_date;
+          return_date = subItem.return_date;
+          shoting_date = subItem.shoting_date;
+        }
+      )
+      console.log('showroomData',showroomData,pickup_date,shoting_date,return_date);    
+    }
+
+    //return false;
+    const reqNoData = [reqNo];
     if (mConst.getUserType() === 'B') {
-      if (type === 'cms') {
+      if (notice_type === 'cms') {
         this.pushTo('NoticeDetailScreen', {no: noticeId})
-      } else if (type === 'req') {
-        this.pushTo('HomeDetailScreen', {type: true, title: 'New Sample Requests'})
-      } else if (type === 'send') {
-        this.pushTo('SendOutScreen', {reqNo})
-      } else if (type === 'recv') {
-        this.pushTo('ReturnScreen', {reqNo})
+      } else if (notice_type === 'req' || notice_type === 'confirm' || notice_type === 'confirmchange') {
+        this.pushTo('SampleRequestsDetailScreen', {no:reqNo})
+      } else if (notice_type === 'pickup' ) {
+        if ( !mUtils.isEmpty(date_info)) {
+          this.pushTo('SendOutBScreen',{
+            reqNo,
+            selectEachList : [{date : pickup_date, showroom_list : showroomData,req_no_list : reqNoData}]
+          })
+        }
+      } else if (notice_type === 'recv' || notice_type === 'sendout') {      
+        if ( !mUtils.isEmpty(date_info)) {  
+          this.pushTo('ReturnScreen',{
+            reqNo,
+            selectEachList : [{date : return_date, showroom_list : showroomData,req_no_list : reqNoData}]
+          })
+        }
       }
     } else {
-      if (type === 'brand') {
-        this.pop()
-        this.pushTo('ShowTab', {screen: 'ShowScreen', params: {brandId}})
-      } else if (type === 'cms') {
-        this.pushTo('NoticeDetailScreen', {no: noticeId})
-      } else if (type === 'recv') {
-        this.pushTo('PickupsScreen', {reqNo})
-      } else if (type === 'req' || type === 'send') {
-        this.pushTo('SendOutScreen', {reqNo})
+      if (notice_type === 'brand') {
+        this.pop();
+        this.pushTo('ShowTab', {screen: 'ShowScreen', params: {brandId}});
+      } else if ( notice_type === 'req' || notice_type === 'confirm' ) {
+        this.pushTo('SampleRequestsDetailScreen', {no:reqNo})
+      } else if (notice_type === 'cms') {
+        this.pushTo('NoticeDetailScreen', {no: noticeId});
+      } else if (notice_type === 'send' || notice_type === 'recv' || notice_type === 'sendout' || notice_type === 'confirmchange') {        
+        if ( !mUtils.isEmpty(date_info)) {
+          this.pushTo('PickupsScreen', {
+            reqNo,
+            selectEachList : [{date : pickup_date, showroom_list : showroomData,req_no_list : reqNoData}]
+          })      
+        }
+      } else if (notice_type === 'returncheck' || notice_type === 'pickup' ) {
+        if ( !mUtils.isEmpty(date_info)) {
+          this.pushTo('SendOutScreen', {
+            reqNo,
+            selectEachList : [{date : pickup_date, showroom_list : showroomData,req_no_list : reqNoData}]
+          })
+        }
       }
     }
   }
@@ -137,7 +187,7 @@ class NotificationScreen extends PureComponent {
       <View style={styles.itemBox}>
         <TouchableOpacity
           hitSlop={{top: 35, bottom: 35, left: 40, right: 40}}
-          onPress={() => this.handleMove(item.notice_type, item.req_no, item.notice_id, item.brand_id)}
+          onPress={() => this.handleMove(item)}
         >
           <View style={styles.items}>
             <FastImage resizeMode={'contain'} style={styles.listImg} source={userType !== 'B' ? notiSky : notiBlack} />

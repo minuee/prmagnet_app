@@ -81,7 +81,7 @@ class ReturnScreen extends PureComponent {
   }
   handleLoadDataArray = async(item,nextIndex) => {      
     try {
-      const response = await API.getReturnArrayDetail(item.date,item.showroom_list);
+      const response = await API.getReturnArrayDetail(item.date,item.showroom_list,item.req_no_list);
       const dataTmp = await _.get(response, 'right');
       await this.allSendOutCheck(dataTmp)
       this.setState({data: dataTmp[0], listIndex : nextIndex})

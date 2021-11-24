@@ -418,7 +418,7 @@ const API = {
               fin_date,
               brand_id,
             },
-    }
+    }    
     return Api.get(apiName, path, init)
   },
   getPickupSchedule: ({start_date, fin_date, brand_id}) => {
@@ -451,10 +451,14 @@ const API = {
     const init = {}
     return Api.get(apiName, path, init)
   },
-  getSendoutArrayDetail: (date,showroom_no) => {
+  getSendoutArrayDetail: (date,showroom_no,reqnoList2) => {
+    console.log('getSendoutArrayDetail data',showroom_no,reqnoList2)
+    const showroomList = JSON.stringify(showroom_no);
+    const reqnoList = JSON.stringify(reqnoList2);
     const apiName = v1Api;        
-    const path = `${mConst.getApiPath()}/sendout-detailed/${date}?date=${date}&showroomList=` + JSON.stringify(showroom_no);
+    const path = `${mConst.getApiPath()}/sendout-detailed/${date}?date=${date}&showroomList=${showroomList}&reqnoList=${reqnoList}`;
     const init = {}
+    console.log('getSendoutArrayDetail path',path)
     return Api.get(apiName, path, init)
   },
   getPickupDetail: (req_no,showroom_no) => {
@@ -471,15 +475,19 @@ const API = {
     console.log('apiName path2',path)
     return Api.get(apiName, path, init)
   },
-  getReturnArrayDetail: (date,showroom_no) => {
+  getReturnArrayDetail: (date,showroom_no,reqnoList2) => {
+    const showroomList = JSON.stringify(showroom_no);
+    const reqnoList = JSON.stringify(reqnoList2);
     const apiName = v1Api
-    const path = `${mConst.getApiPath()}/return-detailed/${date}?date=${date}&showroomList=` + JSON.stringify(showroom_no);
+    const path = `${mConst.getApiPath()}/return-detailed/${date}?date=${date}&showroomList=${showroomList}&reqnoList=${reqnoList}`;
     const init = {}
     return Api.get(apiName, path, init)
   },
-  getPickupArrayDetail: (date,showroom_no) => {
+  getPickupArrayDetail: (date,showroom_no,reqnoList2) => {
+    const showroomList = JSON.stringify(showroom_no);
+    const reqnoList = JSON.stringify(reqnoList2);
     const apiName = v1Api
-    const path = `${mConst.getApiPath()}/pickup-detailed/${date}?date=${date}&showroomList=` + JSON.stringify(showroom_no);
+    const path = `${mConst.getApiPath()}/pickup-detailed/${date}?date=${date}&showroomList=${showroomList}&reqnoList=${reqnoList}`;
     console.log('path2',path)
     const init = {}
     return Api.get(apiName, path, init)
@@ -490,6 +498,7 @@ const API = {
     const myInit = {
       body: {req_no, len: showroom_len,targetSampleList},
     }
+    console.log('myInit',myInit)
     return Api.post(apiName, path, myInit)
   },
   pushSendoutOne: (req_no, showroom_len, sample_no) => {
