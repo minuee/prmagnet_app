@@ -117,6 +117,8 @@ class BrandSchedulerScreen extends PureComponent {
     const {data, toggle, start, end, season_year, gender} = this.state;
     const {user} = this.props;
     const dates = mUtils.getDayArray(this.state.start, this.state.end);
+
+    //console.log('dates',dates)
     if ( this.state.loading  ) {
       return (
           <Loading />
@@ -215,25 +217,37 @@ class BrandSchedulerScreen extends PureComponent {
             </View>
             }
             <>
+           {/*  {
+              data.map((mItem, mIndex) => {
+                <View style={styles.dayTextWrapper}>
+                  <Text style={styles.dayText}>{mUtils.getShowDate(Math.floor(item.valueOf() / 1000))}</Text>
+                </View>
+              })
+            } */}
+            </>
+
+            <>
               {
                 this.props.user.subScrbeStatus  ?
                 _.size(_.get(data, 'list')) === 0 ? (
                   <Empty />
                 ) : (
                   <>
-                    <ScrollView style={{paddingHorizontal: mUtils.wScale(20), paddingVertical: mUtils.wScale(25)}}>
-                      {mUtils.get(data, 'list', []).map((dItem, dIndex) => {
+                    <ScrollView style={{paddingVertical: mUtils.wScale(25),backgroundColor :'#f1f2ea'}}>
+                      {
+                      mUtils.get(data, 'list', []).map((dItem, dIndex) => {
                         const memoList = mUtils.get(dItem, 'memo_list', []);
                         const reqList = mUtils.get(dItem, 'req_list', []);
                         //console.log('reqListreqList',reqList)
                         return (
+                          <>
                           <View key={dIndex} style={{...styles.layout4}}>
-                            <View style={{width: mUtils.wScale(80)}}>
+                            <View style={[{width: mUtils.wScale(80)}]}>
                               <FastImage resizeMode={'cover'} style={styles.modelImg} source={{uri: dItem.image_list}} />
                               <Text style={{...styles.title, marginVertical: mUtils.wScale(10)}}>{dItem.showroom_nm}</Text>
                             </View>
                             <View style={{width: mUtils.wScale(290),}}>
-                              {(memoList.length > 0 || reqList.length > 0) && (
+                              {//(memoList.length > 0 || reqList.length > 0) && (
                                 <FlatList
                                   ref={ref => (this.swiperRef = ref)}
                                   horizontal={true}
@@ -247,15 +261,15 @@ class BrandSchedulerScreen extends PureComponent {
                                     const curMemos = memoList.filter(m => mUtils.isSameDay(item, m.memo_dt))
                                     const curReqs = reqList.filter(r => mUtils.isDayBetween(item, r.start_dt, r.end_dt))
                                     return (
-                                      <View 
-                                        
-                                        style={{flexDirection: 'column'}}
-                                      >
-                                        {(curMemos.length > 0 || curReqs.length > 0) && (
+                                      <View style={{flexDirection: 'column'}}>
+                                        <View style={styles.dayTextWrapper}>
+                                          <Text style={styles.dayText}>{mUtils.getShowDate(Math.floor(item.valueOf() / 1000))}</Text>
+                                        </View>
+                                       {/*  {(curMemos.length > 0 || curReqs.length > 0) && (
                                           <View style={styles.dayTextWrapper}>
                                             <Text style={styles.dayText}>{mUtils.getShowDate(Math.floor(item.valueOf() / 1000))}</Text>
                                           </View>
-                                        )}
+                                        )} */}
                                         {curMemos.map((mItem, mIndex) => {
                                           return (
                                             // <Text style={{width: 190}}>메모:{mItem.content}</Text>
@@ -329,15 +343,20 @@ class BrandSchedulerScreen extends PureComponent {
                                             </View>
                                           )
                                         })}
+                                        
                                       </View>
                                     )
                                   }}
                                 />
-                              )}
+                              //)
+                            }
                             </View>
                           </View>
+                          <View style={styles.devider} />
+                          </>
                         )
-                      })}
+                      })
+                      }
                     </ScrollView>
                     <TouchableOpacity
                       style={{...styles.layout8}}

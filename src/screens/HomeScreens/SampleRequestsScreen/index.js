@@ -93,8 +93,8 @@ class SampleRequestsScreen extends PureComponent {
       shDate: '',
       pkDate: '',
       rtDate: '',
-      startTime: '',
-      endTime: '',
+      startTime: '00',
+      endTime: '23',
       dlvy_adres_no: 0,
       destination: '',
       destinationDetail: '',
@@ -172,13 +172,13 @@ class SampleRequestsScreen extends PureComponent {
     } = this.state
     const {brandId} = this.props.route.params
     let list = selected.map((item, index) => item.showroom_no)
-    //console.log('>>>>>', selected)
+    //console.log('111>>>>>', startTime,endTime)
     if (!selectContact) return this.alert('', '연결 연락처를 선택해 주세요.')
     if (!shDate) return this.alert('', '촬영일을 선택해 주세요.')
     if (!pkDate) return this.alert('', '픽업일을 선택해 주세요.')
     if (!rtDate) return this.alert('', '반납일을 선택해 주세요.')
-    if (!startTime) return this.alert('', '촬영 시작 시각을 선택해 주세요.')
-    if (!endTime) return this.alert('', '촬영 종료 시각을 선택해 주세요.')
+    //if (!startTime) return this.alert('', '촬영 시작 시각을 선택해 주세요.')
+    //if (!endTime) return this.alert('', '촬영 종료 시각을 선택해 주세요.')
     if (!destination) return this.alert('', '수령 주소를 입력해 주세요.')
     if (!destinationDetail) return this.alert('', '수령 상세 주소를 입력해 주세요.')
     if (!shippingNote) return this.alert('', '배송 관련 메모를 입력해 주세요.')
@@ -186,7 +186,7 @@ class SampleRequestsScreen extends PureComponent {
     if (!_.get(celebrity, '[0]') && !_.get(fashionModel, '[0]')) return this.alert('', '모델을 입력해 주세요.')
     if (!myPay && !otherPay) return this.alert('', '유가 여부를 입력해 주세요.')
     if (!numberPage) return this.alert('', '페이지 수를 입력해 주세요.')
-
+    
     try {
       const response = await API.postSRRequestSend({
         brand_id: brandId,
@@ -1037,7 +1037,7 @@ class SampleRequestsScreen extends PureComponent {
                 if (type) {
                   Alert.alert(
                     mConst.appName,
-                    '샘플신청을 하시겠습니까?',
+                    '홀딩요청을 제출하시겠습니까?',
                     [
                       {text: '네', onPress: () => this.postSRRequestSend()},
                       {text: '아니오', onPress: () => console.log('no')},

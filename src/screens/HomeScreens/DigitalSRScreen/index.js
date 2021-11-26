@@ -13,6 +13,7 @@ import Header from '../../common/Header';
 import styles from './styles';
 import API from '../../../common/aws-api';
 import Loading from '../../common/Loading';
+import MoreLoading from '../../common/MoreLoading';
 import Empty from '../../common/Empty';
 import NonSubscribe from '../../common/NonSubscribe';
 
@@ -46,6 +47,7 @@ class DigitalSRScreen extends PureComponent {
       inquiryNum: '',
       brand_id: '',
       loading: true,
+      moreLoading : false,
       isSubScrbing : this.props.user.subScrbeStatus,
       filterData: {},
       filterInfo: {
@@ -182,7 +184,7 @@ class DigitalSRScreen extends PureComponent {
   }
 
   postDigitalSR = async () => {
-    const {data, page, limit, season_year, brand_id} = this.state
+    const {data, page, limit, season_year, brand_id} = this.state;
     const userType = mConst.getUserType()
     try {
       const response = await API.postDigitalSR({
@@ -192,36 +194,52 @@ class DigitalSRScreen extends PureComponent {
         season_cd_id: season_year.season_cd_id,
         brand_id: brand_id,
       })
-      //console.log('postDigitalSR>>>', response)
+      console.log('postDigitalSRxxxxx>>>', response)
       if (response.success) {
-        if (page === 1) {
-          if (userType === 'B') {
-            this.setState({
-              data: response,
-              page: page + 1,
-              loading: true,
-            })
-          } else {
-            this.setState({
-              data: response,
-              page: page + 1,
-              notice: response.brand_notice.notice,
-              inquiryNum: response.brand_notice.inquiry_number,
-              loading: true,
-            })
+        if ( brand_id != 'all') {
+          if (page === 1) {
+            if (userType === 'B') {
+              this.setState({
+                data: response,
+                page: page + 1,
+                loading: true,
+              })
+            } else {
+              this.setState({
+                data: response,
+                page: page + 1,
+                notice: response.brand_notice.notice,
+                inquiryNum: response.brand_notice.inquiry_number,
+                loading: true,
+              })
+            }
+          } else if (response.list.length > 0) {
+            this.setState({data: {...data, list: data.list.concat(response.list)}, page: page + 1, loading: true})
           }
-        } else if (response.list.length > 0) {
-          this.setState({data: {...data, list: data.list.concat(response.list)}, page: page + 1, loading: true})
+        }else{
+          if (page === 1) {
+            this.setState({
+              data: response,
+              page: page + 1,
+              notice: null,
+              inquiryNum: null,
+              loading: true,
+            })
+          } else if (response.list.length > 0) {
+            this.setState({data: {...data, list: data.list.concat(response.list)}, page: page + 1, loading: true})
+          }
         }
       }
     } catch (error) {
       this.setState({loading: true})
-      //console.log('postDigitalSR>>>', error)
+      console.log('postDigitalSR>>>', error)
     }
   }
 
   postDigitalSRReset = async () => {
-    const {season_year, brand_id, filterInfo} = this.state
+    const {season_year, brand_id, filterInfo} = this.state;
+
+    //console.log('postDigitalSRReset',brand_id)
     const userType = mConst.getUserType()
     this.setState({loading: false})
     try {
@@ -241,21 +259,32 @@ class DigitalSRScreen extends PureComponent {
       })
       //console.log('postDigitalSRReset>>>', response)
       if (response.success) {
-        if (userType === 'B') {
+        if ( brand_id != 'all') {
+          if (userType === 'B') {
+            this.setState({
+              data: response,
+              page: 2,
+              season_year: response.season_list.length > 0 ? response.season_list[0] : {season_year: '', season_cd_id: ''},
+              loading: true,
+            })
+          } else {
+            this.setState({
+              data: response,
+              page: 2,
+              loading: true,
+              season_year: response.season_list.length > 0 ? response.season_list[0] : {season_year: '', season_cd_id: ''},
+              notice: response.brand_notice.notice,
+              inquiryNum: response.brand_notice.inquiry_number,
+            })
+          }
+        }else{
           this.setState({
             data: response,
             page: 2,
-            season_year: response.season_list.length > 0 ? response.season_list[0] : {season_year: '', season_cd_id: ''},
-            loading: true,
-          })
-        } else {
-          this.setState({
-            data: response,
-            page: 2,
             loading: true,
             season_year: response.season_list.length > 0 ? response.season_list[0] : {season_year: '', season_cd_id: ''},
-            notice: response.brand_notice.notice,
-            inquiryNum: response.brand_notice.inquiry_number,
+            notice: null,
+            inquiryNum:null,
           })
         }
       }
@@ -377,7 +406,7 @@ class DigitalSRScreen extends PureComponent {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={{...styles.selectBox, backgroundColor: mConst.black}}
-                  onPress={() => this.pushTo('SelectBrandScreen', {brandId: data.current_brand_info.brand_id, setBrand: this.setBrand})}
+                  onPress={() => this.pushTo('SelectBrandScreen', {brandId: brand_id, setBrand: this.setBrand})}
                 >
                   <Text style={{...styles.selectText, color: mConst.white}}>Brands</Text>
                 </TouchableOpacity>
@@ -385,7 +414,7 @@ class DigitalSRScreen extends PureComponent {
             )}
           </View>
           {
-            this.props.user.subScrbeStatus &&
+            ( this.props.user.subScrbeStatus && brand_id != 'all' ) &&
             <>
             <View style={{...styles.layout, marginTop: mUtils.wScale(10)}}>
               <FastImage resizeMode={'contain'} style={styles.notiImg} source={notiImg} />
@@ -525,6 +554,10 @@ class DigitalSRScreen extends PureComponent {
             </TouchableOpacity>
           </View>
         )}
+        { 
+          this.state.moreLoading &&
+          <MoreLoading />
+        }
       </SafeAreaView>
     )
   }

@@ -50,7 +50,8 @@ class SelectBrandScreen extends PureComponent {
   handleConfirm = () => {
     const {brandId} = this.state
     const {setBrand} = this.params
-    brandId ? setBrand(brandId) : setBrand(this.params.brandId)
+    brandId ? setBrand(brandId) : setBrand(this.params.brandId);
+    
     this.goBack()
   }
   render() {

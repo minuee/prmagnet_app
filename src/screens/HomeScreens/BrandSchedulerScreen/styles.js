@@ -155,6 +155,12 @@ export default StyleSheet.create({
     borderColor: mConst.borderGray,
     borderRadius: mUtils.wScale(5),
   },
+  devider : {
+    backgroundColor:'#fff',    
+    left:0,right:0,
+    height:5,
+    marginBottom: mUtils.wScale(20),
+  },
   moreUnit: {
     width: mUtils.wScale(290)/3,
     alignItems: 'center',
@@ -162,7 +168,9 @@ export default StyleSheet.create({
   layout4: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: mUtils.wScale(37.5),
+    marginBottom: mUtils.wScale(10.5),
+    paddingHorizontal: mUtils.wScale(20), 
+    
   },
   layout5: {
     width: '100%',

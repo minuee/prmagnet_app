@@ -8,6 +8,15 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: mConst.white,
   },
+  container: {
+    flex: 1,
+    backgroundColor: mConst.white,
+  },
+  imageWrap : {
+    paddingVertical: mUtils.wScale(20),
+    paddingHorizontal: mUtils.wScale(20),
+    width: '100%',
+  },
   itemBox: {
     paddingVertical: mUtils.wScale(20),
     paddingHorizontal: mUtils.wScale(20),

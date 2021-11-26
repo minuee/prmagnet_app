@@ -13,7 +13,7 @@ import API from '../../../common/aws-api';
 import Text from '../../common/Text';
 import LinkSheetUnit from '../../common/LinkSheetUnit';
 import Loading from '../../common/Loading';
-import MoreLoading from '../../common/MoreLoading';;
+import MoreLoading from '../../common/MoreLoading';
 import styles from './styles';
 import { utils } from '@react-native-firebase/app';
 

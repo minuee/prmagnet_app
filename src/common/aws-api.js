@@ -694,6 +694,8 @@ const API = {
         material_list,
       },
     }
+
+    console.log('postDigitalSR init',init)
     return Api.post(apiName, path, init)
   },
   getNotice: () => {

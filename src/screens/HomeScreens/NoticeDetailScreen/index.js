@@ -58,6 +58,15 @@ class NoticeDetailScreen extends PureComponent {
               <Text style={styles.title}>{data.title}</Text>
               <Text style={styles.dt}>{mUtils.getShowDate(data.reg_dt, 'YYYY.MM.DD')}</Text>
             </View>
+            { !mUtils.isEmpty(data.img_full_url) &&
+              <View style={styles.imageWrap}>
+                <FastImage 
+                  resizeMode={'contain'} 
+                  style={{width: '100%',aspectRatio:2}} 
+                  source={{uri: data.img_full_url}} 
+                />
+              </View>
+            }
             <Text style={styles.desc}>{data.content}</Text>
           </ScrollView>
         )}

@@ -61,8 +61,9 @@ export default class BrandGroup extends PureComponent {
     val !== brandId ? setBrand(val) : setBrand('')
   }
   render() {
-    const {favoriteItems, select} = this.state
-    const {data, brandId, hide} = this.props
+    const {favoriteItems, select} = this.state;
+    const {data, brandId, hide} = this.props;
+    console.log('getBrandSearch>>>', brandId)
     if (hide) return null
     return (
       <View style={styles.layout}>
@@ -100,6 +101,14 @@ export default class BrandGroup extends PureComponent {
               )
             })}
 
+            <TouchableOpacity onPress={() => this.toggleSelectItem('all')}>
+              <Row style={styles.itemWrapper}>
+                <View style={[styles.itemSubWrapper,{paddingLeft:30}]}>
+                  <Text style={styles.itemText}>전체</Text>
+                </View>
+                {brandId === 'all' && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
+              </Row>
+            </TouchableOpacity>
             {_.map(data, (item, index) => {
               return _.map(
                 _.filter(item.each_list, e => !favoriteItems.includes(e)),
@@ -149,18 +158,26 @@ export default class BrandGroup extends PureComponent {
               return (
                 <TouchableOpacity key={index} onPress={() => this.toggleSelectItem(item.brand_id)}>
                   <Row style={styles.itemWrapper}>
-                    <View style={styles.itemSubWrapper}>
+                    <View style={[styles.itemSubWrapper,{paddingLeft:30}]}>
                       <TouchableOpacity key={index} onPress={() => this.toggleFavoriteItem(item)} style={styles.touch}>
                         <FastImage resizeMode={'contain'} source={heartOnImage} style={styles.heartImage} />
                       </TouchableOpacity>
                       <Text style={styles.itemText}>{item}</Text>
                     </View>
-                    {brandId === item.brand_id && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
+                    {brandId === 'all' && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
                   </Row>
                 </TouchableOpacity>
               )
             })}
 
+            <TouchableOpacity onPress={() => this.toggleSelectItem('all')}>
+              <Row style={styles.itemWrapper}>
+                <View style={styles.itemSubWrapper}>
+                  <Text style={styles.itemText}>전체</Text>
+                </View>
+                {brandId === item.brand_id && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
+              </Row>
+            </TouchableOpacity>
             {_.map(
               this.state.searchResult.filter((e, i) => !favoriteItems.includes(e.brand_nm)),
               (item, index) => {
