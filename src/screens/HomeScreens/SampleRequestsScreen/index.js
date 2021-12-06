@@ -181,11 +181,11 @@ class SampleRequestsScreen extends PureComponent {
     //if (!endTime) return this.alert('', '촬영 종료 시각을 선택해 주세요.')
     if (!destination) return this.alert('', '수령 주소를 입력해 주세요.')
     if (!destinationDetail) return this.alert('', '수령 상세 주소를 입력해 주세요.')
-    if (!shippingNote) return this.alert('', '배송 관련 메모를 입력해 주세요.')
-    if (!concept) return this.alert('', '촬영 컨셉을 입력해 주세요.')
+    //if (!shippingNote) return this.alert('', '배송 관련 메모를 입력해 주세요.')
+    //if (!concept) return this.alert('', '촬영 컨셉을 입력해 주세요.')
     if (!_.get(celebrity, '[0]') && !_.get(fashionModel, '[0]')) return this.alert('', '모델을 입력해 주세요.')
-    if (!myPay && !otherPay) return this.alert('', '유가 여부를 입력해 주세요.')
-    if (!numberPage) return this.alert('', '페이지 수를 입력해 주세요.')
+    //if (!myPay && !otherPay) return this.alert('', '유가 여부를 입력해 주세요.')
+    //if (!numberPage) return this.alert('', '페이지 수를 입력해 주세요.')
     
     try {
       const response = await API.postSRRequestSend({
@@ -644,33 +644,29 @@ class SampleRequestsScreen extends PureComponent {
                     <Text style={styles.smallTitle}>
                       픽업일 <Text style={{color: '#7eb2b2'}}>*</Text>
                     </Text>
-                    <TouchableOpacity
+                    <View
                       style={{...styles.box1, justifyContent: 'space-between'}}
-                      onPress={() => {
-                        this.setState({drop1: !drop1, drop: false, drop2: false})
-                      }}
+                      //onPress={() => {this.setState({drop1: !drop1, drop: false, drop2: false})}}
                     >
                       <Text style={styles.boxText}>
                         {pkDate ? `${pkDate.month}/${pkDate.day}(${moment(pkDate.timestamp).format('ddd')})` : '0/0(일)'}
                       </Text>
                       <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
-                    </TouchableOpacity>
+                    </View>
                   </View>
                   <View style={{width: '32%'}}>
                     <Text style={styles.smallTitle}>
                       반납일 <Text style={{color: '#7eb2b2'}}>*</Text>
                     </Text>
-                    <TouchableOpacity
+                    <View
                       style={{...styles.box1, justifyContent: 'space-between'}}
-                      onPress={() => {
-                        this.setState({drop2: !drop2, drop: false, drop1: false})
-                      }}
+                      //onPress={() => {this.setState({drop2: !drop2, drop: false, drop1: false})}}
                     >
                       <Text style={styles.boxText}>
                         {rtDate ? `${rtDate.month}/${rtDate.day}(${moment(rtDate.timestamp).format('ddd')})` : '0/0(일)'}
                       </Text>
                       <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
-                    </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
                 {drop || drop1 || drop2 ? (

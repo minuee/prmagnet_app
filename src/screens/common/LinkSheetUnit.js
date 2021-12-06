@@ -29,7 +29,6 @@ export default class LinkSheetUnit extends PureComponent {
         const {name, phone, unitType,viewType,onPress, onPressPhone, onSwipeCheck, color, checked, readOnly,sendUser,returnUser,subData,loaningDate} = this.props;        
         if ( viewType === 'sendout' ) {
             if (unitType === 'to') {
-                console.log('ddddd222',mUtils.convertUnixToDate(loaningDate),mUtils.dateToDate(subData.sendout_dt))
                 return (
                     <>
                         <Row style={styles.row(color)}>
@@ -51,7 +50,7 @@ export default class LinkSheetUnit extends PureComponent {
                     </>
                 )
             }
-            console.log('ddddd',sendUser)
+           
             return (
                 <>
                     <SwiperUnit onSwipeLeft={() => this.onSwipe('left')} onSwipeRight={() => this.onSwipe('right')}>
@@ -62,9 +61,9 @@ export default class LinkSheetUnit extends PureComponent {
                                     <Col style={styles.col(1, true, color, checked)} size={3}>
                                         <Text style={styles.sText()} numberOfLines={1}>
                                             {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm} {!mUtils.isEmpty(sendUser.mgzn_nm) && sendUser.mgzn_nm}
-                                            { mUtils.convertUnixToDate(loaningDate) != mUtils.dateToDate(subData.sendout_dt) &&
+                                            { mUtils.convertUnixToDate(loaningDate) != mUtils.dateToDate(subData.return_dt) &&
                                                 <Text style={styles.sText()}>
-                                                    {"\n"}발송일({mUtils.dateToDate(subData.sendout_dt)})
+                                                    {"\n"}발송일({mUtils.dateToDate(subData.return_dt)})
                                                 </Text>
                                             }
                                         </Text>
@@ -83,9 +82,9 @@ export default class LinkSheetUnit extends PureComponent {
                                         mUtils.convertUnixToDate(loaningDate) != mUtils.dateToDate(subData.sendout_dt) ?
                                         <Text style={styles.sText()} numberOfLines={2}>
                                             {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm} {!mUtils.isEmpty(sendUser.position) && sendUser.position}
-                                            { mUtils.convertUnixToDate(loaningDate) != mUtils.dateToDate(subData.sendout_dt) &&
+                                            { mUtils.convertUnixToDate(loaningDate) != mUtils.dateToDate(subData.return_dt) &&
                                                 <Text style={styles.sText()}>
-                                                    {"\n"}발송일({mUtils.dateToDate(subData.sendout_dt)})
+                                                    {"\n"}발송일({mUtils.dateToDate(subData.return_dt)})
                                                 </Text>
                                             }
                                         </Text>

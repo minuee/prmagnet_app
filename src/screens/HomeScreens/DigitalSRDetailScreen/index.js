@@ -141,10 +141,10 @@ class DigitalSRDetailScreen extends PureComponent {
                   <View style={styles.emptyBar} />
                   <View style={styles.layout}>
                     <View style={styles.layoutLeft}> 
-                      <Text style={styles.left}>Sample name</Text>
+                      <Text style={styles.left}>Sample Name</Text>
                     </View>
                     <View style={styles.layoutRight}> 
-                      <Text style={{...styles.right}}>{item.sample_nm}</Text>
+                      <Text style={{...styles.left2}}>{item.sample_nm}</Text>
                     </View>
                                       
                   </View>

@@ -104,7 +104,7 @@ export default class BrandGroup extends PureComponent {
             <TouchableOpacity onPress={() => this.toggleSelectItem('all')}>
               <Row style={styles.itemWrapper}>
                 <View style={[styles.itemSubWrapper,{paddingLeft:30}]}>
-                  <Text style={styles.itemText}>전체</Text>
+                  <Text style={styles.itemText}>브랜드 전체보기</Text>
                 </View>
                 {brandId === 'all' && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
               </Row>
@@ -173,7 +173,7 @@ export default class BrandGroup extends PureComponent {
             <TouchableOpacity onPress={() => this.toggleSelectItem('all')}>
               <Row style={styles.itemWrapper}>
                 <View style={styles.itemSubWrapper}>
-                  <Text style={styles.itemText}>전체</Text>
+                  <Text style={styles.itemText}>브랜드 전체보기</Text>
                 </View>
                 {brandId === item.brand_id && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
               </Row>

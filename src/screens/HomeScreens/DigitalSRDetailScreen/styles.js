@@ -75,7 +75,12 @@ export default StyleSheet.create({
     fontSize: 14,
     textAlign: 'left',
     color: mConst.black,
-   
+  },
+  left2: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 14,
+    textAlign: 'left',
+    color: '#555555',
   },
   right: {
     fontFamily: 'Roboto-Regular',

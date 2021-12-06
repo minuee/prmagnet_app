@@ -503,6 +503,15 @@ const utils = {
   async getFcmEnabled() {
     return await messaging().hasPermission()
   },
+  convertReqStatus(str) {
+    let returnStr = "홀딩대기";
+    switch(str) {
+      case 'confirmed' : returnStr = "홀딩완료"; break;
+      case 'rejected' : returnStr = "홀딩불가";break;
+      default : returnStr = "홀딩대기";break;
+    }
+    return returnStr;
+  }
 }
 
 export default utils

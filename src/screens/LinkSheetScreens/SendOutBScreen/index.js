@@ -129,7 +129,7 @@ class SendOutScreen extends PureComponent {
           console.log('data.element2',element2)
           if ( element2.sample_no ) {      
             AllData++;
-            if ( element2.sendout_yn || element2.sendout_userid_type !== 'RUS000' ) {
+            if ( element2.sendout_yn  ) {
               sendOutData++;
             }else{
               targetSampleList.push(element2.sample_no);

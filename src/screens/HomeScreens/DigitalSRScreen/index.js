@@ -193,8 +193,7 @@ class DigitalSRScreen extends PureComponent {
         season_year: season_year.season_year,
         season_cd_id: season_year.season_cd_id,
         brand_id: brand_id,
-      })
-      console.log('postDigitalSRxxxxx>>>', response)
+      })      
       if (response.success) {
         if ( brand_id != 'all') {
           if (page === 1) {
@@ -246,8 +245,8 @@ class DigitalSRScreen extends PureComponent {
       const response = await API.postDigitalSR({
         page: 1,
         limit: 10,
-        season_year: season_year.season_year,
-        season_cd_id: season_year.season_cd_id,
+        season_year: '',//season_year.season_year,
+        season_cd_id: '',//season_year.season_cd_id,
         brand_id: brand_id,
         gender_list: filterInfo.gender,
         category_list: filterInfo.category,
@@ -257,7 +256,7 @@ class DigitalSRScreen extends PureComponent {
         still_life_img_yn: filterInfo.stillLifeImg,
         material_list: filterInfo.material,
       })
-      //console.log('postDigitalSRReset>>>', response)
+      console.log('postDigitalSRReset>>>1111')
       if (response.success) {
         if ( brand_id != 'all') {
           if (userType === 'B') {
@@ -402,7 +401,7 @@ class DigitalSRScreen extends PureComponent {
                     this.setState({selectOnOff: !selectOnOff, select: []})
                   }}
                 >
-                  <Text style={{...styles.selectText, color: selectOnOff ? mConst.white : mConst.black}}>Select</Text>
+                  <Text style={{...styles.selectText, color: selectOnOff ? mConst.white : mConst.black}}>홀딩 요청</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={{...styles.selectBox, backgroundColor: mConst.black}}
@@ -479,8 +478,10 @@ class DigitalSRScreen extends PureComponent {
                       onPress={() => {
                         this.pushTo('FilterScreen', {setFilter: this.setFilter, data: filterData, info: filterInfo})
                       }}
+                      style={{...styles.selectBox, backgroundColor: selectOnOff ? mConst.black : mConst.white, marginRight: mUtils.wScale(5)}}
                     >
-                      <FastImage resizeMode={'contain'} style={styles.fixImg} source={fixImg} />
+                      {/* <FastImage resizeMode={'contain'} style={styles.fixImg} source={fixImg} /> */}
+                      <Text style={styles.selectText}>Filter</Text>
                     </TouchableOpacity>
                   ) : (
                     <>
@@ -488,8 +489,10 @@ class DigitalSRScreen extends PureComponent {
                         onPress={() => {
                           this.pushTo('FilterScreen', {setFilter: this.setFilter, data: filterData, info: filterInfo})
                         }}
+                        style={{...styles.selectBox, backgroundColor: selectOnOff ? mConst.black : mConst.white, marginRight: mUtils.wScale(5)}}
                       >
-                        <FastImage resizeMode={'contain'} style={styles.fixImg} source={fixImg} />
+                        {/* <FastImage resizeMode={'contain'} style={styles.fixImg} source={fixImg} /> */}
+                        <Text style={styles.menuText}>Filter</Text>
                       </TouchableOpacity>
                       <View style={{...styles.emptyBar}} />
                       <TouchableOpacity

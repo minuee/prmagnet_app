@@ -180,18 +180,18 @@ class SampleRequestsListScreen extends React.Component {
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: mUtils.wScale(5)}}>
             <View>
               <Text style={{...styles.dt}}>
-                Filming date{'  '}
+                촬영일{'  '}
                 <Text style={{color: '#555555', fontFamily: 'Roboto-Regular'}}>
                   {mUtils.getShowDate(item.expected_photograph_date, 'YYYY-MM-DD')}
                 </Text>
               </Text>
               <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
-                Request date{'  '}
+                요청일{'  '}
                 <Text style={{color: '#555555', fontFamily: 'Roboto-Regular'}}>{mUtils.getShowDate(item.request_date, 'YYYY-MM-DD')}</Text>
               </Text>
             </View>
             <View style={styles.smallBox}>
-              <Text style={styles.status}>{item.req_status_nm}</Text>
+              <Text style={styles.status}>{mUtils.convertReqStatus(item.req_status_nm)}</Text>
             </View>
           </View>
         </TouchableOpacity>

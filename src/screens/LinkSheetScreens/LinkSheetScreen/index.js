@@ -310,6 +310,18 @@ class LinkSheetScreen extends React.Component {
                     {
                         this.props.user.subScrbeStatus &&
                         <>
+                            <View style={{justifyContent:'flex-end',flexDirection:'row',paddingHorizontal:20,paddingBottom:5}}>
+                                { ( selectTitle === "Send Out" || selectTitle === "sendout" )  
+                                ?
+                                <><Text style={{color:'#cccccc'}}>■ <Text style={{color:'#000'}}>발송완료</Text> </Text><Text style={{color:'#ff0000'}}>■ 미발송</Text></>
+                                :
+                                ( selectTitle === "Pickup" || selectTitle === "Pickups" ) 
+                                ?
+                                <><Text style={{color:'#cccccc'}}>■ <Text style={{color:'#000'}}>수령완료</Text> </Text><Text style={{color:'#ff0000'}}>■ 미수령</Text></>
+                                :
+                                <><Text style={{color:'#cccccc'}}>■ <Text style={{color:'#000'}}>반납완료</Text> </Text><Text style={{color:'#ff0000'}}>■ 미반납</Text></>
+                                }
+                            </View>
                             <View style={{...styles.layout, backgroundColor: '#f6f6f6', paddingHorizontal: mUtils.wScale(20), paddingVertical: mUtils.wScale(10)}}>
                                 <View style={styles.layout1}>
                                     <FastImage resizeMode={'contain'} style={styles.schedulerImg} source={schedulerImg} />
@@ -353,21 +365,63 @@ class LinkSheetScreen extends React.Component {
                                     _.map(item.each_list, (subItem2, subIndex) => {
                                         
                                         if ( !mUtils.isEmpty(subItem2.showroom_list[0])) {
-                                            const subItem = subItem2.showroom_list[0];                                            
-                                            return (
-                                                <TouchableOpacity
-                                                    key={subIndex}
-                                                    style={styles.brandBox}
-                                                    onPress={() =>this.pushTo(selectTitle === 'Send Out' ? mConst.getUserType() == 'B' ? 'SendOutBScreen' : 'SendOutScreen' : mConst.getUserType() === 'B' ? 'ReturnScreen' : 'PickupsScreen',{reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
-                                                >
-                                                    <View style={{...styles.box1, backgroundColor: mUtils.isEmpty(subItem.mgzn_color) ? '#ddd' :subItem.mgzn_color}}>
-                                                        {this.renderLogo(subItem,subIndex,selectTitle)}
-                                                    </View>
-                                                    <View style={styles.box2}>
-                                                        {this.renderData(subItem,subIndex,selectTitle)}
-                                                    </View>
-                                                </TouchableOpacity>
-                                            )
+                                            const subItem = subItem2.showroom_list[0];      
+                                            if ( selectTitle === "Send Out" || selectTitle === "sendout" )    {
+                                                return (
+                                                    <TouchableOpacity
+                                                        key={subIndex}
+                                                        style={styles.brandBox}
+                                                        onPress={() =>this.pushTo(mConst.getUserType() == 'B' ? 'SendOutBScreen' : 'SendOutScreen',{reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
+                                                    >     
+                                                        { mConst.getUserType() == 'B' ?                                                   
+                                                            <View style={{...styles.box1, backgroundColor: subItem.sendout_yn ? mUtils.isEmpty(subItem.mgzn_color) ? '#ddd' : subItem.mgzn_color : '#ff0000'}}>
+                                                                {this.renderLogo(subItem,subIndex,selectTitle)}
+                                                            </View>
+                                                        :
+                                                            <View style={{...styles.box1, backgroundColor: ( subItem.sendout_yn || subItem.return_yn) ? mUtils.isEmpty(subItem.brand_color) ? '#ddd' : subItem.brand_color : '#ff0000'}}>
+                                                            {this.renderLogo(subItem,subIndex,selectTitle)}
+                                                        </View>
+                                                        }
+                                                        <View style={styles.box2}>
+                                                            {this.renderData(subItem,subIndex,selectTitle)}
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                )
+
+                                            }else if ( selectTitle === "Pickup" || selectTitle === "Pickups" )  {
+                                                return (
+                                                    <TouchableOpacity
+                                                        key={subIndex}
+                                                        style={styles.brandBox}
+                                                        onPress={() =>this.pushTo('PickupsScreen',{reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
+                                                    >                                                        
+                                                        <View style={{...styles.box1, backgroundColor: ( subItem.pickup_yn ) ? mUtils.isEmpty(subItem.brand_color) ? '#ddd' :subItem.brand_color : '#ff0000'}}>
+                                                            {this.renderLogo(subItem,subIndex,selectTitle)}
+                                                        </View>
+                                                        
+                                                        <View style={styles.box2}>
+                                                            {this.renderData(subItem,subIndex,selectTitle)}
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                )
+
+                                            }else { //REturn                   
+                                                return (
+                                                    <TouchableOpacity
+                                                        key={subIndex}
+                                                        style={styles.brandBox}
+                                                        onPress={() =>this.pushTo('ReturnScreen',{reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
+                                                    >
+                                                        <View style={{...styles.box1, backgroundColor: ( subItem.return_yn || subItem.returncheck_yn ) ? mUtils.isEmpty(subItem.mgzn_color) ? '#ddd' :subItem.mgzn_color : '#ff0000'}}>
+                                                            {this.renderLogo(subItem,subIndex,selectTitle)}
+                                                        </View>
+                                                        
+                                                        <View style={styles.box2}>
+                                                            {this.renderData(subItem,subIndex,selectTitle)}
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                )
+                                            }
                                         }
                                         })
                                     }
