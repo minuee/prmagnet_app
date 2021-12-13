@@ -1,18 +1,19 @@
-import React, {PureComponent} from 'react'
-import {SafeAreaView, FlatList, View, TouchableOpacity, ScrollView} from 'react-native'
-import {connect} from 'react-redux'
-import FastImage from 'react-native-fast-image'
-import _ from 'lodash'
-import DeviceInfo from 'react-native-device-info'
-
-import mConst from '../../../common/constants'
-import mUtils from '../../../common/utils'
-import cBind, {callOnce} from '../../../common/navigation'
-import Text from '../../common/Text'
-import styles from './styles'
-import {actionLogout} from '../../../redux/actions'
-import API from '../../../common/aws-api'
-import Loading from '../../common/Loading'
+import React, {PureComponent} from 'react';
+import {SafeAreaView, FlatList, View, TouchableOpacity, ScrollView} from 'react-native';
+import {connect} from 'react-redux';
+import FastImage from 'react-native-fast-image';
+import _ from 'lodash';
+import DeviceInfo from 'react-native-device-info';
+import VersionCheck from "react-native-version-check";
+import mConst from '../../../common/constants';
+import mUtils from '../../../common/utils';
+import AppLink from '../../../common/AppLink';
+import cBind, {callOnce} from '../../../common/navigation';
+import Text from '../../common/Text';
+import styles from './styles';
+import {actionLogout} from '../../../redux/actions';
+import API from '../../../common/aws-api';
+import Loading from '../../common/Loading';
 
 class MyPageScreen extends PureComponent {
   constructor(props) {
@@ -24,7 +25,7 @@ class MyPageScreen extends PureComponent {
   getUserInfo = async () => {
     try {
       const response = await API.getUserInfo()
-      console.log('getUserInfo>>>', response)
+      console.log('response>>>', response)
       this.setState({info: response})
     } catch (error) {
       console.log('getUserInfo>>>', error)
@@ -32,6 +33,15 @@ class MyPageScreen extends PureComponent {
   }
   componentDidMount() {
     this.pushOption('마이페이지')
+    //console.log('DeviceInfo>>>', DeviceInfo.getVersion());
+
+    //패키지명
+    //console.log('getPackageName>>>', VersionCheck.getPackageName());
+    //현재 버전
+    //console.log('getCurrentVersion>>>', VersionCheck.getCurrentVersion());
+    //현재 빌드번호
+    //console.log('getCurrentBuildNumber>>>', VersionCheck.getCurrentBuildNumber());
+
     this.onFocus(this.handleOnFocus)
   }
   componentWillUnmount() {
@@ -41,6 +51,31 @@ class MyPageScreen extends PureComponent {
   handleOnFocus = () => {
     this.getUserInfo()
   }
+
+
+  moveAppStore = async() => {
+    const appStoreId = DEFAULT_CONSTANTS.iosAppStoreID;
+    const playStoreId = DEFAULT_CONSTANTS.androidPackageName;
+    if ( Platform.OS === 'ios') {
+        AppLink.openInStore({ appStoreId}).then(() => {
+            setTimeout(() => {
+                RNExitApp.exitApp()
+            },1000)                
+        })
+        .catch((err) => {
+            // handle error
+        });
+    }else{
+        AppLink.openInStore({ playStoreId}).then(() => {
+            RNExitApp.exitApp();
+        })
+        .catch((err) => {
+        // handle error
+        });
+    }
+
+    //openInStore(DEFAULT_CONSTANTS.appName,DEFAULT_CONSTANTS.iosAppStoreID,'en',DEFAULT_CONSTANTS.androidPackageName)
+}
 
   render() {
     const {navigation} = this.props
@@ -117,7 +152,14 @@ class MyPageScreen extends PureComponent {
             </TouchableOpacity>
             <View style={styles.version}>
               <Text style={styles.text1}>버전 정보</Text>
-              <Text style={styles.text2}>{DeviceInfo.getVersion()}</Text>
+              <Text style={styles.text2}>{VersionCheck.getCurrentVersion()}</Text>
+              { mConst.AppStoreVersion != VersionCheck.getCurrentVersion() &&
+                (
+                    <TouchableOpacity style={styles.miniBox} onPress={()=>this.moveAppStore()}>
+                        <Text style={styles.text2}>업데이트</Text>
+                    </TouchableOpacity>
+                )
+              }              
             </View>
             {/* TODO 임시 테스트용 로그아웃 설정 Start--------------------------------------------------------- */}
             <TouchableOpacity

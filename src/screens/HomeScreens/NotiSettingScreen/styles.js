@@ -21,7 +21,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: mUtils.wScale(25),
+    paddingVertical: mUtils.wScale(15),
   },
   title: {
     fontSize: 20,

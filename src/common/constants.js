@@ -66,6 +66,7 @@ export default {
   osVersion: parseInt(Platform.Version, 10),
   statusHeight: StatusBar.currentHeight,
   navigationBarHeight: Platform.OS === 'ios' ? 60 : 56,
+  AppStoreVersion : Platform.OS === 'ios' ? '1.0.0' : '1.0',
   bottomSpace: isIphoneX() ? getBottomSpace() : 0,
   bottomTabHeight: 58.8 + (isIphoneX() ? getBottomSpace() : 0),
   lf: '\n',

@@ -913,9 +913,7 @@ class SampleRequestsScreen extends PureComponent {
                   })}
                 </View>
               </View>
-              <Text style={styles.smallTitle}>
-                유가 여부 <Text style={{color: '#7eb2b2'}}>*</Text>
-              </Text>
+              <Text style={styles.smallTitle}>유가 여부 </Text>
               <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
                 <View style={styles.layout2}>
                   <FastImage resizeMode={'contain'} style={styles.checkImg} source={myPay ? checkImg : noCheckImg} />

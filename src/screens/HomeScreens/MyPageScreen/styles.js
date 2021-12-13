@@ -75,4 +75,8 @@ export default StyleSheet.create({
     textAlign: 'center',
     color: mConst.black,
   },
+  miniBox : {
+    borderRadius: 5,backgroundColor:'#fff',justifyContent:'center',alignItems:'center',
+    borderWidth:1,borderColor:'#ddd',paddingHorizontal:5,paddingVertical:5
+  }
 })

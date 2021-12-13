@@ -149,7 +149,7 @@ class RootScreen extends PureComponent {
   TabStack = () => {
     const {user} = this.props
     const iconStyle = (width = 96) => ({
-      width: (42 * width) / 155,
+      width: (43 * width) / 155,
       height: 42,
       marginTop: Platform.OS === 'ios' ? 8 : 3,
     })

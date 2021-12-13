@@ -208,6 +208,12 @@ class SampleRequestsListScreen extends React.Component {
         <Header pushTo={this.pushTo} userType={user.userType} alarmSet={user.alarm} />
         <View style={styles.layout1}>
           <Text style={styles.mainTitle}>My Requests</Text>
+          <TouchableOpacity
+              style={{...styles.selectBox, backgroundColor: mConst.black}}
+              onPress={() => {this.pushTo('ShowTab')}}
+            >
+              <Text style={{...styles.selectText, color: mConst.white}}>홀딩 요청</Text>
+            </TouchableOpacity>
         </View>
         {loading ? (
           <Loading />

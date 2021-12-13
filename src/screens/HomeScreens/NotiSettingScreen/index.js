@@ -14,6 +14,7 @@ import styles from './styles'
 import API from '../../../common/aws-api'
 
 const magazine = [
+  {title: '일반 공지사항', desc: '앱 관리자의 공지사항 알림을 받아보세요'},
   {title: '브랜드 공지사항', desc: '공지사항 알림을 받아보세요'},
   {title: '샘플 요청 확인', desc: '샘플 요청 확인 알림을 받아보세요'},
   {title: '샘플 미수령', desc: '샘플 미수령 알림을 받아보세요'},
@@ -22,6 +23,7 @@ const magazine = [
 ]
 
 const brand = [
+  {title: '일반 공지사항', desc: '앱 관리자의 공지사항 알림을 받아보세'},
   {title: '샘플 요청', desc: '샘플 요청의 알림을 받아보세요'},
   {title: '샘플 미수령', desc: '샘플 미수령 알림을 받아보세요'},
   {title: '방해 금지 시간', desc: '특정 시간동안 알림을 받지않아요'},
@@ -83,6 +85,19 @@ class NotiSettingScreen extends PureComponent {
     }
   }
 
+  putAdminNotice = async switchValue => {
+    try {
+      const response = await API.putAdminNotice({recv_yn: switchValue})      
+      if ( switchValue ) { //토픽등록
+        userType == 'B' ? mUtils.setFcmTopic('B') : mUtils.setFcmTopic('M');
+      }else { //토픽해제
+        await mUtils.setFcmTopicClear();
+      }
+    } catch (error) {
+      console.log('putBrandNotice>>>', error)
+    }
+  }
+
   putNotDis = async switchValue => {
     const from = this.state.from.getTime() / 1000
     const to = this.state.to.getTime() / 1000
@@ -102,10 +117,17 @@ class NotiSettingScreen extends PureComponent {
   }
 
   switch = (item, index, switchValue) => {
-    const {isEnabled} = this.state
-    const copy = [...isEnabled]
-    copy.splice(index, 1, switchValue)
+    const {isEnabled} = this.state;
+    const copy = [...isEnabled];
+    copy.splice(index, 1, switchValue);
+
+    console.log('switch>>>', item,switchValue);
+
     switch (item.title) {
+      case '일반 공지사항':
+        this.putAdminNotice(switchValue)
+        this.setState({isEnabled: copy})
+        break
       case '브랜드 공지사항':
         this.putBrandNotice(switchValue)
         this.setState({isEnabled: copy})
@@ -137,11 +159,11 @@ class NotiSettingScreen extends PureComponent {
     }
   }
 
-  componentDidMount() {
-    this.pushOption('알림 설정')
-    const {info} = this.props.route.params
-    const arr =
-      userType !== 'B' ? [false, false, false, false, false] : [info.req_notifi_recv_yn, info.notice_notifi_recv_yn, info.not_disturb_mode_yn]
+  UNSAFE_componentWillMount() {
+    this.pushOption('알림 설정');
+    const {info} = this.props.route.params;
+    console.log('info',info)
+    const arr = userType !== 'B' ? [false, false, false, false, false] : [info.notice_notifi_recv_yn, info.req_notifi_recv_yn, info.sample_not_recv_notifi_yn, info.not_disturb_mode_yn]
     this.setState({
       isEnabled: arr,
       from: _.defaultTo(new Date(moment.unix(info.not_disturb_begin_dt).format()), new Date()),
@@ -149,6 +171,10 @@ class NotiSettingScreen extends PureComponent {
       //from: new Date(),
       //to: new Date(),
     })
+  }
+
+  componentDidMount() {
+    
   }
 
   render() {

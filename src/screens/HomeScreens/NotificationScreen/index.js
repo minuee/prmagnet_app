@@ -164,6 +164,8 @@ class NotificationScreen extends PureComponent {
         this.pushTo('SampleRequestsDetailScreen', {no:reqNo})
       } else if (notice_type === 'cms') {
         this.pushTo('NoticeDetailScreen', {no: noticeId});
+      } else if (notice_type === 'showroom') {        
+        this.pushTo('DigitalSRDetailScreen', {no: noticeId, type: 'digital',title : 'toavmf'})
       } else if (notice_type === 'send' || notice_type === 'recv' || notice_type === 'sendout' || notice_type === 'confirmchange') {        
         if ( !mUtils.isEmpty(date_info)) {
           this.pushTo('PickupsScreen', {

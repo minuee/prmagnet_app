@@ -73,13 +73,41 @@ class LinkSheetScreen extends React.Component {
         }
     }
 
+    dataReset = async(data) => {  
+        let newDataArray = [];
+        data.forEach(async(topelement) => {
+            let newLeftIdxArray = [];
+            let newLeftArray = [];      
+            let showroomData = [];      
+            await topelement.each_list.forEach((element) => {
+              if ( !newLeftIdxArray.includes(element.showroom_list[0].req_no)) {
+                newLeftIdxArray.push(element.showroom_list[0].req_no);
+                newLeftArray.push(element)
+              }
+              showroomData.push(element.showroom_list[0].showroom_no);
+            })
+            newDataArray.push({
+              date : topelement.date,
+              day : topelement.day,
+              month : topelement.month,
+              year : topelement.year,
+              each_list : newLeftArray,
+              showroomData
+            })
+        })
+        return newDataArray;
+    }
+
+
     handleLoadData = async (start, end, brandId) => {
         const {selectTitle} = this.state;
         if (selectTitle === 'Return') {
             try {
                 // console.log('###Return 스케쥴 조회 params:', {start_date: start, fin_date: end, brand_id: brandId})
                 const response = await API.getReturnSchedule({start_date: start, fin_date: end})
-                this.setState({dataList: _.get(response, 'list', []), loading: false,moreLoading:false})
+                const newData =  await this.dataReset(_.get(response, 'list', []));
+                this.setState({dataList: newData, loading: false,moreLoading:false})
+                //this.setState({dataList: _.get(response, 'list', []), loading: false,moreLoading:false})
                 //console.log('Return 스케쥴 조회 성공', JSON.stringify(response))
             } catch (error) {
                 this.setState({loading: false,moreLoading:false})
@@ -89,7 +117,9 @@ class LinkSheetScreen extends React.Component {
             try {
                  //console.log('###Pickup 스케쥴 조회 params:', {start_date: start, fin_date: end, brand_id: brandId})
                 const response = await API.getPickupSchedule({start_date: start, fin_date: end, brand_id: brandId})
-                this.setState({dataList: _.get(response, 'list', []), loading: false,moreLoading:false})
+                const newData =  await this.dataReset(_.get(response, 'list', []));
+                this.setState({dataList: newData, loading: false,moreLoading:false})
+                //this.setState({dataList: _.get(response, 'list', []), loading: false,moreLoading:false})
                 //console.log('Pickup 스케쥴 조회 성공', JSON.stringify(response))
             } catch (error) {
                 this.setState({loading: false,moreLoading:false})
@@ -99,8 +129,10 @@ class LinkSheetScreen extends React.Component {
             try {
                 // console.log('###Sendout 스케쥴 조회 params:', {start_date: start, fin_date: end, brand_id: brandId})
                 const response = await API.getSendoutSchedule({start_date: start, fin_date: end, brand_id: brandId})
-                this.setState({dataList: _.get(response, 'list', []), loading: false,moreLoading:false})
-                console.log('Sendout 스케쥴 조회 성공22', JSON.stringify(response))
+                const newData =  await this.dataReset(_.get(response, 'list', []));
+                this.setState({dataList: newData, loading: false,moreLoading:false})
+                //this.setState({dataList: _.get(response, 'list', []), loading: false,moreLoading:false})
+                //console.log('Sendout 스케쥴 조회 성공22', JSON.stringify(response))
             } catch (error) {
                 this.setState({loading: false,moreLoading:false})
                 console.log('Sendout 스케쥴 조회 실패', error)
@@ -130,9 +162,26 @@ class LinkSheetScreen extends React.Component {
         
         const selectDate2 = await selectDate.sort(function(a, b) {
             return a.date > b.date;
-          });
-          console.log('handleLinkSheetDetail', selectDate2)
-          //console.log('selectDate2selectDate2', selectDate2)
+        });
+        console.log('handleLinkSheetDetail', selectDate2)
+        console.log('selectDate2selectDate2', selectDate2)
+        if (selectTitle === 'Send Out') {
+            if ( mConst.getUserType() == 'B' ) {
+                this.pushTo('SendOutBScreen', {selectEachList:selectDate2})
+            }else{
+                this.pushTo('SendOutScreen', {selectEachList:selectDate2})
+            }
+            
+        } else if (selectTitle === 'Pickups') {
+            this.pushTo('PickupsScreen', {selectEachList:selectDate2})
+        } else if (selectTitle === 'Return') {
+            this.pushTo('ReturnScreen', {selectEachList:selectDate2})
+        }
+    }
+
+    handleLinkSheetDetailEach = async(req_no,showroomData,date) => {
+        const {selectTitle} = this.state;
+        const selectDate2 = [{date,showroom_list : showroomData,req_no_list : [req_no]}]
         if (selectTitle === 'Send Out') {
             if ( mConst.getUserType() == 'B' ) {
                 this.pushTo('SendOutBScreen', {selectEachList:selectDate2})
@@ -313,7 +362,10 @@ class LinkSheetScreen extends React.Component {
                             <View style={{justifyContent:'flex-end',flexDirection:'row',paddingHorizontal:20,paddingBottom:5}}>
                                 { ( selectTitle === "Send Out" || selectTitle === "sendout" )  
                                 ?
+                                mConst.getUserType() === 'B'  ?
                                 <><Text style={{color:'#cccccc'}}>■ <Text style={{color:'#000'}}>발송완료</Text> </Text><Text style={{color:'#ff0000'}}>■ 미발송</Text></>
+                                :
+                                <><Text style={{color:'#cccccc'}}>■ <Text style={{color:'#000'}}>반납완료</Text> </Text><Text style={{color:'#ff0000'}}>■ 미반납</Text></>                                
                                 :
                                 ( selectTitle === "Pickup" || selectTitle === "Pickups" ) 
                                 ?
@@ -371,7 +423,8 @@ class LinkSheetScreen extends React.Component {
                                                     <TouchableOpacity
                                                         key={subIndex}
                                                         style={styles.brandBox}
-                                                        onPress={() =>this.pushTo(mConst.getUserType() == 'B' ? 'SendOutBScreen' : 'SendOutScreen',{reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
+                                                        onPress={() =>this.handleLinkSheetDetailEach(subItem.req_no,item.showroomData,item.date)}
+                                                        //onPress={() =>this.pushTo(mConst.getUserType() == 'B' ? 'SendOutBScreen' : 'SendOutScreen',{reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
                                                     >     
                                                         { mConst.getUserType() == 'B' ?                                                   
                                                             <View style={{...styles.box1, backgroundColor: subItem.sendout_yn ? mUtils.isEmpty(subItem.mgzn_color) ? '#ddd' : subItem.mgzn_color : '#ff0000'}}>
@@ -393,7 +446,8 @@ class LinkSheetScreen extends React.Component {
                                                     <TouchableOpacity
                                                         key={subIndex}
                                                         style={styles.brandBox}
-                                                        onPress={() =>this.pushTo('PickupsScreen',{reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
+                                                        //onPress={() =>this.pushTo('PickupsScreen',{reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
+                                                        onPress={() =>this.handleLinkSheetDetailEach(subItem.req_no,item.showroomData,item.date)}
                                                     >                                                        
                                                         <View style={{...styles.box1, backgroundColor: ( subItem.pickup_yn ) ? mUtils.isEmpty(subItem.brand_color) ? '#ddd' :subItem.brand_color : '#ff0000'}}>
                                                             {this.renderLogo(subItem,subIndex,selectTitle)}
@@ -410,7 +464,8 @@ class LinkSheetScreen extends React.Component {
                                                     <TouchableOpacity
                                                         key={subIndex}
                                                         style={styles.brandBox}
-                                                        onPress={() =>this.pushTo('ReturnScreen',{reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
+                                                        onPress={() =>this.handleLinkSheetDetailEach(subItem.req_no,item.showroomData,item.date)}
+                                                        //onPress={() =>this.pushTo('ReturnScreen',{reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
                                                     >
                                                         <View style={{...styles.box1, backgroundColor: ( subItem.return_yn || subItem.returncheck_yn ) ? mUtils.isEmpty(subItem.mgzn_color) ? '#ddd' :subItem.mgzn_color : '#ff0000'}}>
                                                             {this.renderLogo(subItem,subIndex,selectTitle)}

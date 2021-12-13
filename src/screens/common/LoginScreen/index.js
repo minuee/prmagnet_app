@@ -47,12 +47,13 @@ class LoginScreen extends PureComponent {
     if (email.trim() === '') return this.alert('', '이메일을 입력해주세요.')
     if (!mUtils.isEmail(email)) return this.alert('', '이메일 형식이 아닙니다.')
     if (pw.trim() === '') return this.alert('', '비밀번호를 입력해주세요.')
-    // if (!mUtils.isPassword(pw)) return this.alert('', '비밀번호 형식을 확인해주세요.') // TODO 임시 주석 처리
+    // if (!mUtils.isPassword(pw)) return this.alert('', '비밀번호 형식을 확인해주세요.') // TODO 임시 주석 처리  
+    await mUtils.setFcmTopicClear();
     API.login(data, {
       cbSuccess: async response => {
         API.getUserType()
           .then(resUserType => {
-            console.log('###UserType:', resUserType)
+            //console.log('###UserType:', resUserType)
             let isSubscrYN = false;
             if ( resUserType.is_brand_user ) {
               if ( resUserType.subscr_yn){
@@ -60,17 +61,18 @@ class LoginScreen extends PureComponent {
               }else{
                 isSubscrYN = false;
               }
+              if ( resUserType.notice_notifi_recv_yn ) mUtils.setFcmTopic('B');
             }else{
               isSubscrYN = true;
+              if ( resUserType.notice_notifi_recv_yn )  mUtils.setFcmTopic('M');
             }
             userSubScrbeStatus(isSubscrYN);
             userTypeSuccess(resUserType)
             loginSuccess(response)
           })
           .then(() => API.setPushToken({token_value: pushKey}))
-
-        console.log('###로그인 성공:', response)
-         //console.log('로그인 시 props 확인 : ', this.props)
+          //console.log('###로그인 성공:', response)
+          //console.log('로그인 시 props 확인 : ', this.props)
       },
       cbFailure: e => {
         loginFailure(e)

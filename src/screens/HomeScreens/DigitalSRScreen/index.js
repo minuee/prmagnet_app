@@ -45,7 +45,7 @@ class DigitalSRScreen extends PureComponent {
       season_year: {season_year: '', season_cd_id: ''},
       notice: '',
       inquiryNum: '',
-      brand_id: '',
+      brand_id: 'all',
       loading: true,
       moreLoading : false,
       isSubScrbing : this.props.user.subScrbeStatus,
@@ -172,13 +172,14 @@ class DigitalSRScreen extends PureComponent {
   }
 
   selected = item => {
-    const {select} = this.state
-    if (select.includes(item)) {
+    console.log('itemitemitem>>>>>', item)
+    const {select} = this.state;
+    if(select.includes(item)) {
       this.setState(state => {
         const list = state.select.filter((e, j) => select.indexOf(item) !== j)
         return {select: list}
       })
-    } else {
+    }else{
       this.setState({select: select.concat(item)})
     }
   }
@@ -390,10 +391,10 @@ class DigitalSRScreen extends PureComponent {
         <View style={{paddingHorizontal: mUtils.wScale(20), flex: 1}}>
           <View style={{...styles.layout, justifyContent: 'space-between', marginTop: mUtils.wScale(25)}}>
             <View>
-              <Text style={{...styles.mainTitle}}>Digital</Text>
-              <Text style={styles.mainTitle1}>Showroom</Text>
+              <Text style={{...styles.mainTitle}}>Digital <Text style={styles.mainTitle1}>Showroom</Text></Text>
+              
             </View>              
-            {userType !== 'B' && (
+            {( userType !== 'B'  && this.state.brand_id !== 'all' ) && (
               <View style={styles.layout2}>
                 <TouchableOpacity
                   style={{...styles.selectBox, backgroundColor: selectOnOff ? mConst.black : mConst.white, marginRight: mUtils.wScale(5)}}
@@ -403,35 +404,21 @@ class DigitalSRScreen extends PureComponent {
                 >
                   <Text style={{...styles.selectText, color: selectOnOff ? mConst.white : mConst.black}}>홀딩 요청</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   style={{...styles.selectBox, backgroundColor: mConst.black}}
                   onPress={() => this.pushTo('SelectBrandScreen', {brandId: brand_id, setBrand: this.setBrand})}
                 >
                   <Text style={{...styles.selectText, color: mConst.white}}>Brands</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
             )}
           </View>
-          {
-            ( this.props.user.subScrbeStatus && brand_id != 'all' ) &&
-            <>
-            <View style={{...styles.layout, marginTop: mUtils.wScale(10)}}>
-              <FastImage resizeMode={'contain'} style={styles.notiImg} source={notiImg} />
-              <Text style={styles.noti} numberOfLines={2} ellipsizeMode={'tail'}>
-                {mUtils.replaceAll(notice,"\n","")}
-              </Text>
-            </View>
-            <View style={{...styles.layout, marginTop: mUtils.wScale(3)}}>
-              <FastImage resizeMode={'contain'} style={styles.telImg} source={telImg} />
-              <Text style={styles.tel}>{mUtils.phoneFormat(inquiryNum)}</Text>
-            </View>
-            </>
-          }
+          
           {
           this.props.user.subScrbeStatus ?
           data && this.state.loading ? (
             <>
-              <View style={{...styles.layout, justifyContent: 'space-between', paddingTop: mUtils.wScale(20), paddingBottom: mUtils.wScale(15)}}>
+              <View style={{...styles.layout, justifyContent: 'space-between', paddingTop: mUtils.wScale(20), paddingBottom: mUtils.wScale(10)}}>
                 <View>
                   {userType !== 'B' && <Text style={styles.brandText}>{data.current_brand_info?.brand_nm}</Text>}
                   <Menu>
@@ -474,6 +461,13 @@ class DigitalSRScreen extends PureComponent {
                 </View>
                 <View style={{...styles.layout}}>
                   {userType !== 'B' ? (
+                    <>
+                    <TouchableOpacity
+                      style={{...styles.selectBox, backgroundColor: mConst.black,marginRight:5}}
+                      onPress={() => this.pushTo('SelectBrandScreen', {brandId: brand_id, setBrand: this.setBrand})}
+                    >
+                      <Text style={{...styles.selectText, color: mConst.white}}>Brands</Text>
+                    </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => {
                         this.pushTo('FilterScreen', {setFilter: this.setFilter, data: filterData, info: filterInfo})
@@ -483,6 +477,7 @@ class DigitalSRScreen extends PureComponent {
                       {/* <FastImage resizeMode={'contain'} style={styles.fixImg} source={fixImg} /> */}
                       <Text style={styles.selectText}>Filter</Text>
                     </TouchableOpacity>
+                    </>
                   ) : (
                     <>
                       <TouchableOpacity
@@ -506,6 +501,23 @@ class DigitalSRScreen extends PureComponent {
                   )}
                 </View>
               </View>
+              {
+                ( this.props.user.subScrbeStatus && brand_id != 'all' ) &&
+                <View style={{marginBottom:10}}>
+                  <View style={{...styles.layout}}>
+                    <FastImage resizeMode={'contain'} style={styles.notiImg} source={notiImg} />
+                    {!mUtils.isEmpty(notice) &&
+                      <Text style={styles.noti} numberOfLines={2} ellipsizeMode={'tail'}>
+                        {mUtils.replaceAll(notice,"\n","")}
+                      </Text>
+                    }
+                  </View>
+                  <View style={{...styles.layout, marginTop: mUtils.wScale(3)}}>
+                    <FastImage resizeMode={'contain'} style={styles.telImg} source={telImg} />
+                    <Text style={styles.tel}>{mUtils.phoneFormat(inquiryNum)}</Text>
+                  </View>
+                </View>
+              }
               {data.list.length > 0 ? (
                 <FlatList
                   bounces={false}
@@ -547,7 +559,7 @@ class DigitalSRScreen extends PureComponent {
                 this.pushTo('SampleRequestsScreen', {
                   modelList: select,
                   delSelect: this.selected,
-                  brandId: data.current_brand_info.brand_id,
+                  brandId: data?.current_brand_info?.brand_id,
                   type: true,
                   brandName: '',
                 })

@@ -231,10 +231,11 @@ class DigitalSRDetailScreen extends PureComponent {
                     </View>
                   </View>
 
-                  <Text style={styles.left2}>Caption</Text>
+                  <Text style={styles.left2}>국문 캡션</Text>
                   <View style={{...styles.layout1, marginTop: mUtils.wScale(10)}}>
                     <Text style={styles.desc}>{item.caption_korean}</Text>
                   </View>
+                  <Text style={[styles.left2,{ marginTop: mUtils.wScale(16)}]}>영문 캡션</Text>
                   <View style={{...styles.layout1, marginTop: mUtils.wScale(6), marginBottom: mUtils.wScale(13)}}>
                     <Text style={styles.desc}>{item.caption_english}</Text>
                   </View>

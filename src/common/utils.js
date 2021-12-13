@@ -472,6 +472,36 @@ const utils = {
       .replace('--', '-')
     return result
   },
+  async setFcmTopicClear() {
+    messaging().unsubscribeFromTopic('prmagnet_topic_brand').then(() => {
+      console.log('prmagnet_topic_brand remove okay');
+    }).catch(() => {});
+    messaging().unsubscribeFromTopic('prmagnet_topic_magazine').then(() => {
+      console.log('prmagnet_topic_magazine remove okay');        
+    }).catch(() => {});
+    messaging().unsubscribeFromTopic('prmagnet_topic_all').then(() => {
+      console.log('prmagnet_topic_all remove okay');        
+  }).catch(() => {});
+    return true;
+  },
+  async setFcmTopic(type) {
+    if ( type === 'B') {
+      await messaging().subscribeToTopic('prmagnet_topic_brand').then(() => {
+        console.log('prmagnet_topic_brand regist okay');
+      }).catch(() => {});
+      await messaging().subscribeToTopic('prmagnet_topic_all').then(() => {
+        console.log('prmagnet_topic_all regist okay');
+      }).catch(() => {});
+    }else{
+      await messaging().subscribeToTopic('prmagnet_topic_magazine').then(() => {
+        console.log('prmagnet_topic_magazine regist okay');
+      }).catch(() => {});
+      await messaging().subscribeToTopic('prmagnet_topic_all').then(() => {
+        console.log('prmagnet_topic_all222 regist okay');
+      }).catch(() => {});
+    }
+    return true;
+  },
   async getFcmToken() {
     const getToken = async () => {
       if (mConst.bIos) {

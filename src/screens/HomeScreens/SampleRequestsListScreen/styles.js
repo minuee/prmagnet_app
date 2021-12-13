@@ -98,4 +98,16 @@ export default StyleSheet.create({
     height: mUtils.wScale(7),
     backgroundColor: '#f6f6f6',
   },
+  selectText: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 12,
+    textAlign: 'center',
+  },
+  selectBox: {
+    borderRadius: mUtils.wScale(1),
+    paddingHorizontal: mUtils.wScale(10),
+    paddingVertical: mUtils.wScale(7),
+    borderWidth: 0.7,
+    borderColor: mConst.borderGray,
+  },
 })

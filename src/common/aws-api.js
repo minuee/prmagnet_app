@@ -787,6 +787,16 @@ const API = {
     }
     return Api.put(apiName, path, myInit)
   },
+  putAdminNotice: ({recv_yn}) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/notify-control/admin-notice`
+    const myInit = {
+      body: {
+        recv_yn: recv_yn,
+      },
+    }
+    return Api.put(apiName, path, myInit)
+  },
   putBrandNotice: ({recv_yn}) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/notify-control/brand-notice`
