@@ -52,7 +52,7 @@ class FilterScreen extends PureComponent {
   handleReset = () => {
     this.setState({
       gender: [],
-      section: sections[0],
+      section: _.has(this.params, 'brandId') ? sections[0] : sections[1],
       brandId: '',
       category: [],
       color: [],

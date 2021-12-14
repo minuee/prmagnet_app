@@ -257,6 +257,15 @@ const utils = {
       return val.replace(/([0-9]{3})([0-9]{4})([0-9]{1})/, '$1-$2-$3')
     }
   },
+  phoneFormat2(val) {
+    if (val === undefined || val === null || val === '') return val
+    val = String(val).replace(/-/g, '')
+    if (val.length <= 7) {
+      return val.replace(/([0-9]{3})([0-9]{1})/, '$1-$2')
+    } else {
+      return val.replace(/([0-9]{4})([0-9]{4})/, '$1-$2')
+    }
+  },
   cardNumFormat(val) {
     if (val === undefined || val === null || val === '') return val
     val = String(val).replace(/-/g, '')

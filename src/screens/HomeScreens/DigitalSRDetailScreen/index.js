@@ -200,10 +200,10 @@ class DigitalSRDetailScreen extends PureComponent {
                   </View>
                   <View style={styles.layout}>
                     <View style={styles.layoutLeft}> 
-                      <Text style={styles.left}>Size</Text>
+                      <Text style={styles.left}>Price</Text>
                     </View>
                     <View style={styles.layoutRight}> 
-                      <Text style={{...styles.right}}>{item.size_direct_input}</Text>
+                      <Text style={{...styles.right}}>{mUtils.numberWithCommas(item.price)}원</Text>
                     </View>
                   </View>
                   <View style={styles.layout}>
@@ -213,13 +213,13 @@ class DigitalSRDetailScreen extends PureComponent {
                     <View style={styles.layoutRight}> 
                       <Text style={{...styles.right}}>{item.material_text}</Text>
                     </View>
-                  </View>
+                  </View>                 
                   <View style={styles.layout}>
                     <View style={styles.layoutLeft}> 
-                      <Text style={styles.left}>Price</Text>
+                      <Text style={styles.left}>Size</Text>
                     </View>
                     <View style={styles.layoutRight}> 
-                      <Text style={{...styles.right}}>{mUtils.numberWithCommas(item.price)}원</Text>
+                      <Text style={{...styles.right}}>{item.size_direct_input}</Text>
                     </View>
                   </View>
                   <View style={styles.layout}>

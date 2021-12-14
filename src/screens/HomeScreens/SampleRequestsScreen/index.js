@@ -117,6 +117,12 @@ class SampleRequestsScreen extends PureComponent {
       reservation_list : [],
       holidays: [],
       holidays2: [],
+      editableLoke : false,
+      editableOwn: false,
+      editableYukaEtc: false,
+      editableNone: true,
+      editableCele : false,
+      editableModel : false
     }
   }
   
@@ -169,6 +175,12 @@ class SampleRequestsScreen extends PureComponent {
       message,
       myPay,
       otherPay,
+      editableLoke,
+      editableOwn,
+      editableYukaEtc,
+      editableNone,
+      editableCele,
+      editableModel
     } = this.state
     const {brandId} = this.props.route.params
     let list = selected.map((item, index) => item.showroom_no)
@@ -247,6 +259,12 @@ class SampleRequestsScreen extends PureComponent {
       message,
       myPay,
       otherPay,
+      editableLoke,
+      editableOwn,
+      editableYukaEtc,
+      editableNone,
+      editableCele,
+      editableModel
     } = this.state
     const {no} = this.props.route.params
     let list = selected.map((item, index) => item.showroom_no);
@@ -447,7 +465,13 @@ class SampleRequestsScreen extends PureComponent {
         message: response.message,
         myPay: response.own_paid_pictorial_content,
         otherPay: response.other_paid_pictorial_content,
-        reservation_list : response.reservation_list
+        reservation_list : response.reservation_list,
+        editableLoke : mUtils.isEmpty(response.loc_value) ? false : true,
+        editableOwn: mUtils.isEmpty(response.own_paid_pictorial_content) ? false : true,
+        editableYukaEtc: mUtils.isEmpty(response.other_paid_pictorial_content) ? false : true,
+        editableNone: mUtils.isEmpty(response.own_paid_pictorial_content) && mUtils.isEmpty(response.other_paid_pictorial_content)  ? true : false,
+        editableCele: _.size(response.celeb_list) === 0 ?  false : true,
+        editableModel: _.size(response.model_list) === 0 ? false : true,
       })
     } catch (error) {
       //console.log('getSampleRequests>>>>', error)
@@ -490,6 +514,58 @@ class SampleRequestsScreen extends PureComponent {
       destination: v.dlvy_adres_nm,
       destinationDetail: v.adres_detail
     })
+  }
+
+  setCele = async(bool) => {
+    this.setState({editableCele:!bool,celebrity:['']});
+  }
+
+  setModel = async(bool) => {
+    this.setState({editableModel:!bool,fashionModel:['']});
+  }
+  setLoke = async(bool) => {
+    this.setState({editableLoke:!bool,locateShoot:null});
+  }
+
+  setYuga = async(mode,bool) => {
+    if ( mode === 'own') {
+      if ( bool ) { //자사유가해제
+        this.setState({
+          editableNone:false,editableOwn: false,editableYukaEtc:false,        
+          myPay : null, otherPay : null
+        })
+      }else{//자사유가선택
+        this.setState({
+          editableNone:false,editableOwn: true,editableYukaEtc:false,
+          myPay : null, otherPay : null
+        })
+      }
+
+    }else if ( mode === 'etc') {
+      if ( bool ) { //자사유가해제
+        this.setState({
+          editableNone:false,editableOwn: false,editableYukaEtc:false,        
+          myPay : null, otherPay : null
+        })
+      }else{//자사유가선택
+        this.setState({
+          editableNone:false,editableOwn: false,editableYukaEtc:true,
+          myPay : null, otherPay : null
+        })
+      }
+    }else{
+      if ( bool ) { //유가없음해제
+        this.setState({
+          editableNone:false,editableOwn: false,editableYukaEtc:false,        
+          myPay : null, otherPay : null
+        })
+      }else{//유가없음선택
+        this.setState({
+          editableNone:true,editableOwn: false,editableYukaEtc:false,
+          myPay : null, otherPay : null
+        })
+      }
+    }
   }
 
   render() {
@@ -820,15 +896,19 @@ class SampleRequestsScreen extends PureComponent {
                 모델 <Text style={{color: '#7eb2b2'}}>*</Text>
               </Text>
               <View style={{...styles.layout, justifyContent: 'space-between', width: '100%'}}>
-                <View style={{...styles.layout1}}>
-                  <FastImage resizeMode={'contain'} style={styles.checkImg} source={celebrity[0] ? checkImg : noCheckImg} />
+                <TouchableOpacity 
+                  onPress={() => this.setCele(this.state.editableCele )}
+                  style={{...styles.layout1}}
+                >
+                  <FastImage resizeMode={'contain'} style={styles.checkImg} source={this.state.editableCele ? checkImg : noCheckImg} />
                   <Text style={{...styles.smallTitle, marginBottom: 0}}>셀러브리티</Text>
-                </View>
+                </TouchableOpacity>
                 <View style={{width: '65%'}}>
                   {celebrity.map((item, index) => {
                     return (
                       <View key={index} style={{...styles.box2}}>
                         <TextInput
+                          editable={this.state.editableCele}
                           style={{...styles.inputBox1, width: '70%'}}
                           placeholder={'이름'}
                           placeholderTextColor={mConst.borderGray}
@@ -871,15 +951,19 @@ class SampleRequestsScreen extends PureComponent {
                   marginBottom: mUtils.wScale(18),
                 }}
               >
-                <View style={{...styles.layout1}}>
-                  <FastImage resizeMode={'contain'} style={styles.checkImg} source={fashionModel[0] ? checkImg : noCheckImg} />
+                <TouchableOpacity 
+                  onPress={() => this.setModel(this.state.editableModel )}
+                  style={{...styles.layout1}}
+                >
+                  <FastImage resizeMode={'contain'} style={styles.checkImg} source={this.state.editableModel? checkImg : noCheckImg} />
                   <Text style={{...styles.smallTitle, marginBottom: 0}}>패션 모델</Text>
-                </View>
+                </TouchableOpacity>
                 <View style={{width: '65%'}}>
                   {fashionModel.map((item, index) => {
                     return (
                       <View key={index} style={{...styles.box2}}>
                         <TextInput
+                          editable={this.state.editableModel}
                           style={{...styles.inputBox1, width: '70%'}}
                           placeholder={'이름'}
                           placeholderTextColor={mConst.borderGray}
@@ -915,43 +999,64 @@ class SampleRequestsScreen extends PureComponent {
               </View>
               <Text style={styles.smallTitle}>유가 여부 </Text>
               <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
-                <View style={styles.layout2}>
-                  <FastImage resizeMode={'contain'} style={styles.checkImg} source={myPay ? checkImg : noCheckImg} />
+                <TouchableOpacity 
+                  style={styles.layout2}
+                  onPress={() => this.setYuga('none',this.state.editableNone )}
+                >
+                  <FastImage resizeMode={'contain'} style={styles.checkImg} source={this.state.editableNone ? checkImg : noCheckImg} />
+                  <Text style={styles.text1}>유가없음</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
+                <TouchableOpacity 
+                  onPress={() => this.setYuga('own',this.state.editableOwn )}
+                  style={styles.layout2}
+                >
+                  <FastImage resizeMode={'contain'} style={styles.checkImg} source={this.state.editableOwn ? checkImg : noCheckImg} />
                   <Text style={styles.text1}>자사유가</Text>
-                </View>
+                </TouchableOpacity>
 
                 <TextInput
+                  editable={this.state.editableOwn}
                   style={{...styles.inputBox, width: '65%'}}
                   placeholder={'자사유가'}
                   placeholderTextColor={mConst.borderGray}
                   value={myPay}
                   onChangeText={text => {
-                    this.setState({myPay: text, otherPay: ''})
+                    this.setState({myPay: text, otherPay: '', editableNone:false})
                   }}
                 />
               </View>
               <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
-                <View style={styles.layout2}>
-                  <FastImage resizeMode={'contain'} style={styles.checkImg} source={otherPay ? checkImg : noCheckImg} />
+                <TouchableOpacity 
+                  onPress={() => this.setYuga('etc',this.state.editableYukaEtc )}
+                  style={styles.layout2}
+                >
+                  <FastImage resizeMode={'contain'} style={styles.checkImg} source={this.state.editableYukaEtc ? checkImg : noCheckImg} />
                   <Text style={styles.text1}>타사유가</Text>
-                </View>
+                </TouchableOpacity>
                 <TextInput
+                  editable={this.state.editableYukaEtc}
                   style={{...styles.inputBox, width: '65%'}}
                   placeholder={'타사유가'}
                   placeholderTextColor={mConst.borderGray}
                   value={otherPay}
                   onChangeText={text => {
-                    this.setState({otherPay: text, myPay: ''})
+                    this.setState({otherPay: text, myPay: '', editableNone:false})
                   }}
                 />
               </View>
               <Text style={styles.smallTitle}>로케촬영</Text>
               <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
-                <View style={styles.layout2}>
-                  <FastImage resizeMode={'contain'} style={styles.checkImg} source={locateShoot ? checkImg : noCheckImg} />
+                <TouchableOpacity 
+                  style={styles.layout2}
+                  onPress={() => this.setLoke(this.state.editableLoke )}
+                >
+                  <FastImage resizeMode={'contain'} style={styles.checkImg} source={this.state.editableLoke ? checkImg : noCheckImg} />
                   <Text style={styles.text1}>로케촬영</Text>
-                </View>
+                </TouchableOpacity>
                 <TextInput
+                  editable={this.state.editableLoke}
                   style={{...styles.inputBox, width: '65%'}}
                   placeholder={'촬영지 입력'}
                   placeholderTextColor={mConst.borderGray}

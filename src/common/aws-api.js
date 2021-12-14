@@ -695,7 +695,6 @@ const API = {
       },
     }
 
-    console.log('postDigitalSR init',init)
     return Api.post(apiName, path, init)
   },
   getNotice: () => {

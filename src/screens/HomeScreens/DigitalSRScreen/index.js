@@ -1,10 +1,14 @@
 import React, {PureComponent} from 'react';
-import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity, Pressable} from 'react-native';
+import {SafeAreaView, View,Platform, ScrollView, FlatList,Dimensions,Linking, TouchableOpacity,Pressable} from 'react-native';
 import {connect} from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-menu';
 import _ from 'lodash';
-
+import Icon from 'react-native-vector-icons/AntDesign';
+Icon.loadFont();
+import Modal from 'react-native-modal'
+import Clipboard from '@react-native-clipboard/clipboard'
+import { Tooltip } from 'react-native-elements';
 import mConst from '../../../common/constants';
 import mUtils from '../../../common/utils';
 import cBind, {callOnce} from '../../../common/navigation';
@@ -16,7 +20,7 @@ import Loading from '../../common/Loading';
 import MoreLoading from '../../common/MoreLoading';
 import Empty from '../../common/Empty';
 import NonSubscribe from '../../common/NonSubscribe';
-
+const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get('window');
 const newImg = require('../../../images/navi/new_1.png');
 const MainIcon = require('../../../images/navi/main_icon.png');
 const notiImg = require('../../../images/navi/noti_1.png');
@@ -45,6 +49,9 @@ class DigitalSRScreen extends PureComponent {
       season_year: {season_year: '', season_cd_id: ''},
       notice: '',
       inquiryNum: '',
+      inquiryCharge: '',
+      inquiryContact: '',
+      inquiryEmail: '',
       brand_id: 'all',
       loading: true,
       moreLoading : false,
@@ -275,6 +282,9 @@ class DigitalSRScreen extends PureComponent {
               season_year: response.season_list.length > 0 ? response.season_list[0] : {season_year: '', season_cd_id: ''},
               notice: response.brand_notice.notice,
               inquiryNum: response.brand_notice.inquiry_number,
+              inquiryCharge: response.brand_notice.inquiry_charge,
+              inquiryContact: response.brand_notice.showroom_inquiry_contact,
+              inquiryEmail: response.brand_notice.showroom_inquiry_email,
             })
           }
         }else{
@@ -307,13 +317,33 @@ class DigitalSRScreen extends PureComponent {
   getInquiryNum = async () => {
     try {
       const response = await API.getInquiryNum()
-      //console.log('getInquiryNum>>>', response)
+      console.log('getInquiryNum>>>', response)
       this.setState({inquiryNum: response.inquiry_number})
     } catch (error) {
-      //console.log('getInquiryNum>>>', error)
+      console.log('getInquiryNum>>>', error)
     }
   }
 
+  callShop = (number) => {
+    if ( !mUtils.isEmpty(number)) {
+        let phoneNumber = '';
+        if (Platform.OS === 'android') { phoneNumber = `tel:${number}`; }
+        else {phoneNumber = `telprompt:${number}`; }
+        Linking.openURL(phoneNumber);
+    }else{
+        mUtils.fn_call_toast('연락처 정보가 존재하지 않습니다.')
+        return true;
+    }
+  } 
+
+  copyToClipboard = (target) => {    
+    Clipboard.setString(target)    
+    setTimeout(() => {
+      this.alert('', '복사 완료')
+    }, 500)
+  }
+
+  
   renderItem = ({item}) => {
     const {selectOnOff, select} = this.state
     const userType = mConst.getUserType()
@@ -379,12 +409,18 @@ class DigitalSRScreen extends PureComponent {
     )
   }
 
+  renderTooltip = () => {
+    return (<View style={{width:'100%',padding:5,alignItems:'center',justifyContent:'center'}}>   
+        <Text style={{fontFamily: 'Roboto-Regular',fontSize: 14,color: '#ffffff',}}>브랜드 선택후 홀드요청이 가능합니다.(브랜드별) </Text>
+        
+    </View>)
+  }
+
   render() {
     const {data, brand_id} = this.state;    
-    const {notice, inquiryNum, season_year, selectOnOff, isvisible, loading, select, filterData, filterInfo} = this.state;
+    const {notice, inquiryNum,inquiryCharge,inquiryContact,inquiryEmail, season_year, selectOnOff, isvisible, loading, select, filterData, filterInfo} = this.state;
     const {user} = this.props;
     const userType = mConst.getUserType();
-    
     return (
       <SafeAreaView style={styles.container}>
         <Header pushTo={this.pushTo} userType={userType} alarmSet={user.alarm} />
@@ -462,21 +498,26 @@ class DigitalSRScreen extends PureComponent {
                 <View style={{...styles.layout}}>
                   {userType !== 'B' ? (
                     <>
-                    <TouchableOpacity
-                      style={{...styles.selectBox, backgroundColor: mConst.black,marginRight:5}}
-                      onPress={() => this.pushTo('SelectBrandScreen', {brandId: brand_id, setBrand: this.setBrand})}
-                    >
-                      <Text style={{...styles.selectText, color: mConst.white}}>Brands</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => {
-                        this.pushTo('FilterScreen', {setFilter: this.setFilter, data: filterData, info: filterInfo})
-                      }}
-                      style={{...styles.selectBox, backgroundColor: selectOnOff ? mConst.black : mConst.white, marginRight: mUtils.wScale(5)}}
-                    >
-                      {/* <FastImage resizeMode={'contain'} style={styles.fixImg} source={fixImg} /> */}
-                      <Text style={styles.selectText}>Filter</Text>
-                    </TouchableOpacity>
+                      { this.state.brand_id == 'all' && 
+                        <Tooltip popover={this.renderTooltip('')} width={SCREEN_WIDTH*0.9} height={50} backgroundColor={'#7ea1b2'} skipAndroidStatusBar={true}>
+                          <Icon name="infocirlceo" size={20} color="#000" />
+                        </Tooltip>
+                      }
+                      <TouchableOpacity
+                        style={{...styles.selectBox, backgroundColor: mConst.black,marginRight:5,marginLeft:5}}
+                        onPress={() => this.pushTo('SelectBrandScreen', {brandId: brand_id, setBrand: this.setBrand})}
+                      >
+                        <Text style={{...styles.selectText, color: mConst.white}}>Brands</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => {
+                          this.pushTo('FilterScreen', {setFilter: this.setFilter, data: filterData, info: filterInfo})
+                        }}
+                        style={{...styles.selectBox, backgroundColor: selectOnOff ? mConst.black : mConst.white, marginRight: mUtils.wScale(5)}}
+                      >
+                        {/* <FastImage resizeMode={'contain'} style={styles.fixImg} source={fixImg} /> */}
+                        <Text style={styles.selectText}>Filter</Text>
+                      </TouchableOpacity>
                     </>
                   ) : (
                     <>
@@ -487,7 +528,7 @@ class DigitalSRScreen extends PureComponent {
                         style={{...styles.selectBox, backgroundColor: selectOnOff ? mConst.black : mConst.white, marginRight: mUtils.wScale(5)}}
                       >
                         {/* <FastImage resizeMode={'contain'} style={styles.fixImg} source={fixImg} /> */}
-                        <Text style={styles.menuText}>Filter</Text>
+                        <Text style={styles.menuTextSmall}>Filter</Text>
                       </TouchableOpacity>
                       <View style={{...styles.emptyBar}} />
                       <TouchableOpacity
@@ -514,8 +555,25 @@ class DigitalSRScreen extends PureComponent {
                   </View>
                   <View style={{...styles.layout, marginTop: mUtils.wScale(3)}}>
                     <FastImage resizeMode={'contain'} style={styles.telImg} source={telImg} />
-                    <Text style={styles.tel}>{mUtils.phoneFormat(inquiryNum)}</Text>
+                    <TouchableOpacity  onPress={()=>this.callShop(inquiryNum)}>
+                      <Text style={styles.tel}>{mUtils.phoneFormat2(inquiryNum)}</Text>
+                    </TouchableOpacity>                    
                   </View>
+                  <View style={{...styles.layout, marginTop: mUtils.wScale(3)}}>
+                    <FastImage resizeMode={'contain'} style={styles.telImg} source={telImg} />
+                    {!mUtils.isEmpty(inquiryCharge) && <Text style={styles.tel}>{inquiryCharge}</Text>}
+                    {!mUtils.isEmpty(inquiryContact) && (
+                      <TouchableOpacity  onPress={()=>this.callShop(inquiryContact)}>
+                        <Text style={styles.tel}>{mUtils.phoneFormat(inquiryContact)}</Text>
+                      </TouchableOpacity>                      
+                    )}                    
+                    {!mUtils.isEmpty(inquiryEmail) && (
+                      <TouchableOpacity onPress={() => {this.copyToClipboard(inquiryEmail)}}>
+                        <Text style={styles.tel}>{inquiryEmail}</Text>
+                      </TouchableOpacity>
+                      )
+                    }
+                  </View>                  
                 </View>
               }
               {data.list.length > 0 ? (

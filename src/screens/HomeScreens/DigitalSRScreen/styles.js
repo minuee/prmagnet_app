@@ -181,6 +181,12 @@ export default StyleSheet.create({
     textAlign: 'left',
     color: '#070708',
   },
+  menuTextSmall: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 15,
+    textAlign: 'left',
+    color: '#070708',
+  },
   brandText: {
     fontFamily: 'Roboto-Medium',
     fontSize: 14,
