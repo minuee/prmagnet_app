@@ -8,6 +8,7 @@ const initialState = {
   userType: 'B',
   subScrbeStatus : false,
   alarm: false,
+  userToken : null
 }
 
 export default function user(state = initialState, action) {
@@ -21,7 +22,7 @@ export default function user(state = initialState, action) {
       }
     }
     case LOGIN.SUCCESS: {
-      const data = API.getData(action)
+      const data = API.getData(action);      
       return {
         ...state,
         isLogged: true,
@@ -35,6 +36,7 @@ export default function user(state = initialState, action) {
       return {
         ...state,
         userType,
+        userToken :  data
       }
     }
     case SUBSCRIBE_TYPE.SUCCESS: {

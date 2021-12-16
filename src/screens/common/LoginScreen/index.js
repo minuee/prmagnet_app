@@ -24,16 +24,22 @@ class LoginScreen extends PureComponent {
       // email: 'test1000@ruu.kr',
       // pw: 'test1000@ruu.kr',
       // email: 'gucci@ruu.kr', // 브랜드 테스트
-      email: 'bazzar@ruu.kr', // 매거진 테스트
+      //email: 'bazzar@ruu.kr', // 매거진 테스트
       // email: 'cosmo@ruu.kr', // 매거진 테스트
       // email: 'arena@ruu.kr', // 매거진 테스트
       // email: 'dazed@ruu.kr', // 매거진 테스트
       // email: 'elle@ruu.kr', // 매거진 테스트
-      pw: '1234qwer',
+      //pw: '1234qwer',
     }
   }
   componentDidMount() {
-    this.pushOption('')
+    this.pushOption('');
+    if ( __DEV__) {
+      this.setState({
+        email: 'celine@ruu.kr',
+        pw: '1234qwer'
+      })
+    }
   }
   handleLogin = callOnce(async () => {
     const {email, pw} = this.state
@@ -53,7 +59,7 @@ class LoginScreen extends PureComponent {
       cbSuccess: async response => {
         API.getUserType()
           .then(resUserType => {
-            //console.log('###UserType:', resUserType)
+            ///console.log('###UserType:', resUserType)
             let isSubscrYN = false;
             if ( resUserType.is_brand_user ) {
               if ( resUserType.subscr_yn){
@@ -161,7 +167,7 @@ class LoginScreen extends PureComponent {
             </View>
           </View>
           {/* TODO 임시 테스트용 아이디 비번 설정 Start--------------------------------------------------------- */}
-          <View style={{justifyContents: 'center', paddingTop: 0, backgroundColor: 'gray'}}>
+          {/* <View style={{justifyContents: 'center', paddingTop: 0, backgroundColor: 'gray'}}>
             <View style={styles.lowerSubWrapper}>
               <TouchableOpacity style={styles.itemTextWrapper} onPress={() => this.setState({email: 'gucci@ruu.kr', pw: '1234qwer'})}>
                 <Text style={styles.itemText}>B:gucci</Text>
@@ -183,7 +189,7 @@ class LoginScreen extends PureComponent {
                 <Text style={styles.itemText}>M:elle</Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </View> */}
           {/* TODO 임시 테스트용 아이디 비번 설정 End--------------------------------------------------------- */}
         </SafeAreaView>
         <CodePush />

@@ -19,6 +19,7 @@ import styles from './styles'
 import API from '../../../common/aws-api'
 import Loading from '../../common/Loading'
 import {Platform} from 'react-native'
+import { PanGestureHandler } from 'react-native-gesture-handler'
 
 const modelImg = require('../../../images/sample/model_1.png')
 const moreImg = require('../../../images/navi/more_2.png')
@@ -84,12 +85,16 @@ const convertHolidays = array => {
 class SampleRequestsScreen extends PureComponent {
   constructor(props) {
     super(props)
+    console.log('props.user.userToken.sub',props.user.userToken)
     cBind(this)
     this.state = {
       selected: [],
       defaultInfo: '',
       selectContact: '',
-      selectContact1: '',
+      selectRegID: {
+        user_id: props.user.userToken.user_id,
+        mgzn_user_nm: props.user.userToken.user_nm
+      },
       shDate: '',
       pkDate: '',
       rtDate: '',
@@ -156,6 +161,7 @@ class SampleRequestsScreen extends PureComponent {
       selected,
       defaultInfo,
       selectContact,
+      selectRegID,
       shDate,
       pkDate,
       rtDate,
@@ -185,6 +191,7 @@ class SampleRequestsScreen extends PureComponent {
     const {brandId} = this.props.route.params
     let list = selected.map((item, index) => item.showroom_no)
     //console.log('111>>>>>', startTime,endTime)
+    if (!selectRegID) return this.alert('', '담당기자/스타일리스트를 선택해주세요')
     if (!selectContact) return this.alert('', '연결 연락처를 선택해 주세요.')
     if (!shDate) return this.alert('', '촬영일을 선택해 주세요.')
     if (!pkDate) return this.alert('', '픽업일을 선택해 주세요.')
@@ -220,6 +227,7 @@ class SampleRequestsScreen extends PureComponent {
         dlvy_atent_matter: shippingNote,
         showroom_list: list,
         contact_user_id: selectContact.user_id,
+        reg_user_id: selectRegID.user_id,
         loc_value: locateShoot,
         own_paid_pictorial_content: myPay,
         other_paid_pictorial_content: otherPay,
@@ -240,6 +248,7 @@ class SampleRequestsScreen extends PureComponent {
     const {
       selected,
       selectContact,
+      selectRegID,
       shDate,
       pkDate,
       rtDate,
@@ -290,6 +299,7 @@ class SampleRequestsScreen extends PureComponent {
         dlvy_atent_matter: shippingNote,
         showroom_list: list,
         contact_user_id: selectContact.user_id,
+        reg_user_id: selectContact.user_id,
         loc_value: locateShoot,
         own_paid_pictorial_content: myPay,
         other_paid_pictorial_content: otherPay,
@@ -434,6 +444,10 @@ class SampleRequestsScreen extends PureComponent {
           mgzn_user_nm: response.contact_username,
           phone_no: response.contact_phone_no,
         },
+        selectRegID: {
+          user_id: response.reg_user_id,
+          mgzn_user_nm: response.user_nm,          
+        },
         shDate: {
           month: mUtils.getShowDate(response.shooting_date, 'M'),
           day: mUtils.getShowDate(response.shooting_date, 'D'),
@@ -573,6 +587,7 @@ class SampleRequestsScreen extends PureComponent {
       selected,
       defaultInfo,
       selectContact,
+      selectRegID,
       shDate,
       pkDate,
       rtDate,
@@ -661,9 +676,23 @@ class SampleRequestsScreen extends PureComponent {
                   <Text style={styles.smallTitle}>
                     담당 기자/스타일리스트 <Text style={{color: '#7eb2b2'}}>*</Text>
                   </Text>
-                  <View style={{...styles.box1}}>
-                    <Text style={styles.boxText}>{defaultInfo.user_nm}</Text>
-                  </View>
+                  {/* <Text style={styles.boxText}>{defaultInfo.user_nm}</Text> */}
+                  <ModalDropdown
+                    style={{width: '98%'}}
+                    dropdownStyle={{width: '44%'}}
+                    onSelect={(i, v) => this.setState({selectRegID: v})}                  
+                    options={mUtils.isEmpty(defaultInfo.contact_info) ?[] :defaultInfo.contact_info}
+                    renderRow={item => (
+                      <View style={styles.contactList}>
+                        <Text style={styles.contactText}>{`${item.mgzn_user_nm}`}</Text>
+                      </View>
+                    )}
+                  >
+                    <View style={{...styles.box1, justifyContent: 'space-between'}}>
+                      <Text style={styles.boxText}>{selectRegID ? selectRegID.mgzn_user_nm : 'Editor/Stylist'}</Text>
+                      <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                    </View>
+                  </ModalDropdown>                  
                 </View>
               </View>
               <Text style={styles.smallTitle}>
