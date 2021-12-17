@@ -19,7 +19,7 @@ export default ColorGroup = props => {
       {_.map(data, (item, index) => {
         return (
           <TouchableOpacity key={index} onPress={() => setFilter(item.cd_id)}>
-            <Row style={styles.itemWrapper}>
+            <Row style={index === 0 ? styles.itemWrapper :  styles.itemWrapper2}>
               <View style={styles.colorWrapper}>
                 {item.cd_nm === '멀티컬러' ? (
                   <FastImage source={multiImage} style={styles.colorCircle()} />
@@ -47,6 +47,19 @@ const styles = StyleSheet.create({
     paddingLeft: mUtils.wScale(12),
     paddingRight: mUtils.wScale(24),
     borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderLeftWidth: StyleSheet.hairlineWidth,
+    borderColor: mConst.borderGray,
+  },
+  itemWrapper2: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: mUtils.wScale(50),
+    alignItems: 'center',
+    paddingLeft: mUtils.wScale(12),
+    paddingRight: mUtils.wScale(24),
+    borderBottomWidth: 1,
     borderLeftWidth: StyleSheet.hairlineWidth,
     borderColor: mConst.borderGray,
   },

@@ -209,7 +209,7 @@ export default StyleSheet.create({
   },
   menuOptions: {
     marginTop: mUtils.wScale(20),
-    width: mUtils.wScale(133),
+    width: mUtils.wScale(233),
     paddingVertical: mUtils.wScale(15),
   },
   menuOption: {

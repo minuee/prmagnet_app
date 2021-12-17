@@ -125,7 +125,7 @@ class FavoritesScreen extends PureComponent {
                     return (
                       <View style={{width: '49%', height: mUtils.wScale(310), marginBottom: mUtils.wScale(20)}}>
                         <TouchableOpacity
-                          onPress={() => this.pushTo('DigitalSRDetailScreen', {no: item.showroom_no})}
+                          onPress={() => this.pushTo('DigitalSRDetailScreen', {no: item.showroom_no, type: 'digital',title:item.showroom_nm})}
                           activeOpacity={0.5}
                           style={{width: '100%', height: mUtils.wScale(275)}}
                         >

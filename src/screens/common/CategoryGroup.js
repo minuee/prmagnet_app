@@ -30,7 +30,7 @@ const CategoryItem = props => {
   return (
     <>
       <TouchableOpacity onPress={() => setFold(!fold)}>
-        <Row style={styles.itemWrapper}>
+        <Row style={styles.itemWrapper2}>
           <Text style={styles.itemHeadText}>{data.sample_catgry_lrge_cl_nm}</Text>
           <FastImage source={fold ? foldImage : unfoldImage} style={styles.foldImage} />
         </Row>
@@ -60,7 +60,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: mUtils.wScale(12),
     paddingRight: mUtils.wScale(24),
+    borderBottomWidth: 1,
+    borderLeftWidth: StyleSheet.hairlineWidth,
+    borderColor: mConst.borderGray,
+  },
+  itemWrapper2: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: mUtils.wScale(50),
+    alignItems: 'center',
+    paddingLeft: mUtils.wScale(12),
+    paddingRight: mUtils.wScale(24),
     borderTopWidth: 1,
+    borderBottomWidth: 1,
     borderLeftWidth: StyleSheet.hairlineWidth,
     borderColor: mConst.borderGray,
   },

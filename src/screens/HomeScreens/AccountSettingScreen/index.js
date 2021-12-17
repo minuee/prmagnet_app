@@ -326,8 +326,8 @@ class AccountSettingScreen extends PureComponent {
               </View>
             </View>
             <Text style={{...styles.alert}}>
-              * 프로필이미지 수정 가능합니다.{"\n"}
-              * 그외 프로필수정은 PC에서만 가능합니다.
+              * 프로필 이미지 수정 가능합니다.{"\n"}
+              * 그 외 프로필수정은 PC에서만 가능합니다.
             </Text>            
           </ScrollView>
           <Modal

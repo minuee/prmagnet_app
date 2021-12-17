@@ -36,7 +36,7 @@ class LoginScreen extends PureComponent {
     this.pushOption('');
     if ( __DEV__) {
       this.setState({
-        email: 'celine@ruu.kr',
+        email: 'elle@ruu.kr',
         pw: '1234qwer'
       })
     }
@@ -88,13 +88,13 @@ class LoginScreen extends PureComponent {
     })
   })
   handleJoin = callOnce(async () => {
-    await Linking.openURL('http://fpr-prod-web.s3-website.ap-northeast-2.amazonaws.com/join')
+    await Linking.openURL('https://www.prmagnet.kr/join')
   })
   handleFindId = callOnce(async () => {
-    await Linking.openURL('http://fpr-prod-web.s3-website.ap-northeast-2.amazonaws.com/find-id')
+    await Linking.openURL('https://www.prmagnet.kr/find-id')
   })
   handleFindPw = callOnce(async () => {
-    await Linking.openURL('http://fpr-prod-web.s3-website.ap-northeast-2.amazonaws.com/find-pw')
+    await Linking.openURL('https://www.prmagnet.kr/find-pw')
   })
   render() {
     const {email, pw} = this.state

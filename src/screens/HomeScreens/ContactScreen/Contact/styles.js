@@ -5,7 +5,7 @@ import mUtils from '../../../../common/utils'
 
 export default StyleSheet.create({
   container: {
-    flex: 1,
+    flex:1,
     backgroundColor: mConst.white,
     justifyContent: 'space-between',
   },
@@ -35,6 +35,7 @@ export default StyleSheet.create({
     backgroundColor: mConst.getBaseXColor(),
     alignItems: 'center',
     justifyContent: 'center',
+    zIndex:55
   },
   bottomText: {
     fontSize: 15,

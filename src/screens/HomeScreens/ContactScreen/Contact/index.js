@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {SafeAreaView, View, TextInput, TouchableOpacity, Keyboard} from 'react-native'
+import {SafeAreaView, KeyboardAvoidingView,ScrollView,View, TextInput, TouchableOpacity, Keyboard} from 'react-native'
 import {connect} from 'react-redux'
 import _ from 'lodash'
 
@@ -37,39 +37,45 @@ class Contact extends PureComponent {
 
   render() {
     return (
-      <>
         <SafeAreaView style={styles.container}>
-          <TextInput
-            style={styles.title}
-            placeholder={'제목을 입력해주세요.'}
-            placeholderTextColor={mConst.gray}
-            value={this.state.title}
-            onChangeText={text => {
-              this.setState({...this.state, title: text})
-            }}
-          />
-          <TextInput
-            style={styles.desc}
-            multiline={true}
-            textAlignVertical={'top'}
-            placeholder={'내용을 입력해주세요.'}
-            placeholderTextColor={mConst.gray}
-            value={this.state.desc}
-            onChangeText={text => {
-              this.setState({...this.state, desc: text})
-            }}
-          />
+          <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === 'ios' ? "padding" : 'height'}  enabled> 
+          <ScrollView
+              showsVerticalScrollIndicator={false}
+              indicatorStyle={'white'}
+              style={{width:'100%'}}
+          >
+            <TextInput
+              style={styles.title}
+              placeholder={'제목을 입력해주세요.'}
+              placeholderTextColor={mConst.gray}
+              value={this.state.title}
+              onChangeText={text => {
+                this.setState({...this.state, title: text})
+              }}
+            />
+            <TextInput
+              style={styles.desc}
+              multiline={true}
+              textAlignVertical={'top'}
+              placeholder={'내용을 입력해주세요.'}
+              placeholderTextColor={mConst.gray}
+              value={this.state.desc}
+              onChangeText={text => {
+                this.setState({...this.state, desc: text})
+              }}
+            />
+          </ScrollView>
           <TouchableOpacity
             onPress={() => {
-              Keyboard.dismiss()
-              this.postQna()
+              Keyboard.dismiss();
+              this.postQna();
             }}
             style={styles.bottom}
           >
             <Text style={styles.bottomText}>Confirm</Text>
           </TouchableOpacity>
+          </KeyboardAvoidingView>
         </SafeAreaView>
-      </>
     )
   }
 }

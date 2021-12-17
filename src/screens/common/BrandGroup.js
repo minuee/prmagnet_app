@@ -169,15 +169,6 @@ export default class BrandGroup extends PureComponent {
                 </TouchableOpacity>
               )
             })}
-
-            <TouchableOpacity onPress={() => this.toggleSelectItem('all')}>
-              <Row style={styles.itemWrapper}>
-                <View style={styles.itemSubWrapper}>
-                  <Text style={styles.itemText}>브랜드 전체보기</Text>
-                </View>
-                {brandId === item.brand_id && <FastImage resizeMode={'contain'} source={selectedImage} style={styles.selectedImage} />}
-              </Row>
-            </TouchableOpacity>
             {_.map(
               this.state.searchResult.filter((e, i) => !favoriteItems.includes(e.brand_nm)),
               (item, index) => {
@@ -211,7 +202,7 @@ const styles = StyleSheet.create({
     height: mUtils.wScale(50),
     alignItems: 'center',
     paddingRight: mUtils.wScale(24),
-    borderTopWidth: 1,
+    borderBottomWidth: 1,
     borderLeftWidth: StyleSheet.hairlineWidth,
     borderColor: mConst.borderGray,
   },

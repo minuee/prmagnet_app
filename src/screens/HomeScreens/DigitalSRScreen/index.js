@@ -34,7 +34,7 @@ const selectImg1 = require('../../../images/navi/select_1.png');
 const selectImg2 = require('../../../images/navi/select_2.png');
 const likeImg = require('../../../images/navi/like_2_1.png');
 const likeImgOn = require('../../../images/navi/like_2.png');
-
+const noCheckImg = require('../../../images/navi/disable.png')
 class DigitalSRScreen extends PureComponent {
   constructor(props) {
     super(props)
@@ -264,7 +264,7 @@ class DigitalSRScreen extends PureComponent {
         still_life_img_yn: filterInfo.stillLifeImg,
         material_list: filterInfo.material,
       })
-      console.log('postDigitalSRReset>>>1111')
+      //console.log('postDigitalSRReset>>>1111')
       if (response.success) {
         if ( brand_id != 'all') {
           if (userType === 'B') {
@@ -351,7 +351,7 @@ class DigitalSRScreen extends PureComponent {
       <View style={{width: '49%', height: mUtils.wScale(310)}}>
         <TouchableOpacity
           onPress={() => {
-            selectOnOff ? this.selected(item) : this.pushTo('DigitalSRDetailScreen', {no: item.showroom_no, type: 'digital',title : item.showroom_nm})
+            selectOnOff ? item.all_in_yn ? this.selected(item) : console.log('ng'): this.pushTo('DigitalSRDetailScreen', {no: item.showroom_no, type: 'digital',title : item.showroom_nm})
           }}
           activeOpacity={0.5}
           style={{width: '100%', height: mUtils.wScale(275)}}
@@ -390,6 +390,7 @@ class DigitalSRScreen extends PureComponent {
             ))}
 
           {selectOnOff &&
+            item.all_in_yn ?
             (select.includes(item) ? (
               <View style={{...styles.select, backgroundColor: 'rgba(126, 161, 178, 0.8)'}}>
                 <FastImage resizeMode={'contain'} style={styles.selectImg} source={selectImg2} />
@@ -398,9 +399,21 @@ class DigitalSRScreen extends PureComponent {
               <View style={{...styles.select, backgroundColor: 'rgba(0, 0, 0, 0.5)'}}>
                 <FastImage resizeMode={'contain'} style={styles.selectImg} source={selectImg1} />
               </View>
-            ))}
+            ))
+            :
+            (
+              <View style={{...styles.select, backgroundColor: 'rgba(0, 0, 0, 0.5)'}}>
+                <FastImage resizeMode={'contain'} style={styles.selectImg} source={noCheckImg} />
+                <Text style={{fontFamily: 'Roboto-Bold',fontSize: 20,color: '#ffffff',}}>미입고</Text>
+              </View>
+            )
+          }
         </TouchableOpacity>
+        { this.state.brand_id !== 'all' ?
         <Text style={styles.title}>{item.showroom_nm}</Text>
+        :
+        <Text style={styles.title}>({item.brand_nm}}){item.showroom_nm}</Text>
+        }
         {/* { 
           item.now_req_status_nm === '대여중' &&           
             <Text style={styles.redTitle}>{item.now_req_status_nm}{"\n"}({mUtils.dateToDate(item.duty_recpt_dt)}~{mUtils.dateToDate(item.return_prearnge_dt)})</Text>
@@ -472,7 +485,7 @@ class DigitalSRScreen extends PureComponent {
                       </View>
                     </MenuTrigger>
                     :
-                    <Text style={styles.bottomText1}>no find data </Text>
+                    <Text style={styles.bottomText1}>검색 결과 없음 </Text>
                     }
                     <MenuOptions optionsContainerStyle={styles.menuOptions}>
                       {data.season_list.map((item, index) => {
@@ -545,20 +558,25 @@ class DigitalSRScreen extends PureComponent {
               {
                 ( this.props.user.subScrbeStatus && brand_id != 'all' ) &&
                 <View style={{marginBottom:10}}>
+                  {
+                  !mUtils.isEmpty(notice) &&
                   <View style={{...styles.layout}}>
-                    <FastImage resizeMode={'contain'} style={styles.notiImg} source={notiImg} />
-                    {!mUtils.isEmpty(notice) &&
+                    <FastImage resizeMode={'contain'} style={styles.notiImg} source={notiImg} />                  
                       <Text style={styles.noti} numberOfLines={2} ellipsizeMode={'tail'}>
                         {mUtils.replaceAll(notice,"\n","")}
                       </Text>
-                    }
                   </View>
+                  }
+                  {
+                  !mUtils.isEmpty(inquiryNum) &&
                   <View style={{...styles.layout, marginTop: mUtils.wScale(3)}}>
                     <FastImage resizeMode={'contain'} style={styles.telImg} source={telImg} />
                     <TouchableOpacity  onPress={()=>this.callShop(inquiryNum)}>
                       <Text style={styles.tel}>{mUtils.phoneFormat2(inquiryNum)}</Text>
                     </TouchableOpacity>                    
                   </View>
+                  }
+                  { ( !mUtils.isEmpty(inquiryCharge) && !mUtils.isEmpty(inquiryContact) &&  !mUtils.isEmpty(inquiryEmail) ) &&
                   <View style={{...styles.layout, marginTop: mUtils.wScale(3)}}>
                     <FastImage resizeMode={'contain'} style={styles.telImg} source={telImg} />
                     {!mUtils.isEmpty(inquiryCharge) && <Text style={styles.tel}>{inquiryCharge}</Text>}
@@ -573,7 +591,8 @@ class DigitalSRScreen extends PureComponent {
                       </TouchableOpacity>
                       )
                     }
-                  </View>                  
+                  </View>   
+                  }               
                 </View>
               }
               {data.list.length > 0 ? (

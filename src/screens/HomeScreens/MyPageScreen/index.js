@@ -162,14 +162,14 @@ class MyPageScreen extends PureComponent {
               }              
             </View>
             {/* TODO 임시 테스트용 로그아웃 설정 Start--------------------------------------------------------- */}
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={{paddingTop: mUtils.wScale(40)}}
               onPress={() => {
                 this.props.logoutSuccess()
               }}
             >
               <Text style={styles.text1}>로그아웃(임시)</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             {/* TODO 임시 테스트용 로그아웃 설정 End--------------------------------------------------------- */}
           </ScrollView>
         </SafeAreaView>
