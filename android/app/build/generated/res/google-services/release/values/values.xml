@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">479812450176-905tp0n1h4lqgeojau2mjll36ve4nlas.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">479812450176</string>
+    <string name="google_api_key" translatable="false">AIzaSyBa5D76jhbJ5tkIHnISTUQlLtF8lUl4pjM</string>
+    <string name="google_app_id" translatable="false">1:479812450176:android:b78dc349d57d25df75f365</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBa5D76jhbJ5tkIHnISTUQlLtF8lUl4pjM</string>
+    <string name="google_storage_bucket" translatable="false">prmagnet-4fcbd.appspot.com</string>
+    <string name="project_id" translatable="false">prmagnet-4fcbd</string>
+</resources>

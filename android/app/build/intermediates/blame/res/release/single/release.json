@@ -1,0 +1,762 @@
+[
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_awssdk_clients3_dist_cjs_package.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_awssdk_clients3_dist_cjs_package.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-hdpi_node_modules_reactnativecalendars_src_img_up.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-hdpi/node_modules_reactnativecalendars_src_img_up.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_tabs_tab_show_on_2.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_tabs_tab_show_on_2.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/mipmap-ldpi-v26_ic_foreground.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/mipmap-ldpi-v26/ic_foreground.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_menu.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_menu.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_check_6.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_check_6.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-xxxhdpi_node_modules_reactnativecalendars_src_calendar_img_previous.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-xxxhdpi/node_modules_reactnativecalendars_src_calendar_img_previous.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_reactnativevectoricons_glyphmaps_materialcommunityicons.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_reactnativevectoricons_glyphmaps_materialcommunityicons.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_reactnativevectoricons_glyphmaps_feather.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_reactnativevectoricons_glyphmaps_feather.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/mipmap-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_node_modules_reactnativeratings_dist_images_bell.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/node_modules_reactnativeratings_dist_images_bell.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_scheduler_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_scheduler_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_node_modules_reactnativecalendars_src_img_down.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/node_modules_reactnativecalendars_src_img_down.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/mipmap-xxxhdpi-v26_ic_launcher.xml.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/mipmap-xxxhdpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_awssdk_clienttextract_dist_cjs_package.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_awssdk_clienttextract_dist_cjs_package.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_node_modules_reactnativeratings_dist_images_airbnbstar.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/node_modules_reactnativeratings_dist_images_airbnbstar.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_tel_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_tel_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_like_2.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_like_2.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_tabs_tab_schedule.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_tabs_tab_schedule.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_like_2_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_like_2_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_tabs_tab_show.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_tabs_tab_show.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_node_modules_reactnativeratings_dist_images_airbnbstarselected.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/node_modules_reactnativeratings_dist_images_airbnbstarselected.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_star_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_star_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-xhdpi_node_modules_reactnativecalendars_src_calendar_img_previous.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-xhdpi/node_modules_reactnativecalendars_src_calendar_img_previous.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_tabs_tab_link_on_2.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_tabs_tab_link_on_2.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-xhdpi_node_modules_reactnavigation_stack_src_views_assets_backicon.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-xhdpi/node_modules_reactnavigation_stack_src_views_assets_backicon.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_noti_sky.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_noti_sky.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/mipmap-xhdpi-v26_ic_launcher.xml.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/mipmap-xhdpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_awssdk_clientkinesis_dist_cjs_package.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_awssdk_clientkinesis_dist_cjs_package.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_reactnativevectoricons_glyphmaps_zocial.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_reactnativevectoricons_glyphmaps_zocial.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_close.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_close.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-xhdpi_node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-xhdpi/node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_alarm_new.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_alarm_new.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_common_profile_2.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_common_profile_2.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-xxhdpi_node_modules_reactnativecalendars_src_calendar_img_previous.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-xxhdpi/node_modules_reactnativecalendars_src_calendar_img_previous.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_node_modules_reactnavigation_stack_src_views_assets_backiconmask.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/node_modules_reactnavigation_stack_src_views_assets_backiconmask.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_plus_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_plus_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_more_2.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_more_2.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_reactnativevectoricons_glyphmaps_fontawesome5free_meta.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_reactnativevectoricons_glyphmaps_fontawesome5free_meta.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_circle_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_circle_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_common_like_2.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_common_like_2.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-xhdpi_node_modules_reactnativecalendars_src_img_down.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-xhdpi/node_modules_reactnativecalendars_src_img_down.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/mipmap-ldpi_ic_launcher.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/mipmap-ldpi/ic_launcher.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-xxxhdpi_node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-xxxhdpi/node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_tabs_tab_show_on.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_tabs_tab_show_on.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_default_profile.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_default_profile.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_awssdk_clientcognitoidentity_dist_cjs_package.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_awssdk_clientcognitoidentity_dist_cjs_package.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/mipmap-mdpi-v26_ic_launcher.xml.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/mipmap-mdpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-xhdpi_splash_image.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/drawable-xhdpi/splash_image.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_node_modules_reactnavigation_stack_src_views_assets_backicon.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/node_modules_reactnavigation_stack_src_views_assets_backicon.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_bell_off.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_bell_off.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_camera_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_camera_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_go_right.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_go_right.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_app.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/app.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_share_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_share_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_awssdk_clienttranslate_dist_cjs_package.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_awssdk_clienttranslate_dist_cjs_package.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-xxxhdpi_node_modules_reactnativecalendars_src_img_down.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-xxxhdpi/node_modules_reactnativecalendars_src_img_down.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_common_bell.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_common_bell.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_reactnativevectoricons_glyphmaps_entypo.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_reactnativevectoricons_glyphmaps_entypo.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-hdpi_node_modules_reactnavigation_stack_src_views_assets_backicon.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-hdpi/node_modules_reactnavigation_stack_src_views_assets_backicon.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/mipmap-hdpi-v26_ic_foreground.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/mipmap-hdpi-v26/ic_foreground.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_plus_2.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_plus_2.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_common_bell_2.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_common_bell_2.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/mipmap-hdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_del_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_del_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_tabs_tab_home_on_2.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_tabs_tab_home_on_2.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_circle_2.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_circle_2.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_common_fold.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_common_fold.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_more_3.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_more_3.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_tabs_tab_link_2.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_tabs_tab_link_2.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_reactnativevectoricons_glyphmaps_simplelineicons.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_reactnativevectoricons_glyphmaps_simplelineicons.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_dollar_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_dollar_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/mipmap-mdpi-v26_ic_foreground.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/mipmap-mdpi-v26/ic_foreground.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/mipmap-xhdpi-v26_ic_foreground.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/mipmap-xhdpi-v26/ic_foreground.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_node_modules_reactnativeratings_dist_images_rocket.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/node_modules_reactnativeratings_dist_images_rocket.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_bell_off2.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_bell_off2.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_tabs_tab_home_2.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_tabs_tab_home_2.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_splash_image.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/drawable-mdpi/splash_image.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_memo_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_memo_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_check_5.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_check_5.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-xxxhdpi_node_modules_reactnativecalendars_src_calendar_img_next.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-xxxhdpi/node_modules_reactnativecalendars_src_calendar_img_next.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/mipmap-mdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_profile_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_profile_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_minus_2.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_minus_2.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-xxxhdpi_node_modules_reactnativecalendars_src_img_up.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-xxxhdpi/node_modules_reactnativecalendars_src_img_up.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/mipmap-xxxhdpi-v26_ic_foreground.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/mipmap-xxxhdpi-v26/ic_foreground.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_tabs_tab_link_on.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_tabs_tab_link_on.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-xhdpi_node_modules_reactnativecalendars_src_calendar_img_next.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-xhdpi/node_modules_reactnativecalendars_src_calendar_img_next.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_check_2.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_check_2.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_tabs_tab_home_on.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_tabs_tab_home_on.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_tabs_tab_sample_on.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_tabs_tab_sample_on.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_common_profile.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_common_profile.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_csscolorkeywords_colors.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_csscolorkeywords_colors.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_common_heart.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_common_heart.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/mipmap-xxhdpi-v26_ic_foreground.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/mipmap-xxhdpi-v26/ic_foreground.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_noti_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_noti_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_like_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_like_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_select_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_select_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_common_circle_check_on.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_common_circle_check_on.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_tabs_tab_schedule_on_2.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_tabs_tab_schedule_on_2.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_more_5.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_more_5.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_tabs_tab_sample.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_tabs_tab_sample.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_minus_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_minus_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_fix_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_fix_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/layout_launch_screen.xml.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/layout/launch_screen.xml"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_no_check_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_no_check_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-hdpi_node_modules_reactnativecalendars_src_calendar_img_next.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-hdpi/node_modules_reactnativecalendars_src_calendar_img_next.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_common_circle_check.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_common_circle_check.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_reactnativevectoricons_glyphmaps_evilicons.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_reactnativevectoricons_glyphmaps_evilicons.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_check_3.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_check_3.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_reactnativevectoricons_glyphmaps_antdesign.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_reactnativevectoricons_glyphmaps_antdesign.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_new_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_new_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-xhdpi_node_modules_reactnativecalendars_src_img_up.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-xhdpi/node_modules_reactnativecalendars_src_img_up.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/mipmap-xxhdpi-v26_ic_launcher.xml.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/mipmap-xxhdpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-xxhdpi_node_modules_reactnativecalendars_src_img_up.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-xxhdpi/node_modules_reactnativecalendars_src_img_up.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_link.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_link.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_tabs_tab_look_on.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_tabs_tab_look_on.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-xxxhdpi_node_modules_reactnavigation_stack_src_views_assets_backicon.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-xxxhdpi/node_modules_reactnavigation_stack_src_views_assets_backicon.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-hdpi_node_modules_reactnativecalendars_src_calendar_img_previous.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-hdpi/node_modules_reactnativecalendars_src_calendar_img_previous.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_awssdk_clientpolly_dist_cjs_package.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_awssdk_clientpolly_dist_cjs_package.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_awssdk_clientrekognition_dist_cjs_package.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_awssdk_clientrekognition_dist_cjs_package.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_node_modules_storybook_addonondeviceknobs_dist_components_colorpicker_resources_hsv_triangle_mask.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/node_modules_storybook_addonondeviceknobs_dist_components_colorpicker_resources_hsv_triangle_mask.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_alarm.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_alarm.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_book_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_book_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/mipmap-hdpi-v26_ic_launcher.xml.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/mipmap-hdpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_setting_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_setting_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-xxhdpi_splash_image.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/drawable-xxhdpi/splash_image.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_check_4.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_check_4.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_tabs_tab_schedule_2.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_tabs_tab_schedule_2.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_dollar_2.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_dollar_2.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_no_check_3.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_no_check_3.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_sample_model_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_sample_model_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_airplane_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_airplane_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_reactnativevectoricons_glyphmaps_fontawesome5free.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_reactnativevectoricons_glyphmaps_fontawesome5free.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_tabs_tab_link.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_tabs_tab_link.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_awssdk_clientcomprehend_dist_cjs_package.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_awssdk_clientcomprehend_dist_cjs_package.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_select_2.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_select_2.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_reactnativevectoricons_glyphmaps_materialicons.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_reactnativevectoricons_glyphmaps_materialicons.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_logo_2.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_logo_2.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_reactnativevectoricons_glyphmaps_octicons.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_reactnativevectoricons_glyphmaps_octicons.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_noti_black.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_noti_black.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_main_icon.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_main_icon.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_check_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_check_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_node_modules_reactnativecalendars_src_img_up.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/node_modules_reactnativecalendars_src_img_up.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_reactnativevectoricons_glyphmaps_fontawesome.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_reactnativevectoricons_glyphmaps_fontawesome.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_node_modules_reactnativeratings_dist_images_heart.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/node_modules_reactnativeratings_dist_images_heart.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_awssdk_clientpinpoint_dist_cjs_package.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_awssdk_clientpinpoint_dist_cjs_package.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_link_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_link_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_tabs_tab_schedule_on.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_tabs_tab_schedule_on.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_awssdk_clientpersonalizeevents_dist_cjs_package.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_awssdk_clientpersonalizeevents_dist_cjs_package.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_awssdk_clientfirehose_dist_cjs_package.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_awssdk_clientfirehose_dist_cjs_package.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_back.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_back.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_awssdk_clientlexruntimeservice_dist_cjs_package.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_awssdk_clientlexruntimeservice_dist_cjs_package.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_crown_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_crown_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_common_unfold.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_common_unfold.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_common_search.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_common_search.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-hdpi_node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-hdpi/node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-hdpi_node_modules_reactnativecalendars_src_img_down.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-hdpi/node_modules_reactnativecalendars_src_img_down.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_node_modules_reactnativeratings_dist_images_star.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/node_modules_reactnativeratings_dist_images_star.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_close_2.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_close_2.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_tabs_tab_look.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_tabs_tab_look.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_reactnativecodepush_package.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_reactnativecodepush_package.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-xxhdpi_node_modules_reactnativecalendars_src_img_down.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-xxhdpi/node_modules_reactnativecalendars_src_img_down.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-xxhdpi_node_modules_reactnativecalendars_src_calendar_img_next.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-xxhdpi/node_modules_reactnativecalendars_src_calendar_img_next.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_more_4.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_more_4.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_tabs_tab_home.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_tabs_tab_home.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-xxhdpi_node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-xxhdpi/node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_common_heart_on.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_common_heart_on.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable_splashscreen.xml.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/drawable/splashscreen.xml"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_sample_model_2.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_sample_model_2.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_reactnativevectoricons_glyphmaps_ionicons.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_reactnativevectoricons_glyphmaps_ionicons.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_node_modules_storybook_addonondeviceknobs_dist_components_colorpicker_resources_colorcircle.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/node_modules_storybook_addonondeviceknobs_dist_components_colorpicker_resources_colorcircle.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-xxhdpi_node_modules_reactnavigation_stack_src_views_assets_backicon.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-xxhdpi/node_modules_reactnavigation_stack_src_views_assets_backicon.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_tabs_tab_show_2.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_tabs_tab_show_2.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_more_1.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_more_1.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-hdpi_splash_image.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/drawable-hdpi/splash_image.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_reactnativevectoricons_glyphmaps_foundation.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_reactnativevectoricons_glyphmaps_foundation.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/raw_node_modules_reactnativevectoricons_glyphmaps_fontisto.json.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/raw/node_modules_reactnativevectoricons_glyphmaps_fontisto.json"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_common_multi.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_common_multi.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/mipmap-ldpi-v26_ic_launcher.xml.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/src/main/res/mipmap-ldpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_navi_go_left.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_navi_go_left.png"
+    },
+    {
+        "merged": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_images_common_selected.png.flat",
+        "source": "/Users/sv/Documents/WorkPlace/project/fasionpr-reactnative/android/app/build/generated/res/react/release/drawable-mdpi/src_images_common_selected.png"
+    }
+]

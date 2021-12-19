@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PRMagnet.iml" filepath="$PROJECT_DIR$/.idea/modules/PRMagnet.iml" group="PRMagnet" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-688947232/amazon-cognito-identity-js.iml" filepath="$PROJECT_DIR$/.idea/modules/-688947232/amazon-cognito-identity-js.iml" group="PRMagnet/amazon-cognito-identity-js" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="PRMagnet/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1382902344/react-native-clipboard_clipboard.iml" filepath="$PROJECT_DIR$/.idea/modules/1382902344/react-native-clipboard_clipboard.iml" group="PRMagnet/react-native-clipboard_clipboard" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-134347343/react-native-code-push.iml" filepath="$PROJECT_DIR$/.idea/modules/-134347343/react-native-code-push.iml" group="PRMagnet/react-native-code-push" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1522675183/react-native-community_async-storage.iml" filepath="$PROJECT_DIR$/.idea/modules/1522675183/react-native-community_async-storage.iml" group="PRMagnet/react-native-community_async-storage" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1420804948/react-native-community_masked-view.iml" filepath="$PROJECT_DIR$/.idea/modules/-1420804948/react-native-community_masked-view.iml" group="PRMagnet/react-native-community_masked-view" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1107986352/react-native-community_netinfo.iml" filepath="$PROJECT_DIR$/.idea/modules/-1107986352/react-native-community_netinfo.iml" group="PRMagnet/react-native-community_netinfo" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1727403534/react-native-date-picker.iml" filepath="$PROJECT_DIR$/.idea/modules/-1727403534/react-native-date-picker.iml" group="PRMagnet/react-native-date-picker" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1347157034/react-native-device-info.iml" filepath="$PROJECT_DIR$/.idea/modules/1347157034/react-native-device-info.iml" group="PRMagnet/react-native-device-info" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1590124435/react-native-exit-app.iml" filepath="$PROJECT_DIR$/.idea/modules/-1590124435/react-native-exit-app.iml" group="PRMagnet/react-native-exit-app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1194572443/react-native-fast-image.iml" filepath="$PROJECT_DIR$/.idea/modules/-1194572443/react-native-fast-image.iml" group="PRMagnet/react-native-fast-image" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/721790798/react-native-firebase_app.iml" filepath="$PROJECT_DIR$/.idea/modules/721790798/react-native-firebase_app.iml" group="PRMagnet/react-native-firebase_app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1581761393/react-native-firebase_messaging.iml" filepath="$PROJECT_DIR$/.idea/modules/1581761393/react-native-firebase_messaging.iml" group="PRMagnet/react-native-firebase_messaging" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-44617301/react-native-gesture-handler.iml" filepath="$PROJECT_DIR$/.idea/modules/-44617301/react-native-gesture-handler.iml" group="PRMagnet/react-native-gesture-handler" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1987838878/react-native-image-crop-picker.iml" filepath="$PROJECT_DIR$/.idea/modules/1987838878/react-native-image-crop-picker.iml" group="PRMagnet/react-native-image-crop-picker" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/286630203/react-native-image-picker.iml" filepath="$PROJECT_DIR$/.idea/modules/286630203/react-native-image-picker.iml" group="PRMagnet/react-native-image-picker" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/414829969/react-native-reanimated.iml" filepath="$PROJECT_DIR$/.idea/modules/414829969/react-native-reanimated.iml" group="PRMagnet/react-native-reanimated" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/723815252/react-native-safe-area-context.iml" filepath="$PROJECT_DIR$/.idea/modules/723815252/react-native-safe-area-context.iml" group="PRMagnet/react-native-safe-area-context" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-979221396/react-native-screens.iml" filepath="$PROJECT_DIR$/.idea/modules/-979221396/react-native-screens.iml" group="PRMagnet/react-native-screens" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1664666782/react-native-sha256.iml" filepath="$PROJECT_DIR$/.idea/modules/-1664666782/react-native-sha256.iml" group="PRMagnet/react-native-sha256" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1759325513/react-native-splash-screen.iml" filepath="$PROJECT_DIR$/.idea/modules/-1759325513/react-native-splash-screen.iml" group="PRMagnet/react-native-splash-screen" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1911897611/react-native-vector-icons.iml" filepath="$PROJECT_DIR$/.idea/modules/1911897611/react-native-vector-icons.iml" group="PRMagnet/react-native-vector-icons" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1923856648/react-native-version-check.iml" filepath="$PROJECT_DIR$/.idea/modules/-1923856648/react-native-version-check.iml" group="PRMagnet/react-native-version-check" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1720278818/react-native-webview.iml" filepath="$PROJECT_DIR$/.idea/modules/-1720278818/react-native-webview.iml" group="PRMagnet/react-native-webview" />
+    </modules>
+  </component>
+</project>
