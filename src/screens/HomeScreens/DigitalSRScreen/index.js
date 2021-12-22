@@ -69,16 +69,19 @@ class DigitalSRScreen extends PureComponent {
     }
   }
 
+  async UNSAFE_componentWillMount () {
+    this.handleOnFocus();
+  }
   componentDidMount() {
     if ( this.props.user.subScrbeStatus ) {
-      this.onFocus(this.handleOnFocus);
+      //this.onFocus(this.handleOnFocus);
       this.getSampleInfo();
     }else{
       this.setState({data: null,loading:false});
     }    
   }
   componentWillUnmount() {
-    this.removeFocus();
+    //this.removeFocus();
   }
   handleOnFocus = () => {
     const userType = mConst.getUserType()
@@ -389,7 +392,7 @@ class DigitalSRScreen extends PureComponent {
               </TouchableOpacity>
             ))}
 
-          {selectOnOff &&
+          {selectOnOff && (
             item.all_in_yn ?
             (select.includes(item) ? (
               <View style={{...styles.select, backgroundColor: 'rgba(126, 161, 178, 0.8)'}}>
@@ -407,12 +410,12 @@ class DigitalSRScreen extends PureComponent {
                 <Text style={{fontFamily: 'Roboto-Bold',fontSize: 20,color: '#ffffff',}}>미입고</Text>
               </View>
             )
-          }
+          )}
         </TouchableOpacity>
         { this.state.brand_id !== 'all' ?
         <Text style={styles.title}>{item.showroom_nm}</Text>
         :
-        <Text style={styles.title}>({item.brand_nm}}){item.showroom_nm}</Text>
+        <Text style={styles.title}>[{item.brand_nm}]{item.showroom_nm}</Text>
         }
         {/* { 
           item.now_req_status_nm === '대여중' &&           
@@ -424,7 +427,7 @@ class DigitalSRScreen extends PureComponent {
 
   renderTooltip = () => {
     return (<View style={{width:'100%',padding:5,alignItems:'center',justifyContent:'center'}}>   
-        <Text style={{fontFamily: 'Roboto-Regular',fontSize: 14,color: '#ffffff',}}>브랜드 선택후 홀드요청이 가능합니다.(브랜드별) </Text>
+        <Text style={{fontFamily: 'Roboto-Regular',fontSize: 14,color: '#ffffff',}}>브랜드 선택 후 홀딩 요청이 가능합니다.(브랜드 별)</Text>
         
     </View>)
   }

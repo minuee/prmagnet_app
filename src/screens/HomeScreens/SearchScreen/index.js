@@ -52,6 +52,27 @@ class SearchScreen extends PureComponent {
     })
   }
 
+  lookbookMapList = list => {
+    return list.map((item, index) => {
+      return (
+        <TouchableOpacity 
+          key={index} style={styles.layoutWrap}
+          onPress={() => {this.pushTo('LookBookDetailScreen', {lookbook_no: item.lookbook_no, lookbook_nm: item.lookbook_nm})}}
+        >
+          <View style={styles.layoutLeft}>
+            <FastImage resizeMode={'cover'} style={styles.modelImg} source={{uri: item.image_url}} />
+          </View>          
+          <View style={styles.layoutRight}>
+            <Text style={styles.brand}>{item.lookbook_nm}</Text>
+            <Text style={styles.dt}>
+            {mUtils.getShowDate(item.lookbook_reg_dt,'YYYY-MM-DD')}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      )
+    })
+  }
+
   search = text => {
     if ( this.props.user.subScrbeStatus ) {
       this.setState({loading: true, keyword: text}, () => {
@@ -137,7 +158,7 @@ class SearchScreen extends PureComponent {
                           <Text numberOfLines={2} style={styles.subTitle}>
                             Lookbook ({brand.lookbook.length})
                           </Text>
-                          {this.mapList(brand.lookbook)}
+                          {this.lookbookMapList(brand.lookbook)}
                         </>
                       </ScrollView>
                     ) : (

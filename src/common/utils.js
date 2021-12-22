@@ -547,6 +547,7 @@ const utils = {
     switch(str) {
       case 'confirmed' : returnStr = "홀딩완료"; break;
       case 'rejected' : returnStr = "홀딩불가";break;
+      case 'canceled' : returnStr = "홀딩거절";break;
       default : returnStr = "홀딩대기";break;
     }
     return returnStr;

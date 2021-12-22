@@ -15,6 +15,8 @@ import CustomBottomTabBar from './common/CustomBottomTabBar';
 import StartScreen from './HomeScreens/StartScreen';
 import FilterScreen from './HomeScreens/FilterScreen';
 import LoginScreen from './common/LoginScreen';
+import WebviewScreen from './common/WebviewScreen';
+
 import HomeScreen from './HomeScreens/HomeScreen';
 import HomeDetailScreen from './HomeScreens/HomeDetailScreen';
 import SelectScheduleScreen from './HomeScreens/SelectScheduleScreen';
@@ -100,6 +102,16 @@ class RootScreen extends PureComponent {
   componentDidMount() {
     SplashScreen.hide()
   }
+  LoginStack = () => {
+    const LoginStack = createStackNavigator()
+    return (
+      <LoginStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'LoginScreen'}>
+        <LoginStack.Screen name="DevNavigationScreen" component={DevNavigationScreen} />
+        <LoginStack.Screen name="LoginScreen" component={LoginScreen} />
+        <LoginStack.Screen name="WebviewScreen" component={WebviewScreen} />     
+      </LoginStack.Navigator>
+    )
+  }
   MemberStack = () => {
     const MemberStack = createStackNavigator()
     return (
@@ -109,6 +121,7 @@ class RootScreen extends PureComponent {
         {/* 개발 편의를 위한 임시 화면 start --------- */}
         <MemberStack.Screen name="DevNavigationScreen" component={DevNavigationScreen} />
         <MemberStack.Screen name="LoginScreen" component={LoginScreen} />
+        <MemberStack.Screen name="WebviewScreen" component={WebviewScreen} />
         {/* 개발 편의를 위한 임시 화면 end --------- */}
         <MemberStack.Screen name="SampleRequestsDetailScreen" component={SampleRequestsDetailScreen} />
         <MemberStack.Screen name="PrivacyScreen" component={PrivacyScreen} />
@@ -261,7 +274,7 @@ class RootScreen extends PureComponent {
           {user.isLogged ? (
             <RootStack.Screen name="MemberStack" component={this.MemberStack} />
           ) : (
-            <RootStack.Screen name="LoginScreen" component={LoginScreen} />
+            <RootStack.Screen name="LoginStack" component={this.LoginStack} />
           )}
         </RootStack.Navigator>
       </NavigationContainer>

@@ -13,14 +13,16 @@ import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
 import styles from './styles'
 import FastImage from 'react-native-fast-image'
-
+import AsyncStorage from '@react-native-community/async-storage';
 const logoImg = require('../../../images/logo_2.png')
 
 class LoginScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
-    this.state = {
+    this.state = { 
+      email : '',
+      pw : ''
       // email: 'test1000@ruu.kr',
       // pw: 'test1000@ruu.kr',
       // email: 'gucci@ruu.kr', // 브랜드 테스트
@@ -33,7 +35,7 @@ class LoginScreen extends PureComponent {
     }
   }
   componentDidMount() {
-    this.pushOption('');
+    this.emptyOption('');
     if ( __DEV__) {
       this.setState({
         email: 'elle@ruu.kr',
@@ -42,17 +44,23 @@ class LoginScreen extends PureComponent {
     }
   }
   handleLogin = callOnce(async () => {
-    const {email, pw} = this.state
-    const {loginSuccess, loginFailure, userTypeSuccess,userSubScrbeStatus} = this.props
-    const hash = await sha256(pw.toString())
-    const pushKey = await mUtils.getFcmToken()
+    const {email, pw} = this.state;
+    const {loginSuccess, loginFailure, userTypeSuccess,userSubScrbeStatus} = this.props;
+    const hash = await sha256(pw.toString());
+    const pushKey = await mUtils.getFcmToken();
     const data = {
       email,
       pw, // : hash, //TODO 추후 암호화 적용
     }
-    if (email.trim() === '') return this.alert('', '이메일을 입력해주세요.')
-    if (!mUtils.isEmail(email)) return this.alert('', '이메일 형식이 아닙니다.')
-    if (pw.trim() === '') return this.alert('', '비밀번호를 입력해주세요.')
+    if (email.trim() == '') {
+      return this.alert('', '이메일을 입력해주세요.');
+    }
+    if (!mUtils.isEmail(email)) {
+      return this.alert('', '이메일 형식이 아닙니다.');
+    }
+    if (pw.trim() == '' ) {
+      return this.alert('', '비밀번호를 입력해주세요.');
+    }
     // if (!mUtils.isPassword(pw)) return this.alert('', '비밀번호 형식을 확인해주세요.') // TODO 임시 주석 처리  
     await mUtils.setFcmTopicClear();
     API.login(data, {
@@ -72,6 +80,8 @@ class LoginScreen extends PureComponent {
               isSubscrYN = true;
               if ( resUserType.notice_notifi_recv_yn )  mUtils.setFcmTopic('M');
             }
+          
+            AsyncStorage.setItem('myInformation', JSON.stringify(resUserType));
             userSubScrbeStatus(isSubscrYN);
             userTypeSuccess(resUserType)
             loginSuccess(response)
@@ -88,13 +98,16 @@ class LoginScreen extends PureComponent {
     })
   })
   handleJoin = callOnce(async () => {
-    await Linking.openURL('https://www.prmagnet.kr/join')
+    this.pushTo('WebviewScreen', {url: 'https://www.prmagnet.kr/join', title:'회원가입'})
+    //await Linking.openURL('https://www.prmagnet.kr/join')
   })
   handleFindId = callOnce(async () => {
-    await Linking.openURL('https://www.prmagnet.kr/find-id')
+    this.pushTo('WebviewScreen', {url: 'https://www.prmagnet.kr/find-id', title:'아이디 찾기'})
+    //await Linking.openURL('https://www.prmagnet.kr/find-id')
   })
   handleFindPw = callOnce(async () => {
-    await Linking.openURL('https://www.prmagnet.kr/find-pw')
+    this.pushTo('WebviewScreen', {url: 'https://www.prmagnet.kr/find-pw', title:'비밀번호 찾기'})
+    //await Linking.openURL('https://www.prmagnet.kr/find-pw')
   })
   render() {
     const {email, pw} = this.state
@@ -123,6 +136,7 @@ class LoginScreen extends PureComponent {
                   autoCapitalize="none"
                   maxLength={100}
                   textContentType={'username'}
+                  clearButtonMode={true}
                 />
               </View>
             </TouchableWithoutFeedback>
@@ -143,6 +157,7 @@ class LoginScreen extends PureComponent {
                   maxLength={16}
                   secureTextEntry={true}
                   textContentType={'password'}
+                  clearButtonMode={true}
                 />
               </View>
             </TouchableWithoutFeedback>
@@ -157,6 +172,9 @@ class LoginScreen extends PureComponent {
           </View>
           <View style={styles.lowerWrapper}>
             <View style={styles.lowerSubWrapper}>
+              {/* <TouchableOpacity style={styles.itemTextWrapper} onPress={this.handleJoin}>
+                <Text style={styles.itemText}>회원가입</Text>
+              </TouchableOpacity> */}
               <TouchableOpacity style={styles.itemTextWrapper} onPress={this.handleFindId}>
                 <Text style={styles.itemText}>아이디 찾기</Text>
               </TouchableOpacity>
@@ -166,6 +184,9 @@ class LoginScreen extends PureComponent {
               </TouchableOpacity>
             </View>
           </View>
+         {/*  <View style={styles.lowerWrapper}>
+            <Text style={styles.itemText}>회원가입,아이디/비밀번호찾기는 사이트를 이용</Text>
+          </View> */}
           {/* TODO 임시 테스트용 아이디 비번 설정 Start--------------------------------------------------------- */}
           {/* <View style={{justifyContents: 'center', paddingTop: 0, backgroundColor: 'gray'}}>
             <View style={styles.lowerSubWrapper}>

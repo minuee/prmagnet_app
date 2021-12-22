@@ -121,6 +121,7 @@ class SampleRequestsListScreen extends React.Component {
 
 
   renderItem = ({item, index}) => {
+    console.log('itemitem>>>', item)
     return (
       <React.Fragment key={index}>
 
@@ -187,7 +188,7 @@ class SampleRequestsListScreen extends React.Component {
               </Text>
               <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
                 요청일{'  '}
-                <Text style={{color: '#555555', fontFamily: 'Roboto-Regular'}}>{mUtils.getShowDate(item.request_date, 'YYYY-MM-DD')}</Text>
+                <Text style={{color: '#555555', fontFamily: 'Roboto-Regular'}}>{mUtils.getShowDate(item.req_dt, 'YYYY-MM-DD')}</Text>
               </Text>
             </View>
             <View style={styles.smallBox}>

@@ -7,7 +7,7 @@ export default StyleSheet.create({
   container: {
     flex:1,
     backgroundColor: mConst.white,
-    justifyContent: 'space-between',
+    minHeight:200
   },
   title: {
     width: '100%',
@@ -24,12 +24,16 @@ export default StyleSheet.create({
   desc: {
     flex: 1,
     width: '100%',
-    paddingLeft: mUtils.wScale(20),
+    paddingHorizontal: mUtils.wScale(20),
+    paddingTop: mUtils.wScale(20),
     fontSize: 14,
     fontWeight: 'normal',
     color: mConst.black,
   },
   bottom: {
+    position:'absolute',
+    bottom:0,
+    left:0,
     width: '100%',
     height: mUtils.hScale(50),
     backgroundColor: mConst.getBaseXColor(),

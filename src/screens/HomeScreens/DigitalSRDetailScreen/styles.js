@@ -120,9 +120,9 @@ export default StyleSheet.create({
   },
   shareTouch: {
     position: 'absolute',
-    top: 20,
+    top: 0,
     right: 20,
-    zIndex: 1,
+    zIndex: 1000,
   },
   modalView: {
     width: '100%',

@@ -22,7 +22,7 @@ const menuBtnImage = require('../images/navi/menu.png')
 const alarmImage = require('../images/navi/alarm.png')
 const linkImage = require('../images/navi/link.png')
 const alarmNewImage = require('../images/navi/alarm_new.png')
-
+const shareImg = require('../images/navi/share_1.png')
 const fontCheck = font => {
   const check_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/
   return check_kor.test(font)
@@ -122,6 +122,23 @@ const cBind = reactComp => {
       headerRight: () => (
         <TouchableOpacity style={{paddingHorizontal: mConst.wGapUnit / 3}} onPress={null}>
           <FastImage style={{width: mUtils.wScale(35), height: mUtils.wScale(35)}} source={alarmImage} />
+        </TouchableOpacity>
+      ),
+    })
+
+  reactComp.shareOption = (screenName,handleshare) =>
+    navigation.setOptions({
+      title:screenName,
+      headerStyle: {backgroundColor: mConst.white, shadowColor: 'transparent', elevation: 0},
+      headerTitleStyle: {fontSize: mUtils.wScale(21), alignSelf: 'center', fontFamily: fontCheck(screenName) ? 'NotoSansKR-Medium' : 'Roboto-Bold'},
+      headerLeft: () => (
+        <TouchableOpacity style={{paddingHorizontal: 20}} onPress={reactComp.pop}>
+          <FastImage style={{width: 9, height: 16}} source={backBtnImage} />
+        </TouchableOpacity>
+      ),
+      headerRight: () => (
+        <TouchableOpacity style={{paddingHorizontal: mConst.wGapUnit / 3}} onPress={handleshare}>
+          <FastImage style={{width: mUtils.wScale(20), height: mUtils.wScale(20)}} source={shareImg} />
         </TouchableOpacity>
       ),
     })

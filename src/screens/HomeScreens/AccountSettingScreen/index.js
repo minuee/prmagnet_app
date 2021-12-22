@@ -40,7 +40,7 @@ class AccountSettingScreen extends PureComponent {
   }
 
   componentDidMount() {
-    this.logOutOption('계정설정', this.handleLogout)
+    this.pushOption('계정설정')
   }
 
   putProfile = async (url, uri) => {

@@ -73,12 +73,21 @@ class DigitalSRDetailScreen extends PureComponent {
   }
 
   componentDidMount() {    
-    const {title} = this.props.route.params;
-    this.titleOption(title || '')
+    const {title,type} = this.props.route.params;
+    if ( type !== 'digital' ) {
+      this.shareOption(title , this.handleshare)
+    }else{
+      this.titleOption(title || '')
+    }
+    
     this.onFocus(this.handleOnFocus)
   }
   componentWillUnmount() {
     this.removeFocus()
+  }
+
+  handleshare = () => {
+    this.setState({link: true})
   }
 
   handleOnFocus = () => {
@@ -94,7 +103,7 @@ class DigitalSRDetailScreen extends PureComponent {
       <SafeAreaView style={styles.container}>
         {/*  <Header pushTo={this.pushTo} userType={this.props.user.userType}  /> */}
         <ScrollView>
-          {type !== 'digital' && (
+          {/* {type !== 'digital' && (
             <TouchableOpacity
               style={styles.shareTouch}
               onPress={() => {
@@ -104,7 +113,7 @@ class DigitalSRDetailScreen extends PureComponent {
               <FastImage style={styles.shareImg} resizeMode={'contain'} source={shareImg} />
             </TouchableOpacity>
           )}
-
+        */}
           {data.sample_list.map((item, index) => {
             return (
               <React.Fragment key={index}>

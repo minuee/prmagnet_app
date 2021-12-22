@@ -17,7 +17,28 @@ class Contact extends PureComponent {
     this.state = {
       title: '',
       desc: '',
+      keyboardHeight : 0
     }
+  }
+
+  componentDidMount() {
+    if (Platform.OS === 'ios' ) {
+      this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+      this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+    }
+  }
+
+  _keyboardDidShow = (e) => {
+    console.log('e.endCoordinates.height>>>>', e.endCoordinates.height)
+    this.setState({
+      keyboardHeight :e.endCoordinates.height,
+    })
+  }
+
+  _keyboardDidHide = (e) => {
+    this.setState({
+      keyboardHeight :0,
+    })
   }
 
   postQna = async () => {
@@ -37,12 +58,12 @@ class Contact extends PureComponent {
 
   render() {
     return (
-        <SafeAreaView style={styles.container}>
-          <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === 'ios' ? "padding" : 'height'}  enabled> 
+        <SafeAreaView style={[styles.container,{marginBottom:this.state.keyboardHeight}]}>
+          <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? "padding" : 'height'}  enabled> 
           <ScrollView
               showsVerticalScrollIndicator={false}
               indicatorStyle={'white'}
-              style={{width:'100%'}}
+              style={{width:'100%',height:'100%'}}
           >
             <TextInput
               style={styles.title}

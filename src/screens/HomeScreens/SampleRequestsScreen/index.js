@@ -10,7 +10,7 @@ import dayjs from 'dayjs'
 import moment from 'moment'
 import ModalDropdown from 'react-native-modal-dropdown'
 import _ from 'lodash'
-
+import AsyncStorage from '@react-native-community/async-storage';
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
@@ -85,15 +85,14 @@ const convertHolidays = array => {
 class SampleRequestsScreen extends PureComponent {
   constructor(props) {
     super(props)
-    console.log('props.user.userToken.sub',props.user.userToken)
     cBind(this)
     this.state = {
       selected: [],
       defaultInfo: '',
       selectContact: '',
       selectRegID: {
-        user_id: props.user.userToken.user_id,
-        mgzn_user_nm: props.user.userToken.user_nm
+        user_id: '',
+        mgzn_user_nm: ''
       },
       shDate: '',
       pkDate: '',
@@ -127,7 +126,11 @@ class SampleRequestsScreen extends PureComponent {
       editableYukaEtc: false,
       editableNone: true,
       editableCele : false,
-      editableModel : false
+      editableModel : false,
+      myInformation : {
+        user_id : '',
+        user_nm : ''
+      }
     }
   }
   
@@ -444,10 +447,7 @@ class SampleRequestsScreen extends PureComponent {
           mgzn_user_nm: response.contact_username,
           phone_no: response.contact_phone_no,
         },
-        selectRegID: {
-          user_id: response.reg_user_id,
-          mgzn_user_nm: response.user_nm,          
-        },
+        
         shDate: {
           month: mUtils.getShowDate(response.shooting_date, 'M'),
           day: mUtils.getShowDate(response.shooting_date, 'D'),
@@ -493,20 +493,41 @@ class SampleRequestsScreen extends PureComponent {
   }
 
   async UNSAFE_componentWillMount () {
-    const {modelList, type, brandName, brandId} = this.props.route.params
+    const {modelList, type, brandName, brandId} = this.props.route.params;
     
     this.pushOption(brandName ? brandName : 'Sample Request')
     if (type) {
       this.setState({selected: modelList})
     }
-    await this.onFocus(this.handleOnFocus)
+    const myInformation = await AsyncStorage.getItem('myInformation');
+    
+    if ( !mUtils.isEmpty(myInformation)) {
+      const myLoacalData = JSON.parse(myInformation);
+      this.setState({
+        myInformation : myLoacalData,
+        selectRegID: {
+          user_id: myLoacalData.user_id,
+          mgzn_user_nm: myLoacalData.user_nm,          
+        },
+      })
+      
+    }else if ( !mUtils.isEmpty(props.user.userToken)) {
+      this.setState({
+        selectRegID: {
+          user_id: props.user.userToken.user_id,
+          mgzn_user_nm: props.user.userToken.user_nm
+        },
+      })
+      
+    }
+    this.handleOnFocus();
   }
 
   componentDidMount() {    
    
   }
   componentWillUnmount() {
-    this.removeFocus()
+    //this.removeFocus()
   }
 
   handleOnFocus = async() => {

@@ -11,6 +11,7 @@ import AppLink from '../../../common/AppLink';
 import cBind, {callOnce} from '../../../common/navigation';
 import Text from '../../common/Text';
 import styles from './styles';
+import {logout} from '../../../common/aws-auth'
 import {actionLogout} from '../../../redux/actions';
 import API from '../../../common/aws-api';
 import Loading from '../../common/Loading';
@@ -31,8 +32,8 @@ class MyPageScreen extends PureComponent {
       console.log('getUserInfo>>>', error)
     }
   }
-  componentDidMount() {
-    this.pushOption('마이페이지')
+  componentDidMount() {    
+    this.logOutOption('마이페이지', this.handleLogout)
     //console.log('DeviceInfo>>>', DeviceInfo.getVersion());
 
     //패키지명
@@ -45,13 +46,26 @@ class MyPageScreen extends PureComponent {
     this.onFocus(this.handleOnFocus)
   }
   componentWillUnmount() {
-    this.removeFocus()
+    //this.removeFocus()
   }
 
   handleOnFocus = () => {
     this.getUserInfo()
   }
 
+  handleLogout = callOnce(() => {
+    const {logoutSuccess, logoutFailure} = this.props
+    logout({
+      cbSuccess: async response => {
+        logoutSuccess(response)
+        //console.log('###로그아웃 성공:', response)
+      },
+      cbFailure: async e => {
+        logoutFailure(e)
+        //console.log('###로그아웃 실패', e)
+      },
+    })
+  })
 
   moveAppStore = async() => {
     const appStoreId = DEFAULT_CONSTANTS.iosAppStoreID;
@@ -184,5 +198,6 @@ export default connect(
   state => ({}),
   dispatch => ({
     logoutSuccess: data => dispatch(actionLogout.success(data)),
+    logoutFailure: data => dispatch(actionLogout.failure(data)),
   })
 )(MyPageScreen)
