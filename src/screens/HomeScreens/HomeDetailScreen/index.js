@@ -185,6 +185,7 @@ class HomeDetailScreen extends PureComponent {
     const {type, title} = this.props.route.params;
     const userType = mConst.getUserType();
     const subItem = item.each_list[0];
+    console.log('subItem',type,subItem)
     if (  type === 'pickups' ) {
       return (
         <TouchableOpacity
@@ -193,10 +194,13 @@ class HomeDetailScreen extends PureComponent {
             onPress={() => this.pushTo('PickupsScreen', {reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
         >
             {
-                subItem.target_id_type === 'RUS000' ?
-                <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />
+                subItem.req_user_type === 'MAGAZINE' ?
+                subItem.target_id_type === "RUS001" ?
+                <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres2}} />
                 :
                 <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
+                :
+                <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />                
             }                            
             <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>              
                 {subItem.target_user_nm} ({mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}) → 
@@ -207,26 +211,52 @@ class HomeDetailScreen extends PureComponent {
         </TouchableOpacity>
       )
     }else{
-      return (
-        <TouchableOpacity
-            key={subItem.req_no+'_'+subItem.showroom_no}
-            style={styles.layout3}
-            onPress={() => this.pushTo('SendOutScreen', {reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
-        >
-            {
-                subItem.target_id_type === 'RUS000' ?
-                <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />
-                :
-                <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
-            }                            
-            <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
-                {subItem.req_user_nm}  →
-            </Text>
-            <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}>
-                {subItem.target_user_nm} ({mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position})
-            </Text>                          
-        </TouchableOpacity>
-      )
+      if (mConst.getUserType() === 'B' ) {
+        return (
+          <TouchableOpacity
+              key={subItem.req_no+'_'+subItem.showroom_no}
+              style={styles.layout3}
+              onPress={() => this.pushTo('SendOutBScreen', {reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
+          >
+              {
+                  subItem.req_user_type === 'MAGAZINE' ?
+                  <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />                
+                  :
+                  <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />
+              }                            
+              <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
+                {subItem.target_id_type === "RUS001" && "["+subItem.mgzn_nm+"]"}{subItem.target_user_nm} ({mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}) →
+              </Text>
+              <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}>
+                  {subItem.req_user_nm} ({mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position})
+              </Text>
+          </TouchableOpacity>
+        )
+      }else{
+        return (
+          <TouchableOpacity
+              key={subItem.req_no+'_'+subItem.showroom_no}
+              style={styles.layout3}
+              onPress={() => this.pushTo('SendOutScreen', {reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
+          >
+              {
+                  subItem.req_user_type === 'MAGAZINE' ?
+                  subItem.target_id_type === "RUS001" ?
+                  <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres2}} />
+                  :
+                  <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
+                  :                  
+                  <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />
+              }                            
+              <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
+                {subItem.req_user_nm} ({mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position}) →
+              </Text>
+              <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}>
+                  {subItem.target_user_nm} ({mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position})
+              </Text>
+          </TouchableOpacity>
+        )
+      }
     }
   }
 
@@ -257,7 +287,7 @@ class HomeDetailScreen extends PureComponent {
           (
             <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(30)}}>
               <Text style={styles.new}>
-                Today's <Text style={{fontFamily: 'Roboto-Medium'}}>Send-Outs</Text>
+                Today's <Text style={{fontFamily: 'Roboto-Medium'}}>Send Outs</Text>
                 <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}> {data.length}</Text>
               </Text>
             </View>

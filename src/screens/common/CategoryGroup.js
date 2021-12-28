@@ -30,7 +30,7 @@ const CategoryItem = props => {
   return (
     <>
       <TouchableOpacity onPress={() => setFold(!fold)}>
-        <Row style={styles.itemWrapper2}>
+        <Row style={styles.itemWrapper}>
           <Text style={styles.itemHeadText}>{data.sample_catgry_lrge_cl_nm}</Text>
           <FastImage source={fold ? foldImage : unfoldImage} style={styles.foldImage} />
         </Row>

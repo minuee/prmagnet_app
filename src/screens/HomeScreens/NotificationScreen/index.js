@@ -148,7 +148,7 @@ class NotificationScreen extends PureComponent {
             selectEachList : [{date : pickup_date, showroom_list : showroomData,req_no_list : reqNoData}]
           })
         }
-      } else if (notice_type === 'recv' || notice_type === 'sendout') {      
+      } else if (notice_type === 'recv' || notice_type === 'sendout' || notice_type === 'send') {      
         if ( !mUtils.isEmpty(date_info)) {  
           this.pushTo('ReturnScreen',{
             reqNo,

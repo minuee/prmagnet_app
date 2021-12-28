@@ -415,7 +415,9 @@ class DigitalSRScreen extends PureComponent {
         { this.state.brand_id !== 'all' ?
         <Text style={styles.title}>{item.showroom_nm}</Text>
         :
-        <Text style={styles.title}>[{item.brand_nm}]{item.showroom_nm}</Text>
+        <Text style={styles.title}>
+          { userType == 'B' ? item.showroom_nm : "["+item.brand_nm+"]"+item.showroom_nm}
+        </Text>
         }
         {/* { 
           item.now_req_status_nm === '대여중' &&           

@@ -67,7 +67,7 @@ class LoginScreen extends PureComponent {
       cbSuccess: async response => {
         API.getUserType()
           .then(resUserType => {
-            ///console.log('###UserType:', resUserType)
+            console.log('###UserType:', resUserType)
             let isSubscrYN = false;
             if ( resUserType.is_brand_user ) {
               if ( resUserType.subscr_yn){

@@ -17,8 +17,8 @@ import styles from './styles'
 
 const moreImage1 = require('../../../images/navi/more_1.png')
 const moreImage3 = require('../../../images/navi/more_3.png')
-
-
+const todayTimeStamp = mUtils.getToday();
+const reqStatusEditList = ["pending","confirmed"];
 class SampleRequestsListScreen extends React.Component {
   constructor(props) {
     super(props)
@@ -121,7 +121,7 @@ class SampleRequestsListScreen extends React.Component {
 
 
   renderItem = ({item, index}) => {
-    console.log('itemitem>>>', item)
+    //console.log('itemitem>>>',index,todayTimeStamp,item.expected_photograph_date)
     return (
       <React.Fragment key={index}>
 
@@ -133,7 +133,8 @@ class SampleRequestsListScreen extends React.Component {
         >
           <View style={styles.layout4}>
             <Text style={styles.title}>{item.brand_nm}</Text>
-            {item.editable === true && (
+            {//item.editable === true && (
+            ( item.expected_photograph_date > todayTimeStamp && reqStatusEditList.includes(item.req_status_nm) )? (
               <Menu>
                 <MenuTrigger
                   customStyles={{
@@ -159,6 +160,45 @@ class SampleRequestsListScreen extends React.Component {
                   >
                     <Text style={styles.delete}>Edit</Text>
                   </MenuOption>
+                  { item.req_status_nm === 'pending' &&
+                  <MenuOption
+                    style={{paddingTop: mUtils.wScale(12), paddingBottom: mUtils.wScale(17), paddingHorizontal: mUtils.wScale(15)}}
+                    onSelect={() => {
+                      this.alert('샘플요청 삭제', '선택하신 샘플을 삭제 하시겠습니까?', [
+                        {
+                          onPress: () => {
+                            this.deleteMyRequests(item.req_no, index)
+                          },
+                        },
+                        {onPress: () => null},
+                      ])
+                    }}
+                  >
+                    <Text style={styles.delete}>Delete</Text>
+                  </MenuOption>
+                  }
+                </MenuOptions>
+              </Menu>
+            )
+            :
+            ( item.req_status_nm === 'pending' || item.req_status_nm === 'canceled' ) ? 
+            (
+              <Menu>
+                <MenuTrigger
+                  customStyles={{
+                    TriggerTouchableComponent: TouchableOpacity,
+                    triggerTouchable: {
+                      activeOpacity: 90,
+                      style: {
+                        flex: 1,
+                      },
+                    },
+                  }}
+                  style={styles.layout5}
+                >
+                  <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImage1} />
+                </MenuTrigger>
+                <MenuOptions optionsContainerStyle={{marginTop: mUtils.wScale(35)}}>                                   
                   <MenuOption
                     style={{paddingTop: mUtils.wScale(12), paddingBottom: mUtils.wScale(17), paddingHorizontal: mUtils.wScale(15)}}
                     onSelect={() => {
@@ -176,7 +216,10 @@ class SampleRequestsListScreen extends React.Component {
                   </MenuOption>
                 </MenuOptions>
               </Menu>
-            )}
+            )
+            :
+            null
+          }
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: mUtils.wScale(5)}}>
             <View>

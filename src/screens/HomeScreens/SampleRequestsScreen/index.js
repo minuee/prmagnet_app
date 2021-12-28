@@ -1,37 +1,41 @@
-import React, {PureComponent} from 'react'
-import {Alert,SafeAreaView, View, ScrollView, FlatList, TouchableOpacity, TextInput, KeyboardAvoidingView} from 'react-native'
-import {connect} from 'react-redux'
-import FastImage from 'react-native-fast-image'
-import Modal from 'react-native-modal'
-import Postcode from 'react-native-daum-postcode'
-import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-menu'
-import {Calendar, LocaleConfig} from 'react-native-calendars'
-import dayjs from 'dayjs'
-import moment from 'moment'
-import ModalDropdown from 'react-native-modal-dropdown'
-import _ from 'lodash'
+import React, {PureComponent} from 'react';
+import {Alert,SafeAreaView,Dimensions, View, ScrollView, FlatList, TouchableOpacity, TextInput, KeyboardAvoidingView} from 'react-native';
+import {connect} from 'react-redux';
+import FastImage from 'react-native-fast-image';
+import Modal from 'react-native-modal';
+import Postcode from 'react-native-daum-postcode';
+import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-menu';
+import {Calendar, LocaleConfig} from 'react-native-calendars';
+import dayjs from 'dayjs';
+import moment from 'moment';
+import ModalDropdown from 'react-native-modal-dropdown';
+import _ from 'lodash';
 import AsyncStorage from '@react-native-community/async-storage';
-import mConst from '../../../common/constants'
-import mUtils from '../../../common/utils'
-import cBind, {callOnce} from '../../../common/navigation'
-import Text from '../../common/Text'
-import styles from './styles'
-import API from '../../../common/aws-api'
-import Loading from '../../common/Loading'
-import {Platform} from 'react-native'
-import { PanGestureHandler } from 'react-native-gesture-handler'
+import mConst from '../../../common/constants';
+import mUtils from '../../../common/utils';
+import cBind, {callOnce} from '../../../common/navigation';
+import Text from '../../common/Text';
+import styles from './styles';
+import API from '../../../common/aws-api';
+import Loading from '../../common/Loading';
+import {Platform} from 'react-native';
+import { PanGestureHandler } from 'react-native-gesture-handler';
+import { Tooltip } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/AntDesign';
+Icon.loadFont();
 
-const modelImg = require('../../../images/sample/model_1.png')
-const moreImg = require('../../../images/navi/more_2.png')
-const starImg = require('../../../images/navi/star_1.png')
-const checkImg = require('../../../images/navi/check_1.png')
-const noCheckImg = require('../../../images/navi/no_check_1.png')
-const plusImg = require('../../../images/navi/plus_2.png')
-const minusImg = require('../../../images/navi/minus_1.png')
-const checkImg2 = require('../../../images/navi/check_2.png')
-const checkImg3 = require('../../../images/navi/check_3.png')
-const selectImg2 = require('../../../images/navi/select_2.png')
-const delImg = require('../../../images/navi/del_1.png')
+const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get('window');
+const modelImg = require('../../../images/sample/model_1.png');
+const moreImg = require('../../../images/navi/more_2.png');
+const starImg = require('../../../images/navi/star_1.png');
+const checkImg = require('../../../images/navi/check_1.png');
+const noCheckImg = require('../../../images/navi/no_check_1.png');
+const plusImg = require('../../../images/navi/plus_2.png');
+const minusImg = require('../../../images/navi/minus_1.png');
+const checkImg2 = require('../../../images/navi/check_2.png');
+const checkImg3 = require('../../../images/navi/check_3.png');
+const selectImg2 = require('../../../images/navi/select_2.png');
+const delImg = require('../../../images/navi/del_1.png');
 const yesNo = [
   {boolean: true, text: 'Yes'},
   {boolean: false, text: 'No'},
@@ -426,7 +430,7 @@ class SampleRequestsScreen extends PureComponent {
       const response = await API.postSRRequest({
         brand_id: brandId,
       })
-      
+      console.log('postSRRequest>>>', response)
       this.setState({defaultInfo: response})
     } catch (error) {
       //console.log('postSRRequest>>>', error)
@@ -543,7 +547,7 @@ class SampleRequestsScreen extends PureComponent {
   }
 
   updateAddress = (v) => {
-    console.log('vvvvv>>>>', v)
+    
     this.setState({
       dlvy_adres_no:v.dlvy_adres_no,
       destination: v.dlvy_adres_nm,
@@ -603,6 +607,13 @@ class SampleRequestsScreen extends PureComponent {
     }
   }
 
+  renderTooltip = () => {
+    return (<View style={{width:'100%',padding:5,alignItems:'center',justifyContent:'center'}}>   
+        <Text style={{fontFamily: 'Roboto-Regular',fontSize: 14,color: '#ffffff',}}>수정불가한 사항(패션모델/셀럽, 페이지수, 촬영일, 픽업일, 반납일, 촬영컨셉, 메시지, 함께 들어가는 브랜드)의 수정을 원할 시 홀딩 취소 후 새로 요청해 주시기 바랍니다.</Text>
+        
+    </View>)
+  }
+
   render() {
     const {
       selected,
@@ -634,15 +645,26 @@ class SampleRequestsScreen extends PureComponent {
       isvisible,
       holidays,
     } = this.state
-    const {type} = this.props.route.params
+    const {type} = this.props.route.params;
     return defaultInfo ? (
       <KeyboardAvoidingView style={{flex: 1}} behavior={Platform.OS === 'ios' ? 'padding' : null} keyboardVerticalOffset={100}>
         <SafeAreaView style={styles.container}>
           <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={{paddingHorizontal: mUtils.wScale(20),flexDirection:'row',justifyContent:'space-between'}}>
+              <View style={{flex:3,flexDirection:'row',alignItems:'center'}}>
+                <Text style={{...styles.mainTitle, }}>{type ? 'Sample ' : 'My '}</Text>
+                <Text style={styles.mainTitle1}>Requests {!type && 'Edit'}</Text>
+              </View>
+              <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
+                { !type && 
+                  <Tooltip popover={this.renderTooltip('')} width={SCREEN_WIDTH*0.9} height={90} backgroundColor={'#7ea1b2'} skipAndroidStatusBar={true}>
+                    <Icon name="infocirlceo" size={20} color="#000" />
+                  </Tooltip>
+                }
+              </View>
+            </View>
             <View style={{paddingHorizontal: mUtils.wScale(20)}}>
-              <Text style={{...styles.mainTitle, marginTop: mUtils.wScale(25)}}>{type ? 'Sample' : 'My'}</Text>
-              <Text style={styles.mainTitle1}>Requests {!type && 'Edit'}</Text>
-              <Text style={{...styles.subTitle, marginTop: mUtils.wScale(30)}}>
+              <Text style={{...styles.subTitle, marginTop: mUtils.wScale(20)}}>
                 Request product : <Text style={{color: '#7ea1b2'}}>{selected.length}</Text>
               </Text>
             </View>
@@ -754,6 +776,7 @@ class SampleRequestsScreen extends PureComponent {
                     <Text style={styles.smallTitle}>
                       촬영일 <Text style={{color: '#7eb2b2'}}>*</Text>
                     </Text>
+                    {type ?                    
                     <TouchableOpacity
                       style={{...styles.box1, justifyContent: 'space-between'}}
                       onPress={() => {
@@ -765,6 +788,14 @@ class SampleRequestsScreen extends PureComponent {
                       </Text>
                       <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
                     </TouchableOpacity>
+                    :
+                    <View style={{...styles.box1, justifyContent: 'space-between'}}>
+                      <Text style={styles.boxText}>
+                        {shDate ? `${shDate.month}/${shDate.day}(${moment(shDate.timestamp).format('ddd')})` : '0/0(일)'}
+                      </Text>
+                      <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                    </View>
+                    }
                   </View>
                   <View style={{width: '32%'}}>
                     <Text style={styles.smallTitle}>
@@ -932,6 +963,7 @@ class SampleRequestsScreen extends PureComponent {
                 <View style={{width: '100%'}}>
                   <Text style={styles.smallTitle}>촬영컨셉</Text>
                   <TextInput
+                    editable={type ? true :false}
                     style={{...styles.inputBox}}
                     placeholder={'컨셉'}
                     placeholderTextColor={mConst.borderGray}
@@ -946,6 +978,7 @@ class SampleRequestsScreen extends PureComponent {
                 모델 <Text style={{color: '#7eb2b2'}}>*</Text>
               </Text>
               <View style={{...styles.layout, justifyContent: 'space-between', width: '100%'}}>
+                {type ?    
                 <TouchableOpacity 
                   onPress={() => this.setCele(this.state.editableCele )}
                   style={{...styles.layout1}}
@@ -953,6 +986,13 @@ class SampleRequestsScreen extends PureComponent {
                   <FastImage resizeMode={'contain'} style={styles.checkImg} source={this.state.editableCele ? checkImg : noCheckImg} />
                   <Text style={{...styles.smallTitle, marginBottom: 0}}>셀러브리티</Text>
                 </TouchableOpacity>
+                :
+                <View style={{...styles.layout1}}>
+                  <FastImage resizeMode={'contain'} style={styles.checkImg} source={this.state.editableCele ? checkImg : noCheckImg} />
+                  <Text style={{...styles.smallTitle, marginBottom: 0}}>셀러브리티</Text>
+                </View>
+                }
+                {type ?    
                 <View style={{width: '65%'}}>
                   {celebrity.map((item, index) => {
                     return (
@@ -991,6 +1031,28 @@ class SampleRequestsScreen extends PureComponent {
                     )
                   })}
                 </View>
+                :
+                <View style={{width: '65%'}}>
+                  {celebrity.map((item, index) => {
+                    return (
+                      <View key={index} style={{...styles.box2}}>
+                        <TextInput
+                          editable={false}
+                          style={{...styles.inputBox1, width: '70%'}}
+                          placeholder={'이름'}
+                          placeholderTextColor={mConst.borderGray}
+                          value={item}
+                          onChangeText={text => {
+                            let tmp = [...celebrity]
+                            tmp[index] = text
+                            this.setState({celebrity: tmp})
+                          }}
+                        />
+                      </View>
+                    )
+                  })}
+                </View>
+                }
               </View>
               <View
                 style={{
@@ -1001,6 +1063,7 @@ class SampleRequestsScreen extends PureComponent {
                   marginBottom: mUtils.wScale(18),
                 }}
               >
+                {type ?
                 <TouchableOpacity 
                   onPress={() => this.setModel(this.state.editableModel )}
                   style={{...styles.layout1}}
@@ -1008,6 +1071,13 @@ class SampleRequestsScreen extends PureComponent {
                   <FastImage resizeMode={'contain'} style={styles.checkImg} source={this.state.editableModel? checkImg : noCheckImg} />
                   <Text style={{...styles.smallTitle, marginBottom: 0}}>패션 모델</Text>
                 </TouchableOpacity>
+                :
+                <View style={{...styles.layout1}}>
+                  <FastImage resizeMode={'contain'} style={styles.checkImg} source={this.state.editableModel? checkImg : noCheckImg} />
+                  <Text style={{...styles.smallTitle, marginBottom: 0}}>패션 모델</Text>
+                </View>
+                }
+                {type ?
                 <View style={{width: '65%'}}>
                   {fashionModel.map((item, index) => {
                     return (
@@ -1046,6 +1116,28 @@ class SampleRequestsScreen extends PureComponent {
                     )
                   })}
                 </View>
+                :
+                <View style={{width: '65%'}}>
+                  {fashionModel.map((item, index) => {
+                    return (
+                      <View key={index} style={{...styles.box2}}>
+                        <TextInput
+                          editable={false}
+                          style={{...styles.inputBox1, width: '70%'}}
+                          placeholder={'이름'}
+                          placeholderTextColor={mConst.borderGray}
+                          value={item}
+                          onChangeText={text => {
+                            let tmp = [...fashionModel]
+                            tmp[index] = text
+                            this.setState({fashionModel: tmp})
+                          }}
+                        />                       
+                      </View>
+                    )
+                  })}
+                </View>
+                }
               </View>
               <Text style={styles.smallTitle}>유가 여부 </Text>
               <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
@@ -1151,6 +1243,7 @@ class SampleRequestsScreen extends PureComponent {
               </View> */}
               <Text style={styles.smallTitle}>페이지 수</Text>
               <TextInput
+                editable={type ? true:false}
                 style={{...styles.inputBox, marginTop: mUtils.wScale(3), marginBottom: mUtils.wScale(18)}}
                 placeholder={'Number of pages'}
                 placeholderTextColor={mConst.borderGray}
@@ -1161,6 +1254,7 @@ class SampleRequestsScreen extends PureComponent {
               />
               <Text style={styles.smallTitle}>함께 들어가는 브랜드</Text>
               <TextInput
+                editable={type ? true:false}
                 style={{...styles.inputBox, marginTop: mUtils.wScale(3), marginBottom: mUtils.wScale(18)}}
                 placeholder={'Different brand'}
                 placeholderTextColor={mConst.borderGray}
@@ -1171,6 +1265,7 @@ class SampleRequestsScreen extends PureComponent {
               />
               <Text style={styles.smallTitle}>메세지</Text>
               <TextInput
+                editable={type ? true:false}
                 style={{...styles.inputBox, height: mUtils.wScale(75), marginTop: mUtils.wScale(3), marginBottom: mUtils.wScale(18)}}
                 multiline={true}
                 textAlignVertical={'top'}

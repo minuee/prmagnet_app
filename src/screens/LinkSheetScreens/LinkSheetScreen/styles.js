@@ -89,6 +89,25 @@ export default StyleSheet.create({
     borderRadius: mUtils.wScale(7),
     marginBottom: mUtils.wScale(12),
   },
+  defaultBox : {
+    borderWidth: 0.7,
+    borderColor: '#f3f3f3',
+    padding:5,
+    marginLeft:10
+  },
+  defaultBox2 : {
+    borderWidth: 0.7,
+    borderColor: '#fff',
+    padding:5,
+    marginLeft:10
+  },
+  checkBox : {
+    borderWidth: 0.7,
+    borderColor: '#000',
+    backgroundColor:'#000',
+    padding:5,
+    marginLeft:10
+  },
   box1: {
     borderTopLeftRadius: mUtils.wScale(7),
     borderTopRightRadius: mUtils.wScale(7),

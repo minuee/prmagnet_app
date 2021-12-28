@@ -42,16 +42,20 @@ class LinkSheetScreen extends React.Component {
             moreLoading:false,
             selectDate: [],
             totalCount: 0,
+            isNotClear : 'all'
         }
     }
 
-    async componentDidMount() {
-        this.onFocus(this.handleOnFocus);
+    async UNSAFE_componentWillMount() {
+        this.handleOnFocus();
+    }
+    componentDidMount() {
+        //this.onFocus(this.handleOnFocus);
         //console.log('###apiPath:', mConst.getApiPath())
     }
 
     componentWillUnmount() {
-        this.removeFocus();
+       // this.removeFocus();
     }
 
     handleOnFocus = params => {
@@ -62,10 +66,10 @@ class LinkSheetScreen extends React.Component {
                 const {brandId} = this.state;
                 const {start, end} = _.get(this.props, 'route.params', {}) // onFocus에서는 이렇게 불러와야 함 navigation.js 33번째 줄 참조
                 if (start && end) {
-                    this.handleLoadData(start, end, brandId)
+                    this.handleLoadData(start, end, brandId,this.state.isNotClear)
                     this.setState({start, end})
                 } else {
-                    this.handleLoadData(this.state.start, this.state.end, brandId)
+                    this.handleLoadData(this.state.start, this.state.end, brandId,this.state.isNotClear)
                 }
             })
         }else{
@@ -99,12 +103,12 @@ class LinkSheetScreen extends React.Component {
     }
 
 
-    handleLoadData = async (start, end, brandId) => {
+    handleLoadData = async (start, end, brandId,not_finished='all') => {
         const {selectTitle} = this.state;
         if (selectTitle === 'Return') {
             try {
                 // console.log('###Return 스케쥴 조회 params:', {start_date: start, fin_date: end, brand_id: brandId})
-                const response = await API.getReturnSchedule({start_date: start, fin_date: end})
+                const response = await API.getReturnSchedule({start_date: start, fin_date: end,not_finished})
                 const newData =  await this.dataReset(_.get(response, 'list', []));
                 this.setState({dataList: newData, loading: false,moreLoading:false})
                 //this.setState({dataList: _.get(response, 'list', []), loading: false,moreLoading:false})
@@ -116,7 +120,7 @@ class LinkSheetScreen extends React.Component {
         } else if (selectTitle === 'Pickups') {
             try {
                  //console.log('###Pickup 스케쥴 조회 params:', {start_date: start, fin_date: end, brand_id: brandId})
-                const response = await API.getPickupSchedule({start_date: start, fin_date: end, brand_id: brandId})
+                const response = await API.getPickupSchedule({start_date: start, fin_date: end, brand_id: brandId,not_finished})
                 const newData =  await this.dataReset(_.get(response, 'list', []));
                 this.setState({dataList: newData, loading: false,moreLoading:false})
                 //this.setState({dataList: _.get(response, 'list', []), loading: false,moreLoading:false})
@@ -128,7 +132,7 @@ class LinkSheetScreen extends React.Component {
         } else if (selectTitle === 'Send Out') {
             try {
                 // console.log('###Sendout 스케쥴 조회 params:', {start_date: start, fin_date: end, brand_id: brandId})
-                const response = await API.getSendoutSchedule({start_date: start, fin_date: end, brand_id: brandId})
+                const response = await API.getSendoutSchedule({start_date: start, fin_date: end, brand_id: brandId,not_finished})
                 const newData =  await this.dataReset(_.get(response, 'list', []));
                 this.setState({dataList: newData, loading: false,moreLoading:false})
                 //this.setState({dataList: _.get(response, 'list', []), loading: false,moreLoading:false})
@@ -158,20 +162,15 @@ class LinkSheetScreen extends React.Component {
 
     handleLinkSheetDetail = async() => {
         const {selectTitle, selectDate, dataList} = this.state;
-        //const selectEachList = dataList.flatMap(data => (selectDate.includes(data.date) ? data.each_list : []))
-        
         const selectDate2 = await selectDate.sort(function(a, b) {
             return a.date > b.date;
         });
-        console.log('handleLinkSheetDetail', selectDate2)
-        console.log('selectDate2selectDate2', selectDate2)
         if (selectTitle === 'Send Out') {
             if ( mConst.getUserType() == 'B' ) {
                 this.pushTo('SendOutBScreen', {selectEachList:selectDate2})
             }else{
                 this.pushTo('SendOutScreen', {selectEachList:selectDate2})
-            }
-            
+            }            
         } else if (selectTitle === 'Pickups') {
             this.pushTo('PickupsScreen', {selectEachList:selectDate2})
         } else if (selectTitle === 'Return') {
@@ -188,7 +187,6 @@ class LinkSheetScreen extends React.Component {
             }else{
                 this.pushTo('SendOutScreen', {selectEachList:selectDate2})
             }
-            
         } else if (selectTitle === 'Pickups') {
             this.pushTo('PickupsScreen', {selectEachList:selectDate2})
         } else if (selectTitle === 'Return') {
@@ -198,8 +196,7 @@ class LinkSheetScreen extends React.Component {
 
     fn_selectDate = async(data) => {
         const count = data.each_list.length;        
-        const {selectDate, totalCount} = this.state;
-        console.log('seledDAte',data,totalCount)
+        const {selectDate, totalCount} = this.state;        
         let showroomData = [];
         let reqNoData = [];
         await data.each_list.forEach((item,i) => 
@@ -207,11 +204,8 @@ class LinkSheetScreen extends React.Component {
                 showroomData.push(item.showroom_list[0].showroom_no);
                 reqNoData.push(item.showroom_list[0].req_no);;
             }
-        )
-        
+        )        
         let op = await selectDate.filter(item => (item.date === data.date));
-
-
         if (op.length === 0) {
             this.setState({
                 selectDate: [...selectDate,{date:data.date,showroom_list : showroomData,req_no_list : reqNoData}],
@@ -225,6 +219,11 @@ class LinkSheetScreen extends React.Component {
         }
     }
 
+    handleStateChange = async(bool) => {
+        this.setState({moreLoading:true, isNotClear:bool=='all'?'not':'all'})
+        this.handleLoadData(this.state.start, this.state.end, this.state.brandId,bool=='all'?'not':'all')
+    }
+
     renderData = (subItem,idx,selectTitle) => {
         if (  mConst.getUserType() === 'B'  ) {
             if ( selectTitle === 'Send Out' ) {
@@ -232,8 +231,7 @@ class LinkSheetScreen extends React.Component {
                     <>
                         <Text style={{...styles.brand, marginTop: mUtils.wScale(5)}} >
                             {mUtils.isEmpty(subItem.target_user_nm) ? '-' : subItem.target_user_nm}
-                            { subItem.target_id_type === 'RUS001' ?  
-                                subItem.req_user_position + "("+subItem.mgzn_nm +")"
+                            { subItem.target_id_type === 'RUS001' ?  subItem.req_user_position + "("+subItem.mgzn_nm +")"
                             :
                             subItem.target_user_position
                             }
@@ -263,11 +261,11 @@ class LinkSheetScreen extends React.Component {
                 return (
                     <>
                         <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
-                            {subItem.req_user_nm}  →
+                            {subItem.req_user_nm}{mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position}  →
                             
                         </Text>
                         <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
-                            {subItem.target_user_nm} ({mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position})
+                            {subItem.target_user_nm}{mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}
                         </Text>
                     </>
                 )
@@ -275,10 +273,10 @@ class LinkSheetScreen extends React.Component {
                 return (
                     <>
                         <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
-                            {subItem.target_user_nm} ({mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}) →
+                            {subItem.target_user_nm}{mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position} →
                         </Text>
                         <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
-                            {subItem.req_user_nm} {/* {subItem.req_user_position} */}
+                            {subItem.req_user_nm}{mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position} {/* {subItem.req_user_position} */}
                         </Text>
                     </>
                 )
@@ -363,15 +361,43 @@ class LinkSheetScreen extends React.Component {
                                 { ( selectTitle === "Send Out" || selectTitle === "sendout" )  
                                 ?
                                 mConst.getUserType() === 'B'  ?
-                                <><Text style={{color:'#cccccc'}}>■ <Text style={{color:'#000'}}>발송완료</Text> </Text><Text style={{color:'#ff0000'}}>■ 미발송</Text></>
+                                <>
+                                    <View style={styles.defaultBox2}>
+                                        <Text style={{color:'#cccccc'}}>■ <Text style={{color:'#000'}}>발송완료</Text></Text>
+                                    </View>
+                                    <TouchableOpacity style={this.state.isNotClear == 'all' ? styles.defaultBox : styles.checkBox} onPress={()=>this.handleStateChange(this.state.isNotClear)}>
+                                        <Text style={{color:'#ff0000'}}>■ 미발송</Text>
+                                    </TouchableOpacity>
+                                </>
                                 :
-                                <><Text style={{color:'#cccccc'}}>■ <Text style={{color:'#000'}}>반납완료</Text> </Text><Text style={{color:'#ff0000'}}>■ 미반납</Text></>                                
+                                <>
+                                    <View style={styles.defaultBox2}>
+                                        <Text style={{color:'#cccccc'}}>■ <Text style={{color:'#000'}}>반납완료</Text></Text>
+                                    </View>
+                                    <TouchableOpacity style={this.state.isNotClear == 'all' ? styles.defaultBox : styles.checkBox} onPress={()=>this.handleStateChange(this.state.isNotClear)}>
+                                        <Text style={{color:'#ff0000'}}>■ 미반납</Text>
+                                    </TouchableOpacity>
+                                </> 
                                 :
                                 ( selectTitle === "Pickup" || selectTitle === "Pickups" ) 
                                 ?
-                                <><Text style={{color:'#cccccc'}}>■ <Text style={{color:'#000'}}>수령완료</Text> </Text><Text style={{color:'#ff0000'}}>■ 미수령</Text></>
+                                <>
+                                    <View style={styles.defaultBox2}>
+                                        <Text style={{color:'#cccccc'}}>■ <Text style={{color:'#000'}}>수령완료</Text></Text>
+                                    </View>
+                                    <TouchableOpacity style={this.state.isNotClear == 'all' ? styles.defaultBox : styles.checkBox} onPress={()=>this.handleStateChange(this.state.isNotClear)}>
+                                        <Text style={{color: this.state.isNotClear == 'all' ? '#ff0000' : '#ff0000'}}>■ 미수령</Text>
+                                    </TouchableOpacity>
+                                </>
                                 :
-                                <><Text style={{color:'#cccccc'}}>■ <Text style={{color:'#000'}}>반납완료</Text> </Text><Text style={{color:'#ff0000'}}>■ 미반납</Text></>
+                                <>
+                                    <View style={styles.defaultBox}>
+                                        <Text style={{color:'#cccccc'}}>■ <Text style={{color:'#000'}}>반납완료</Text></Text>
+                                    </View>
+                                    <TouchableOpacity style={this.state.isNotClear == 'all' ? styles.defaultBox : styles.checkBox} onPress={()=>this.handleStateChange(this.state.isNotClear)}>
+                                        <Text style={{color:'#ff0000'}}>■ 미반납</Text>
+                                    </TouchableOpacity>
+                                </>
                                 }
                             </View>
                             <View style={{...styles.layout, backgroundColor: '#f6f6f6', paddingHorizontal: mUtils.wScale(20), paddingVertical: mUtils.wScale(10)}}>

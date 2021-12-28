@@ -17,6 +17,8 @@ export default StyleSheet.create({
     paddingHorizontal: mUtils.wScale(5),
     borderTopWidth: 1,
     borderColor: mConst.black,
+    borderBottomWidth: 1,
+    borderColor: mConst.borderGray
   },
   headerText: {
     padding: mUtils.wScale(15),
@@ -33,7 +35,7 @@ export default StyleSheet.create({
     height: mUtils.wScale(60),
     alignItems: 'center',
     paddingHorizontal: mUtils.wScale(20),
-    borderTopWidth: StyleSheet.hairlineWidth,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     borderRightWidth: StyleSheet.hairlineWidth,
     borderColor: mConst.borderGray,
   },

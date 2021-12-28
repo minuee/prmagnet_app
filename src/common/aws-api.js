@@ -403,7 +403,7 @@ const API = {
     }
     return Api.post(apiName, path, myInit)
   },
-  getSendoutSchedule: ({start_date, fin_date, brand_id}) => {
+  getSendoutSchedule: ({start_date, fin_date, brand_id,not_finished}) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/sendout-schedule`
     const init = {
@@ -412,16 +412,18 @@ const API = {
           ? {
               start_date,
               fin_date,
+              not_finished
             }
           : {
               start_date,
               fin_date,
               brand_id,
+              not_finished
             },
     }    
     return Api.get(apiName, path, init)
   },
-  getPickupSchedule: ({start_date, fin_date, brand_id}) => {
+  getPickupSchedule: ({start_date, fin_date, brand_id,not_finished}) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/pickup-schedule-mobile`
     const init = {
@@ -429,17 +431,19 @@ const API = {
         start_date,
         fin_date,
         brand_id,
+        not_finished
       },
     }
     return Api.get(apiName, path, init)
   },
-  getReturnSchedule: ({start_date, fin_date}) => {
+  getReturnSchedule: ({start_date, fin_date,not_finished}) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/return-schedule`
     const init = {
       queryStringParameters: {
         start_date,
         fin_date,
+        not_finished
       },
     }
     return Api.get(apiName, path, init)

@@ -28,7 +28,10 @@ class HomeScreen extends PureComponent {
         this.state = {
             loading : true,
             isSubScrbing : false,
-            data: ''
+            data: '',
+            justonce : true,
+            leftData : [],
+            leftShowroomData : []
         }
     }
 
@@ -60,6 +63,8 @@ class HomeScreen extends PureComponent {
     getHome = async () => {
         //const date = Math.floor(new Date().getTime() / 1000);
         const date = mUtils.getToday();
+        //let now = new Date();
+        //let dayjsDate2 = new Date(now.setDate(now.getDate() - 1)).getTime();
         try {
             const response = await API.getHome({date: date})
             //console.log('getHome111',_.get(response, 'today_request', []))
@@ -72,6 +77,23 @@ class HomeScreen extends PureComponent {
         }
     }
 
+    goDetail =  async(reqNo,showroom_no) => {
+        const date = mUtils.getToday();
+        //let now = new Date();
+        //let dayjsDate2 = new Date(now.setDate(now.getDate() - 1)).getTime();
+            
+        if ( mConst.getUserType() == 'B' ) {
+            let reqNoData = [];
+            let newSdata = this.state.leftShowroomData.filter((item) => item.req_no == reqNo).map( item => {
+                return item.showroom_no
+            });
+            const selectDate2 = [{date : date,showroom_list : newSdata,req_no_list : [reqNo]}]    
+            this.pushTo('SendOutBScreen', {selectEachList:selectDate2})
+        }else{            
+            this.pushTo( 'SendOutScreen', {reqNo: reqNo,showroom_no: showroom_no})
+        }
+            
+    }
 
     requests = () => {
         const {data} = this.state;
@@ -81,7 +103,7 @@ class HomeScreen extends PureComponent {
             <View style={{flex: requestData.length === 0 ? 1 : 0}}>
                 <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20)}}>
                     <Text style={styles.new}>
-                    {userType !== 'B' ? 'Confirmed' : 'New'} <Text style={{fontFamily: 'Roboto-Medium'}}>Sample Requests : </Text>
+                    {userType !== 'B' ? 'Confirmed' : 'New'} <Text style={{fontFamily: 'Roboto-Medium'}}>Requests : </Text>
                         <Text style={{fontFamily: 'Roboto-Bold', color: '#7ea1b2'}}>
                             {requestData.length}
                         </Text>
@@ -114,7 +136,7 @@ class HomeScreen extends PureComponent {
                             {item.editor_nm} {item.editor_posi}
                         </Text>
                         <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>
-                            {mUtils.getShowDate(userType === 'B' ? item.req_dt : item.brand_cnfirm_dt, 'YYYY-MM-DD')}
+                            {mUtils.getShowDate(userType === 'B' ? item.req_dt : item.photogrf_dt, 'YYYY-MM-DD')}
                         </Text>
                         {userType === 'B' ? (
                             <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
@@ -143,7 +165,7 @@ class HomeScreen extends PureComponent {
             <View style={{flex: today_request.length === 0 ? 1 : 0, flex: today_request.length === 0 ? 1 : 0}}>
                 <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(40)}}>
                     <Text style={styles.new}>
-                        Today's <Text style={{fontFamily: 'Roboto-Medium'}}>Pickups</Text>
+                        Today's <Text style={{fontFamily: 'Roboto-Medium'}}>Pickups : </Text>
                         <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}> {today_request.length}</Text>
                     </Text>
                     <TouchableOpacity
@@ -160,6 +182,7 @@ class HomeScreen extends PureComponent {
                 {today_request.length > 0 ? (
                     today_request[0].each_list.map((item, index) => {
                     const subItem = item.showroom_list[0];
+                   
                     if ( index < 4) {
                         return (
                             <TouchableOpacity
@@ -171,6 +194,9 @@ class HomeScreen extends PureComponent {
                                     subItem.target_id_type === 'RUS000' ?
                                     <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />
                                     :
+                                    subItem.target_id_type === 'RUS001' ?
+                                    <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres2}} />
+                                    :
                                     <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
                                 }                            
                                 <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>
@@ -178,7 +204,7 @@ class HomeScreen extends PureComponent {
                                     {subItem.target_user_nm} ({mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}) → 
                                 </Text>
                                 <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>
-                                    {"   "} {subItem.req_user_nm}{subItem.req_user_position}
+                                    {subItem.req_user_nm}{subItem.req_user_position}
                                 </Text>
                                 {/* <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>{mUtils.getShowDate(today_request[0].date, 'YYYY-MM-DD')}</Text>
                                 {userType === 'B' ? (
@@ -199,17 +225,40 @@ class HomeScreen extends PureComponent {
         </View>
         )
     }
-
     todaySendOuts = () => {
         const {data} = this.state;
         const userType = mConst.getUserType();
         const today_sendout = _.get(data, 'today_sendout', []);
+        console.log('today_sendout',today_sendout)
+        const targetData = mUtils.isEmpty(today_sendout[0]?.each_list) ? [] : today_sendout[0]?.each_list;
+        let newLeftIdxArray = [];
+        let newLeftShowroomIdxArray = [];
+        let newLeftArray = [];
+        targetData.forEach((element) => {
+        let req_no = element.showroom_list[0].req_no;
+        if ( !newLeftIdxArray.includes(req_no)) {
+            newLeftIdxArray.push(req_no);
+            newLeftArray.push(element)
+        }
+        if ( !newLeftShowroomIdxArray.includes(req_no)) {
+            newLeftShowroomIdxArray.push({req_no :req_no, showroom_no: element.showroom_list[0].showroom_no});
+        }
+        })          
+        //console.log('newLeftShowroomIdxArray',newLeftShowroomIdxArray);
+        if ( this.state.justonce ) {
+            this.setState({
+                leftData : newLeftArray,
+                justonce : false,
+                leftShowroomData :newLeftShowroomIdxArray
+            }) 
+        }
+        
         return (
             <View style={{flex: today_sendout.length === 0 ? 1 : 0, flex: today_sendout.length === 0 ? 1 : 0}}>
                 <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(40)}}>
                     <Text style={styles.new}>
-                        Today's <Text style={{fontFamily: 'Roboto-Medium'}}>Sendouts</Text>
-                        <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}> {today_sendout[0]?.each_list?.length}</Text>
+                        Today's <Text style={{fontFamily: 'Roboto-Medium'}}>Send Outs : </Text>
+                        <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}> {newLeftArray.length}</Text>
                     </Text>
                     <TouchableOpacity
                         style={styles.layout}
@@ -222,8 +271,8 @@ class HomeScreen extends PureComponent {
             <View
                 style={{...styles.layout2,backgroundColor: 'rgba(178, 126, 126, 0.2)',flex: today_sendout.length === 0 ? 1 : 0,flex: today_sendout.length === 0 ? 1 : 0,flexDirection: today_sendout.length === 0 ? 'column' : 'row',justifyContent:today_sendout.length === 0 ? 'center' : 'space-between',flexWrap: today_sendout.length === 0 ? 'nowrap' : 'wrap',}}
             >
-                {!mUtils.isEmpty(today_sendout[0]?.each_list) ? (
-                    today_sendout[0]?.each_list.map((item, index) => {
+                {   newLeftArray.length > 0 ? (
+                    newLeftArray.map((item, index) => {
                     if ( index < 4) {
                         const subItem = item.showroom_list[0];
                         if ( userType === 'B') {
@@ -231,7 +280,7 @@ class HomeScreen extends PureComponent {
                                 <TouchableOpacity
                                     key={index}
                                     style={styles.layout3}
-                                    onPress={() => this.pushTo(mConst.getUserType() == 'B' ? 'SendOutBScreen' : 'SendOutScreen', {reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
+                                    onPress={() =>  this.goDetail( subItem.req_no, subItem.showroom_no)}
                                 >
                                     <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
                                     <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
@@ -254,10 +303,13 @@ class HomeScreen extends PureComponent {
                                         subItem.target_id_type === 'RUS000' ?
                                         <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />
                                         :
+                                        subItem.target_id_type === 'RUS001' ?
+                                        <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres2}} />
+                                        :
                                         <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
                                     }                            
                                     <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
-                                        {subItem.req_user_nm}  →
+                                        {subItem.req_user_nm}({mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position})  →
                                     </Text>
                                     <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}>
                                         {subItem.target_user_nm} ({mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position})
