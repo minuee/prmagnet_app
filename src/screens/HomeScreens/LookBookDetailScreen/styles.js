@@ -9,10 +9,17 @@ export default StyleSheet.create({
     backgroundColor: mConst.white,
   },
   mainTitle: {
+    flex:2,
     fontSize: 22,
     fontFamily: 'Roboto-Bold',
     textAlign: 'left',
     color: mConst.black,
+  },
+  shareWrap : {
+    flex:1,
+    flexDirection:'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   rightSmall: {
     fontFamily: 'Roboto-Medium',
@@ -54,10 +61,23 @@ export default StyleSheet.create({
     color: '#ffffff',
     marginTop: mUtils.wScale(5),
   },
+  desc3: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 12,
+    textAlign: 'left',
+    color: '#070708',
+   
+  },
+  desc3Wrap : {
+    marginTop: mUtils.wScale(5),
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection:'row'
+  },
   layout1: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     paddingHorizontal: mUtils.wScale(20),
     paddingTop: mUtils.wScale(10),
     paddingBottom: mUtils.wScale(10),
@@ -72,7 +92,14 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  smallBox2: {
+    flex:1,
+    height: mUtils.wScale(30),
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
   smallBox: {
+    flex:1,
     width: mUtils.wScale(55),
     height: mUtils.wScale(30),
     borderRadius: mUtils.wScale(2.5),

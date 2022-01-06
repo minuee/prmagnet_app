@@ -47,10 +47,11 @@ class LinkSheetScreen extends React.Component {
     }
 
     async UNSAFE_componentWillMount() {
-        this.handleOnFocus();
+        //this.handleOnFocus();
+        this.onFocus(this.handleOnFocus);
     }
     componentDidMount() {
-        //this.onFocus(this.handleOnFocus);
+        
         //console.log('###apiPath:', mConst.getApiPath())
     }
 
@@ -420,24 +421,17 @@ class LinkSheetScreen extends React.Component {
                                 let op2 = selectDate.filter(dItems => (dItems.date === item.date));                               
                                 return (
                                     <View key={index} style={{width: '100%', marginTop: mUtils.wScale(25)}}>
-                                        <TouchableOpacity
-                                            onPress={() => this.fn_selectDate(item)}
+                                        <View
+                                            //onPress={() => this.fn_selectDate(item)}
                                             style={{...styles.layout1, marginBottom: mUtils.wScale(15), paddingHorizontal: mUtils.wScale(20)}}
                                         >
-                                        {
-                                            op2.length > 0 ? (
-                                                <FastImage resizeMode={'contain'} style={styles.checkImg} source={checkImg} />
-                                            ) : (
-                                                <FastImage resizeMode={'contain'} style={styles.checkImg} source={noCheckImg} />
-                                            )
-                                        }
                                             <Text style={{...styles.subDt}}>
                                                 {mUtils.getShowDate(item.date)}
                                                 <Text style={{fontSize: 16}}>
                                                     : <Text style={{fontSize: 16, color: '#7ea1b2'}}>{item.each_list.length}</Text>
                                                 </Text>
                                             </Text>
-                                        </TouchableOpacity>
+                                        </View>
                                         <View style={{...styles.layout, flexWrap: 'wrap', paddingHorizontal: mUtils.wScale(20)}}>
                                     {
                                     _.map(item.each_list, (subItem2, subIndex) => {
@@ -457,7 +451,7 @@ class LinkSheetScreen extends React.Component {
                                                                 {this.renderLogo(subItem,subIndex,selectTitle)}
                                                             </View>
                                                         :
-                                                            <View style={{...styles.box1, backgroundColor: ( subItem.sendout_yn || subItem.return_yn) ? mUtils.isEmpty(subItem.brand_color) ? '#ddd' : subItem.brand_color : '#ff0000'}}>
+                                                            <View style={{...styles.box1, backgroundColor:  subItem.return_yn ? mUtils.isEmpty(subItem.brand_color) ? '#ddd' : subItem.brand_color : '#ff0000'}}>
                                                             {this.renderLogo(subItem,subIndex,selectTitle)}
                                                         </View>
                                                         }
@@ -493,7 +487,7 @@ class LinkSheetScreen extends React.Component {
                                                         onPress={() =>this.handleLinkSheetDetailEach(subItem.req_no,item.showroomData,item.date)}
                                                         //onPress={() =>this.pushTo('ReturnScreen',{reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
                                                     >
-                                                        <View style={{...styles.box1, backgroundColor: ( subItem.return_yn || subItem.returncheck_yn ) ? mUtils.isEmpty(subItem.mgzn_color) ? '#ddd' :subItem.mgzn_color : '#ff0000'}}>
+                                                        <View style={{...styles.box1, backgroundColor:  subItem.returncheck_yn ? mUtils.isEmpty(subItem.mgzn_color) ? '#ddd' :subItem.mgzn_color : '#ff0000'}}>
                                                             {this.renderLogo(subItem,subIndex,selectTitle)}
                                                         </View>
                                                         

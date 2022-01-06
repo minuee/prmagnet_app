@@ -99,6 +99,7 @@ class SampleRequestsScreen extends PureComponent {
         mgzn_user_nm: ''
       },
       shDate: '',
+      shEndDate: '',
       pkDate: '',
       rtDate: '',
       startTime: '00',
@@ -118,6 +119,7 @@ class SampleRequestsScreen extends PureComponent {
       togetherBrand: '',
       message: '',
       drop: false,
+      drop_end:false,
       drop1: false,
       drop2: false,
       isvisible: false,
@@ -170,6 +172,7 @@ class SampleRequestsScreen extends PureComponent {
       selectContact,
       selectRegID,
       shDate,
+      shEndDate,
       pkDate,
       rtDate,
       startTime,
@@ -201,6 +204,7 @@ class SampleRequestsScreen extends PureComponent {
     if (!selectRegID) return this.alert('', '담당기자/스타일리스트를 선택해주세요')
     if (!selectContact) return this.alert('', '연결 연락처를 선택해 주세요.')
     if (!shDate) return this.alert('', '촬영일을 선택해 주세요.')
+    if (!shEndDate) return this.alert('', '촬영일을 선택해 주세요.')
     if (!pkDate) return this.alert('', '픽업일을 선택해 주세요.')
     if (!rtDate) return this.alert('', '반납일을 선택해 주세요.')
     //if (!startTime) return this.alert('', '촬영 시작 시각을 선택해 주세요.')
@@ -218,6 +222,7 @@ class SampleRequestsScreen extends PureComponent {
         brand_id: brandId,
         duty_recpt_dt: String(Math.floor(Number(pkDate.timestamp / 1000))),
         photogrf_dt: String(Math.floor(Number(shDate.timestamp) / 1000)),
+        photogrf_end_dt: String(Math.floor(Number(shEndDate.timestamp) / 1000)),
         begin_dt: startTime,
         end_dt: endTime,
         return_prearnge_dt: String(Math.floor(Number(rtDate.timestamp) / 1000)),
@@ -257,6 +262,7 @@ class SampleRequestsScreen extends PureComponent {
       selectContact,
       selectRegID,
       shDate,
+      shEndDate,
       pkDate,
       rtDate,
       startTime,
@@ -290,6 +296,7 @@ class SampleRequestsScreen extends PureComponent {
         req_no: no,
         duty_recpt_dt: String(Math.floor(Number(pkDate.timestamp / 1000))),
         photogrf_dt: String(Math.floor(Number(shDate.timestamp) / 1000)),
+        photogrf_end_dt: String(Math.floor(Number(shEndDate.timestamp) / 1000)),
         begin_dt: startTime,
         end_dt: endTime,
         return_prearnge_dt: String(Math.floor(Number(rtDate.timestamp) / 1000)),
@@ -343,7 +350,7 @@ class SampleRequestsScreen extends PureComponent {
   }
 
   onDaySelect = async(date) => {
-    const {drop, drop1, drop2, holidays,holidays2} = this.state;
+    const {drop,drop_end, drop1, drop2, holidays,holidays2,shDate,shEndDate} = this.state;
     /* console.log('onDaySelect',date,drop1,drop2)
     const dateFormat = date.dateString;
     const TodayFormat = moment().format("YYYY-MM-DD");
@@ -362,7 +369,6 @@ class SampleRequestsScreen extends PureComponent {
       return false;
     }else{ */
       if (drop) {      
-        this.setState({shDate: date, drop: false})
         let pDt =
           moment(date.timestamp).subtract({day: 1}).day() === 0
             ? moment(date.timestamp).subtract({day: 3}).format('YYYY-MM-DD')
@@ -381,41 +387,73 @@ class SampleRequestsScreen extends PureComponent {
                   : moment(pDt).subtract({day: 1}).format('YYYY-MM-DD'))
           )
         }
-
-        let rDt =
-          moment(date.timestamp).add({day: 1}).day() === 6
-            ? moment(date.timestamp).add({day: 3}).format('YYYY-MM-DD')
-            : moment(date.timestamp).add({day: 1}).day() === 0
-            ? moment(date.timestamp).add({day: 2}).format('YYYY-MM-DD')
-            : moment(date.timestamp).add({day: 1}).format('YYYY-MM-DD')
-        for (let i = 0; i < holidays.length; i++) {
-          holidays.find(
-            v =>
-              v === rDt &&
-              (rDt =
-                moment(rDt).add({day: 1}).day() === 6
-                  ? moment(rDt).add({day: 3}).format('YYYY-MM-DD')
-                  : moment(rDt).add({day: 1}).day() === 0
-                  ? moment(rDt).add({day: 2}).format('YYYY-MM-DD')
-                  : moment(rDt).add({day: 1}).format('YYYY-MM-DD'))
-          )
-        }
         const pDtObj = moment(pDt)
-        const rDtObj = moment(rDt)
         this.setState({
           shDate: date,
+          shEndDate: date,
           drop: false,
           pkDate: {
             month: pDtObj.format('M'),
             day: pDtObj.format('D'),
             timestamp: pDtObj.valueOf(),
-          },
-          rtDate: {
-            month: rDtObj.format('M'),
-            day: rDtObj.format('D'),
-            timestamp: rDtObj.valueOf(),
-          },
+          }
         })
+      }else if (drop_end) {     
+        
+        if ( shDate.timestamp > date.timestamp ) {
+          Alert.alert(
+            mConst.appName,
+            '촬영시작일보다 작은 일자를 선택하셨습니다.',
+            [
+              {text: '확인', onPress: () => console.log('no')},
+            ],
+            {cancelable: false},
+          );
+        }else{
+          let diffDays = moment(date.timestamp).diff(moment(shDate.timestamp),'days');
+          console.log('shDateshDate',shDate) 
+          console.log('datedatedate',date) 
+          console.log('diffDays',diffDays) 
+          if ( diffDays > mConst.sampleRequestLimitDays) {
+            Alert.alert(
+              mConst.appName,
+              '최대 7일까지 가능합니다',
+              [
+                {text: '확인', onPress: () => console.log('no')},
+              ],
+              {cancelable: false},
+            );
+          }else{
+            let rDt =
+              moment(date.timestamp).add({day: 1}).day() === 6
+                ? moment(date.timestamp).add({day: 3}).format('YYYY-MM-DD')
+                : moment(date.timestamp).add({day: 1}).day() === 0
+                ? moment(date.timestamp).add({day: 2}).format('YYYY-MM-DD')
+                : moment(date.timestamp).add({day: 1}).format('YYYY-MM-DD')
+            for (let i = 0; i < holidays.length; i++) {
+              holidays.find(
+                v =>
+                  v === rDt &&
+                  (rDt =
+                    moment(rDt).add({day: 1}).day() === 6
+                      ? moment(rDt).add({day: 3}).format('YYYY-MM-DD')
+                      : moment(rDt).add({day: 1}).day() === 0
+                      ? moment(rDt).add({day: 2}).format('YYYY-MM-DD')
+                      : moment(rDt).add({day: 1}).format('YYYY-MM-DD'))
+              )
+            }
+            const rDtObj = moment(rDt)
+            this.setState({
+              shEndDate: date,
+              drop_end: false,
+              rtDate: {
+                month: rDtObj.format('M'),
+                day: rDtObj.format('D'),
+                timestamp: rDtObj.valueOf(),
+              },
+            })
+          }
+        }
       } else if (drop1) {
         this.setState({pkDate: date, drop1: false})
       } else if (drop2) {
@@ -456,6 +494,11 @@ class SampleRequestsScreen extends PureComponent {
           month: mUtils.getShowDate(response.shooting_date, 'M'),
           day: mUtils.getShowDate(response.shooting_date, 'D'),
           timestamp: response.shooting_date * 1000,
+        },
+        shEndDate: {
+          month: mUtils.getShowDate(response.shooting_end_date, 'M'),
+          day: mUtils.getShowDate(response.shooting_end_date, 'D'),
+          timestamp: response.shooting_end_date * 1000,
         },
         pkDate: {
           month: mUtils.getShowDate(response.pickup_date, 'M'),
@@ -621,6 +664,7 @@ class SampleRequestsScreen extends PureComponent {
       selectContact,
       selectRegID,
       shDate,
+      shEndDate,
       pkDate,
       rtDate,
       startTime,
@@ -638,6 +682,7 @@ class SampleRequestsScreen extends PureComponent {
       togetherBrand,
       message,
       drop,
+      drop_end,
       drop1,
       drop2,
       myPay,
@@ -772,15 +817,15 @@ class SampleRequestsScreen extends PureComponent {
                     paddingBottom: mUtils.wScale(18),
                   }}
                 >
-                  <View style={{width: '32%'}}>
+                  <View style={{width: '49%'}}>
                     <Text style={styles.smallTitle}>
-                      촬영일 <Text style={{color: '#7eb2b2'}}>*</Text>
+                      촬영시작일 <Text style={{color: '#7eb2b2'}}>*</Text>
                     </Text>
                     {type ?                    
                     <TouchableOpacity
                       style={{...styles.box1, justifyContent: 'space-between'}}
                       onPress={() => {
-                        this.setState({drop: !drop, drop1: false, drop2: false})
+                        this.setState({drop: !drop,drop_end:false, drop1: false, drop2: false})
                       }}
                     >
                       <Text style={styles.boxText}>
@@ -797,7 +842,41 @@ class SampleRequestsScreen extends PureComponent {
                     </View>
                     }
                   </View>
-                  <View style={{width: '32%'}}>
+                  <View style={{width: '49%'}}>
+                    <Text style={styles.smallTitle}>
+                      촬영종료일 <Text style={{color: '#7eb2b2'}}>*</Text>
+                    </Text>
+                    {type && this.state.shDate ?                    
+                    <TouchableOpacity
+                      style={{...styles.box1, justifyContent: 'space-between'}}
+                      onPress={() => {
+                        this.setState({drop: false,drop_end : !drop_end, drop1: false, drop2: false})
+                      }}
+                    >
+                      <Text style={styles.boxText}>
+                        {shEndDate ? `${shEndDate.month}/${shEndDate.day}(${moment(shEndDate.timestamp).format('ddd')})` : '0/0(일)'}
+                      </Text>
+                      <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                    </TouchableOpacity>
+                    :
+                    <View style={{...styles.box1, justifyContent: 'space-between'}}>
+                      <Text style={styles.boxText}>
+                        {shEndDate ? `${shEndDate.month}/${shEndDate.day}(${moment(shEndDate.timestamp).format('ddd')})` : '0/0(일)'}
+                      </Text>
+                      <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                    </View>
+                    }
+                  </View>
+                </View>
+                <View
+                  style={{
+                    ...styles.layout2,
+                    justifyContent: 'space-between',
+                    paddingTop: mUtils.wScale(20),
+                    paddingBottom: mUtils.wScale(18),
+                  }}
+                >
+                  <View style={{width: '49%'}}>
                     <Text style={styles.smallTitle}>
                       픽업일 <Text style={{color: '#7eb2b2'}}>*</Text>
                     </Text>
@@ -811,7 +890,7 @@ class SampleRequestsScreen extends PureComponent {
                       <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
                     </View>
                   </View>
-                  <View style={{width: '32%'}}>
+                  <View style={{width: '49%'}}>
                     <Text style={styles.smallTitle}>
                       반납일 <Text style={{color: '#7eb2b2'}}>*</Text>
                     </Text>
@@ -826,7 +905,7 @@ class SampleRequestsScreen extends PureComponent {
                     </View>
                   </View>
                 </View>
-                {drop || drop1 || drop2 ? (
+                {drop || drop_end || drop1 || drop2 ? (
                   <View style={styles.calendar}>
                     <Calendar
                       minDate={Date()}

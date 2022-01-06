@@ -100,7 +100,7 @@ class HomeScreen extends PureComponent {
         const userType = mConst.getUserType();
         const requestData =  _.get(data, userType !== 'B' ? 'cnfirm_request' : 'new_request', []);
         return (
-            <View style={{flex: requestData.length === 0 ? 1 : 0}}>
+            <View style={{flex: requestData.length === 0 ? 0 : 1}}>
                 <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20)}}>
                     <Text style={styles.new}>
                     {userType !== 'B' ? 'Confirmed' : 'New'} <Text style={{fontFamily: 'Roboto-Medium'}}>Requests : </Text>
@@ -116,7 +116,7 @@ class HomeScreen extends PureComponent {
                         <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
                     </TouchableOpacity>
                 </View>
-            <View style={{...styles.layout2,backgroundColor: 'rgba(126, 161, 178, 0.2)',flex: requestData.length === 0 ? 1 : 0,flexDirection: requestData.length === 0 ? 'column' : 'row',justifyContent: requestData.length === 0 ? 'center' : 'space-between',flexWrap: requestData.length === 0 ? 'nowrap' : 'wrap'}}>
+            <View style={{...styles.layout2,backgroundColor: 'rgba(126, 161, 178, 0.2)',flex: requestData.length === 0 ? 0 : 1,flexDirection: requestData.length === 0 ? 'column' : 'row',justifyContent: requestData.length === 0 ? 'center' : 'space-between',flexWrap: requestData.length === 0 ? 'nowrap' : 'wrap'}}>
                 {requestData.length > 0 ? (
                     requestData.map((item, index) => {
                     if ( index < 4) {
@@ -136,7 +136,8 @@ class HomeScreen extends PureComponent {
                             {item.editor_nm} {item.editor_posi}
                         </Text>
                         <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>
-                            {mUtils.getShowDate(userType === 'B' ? item.req_dt : item.photogrf_dt, 'YYYY-MM-DD')}
+                            { userType === 'B' ? mUtils.getShowDate(item.req_dt, 'YYYY-MM-DD') : mUtils.getShowDate(item.photogrf_dt, 'YYYY-MM-DD')}
+                            { (userType !== 'B' && item.photogrf_dt != item.photogrf_end_dt ) && "~"+mUtils.getShowDate(item.photogrf_end_dt, 'YYYY-MM-DD') }
                         </Text>
                         {userType === 'B' ? (
                             <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
@@ -162,7 +163,7 @@ class HomeScreen extends PureComponent {
         const userType = mConst.getUserType();
         const today_request = _.get(data, 'today_request', []);
         return (
-            <View style={{flex: today_request.length === 0 ? 1 : 0, flex: today_request.length === 0 ? 1 : 0}}>
+            <View style={{flex: today_request.length === 0 ? 0 : 1}}>
                 <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(40)}}>
                     <Text style={styles.new}>
                         Today's <Text style={{fontFamily: 'Roboto-Medium'}}>Pickups : </Text>
@@ -177,7 +178,7 @@ class HomeScreen extends PureComponent {
                     </TouchableOpacity>
                 </View>
             <View
-                style={{...styles.layout2,backgroundColor: 'rgba(178, 126, 126, 0.2)',flex: today_request.length === 0 ? 1 : 0,flex: today_request.length === 0 ? 1 : 0,flexDirection: today_request.length === 0 ? 'column' : 'row',justifyContent:today_request.length === 0 ? 'center' : 'space-between',flexWrap: today_request.length === 0 ? 'nowrap' : 'wrap',}}
+                style={{...styles.layout2,backgroundColor: 'rgba(178, 126, 126, 0.2)',flex: today_request.length === 0 ? 0 : 1,flexDirection: today_request.length === 0 ? 'column' : 'row',justifyContent:today_request.length === 0 ? 'center' : 'space-between',flexWrap: today_request.length === 0 ? 'nowrap' : 'wrap',}}
             >
                 {today_request.length > 0 ? (
                     today_request[0].each_list.map((item, index) => {
@@ -254,7 +255,7 @@ class HomeScreen extends PureComponent {
         }
         
         return (
-            <View style={{flex: today_sendout.length === 0 ? 1 : 0, flex: today_sendout.length === 0 ? 1 : 0}}>
+            <View style={{flex: today_sendout.length === 0 ? 0 : 1}}>
                 <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(40)}}>
                     <Text style={styles.new}>
                         Today's <Text style={{fontFamily: 'Roboto-Medium'}}>Send Outs : </Text>
@@ -269,7 +270,7 @@ class HomeScreen extends PureComponent {
                     </TouchableOpacity>
                 </View>
             <View
-                style={{...styles.layout2,backgroundColor: 'rgba(178, 126, 126, 0.2)',flex: today_sendout.length === 0 ? 1 : 0,flex: today_sendout.length === 0 ? 1 : 0,flexDirection: today_sendout.length === 0 ? 'column' : 'row',justifyContent:today_sendout.length === 0 ? 'center' : 'space-between',flexWrap: today_sendout.length === 0 ? 'nowrap' : 'wrap',}}
+                style={{...styles.layout2,backgroundColor: 'rgba(178, 126, 126, 0.2)',flex: today_sendout.length === 0 ? 0 : 1,flexDirection: today_sendout.length === 0 ? 'column' : 'row',justifyContent:today_sendout.length === 0 ? 'center' : 'space-between',flexWrap: today_sendout.length === 0 ? 'nowrap' : 'wrap',}}
             >
                 {   newLeftArray.length > 0 ? (
                     newLeftArray.map((item, index) => {

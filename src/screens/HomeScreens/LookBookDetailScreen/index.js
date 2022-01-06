@@ -1,10 +1,11 @@
 import React, {PureComponent} from 'react'
 import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity, Pressable, Share} from 'react-native'
-import {connect} from 'react-redux'
-import FastImage from 'react-native-fast-image'
-import _ from 'lodash'
-import Modal from 'react-native-modal'
-import Clipboard from '@react-native-clipboard/clipboard'
+import {connect} from 'react-redux';
+import FastImage from 'react-native-fast-image';
+import _ from 'lodash';
+import Modal from 'react-native-modal';
+import Clipboard from '@react-native-clipboard/clipboard';
+import KakaoShareLink from 'react-native-kakao-share-link';
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -14,6 +15,7 @@ import styles from './styles'
 import Loading from '../../common/Loading'
 import API from '../../../common/aws-api'
 
+const kakaoIcon = require('../../../images/common/kakao_icon.png')
 const modelImg = require('../../../images/sample/model_1.png')
 const newImg = require('../../../images/navi/new_1.png')
 const closeImg = require('../../../images/navi/close_2.png')
@@ -24,7 +26,7 @@ class LookBookDetailScreen extends PureComponent {
     cBind(this)
     this.state = {
       list: [],
-      brandTitle: 'GUCCI WOMEN COLLECTION',
+      brandTitle: '',
       page: 1,
       limit: 10,
       share_uuid: '',
@@ -49,7 +51,7 @@ class LookBookDetailScreen extends PureComponent {
       //console.log('getLookBookDetail>>>', JSON.stringify(response))
       if (response.success) {
         if (response.list.length > 0) {
-          this.setState({list: list.concat(response.list), page: page + 1})
+          this.setState({list: list.concat(response.list), page: page + 1,brandTitle: response.lookbook_nm})
         }
       }
     } catch (error) {
@@ -83,11 +85,42 @@ class LookBookDetailScreen extends PureComponent {
     this.getLookBookDetail()
   }
 
+  kakaoshare = async() => {
+    const {brandTitle, share_uuid} = this.state;
+    const domain = mConst.shareDomain;
+    try {
+      const response = await KakaoShareLink.sendFeed({
+        content: {
+          title: '[PR MAGENT LookBook Share]' +brandTitle,
+          imageUrl: 'https://www.prmagnet.co.kr/logo_meta2.png',
+          link: {
+            webUrl: domain + "share-lookbook/" + share_uuid,
+            mobileWebUrl: domain + "share-lookbook/" + share_uuid,
+          },
+          description:  brandTitle,
+        },
+        buttons: [
+          {
+            title: '웹에서 보기',
+            link: {
+              webUrl: domain + "share-lookbook/" + share_uuid,
+              mobileWebUrl: domain + "share-lookbook/" + share_uuid,
+            },
+          }
+        ],
+      });
+      console.log(response);
+    } catch (e) {
+      console.error(e);
+      console.error(e.message);
+    }
+  }
+
   renderItem = ({item}) => {
     //console.log('????', item)
     const {lookbook_no} = this.props.route.params
     return (
-      <View style={{width: '49%', height: mUtils.wScale(310)}}>
+      <View style={{width: '49%', height: mUtils.wScale(350)}}>
         <View style={{width: '100%', height: mUtils.wScale(275)}}>
           <Pressable
             onPressOut={() => {
@@ -120,6 +153,12 @@ class LookBookDetailScreen extends PureComponent {
           {item.is_new ? <FastImage resizeMode={'contain'} style={styles.newImg} source={newImg} /> : null}
         </View>
         <Text style={styles.title1}>{item.showroom_nm}</Text>
+        <View style={styles.desc3Wrap}>
+          {item.category_list.map((item, index) => {
+            return <Text style={styles.desc3} key={index}>{item}</Text>
+          })}
+          {item.all_in_yn ? <Text style={styles.desc3}>{"  "}ALL IN</Text> : null}
+        </View>
       </View>
     )
   }
@@ -131,14 +170,14 @@ class LookBookDetailScreen extends PureComponent {
       <SafeAreaView style={styles.container}>
         <View style={styles.layout1}>
           <Text style={styles.mainTitle}>LookBook</Text>
-          <TouchableOpacity
-            style={styles.smallBox}
-            onPress={() => {
-              this.setState({link: true})
-            }}
-          >
-            <Text style={styles.rightSmall}>Share</Text>
-          </TouchableOpacity>
+          <View style={styles.shareWrap}>
+            <TouchableOpacity style={styles.smallBox2} onPress={() => this.kakaoshare()}>
+              <FastImage resizeMode={'contain'} style={styles.modelImg} source={kakaoIcon}></FastImage>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.smallBox} onPress={() => { this.setState({link: true}) }} >
+              <Text style={styles.rightSmall}>Share</Text>
+            </TouchableOpacity>            
+          </View>
         </View>
         <View style={{paddingHorizontal: mUtils.wScale(20)}}>
           <Text style={styles.brandTitle}>{brandTitle}</Text>

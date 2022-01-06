@@ -23,6 +23,7 @@ const alarmImage = require('../images/navi/alarm.png')
 const linkImage = require('../images/navi/link.png')
 const alarmNewImage = require('../images/navi/alarm_new.png')
 const shareImg = require('../images/navi/share_1.png')
+const kakaoIcon = require('../images/common/kakao_icon.png')
 const fontCheck = font => {
   const check_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/
   return check_kor.test(font)
@@ -126,7 +127,7 @@ const cBind = reactComp => {
       ),
     })
 
-  reactComp.shareOption = (screenName,handleshare) =>
+  reactComp.shareOption = (screenName,handleshare,kakaoshare) =>
     navigation.setOptions({
       title:screenName,
       headerStyle: {backgroundColor: mConst.white, shadowColor: 'transparent', elevation: 0},
@@ -137,9 +138,15 @@ const cBind = reactComp => {
         </TouchableOpacity>
       ),
       headerRight: () => (
-        <TouchableOpacity style={{paddingHorizontal: mConst.wGapUnit / 3}} onPress={handleshare}>
-          <FastImage style={{width: mUtils.wScale(20), height: mUtils.wScale(20)}} source={shareImg} />
-        </TouchableOpacity>
+        <View style={{paddingHorizontal: mConst.wGapUnit / 3,flexDirection:'row',alignItems:'center'}}>
+          <TouchableOpacity onPress={kakaoshare} style={{marginRight:5}}>
+            <FastImage style={{width: mUtils.wScale(30), height: mUtils.wScale(30)}} source={kakaoIcon} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleshare}>
+            <FastImage style={{width: mUtils.wScale(22), height: mUtils.wScale(22)}} source={shareImg} />
+          </TouchableOpacity>
+        </View>
+        
       ),
     })
   reactComp.pushTo = (screenName, params) => navigation.navigate(screenName, params)

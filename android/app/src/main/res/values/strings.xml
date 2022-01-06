@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">PR Magnet</string>
+    <string name="kakao_app_key">db755bdaf7370723d61e929b73b2226f</string>
 </resources>

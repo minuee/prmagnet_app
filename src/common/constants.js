@@ -70,4 +70,6 @@ export default {
   bottomSpace: isIphoneX() ? getBottomSpace() : 0,
   bottomTabHeight: 58.8 + (isIphoneX() ? getBottomSpace() : 0),
   lf: '\n',
+  sampleRequestLimitDays : 6, //실제론 7일
+  shareDomain : "https://www.prmagnet.kr/"
 }

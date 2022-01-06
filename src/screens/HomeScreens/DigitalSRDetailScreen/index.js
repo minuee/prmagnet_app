@@ -7,6 +7,7 @@ import _ from 'lodash'
 import Swiper from 'react-native-swiper'
 import Modal from 'react-native-modal'
 import Clipboard from '@react-native-clipboard/clipboard'
+import KakaoShareLink from 'react-native-kakao-share-link';
 
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
@@ -25,12 +26,12 @@ class DigitalSRDetailScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
-    this.state = {data: '', link: false}
+    this.state = {data: '', link: false,screenTitle: ''}
   }
 
   copyToClipboard = () => {
-    const {share_uuid} = this.state
-    Clipboard.setString(` https://www.prmagnet.co.kr/share-lookbook/${share_uuid}`)
+    const {share_uuid,no} = this.state
+    Clipboard.setString(` https://www.prmagnet.co.kr/share-lookbook-detail/${share_uuid}/${no}`)
     this.setState({link: false})
     setTimeout(() => {
       this.alert('', '복사 완료')
@@ -53,7 +54,7 @@ class DigitalSRDetailScreen extends PureComponent {
     try {
       const response = await API.getLookBookSRDetail(lookNo, no)
       //console.log('getSRDetail>>>', JSON.stringify(response))
-      this.setState({data: response})
+      this.setState({data: response,no, lookNo})
     } catch (error) {
       //console.log('getSRDetail>>>', error)
     }
@@ -65,7 +66,7 @@ class DigitalSRDetailScreen extends PureComponent {
       const response = await API.getShare({lookbook_no: lookNo})
       //console.log('getShare>>>', response)
       if (response.success) {
-        this.setState({...this.state, share_uuid: response.share_uuid})
+        this.setState({...this.state, share_uuid: response.share_uuid,no, lookNo})
       }
     } catch (error) {
       //console.log('getShare>>>', error)
@@ -75,7 +76,10 @@ class DigitalSRDetailScreen extends PureComponent {
   componentDidMount() {    
     const {title,type} = this.props.route.params;
     if ( type !== 'digital' ) {
-      this.shareOption(title , this.handleshare)
+      this.setState({
+        screenTitle : title
+      })
+      this.shareOption(title , this.handleshare, this.kakaoshare);
     }else{
       this.titleOption(title || '')
     }
@@ -88,6 +92,37 @@ class DigitalSRDetailScreen extends PureComponent {
 
   handleshare = () => {
     this.setState({link: true})
+  }
+
+  kakaoshare = async() => {
+    const {share_uuid,no,data,screenTitle} = this.state
+    const domain = mConst.shareDomain;
+    try {
+      const response = await KakaoShareLink.sendFeed({
+        content: {
+          title: '[PR MAGENT LookBook Share]' + screenTitle,
+          imageUrl: mUtils.isEmpty(data.sample_list[0].sample_image_list[0].full_url) ? 'https://www.prmagnet.co.kr/logo_meta2.png' : data.sample_list[0].sample_image_list[0].full_url,
+          link: {
+            webUrl: domain + "share-lookbook-detail/" + share_uuid + "/" + no,
+            mobileWebUrl: domain + "share-lookbook-detail/" + share_uuid+ "/" + no,
+          },
+          description:  screenTitle,
+        },
+        buttons: [
+          {
+            title: '웹에서 보기',
+            link: {
+              webUrl: domain + "share-lookbook-detail/" + share_uuid+ "/" + no,
+              mobileWebUrl: domain + "share-lookbook-detail/" + share_uuid+ "/" + no,
+            },
+          }
+        ],
+      });
+      console.log(response);
+    } catch (e) {
+      console.error(e);
+      console.error(e.message);
+    }
   }
 
   handleOnFocus = () => {

@@ -292,9 +292,12 @@ class ReturnScreen extends PureComponent {
               <Text style={styles.middleText}>픽업일</Text>
               <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'loaning_date'))}</Text>
             </View>
-            <View style={styles.middleSubWrapper(3)}>
+            <View style={styles.middleSubWrapper(2)}>
               <Text style={styles.middleText}>촬영일</Text>
-              <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'shooting_date'))}</Text>
+              <Text style={styles.middleDescText}>
+                {mUtils.getShowDate(_.get(data, 'shooting_date'))}
+                {_.get(data, 'shooting_date') != _.get(data, 'shooting_end_date') && "~"+mUtils.getShowDate(_.get(data, 'shooting_end_date'))}
+              </Text>
             </View>
             <View style={styles.middleSubWrapper(3)}>
               <Text style={styles.middleText}>반납일</Text>

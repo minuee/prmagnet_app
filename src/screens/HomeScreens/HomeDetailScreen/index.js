@@ -50,11 +50,11 @@ class HomeDetailScreen extends PureComponent {
 
   getHomeNR = async (nextpage = 0) => {
     const {page, limit, total_count,data} = this.state;
-    console.log('page, limit,>>>', page, limit,)
+    //console.log('page, limit,>>>', page, limit,)
     if ( page * limit <= total_count ) {
       try {
         const response = mConst.getUserType() === 'B' ? await API.getHomeNR({page: nextpage, limit}) : await API.getHomeCR({page: nextpage, limit})
-        console.log('getHomeNR>>>', response)
+        //console.log('getHomeNR>>>', response)
         if (response.success) {
           this.setState({loading: false}, () => {
             if (mConst.getUserType() === 'B') {
@@ -87,7 +87,7 @@ class HomeDetailScreen extends PureComponent {
   }
 
   getHomeTR = async (nextpage = 1,type) => {
-    console.log('getHomeTR',type);
+    //console.log('getHomeTR',type);
     const date = Math.floor(new Date().getTime() / 1000);
     const {page, limit, data,total_count} = this.state;
     let strType = 'SENDOUT';
@@ -99,7 +99,7 @@ class HomeDetailScreen extends PureComponent {
     if ( page * limit <= total_count ) {
       try {
         const response = await API.getHomeTR({date: date, type : strType,page: nextpage, limit: limit})
-        console.log('getHomeTR>>>', response)
+        //console.log('getHomeTR>>>', response)
         if (response.success) {
           this.setState({loading: false}, () => {
             /* if (mConst.getUserType() === 'B') {
@@ -132,19 +132,16 @@ class HomeDetailScreen extends PureComponent {
   handleLoadMore = async () => {
     const {type} = this.props.route.params;
     const {limit, total_count, page} = this.state;
-    console.log('handleLoadMore>>>1', limit, total_count, page)
+    //console.log('handleLoadMore>>>1', limit, total_count, page)
     if ( page * limit < total_count ) {
       const nextpage = page + 1;
       if (type === 'request') {
         this.getHomeNR(nextpage);
       } else {
         this.getHomeTR(nextpage,type);
-
       }
     }
-  }
-
-  
+  }  
 
   renderItem = ({item}) => {
     const {type, title} = this.props.route.params
@@ -185,7 +182,7 @@ class HomeDetailScreen extends PureComponent {
     const {type, title} = this.props.route.params;
     const userType = mConst.getUserType();
     const subItem = item.each_list[0];
-    console.log('subItem',type,subItem)
+    //console.log('subItem',type,subItem)
     if (  type === 'pickups' ) {
       return (
         <TouchableOpacity

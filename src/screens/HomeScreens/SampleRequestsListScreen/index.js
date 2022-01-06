@@ -14,6 +14,7 @@ import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
 import styles from './styles'
+import { multicastChannel } from 'redux-saga'
 
 const moreImage1 = require('../../../images/navi/more_1.png')
 const moreImage3 = require('../../../images/navi/more_3.png')
@@ -227,6 +228,7 @@ class SampleRequestsListScreen extends React.Component {
                 촬영일{'  '}
                 <Text style={{color: '#555555', fontFamily: 'Roboto-Regular'}}>
                   {mUtils.getShowDate(item.expected_photograph_date, 'YYYY-MM-DD')}
+                  {item.expected_photograph_date != item.expected_photograph_end_date && "~"+mUtils.getShowDate(item.expected_photograph_end_date, 'YYYY-MM-DD')}
                 </Text>
               </Text>
               <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>

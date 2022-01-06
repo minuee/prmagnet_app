@@ -233,8 +233,8 @@ class SampleRequestsDetailScreen extends PureComponent {
                   paddingBottom: mUtils.wScale(18),
                 }}
               >
-                <View style={{width: '32%'}}>
-                  <Text style={styles.smallTitle}>촬영일</Text>
+                <View style={{width: '49%'}}>
+                  <Text style={styles.smallTitle}>촬영시작일</Text>
                   <TouchableOpacity
                     style={{...styles.box1}}
                     onPress={() => {
@@ -246,7 +246,29 @@ class SampleRequestsDetailScreen extends PureComponent {
                     </Text>
                   </TouchableOpacity>
                 </View>
-                <View style={{width: '32%'}}>
+                <View style={{width: '49%'}}>
+                  <Text style={styles.smallTitle}>촬영종료일</Text>
+                  <TouchableOpacity
+                    style={{...styles.box1}}
+                    onPress={() => {
+                      this.setState({drop: !drop, drop1: false, drop2: false})
+                    }}
+                  >
+                    <Text style={styles.boxText}>
+                      {`${mUtils.getShowDate(data.shooting_end_date, 'MM/DD')}(${mUtils.getShowDate(data.shooting_end_date, 'ddd')})`}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View
+                style={{
+                  ...styles.layout2,
+                  justifyContent: 'space-between',
+                  paddingTop: mUtils.wScale(10),
+                  paddingBottom: mUtils.wScale(18),
+                }}
+              >
+                <View style={{width: '49%'}}>
                   <Text style={styles.smallTitle}>픽업일</Text>
                   <TouchableOpacity
                     style={{...styles.box1}}
@@ -259,7 +281,7 @@ class SampleRequestsDetailScreen extends PureComponent {
                     </Text>
                   </TouchableOpacity>
                 </View>
-                <View style={{width: '32%'}}>
+                <View style={{width: '49%'}}>
                   <Text style={styles.smallTitle}>반납일</Text>
                   <TouchableOpacity
                     style={{...styles.box1}}
