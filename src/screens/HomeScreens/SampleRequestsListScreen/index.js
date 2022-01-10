@@ -182,7 +182,7 @@ class SampleRequestsListScreen extends React.Component {
               </Menu>
             )
             :
-            ( item.req_status_nm === 'pending' || item.req_status_nm === 'canceled' ) ? 
+            ( item.req_status_nm === 'pending' || item.req_status_nm === 'canceled' || item.req_status_nm === 'rejected' ) ? 
             (
               <Menu>
                 <MenuTrigger

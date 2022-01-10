@@ -67,7 +67,7 @@ class HomeScreen extends PureComponent {
         //let dayjsDate2 = new Date(now.setDate(now.getDate() - 1)).getTime();
         try {
             const response = await API.getHome({date: date})
-            //console.log('getHome111',_.get(response, 'today_request', []))
+            console.log('getHome111',_.get(response, 'today_sendout', []))
             //console.log('getHome222each_list',_.get(response, 'today_request', [])[0].each_list)
             //console.log('getHome333showroom_list',_.get(response, 'today_request', [])[0].each_list[0].showroom_list)
             this.setState({data: response,loading:false,isSubScrbing:true})
@@ -90,7 +90,13 @@ class HomeScreen extends PureComponent {
             const selectDate2 = [{date : date,showroom_list : newSdata,req_no_list : [reqNo]}]    
             this.pushTo('SendOutBScreen', {selectEachList:selectDate2})
         }else{            
-            this.pushTo( 'SendOutScreen', {reqNo: reqNo,showroom_no: showroom_no})
+            let reqNoData = [];
+            let newSdata = this.state.leftShowroomData.filter((item) => item.req_no == reqNo).map( item => {
+                return item.showroom_no
+            });
+            const selectDate2 = [{date : date,showroom_list : newSdata,req_no_list : [reqNo]}]    
+            this.pushTo('SendOutScreen', {selectEachList:selectDate2})
+            //this.pushTo( 'SendOutScreen', {reqNo: reqNo,showroom_no: showroom_no})
         }
             
     }
@@ -133,7 +139,7 @@ class HomeScreen extends PureComponent {
                             source={{uri: userType === 'B' ? item.mgzn_logo_url_adres : item.brand_logo_url_adres}}
                         />
                         <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>
-                            {item.editor_nm} {item.editor_posi}
+                            {item.editor_nm}{item.editor_posi}
                         </Text>
                         <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>
                             { userType === 'B' ? mUtils.getShowDate(item.req_dt, 'YYYY-MM-DD') : mUtils.getShowDate(item.photogrf_dt, 'YYYY-MM-DD')}
@@ -167,7 +173,7 @@ class HomeScreen extends PureComponent {
                 <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(40)}}>
                     <Text style={styles.new}>
                         Today's <Text style={{fontFamily: 'Roboto-Medium'}}>Pickups : </Text>
-                        <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}> {today_request.length}</Text>
+                        <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}> {today_request.length > 0 ? today_request[0].each_list.length : 0}</Text>
                     </Text>
                     <TouchableOpacity
                         style={styles.layout}
@@ -202,7 +208,7 @@ class HomeScreen extends PureComponent {
                                 }                            
                                 <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>
                                     {/* {item.editor_nm} {item.editor_posi} */}
-                                    {subItem.target_user_nm} ({mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}) → 
+                                    {subItem.target_user_nm}{mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position} → 
                                 </Text>
                                 <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>
                                     {subItem.req_user_nm}{subItem.req_user_position}
@@ -230,20 +236,19 @@ class HomeScreen extends PureComponent {
         const {data} = this.state;
         const userType = mConst.getUserType();
         const today_sendout = _.get(data, 'today_sendout', []);
-        console.log('today_sendout',today_sendout)
         const targetData = mUtils.isEmpty(today_sendout[0]?.each_list) ? [] : today_sendout[0]?.each_list;
         let newLeftIdxArray = [];
         let newLeftShowroomIdxArray = [];
         let newLeftArray = [];
         targetData.forEach((element) => {
-        let req_no = element.showroom_list[0].req_no;
-        if ( !newLeftIdxArray.includes(req_no)) {
-            newLeftIdxArray.push(req_no);
-            newLeftArray.push(element)
-        }
-        if ( !newLeftShowroomIdxArray.includes(req_no)) {
-            newLeftShowroomIdxArray.push({req_no :req_no, showroom_no: element.showroom_list[0].showroom_no});
-        }
+            let req_no = element.showroom_list[0].req_no;
+            if ( !newLeftIdxArray.includes(req_no)) {
+                newLeftIdxArray.push(req_no);
+                newLeftArray.push(element)
+            }
+            if ( !newLeftShowroomIdxArray.includes(req_no)) {
+                newLeftShowroomIdxArray.push({req_no :req_no, showroom_no: element.showroom_list[0].showroom_no});
+            }
         })          
         //console.log('newLeftShowroomIdxArray',newLeftShowroomIdxArray);
         if ( this.state.justonce ) {
@@ -285,10 +290,10 @@ class HomeScreen extends PureComponent {
                                 >
                                     <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
                                     <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
-                                        {subItem.target_user_nm} ({subItem.target_user_position}) →
+                                        {subItem.target_user_nm}{subItem.target_user_position} →
                                     </Text>
                                     <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}>
-                                        {subItem.req_user_nm} ({mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position})
+                                        {subItem.req_user_nm}{mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position}
                                     </Text>                          
                                 </TouchableOpacity>
                                 
@@ -298,7 +303,8 @@ class HomeScreen extends PureComponent {
                                 <TouchableOpacity
                                     key={index}
                                     style={styles.layout3}
-                                    onPress={() => this.pushTo(mConst.getUserType() == 'B' ? 'SendOutBScreen' : 'SendOutScreen', {reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
+                                    //onPress={() => this.pushTo(mConst.getUserType() == 'B' ? 'SendOutBScreen' : 'SendOutScreen', {reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
+                                    onPress={() =>  this.goDetail( subItem.req_no, subItem.showroom_no)}
                                 >
                                     {
                                         subItem.target_id_type === 'RUS000' ?
@@ -310,10 +316,10 @@ class HomeScreen extends PureComponent {
                                         <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
                                     }                            
                                     <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
-                                        {subItem.req_user_nm}({mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position})  →
+                                        {subItem.req_user_nm}{mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position}  →
                                     </Text>
                                     <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}>
-                                        {subItem.target_user_nm} ({mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position})
+                                        {subItem.target_user_nm}{mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}
                                     </Text>                          
                                 </TouchableOpacity>
                             )

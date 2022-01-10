@@ -149,7 +149,7 @@ class PickupsScreen extends PureComponent {
         //console.log('픽업 단일 미수령 푸시 실패', error)
       }
     }
-    this.alert('상품 미수령 알림', `'${name}'님께 상품미수령 알림을 보내시겠습니까?`, [{onPress: sendPush}, {}])
+    this.alert('상품 미수령 알림', `'${name}'님께 상품 미수령 알림을 보내시겠습니까?`, [{onPress: sendPush}, {}])
   }
   handlePressPhone = (name, phone) => {
     this.setState({isvisible: {open: true, name, phone}})

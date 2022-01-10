@@ -24,7 +24,10 @@ class HomeDetailScreen extends PureComponent {
       limit: 30, 
       total_count: 0, 
       loading: false,
-      moreLoading : false
+      moreLoading : false,
+      justonce : true,
+      leftData : [],
+      leftShowroomData : []
     }
   }
 
@@ -87,7 +90,6 @@ class HomeDetailScreen extends PureComponent {
   }
 
   getHomeTR = async (nextpage = 1,type) => {
-    //console.log('getHomeTR',type);
     const date = Math.floor(new Date().getTime() / 1000);
     const {page, limit, data,total_count} = this.state;
     let strType = 'SENDOUT';
@@ -112,8 +114,30 @@ class HomeDetailScreen extends PureComponent {
               }
             } else { */
               if (response.list.length > 0) {
+                const data2 = data.concat(response.list);
+                /* let newLeftIdxArray = [];
+                let newLeftShowroomIdxArray = [];
+                let newLeftArray = [];
+                data2.forEach((element) => {
+                let req_no = element.showroom_list[0].req_no;
+                if ( !newLeftIdxArray.includes(req_no)) {
+                    newLeftIdxArray.push(req_no);
+                    newLeftArray.push(element)
+                }
+                if ( !newLeftShowroomIdxArray.includes(req_no)) {
+                    newLeftShowroomIdxArray.push({req_no :req_no, showroom_no: element.showroom_list[0].showroom_no});
+                }
+                })          
+                //console.log('newLeftShowroomIdxArray',newLeftShowroomIdxArray);
+                if ( this.state.justonce ) {
+                    this.setState({
+                        leftData : newLeftArray,
+                        justonce : false,
+                        leftShowroomData :newLeftShowroomIdxArray
+                    }) 
+                } */
                 this.setState({
-                  data: data.concat(response.list),
+                  data: data2,
                   page: nextpage + 1,
                   total_count: response.total_count,
                 })
@@ -143,6 +167,29 @@ class HomeDetailScreen extends PureComponent {
     }
   }  
 
+  goDetail =  async(reqNo,subItem) => {
+    let newSdata = [];
+    subItem.each_list.forEach((element) => {
+        let req_no = element.req_no;
+        if (  reqNo == element.req_no) {
+          newSdata.push(element.showroom_no);
+        }
+    })    
+    const date = mUtils.getToday();
+    //let now = new Date();
+    //let dayjsDate2 = new Date(now.setDate(now.getDate() - 1)).getTime();
+        
+    if ( mConst.getUserType() == 'B' ) {
+        const selectDate2 = [{date : date,showroom_list : newSdata,req_no_list : [reqNo]}]    
+        this.pushTo('SendOutBScreen', {selectEachList:selectDate2})
+    }else{            
+        const selectDate2 = [{date : date,showroom_list : newSdata,req_no_list : [reqNo]}]    
+        this.pushTo('SendOutScreen', {selectEachList:selectDate2})
+        //this.pushTo( 'SendOutScreen', {reqNo: reqNo,showroom_no: showroom_no})
+    }
+        
+}
+
   renderItem = ({item}) => {
     const {type, title} = this.props.route.params
     const userType = mConst.getUserType()
@@ -160,7 +207,7 @@ class HomeDetailScreen extends PureComponent {
           source={{uri: mConst.getUserType() === 'B' ? item.mgzn_logo_url_adres : item.brand_logo_url_adres}}
         />
         <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>
-          {item.editor_nm} {item.editor_posi}
+          {item.editor_nm}{item.editor_posi}
         </Text>
         <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>
           {' '}
@@ -200,7 +247,7 @@ class HomeDetailScreen extends PureComponent {
                 <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />                
             }                            
             <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>              
-                {subItem.target_user_nm} ({mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}) → 
+                {subItem.target_user_nm}{mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position} → 
             </Text>
             <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>
                 {"   "} {subItem.req_user_nm}{subItem.req_user_position}
@@ -213,7 +260,8 @@ class HomeDetailScreen extends PureComponent {
           <TouchableOpacity
               key={subItem.req_no+'_'+subItem.showroom_no}
               style={styles.layout3}
-              onPress={() => this.pushTo('SendOutBScreen', {reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
+              //onPress={() => this.pushTo('SendOutBScreen', {reqNo: subItem.req_no})}
+              onPress={() =>  this.goDetail( subItem.req_no, subItem.showroom_no)}
           >
               {
                   subItem.req_user_type === 'MAGAZINE' ?
@@ -222,10 +270,10 @@ class HomeDetailScreen extends PureComponent {
                   <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />
               }                            
               <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
-                {subItem.target_id_type === "RUS001" && "["+subItem.mgzn_nm+"]"}{subItem.target_user_nm} ({mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}) →
+                {subItem.target_id_type === "RUS001" && "["+subItem.mgzn_nm+"]"}{subItem.target_user_nm}{mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position} →
               </Text>
               <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}>
-                  {subItem.req_user_nm} ({mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position})
+                  {subItem.req_user_nm}{mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position}
               </Text>
           </TouchableOpacity>
         )
@@ -234,7 +282,8 @@ class HomeDetailScreen extends PureComponent {
           <TouchableOpacity
               key={subItem.req_no+'_'+subItem.showroom_no}
               style={styles.layout3}
-              onPress={() => this.pushTo('SendOutScreen', {reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
+             //onPress={() => this.pushTo('SendOutScreen', {reqNo: subItem.req_no})}
+              onPress={() =>  this.goDetail( subItem.req_no, item)}
           >
               {
                   subItem.req_user_type === 'MAGAZINE' ?
@@ -246,10 +295,10 @@ class HomeDetailScreen extends PureComponent {
                   <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />
               }                            
               <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
-                {subItem.req_user_nm} ({mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position}) →
+                {subItem.req_user_nm}{mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position} →
               </Text>
               <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}>
-                  {subItem.target_user_nm} ({mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position})
+                  {subItem.target_user_nm}{mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}
               </Text>
           </TouchableOpacity>
         )

@@ -543,12 +543,12 @@ const utils = {
     return await messaging().hasPermission()
   },
   convertReqStatus(str) {
-    let returnStr = "홀딩대기";
+    let returnStr = "홀딩 대기";
     switch(str) {
-      case 'confirmed' : returnStr = "홀딩완료"; break;
-      case 'rejected' : returnStr = "홀딩거절";break;
-      case 'canceled' : returnStr = "홀딩취소";break;
-      default : returnStr = "홀딩대기";break;
+      case 'confirmed' : returnStr = "홀딩 완료"; break;
+      case 'rejected' : returnStr = "홀딩 거절";break;
+      case 'canceled' : returnStr = "홀딩 취소";break;
+      default : returnStr = "홀딩 대기";break;
     }
     return returnStr;
   }
