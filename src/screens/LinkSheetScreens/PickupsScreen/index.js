@@ -30,6 +30,7 @@ class PickupsScreen extends PureComponent {
       checkedList: [],
       selectEachList : [],
       targetSampleList : [],
+      setchangePickupDate : '',
       isvisible: {open: false, phone: '', name: ''},
       loading: true,
       moreLoading : false
@@ -38,7 +39,6 @@ class PickupsScreen extends PureComponent {
 
   async UNSAFE_componentWillMount () {
     const {reqNo, selectEachList = []} = this.params;
-    //console.log('this.paramsselectEachList',selectEachList)
     if (reqNo) {
       this.modalOption('Pickups', false)
     } else {
@@ -78,7 +78,7 @@ class PickupsScreen extends PureComponent {
       
     }
   }
-  handleLoadDataArray = async(item,nextIndex) => {      
+  handleLoadDataArray = async(item,nextIndex) => {   
     try {
       const response = await API.getPickupArrayDetail(item.date,item.showroom_list,item.req_no_list);
       const dataTmp = await _.get(response, 'right');
@@ -106,14 +106,16 @@ class PickupsScreen extends PureComponent {
     let AllData = 0;
     let sendOutData = 0;
     let targetList = [];
+    let changePickupDate = "";
     let targetSampleList = [];
     if ( data.length === undefined ) {
       targetList = data.showroom_list;
     }else{
       targetList = data[0].showroom_list;
     }
+    const loaning_date = mUtils.get(data.length === undefined ? data :data[0], 'loaning_date');
+    //console.log('loaning_date',loaning_date)
     await targetList.forEach(function(element,index){     
-      
       if ( element.sample_list != null ) {
         element.sample_list.forEach(function(element2,index2){            
           if ( element2.sample_no ) {
@@ -122,18 +124,23 @@ class PickupsScreen extends PureComponent {
               sendOutData++;
             }else{
               targetSampleList.push(element2.sample_no);
-            }                
+            }   
+            //console.log('mUtils.dateToDate(element2.pickup_dt) ',element2.sendout_dt )
+            if ( element2.sendout_dt != null && mUtils.dateToDate(element2.sendout_dt) != mUtils.convertUnixToDate(loaning_date) ) {
+              changePickupDate = mUtils.convertDateToUnix(element2.sendout_dt);
+            }             
           }
         })
       }
     }); 
     
     //console.log('AllData',AllData)
-    //console.log('sendOutData',sendOutData)
+    //console.log('changePickupDate',changePickupDate)
     this.setState({
       allChecked : AllData === sendOutData ? true :false,
       loading: false,
       moreLoading :false,
+      setchangePickupDate : changePickupDate,
       targetSampleList
     })
   }
@@ -254,8 +261,7 @@ class PickupsScreen extends PureComponent {
       const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'from_user_phone'));
       const toName = mUtils.get(data, 'to_user_nm');
       const toPhone = mUtils.phoneFormat(mUtils.get(data, 'to_user_phone'));
-      console.log('data',data)
-      
+  
       return (
         <SafeAreaView style={styles.container}>
           <ScrollView contentContainerStyle={{paddingVertical: 10}}>
@@ -273,6 +279,12 @@ class PickupsScreen extends PureComponent {
                   <FastImage source={goRightImage} style={styles.goImage} />
                 </TouchableOpacity>
               )}
+            </View>
+            <View style={styles.middleWrapper}>
+              <Text style={styles.middleText}>Sheet No</Text>
+              <Text style={styles.middleDescText}>
+                {data.req_no}
+              </Text>
             </View>
             <View style={styles.middleWrapper}>
               <Text style={styles.middleText}>매체명</Text>
@@ -306,6 +318,14 @@ class PickupsScreen extends PureComponent {
                 </Text>
               </View>
             </View>
+            { !mUtils.isEmpty(this.state.setchangePickupDate) &&
+              <View style={styles.middleWrapper}>
+                <Text style={styles.middleText}>픽업일</Text>
+                <Text style={styles.middleDescRedText}>
+                  {mUtils.getShowDate(this.state.setchangePickupDate)} *일부픽업일이 변경되었습니다.{}
+                </Text>              
+              </View>
+            }
             <View style={styles.middleWrapper}>
               <Text style={styles.middleText}>수령 주소</Text>
               <Text style={styles.middleDescText}>{mUtils.get(data, 'studio', '-')}</Text>

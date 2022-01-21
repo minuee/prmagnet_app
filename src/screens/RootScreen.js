@@ -42,6 +42,7 @@ import LinkSheetScreen from './LinkSheetScreens/LinkSheetScreen';
 import LinkSheetDetailScreen from './LinkSheetScreens/LinkSheetDetailScreen';
 import SendOutScreen from './LinkSheetScreens/SendOutScreen';
 import SendOutBScreen from './LinkSheetScreens/SendOutBScreen';
+import SendOutMScreen from './LinkSheetScreens/SendOutMScreen';
 import PickupsScreen from './LinkSheetScreens/PickupsScreen';
 import ReturnScreen from './LinkSheetScreens/ReturnScreen';
 import MagazineSchedulerScreen from './HomeScreens/MagazineSchedulerScreen';
@@ -134,6 +135,7 @@ class RootScreen extends PureComponent {
         <MemberStack.Screen name="LinkSheetDetailScreen" component={LinkSheetDetailScreen} />
         <MemberStack.Screen name="SendOutScreen" component={SendOutScreen} />
         <MemberStack.Screen name="SendOutBScreen" component={SendOutBScreen} />
+        <MemberStack.Screen name="SendOutMScreen" component={SendOutMScreen} />
         <MemberStack.Screen name="PickupsScreen" component={PickupsScreen} />
         <MemberStack.Screen name="ReturnScreen" component={ReturnScreen} />
         <MemberStack.Screen name="MagazineSchedulerScreen" component={MagazineSchedulerScreen} options={{headerShown: false}} />

@@ -360,9 +360,9 @@ class DigitalSRScreen extends PureComponent {
           style={{width: '100%', height: mUtils.wScale(275)}}
         >
           <FastImage resizeMode={'contain'} style={styles.modelImg} source={{uri: item.image_url}} />
-          {item.is_hot ? (
+          {/* item.is_hot ? (
             <FastImage resizeMode={'contain'} style={styles.newImg} source={crownImg} />
-          ) : item.is_new ? (
+          ) : */ item.is_new ? (
             <FastImage resizeMode={'contain'} style={styles.newImg} source={newImg} />
           ) : null}
           { (userType == 'B' && item.mfrc_sample_yn ) && (
@@ -425,6 +425,13 @@ class DigitalSRScreen extends PureComponent {
         } */}
       </View>
     )
+  }
+
+  openBrandLayer = async(brand_id) => {
+    await this.setState({
+      selectOnOff: false, select: []
+    })
+    this.pushTo('SelectBrandScreen', {brandId: brand_id, setBrand: this.setBrand})
   }
 
   renderTooltip = () => {
@@ -523,7 +530,7 @@ class DigitalSRScreen extends PureComponent {
                       }
                       <TouchableOpacity
                         style={{...styles.selectBox, backgroundColor: mConst.black,marginRight:5,marginLeft:5}}
-                        onPress={() => this.pushTo('SelectBrandScreen', {brandId: brand_id, setBrand: this.setBrand})}
+                        onPress={() => this.openBrandLayer(this.state.brand_id)}
                       >
                         <Text style={{...styles.selectText, color: mConst.white}}>Brands</Text>
                       </TouchableOpacity>

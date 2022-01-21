@@ -65,6 +65,11 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     alignSelf: 'center',
   },
+  middleDescRedText: {
+    fontSize: 15,
+    color: mConst.red,
+    paddingTop: mUtils.wScale(16),
+  },
   middleSubWrapper: (size = 2) => ({
     width: (mConst.wWidth - mUtils.wScale(20) * 2) / size - mUtils.wScale(4),
     paddingTop: mUtils.wScale(16),

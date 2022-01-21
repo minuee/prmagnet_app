@@ -240,7 +240,11 @@ class ReturnScreen extends PureComponent {
   render() {
     const {reqNo} = this.params
     const {data, checkedList, allChecked, loading} = this.state;
-    const returningDate = mUtils.getShowDate(mUtils.get(data, 'returning_date'))
+   
+    const srcReturning_date = mUtils.get(data, 'returning_date');
+    const returningDate = mUtils.getShowDate(srcReturning_date);
+
+
     const fromName = mUtils.get(data, 'user_nm')
     const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'from_user_phone'))
     const toName = mUtils.get(data, 'to_user_nm')
@@ -269,6 +273,12 @@ class ReturnScreen extends PureComponent {
             )}
           </View>
           <View style={styles.middleWrapper}>
+            <Text style={styles.middleText}>Sheet No</Text>
+            <Text style={styles.middleDescText}>
+              {data.req_no}
+            </Text>
+          </View>
+          <View style={styles.middleWrapper}>
             <Text style={styles.middleText}>매체명</Text>
             <Text style={styles.middleDescText}>{mUtils.get(data, 'mgzn_nm', '-')}</Text>
           </View>
@@ -292,7 +302,7 @@ class ReturnScreen extends PureComponent {
               <Text style={styles.middleText}>픽업일</Text>
               <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'loaning_date'))}</Text>
             </View>
-            <View style={styles.middleSubWrapper(2)}>
+            <View style={styles.middleSubWrapper(3)}>
               <Text style={styles.middleText}>촬영일</Text>
               <Text style={styles.middleDescText}>
                 {mUtils.getShowDate(_.get(data, 'shooting_date'))}
@@ -349,8 +359,8 @@ class ReturnScreen extends PureComponent {
                   </Col>
                   <Col style={styles.col(rowSize * 2)} size={6}>
                     {_.map(samples, (subItem, subIndex) => {
-                      const newfromName = subItem?.send_user_info[0].user_nm;
-                      const newfromPhone = mUtils.phoneFormat(subItem?.send_user_info[0].phone_no);
+                      const newfromName = subItem?.use_user_info[0].user_nm;
+                      const newfromPhone = mUtils.phoneFormat(subItem?.use_user_info[0].phone_no);
                       return (
                         <LinkSheetUnit
                           readOnly
@@ -358,9 +368,11 @@ class ReturnScreen extends PureComponent {
                           name={fromName}
                           phone={fromPhone}
                           unitType={'from'}
+                          loaningDate={srcReturning_date}
+                          subData={subItem}
                           sendUser={subItem?.use_user_info[0]}
                           returnUser={subItem?.return_user_info[0]}
-                          onPressPhone={() => this.handlePressPhone(fromName, fromPhone)}
+                          onPressPhone={() => this.handlePressPhone(newfromName, newfromPhone)}
                           color={mConst.bgBlue}
                         />
                       )
@@ -378,6 +390,8 @@ class ReturnScreen extends PureComponent {
                           name={toName}
                           phone={toPhone}
                           unitType={'to'}
+                          loaningDate={srcReturning_date}
+                          subData={subItem}
                           sendUser={subItem?.use_user_info[0]}
                           returnUser={subItem?.return_user_info[0]}
                           //onPress={() => this.handlePress(toName, subItem.sample_no)}

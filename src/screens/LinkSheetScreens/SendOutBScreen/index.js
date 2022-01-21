@@ -33,9 +33,11 @@ class SendOutScreen extends PureComponent {
       checkedList: [],
       selectEachList : [],
       targetSampleList : [],
+      isMagazineTarget : [],
       isvisible: {open: false, phone: '', name: ''},
       loading: true,
-      moreLoading : false
+      moreLoading : false,
+      setchangeSendoutDate : null,
     }
   }
   
@@ -116,17 +118,20 @@ class SendOutScreen extends PureComponent {
     let AllData = 0;
     let sendOutData = 0;
     let targetList = [];
+    let changeSendoutDate = null;
     let targetSampleList = [];
+    let isMagazineTarget = [];
     if ( data.length === undefined ) {
       targetList = data.showroom_list;
     }else{
       targetList = data[0].showroom_list;
     }
+    const loaning_date = mUtils.get(data.length === undefined ? data :data[0], 'loaning_date');
     await targetList.forEach(function(element,index){     
       
       if ( element.sample_list != null ) {
         element.sample_list.forEach(function(element2,index2){            
-          console.log('data.element2',element2)
+          //console.log('data.element2',element2)
           if ( element2.sample_no ) {      
             AllData++;
             if ( element2.sendout_yn  ) {
@@ -135,17 +140,25 @@ class SendOutScreen extends PureComponent {
               targetSampleList.push(element2.sample_no);
             }
           }
+          if ( element2.send_user_info[0].sendout_userid_type === 'RUS001') {
+            isMagazineTarget.push(element2.sample_no);
+          }
+          if (element2.sendout_dt != null &&  mUtils.dateToDate(element2.sendout_dt) != mUtils.convertUnixToDate(loaning_date) ) {
+            changeSendoutDate = mUtils.convertDateToUnix(element2.sendout_dt);
+          }
         })
       }
     }); 
     
-    //console.log('AllData',AllData)
+    console.log('isMagazineTarget',isMagazineTarget)
     //console.log('sendOutData',sendOutData)
     this.setState({
       allChecked : AllData === sendOutData ? true :false,
+      isMagazineTarget,
       targetSampleList,
       loading: false,
-      moreLoading: false
+      moreLoading: false,
+      setchangeSendoutDate : changeSendoutDate,
     })
   }
   handlePressPhone = (name, phone) => {
@@ -216,10 +229,13 @@ class SendOutScreen extends PureComponent {
   }
   render() {
     const {reqNo} = this.params;
-    const {data, checkedList, allChecked, loading} = this.state;
+    const {data, checkedList, allChecked,isMagazineTarget, loading} = this.state;
+ 
+    const srcReturning_date = mUtils.get(data, 'returning_date');
+    const returning_date = mUtils.getShowDate(srcReturning_date);
+    const srcLoaning_date = mUtils.get(data, 'loaning_date');
+    const loaning_date = mUtils.getShowDate(srcReturning_date);
 
-    const returning_date = mUtils.getShowDate(mUtils.get(data, 'returning_date'));
-    const loaning_date = mUtils.getShowDate(mUtils.get(data, 'loaning_date'));
     const fromName = mUtils.get(data, 'from_user_nm');
     const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'from_user_phone'));
     const toName = mUtils.get(data, 'to_user_nm');
@@ -249,6 +265,12 @@ class SendOutScreen extends PureComponent {
             )}
           </View>
           <View style={styles.middleWrapper}>
+            <Text style={styles.middleText}>Sheet No</Text>
+            <Text style={styles.middleDescText}>
+              {data.req_no}
+            </Text>
+          </View>
+          <View style={styles.middleWrapper}>
             <Text style={styles.middleText}>매체명</Text>
             <Text style={styles.middleDescText}>
               {mUtils.isEmpty(data.mgzn_nm) ? mUtils.get(data, 'stylist_compy_nm', '-') : mUtils.get(data, 'mgzn_nm', '-')}
@@ -270,10 +292,21 @@ class SendOutScreen extends PureComponent {
             </View>
           </View>
           <View style={styles.middleGroupWrapper}>
-            <View style={styles.middleSubWrapper(3)}>
+            <View style={styles.middleSubWrapper(2)}>
               <Text style={styles.middleText}>픽업일</Text>
               <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'loaning_date'))}</Text>
             </View>
+            { !mUtils.isEmpty(this.state.setchangeSendoutDate) &&
+              <View style={styles.middleSubWrapper(2)}>
+                <Text style={styles.middleDescRedText}>
+                  {mUtils.getShowDate(this.state.setchangeSendoutDate)} *일부픽업일이 변경되었습니다.
+                </Text>              
+              </View>
+            }
+           
+          </View>    
+          <View style={styles.middleGroupWrapper}>
+          
             <View style={styles.middleSubWrapper(2)}>
               <Text style={styles.middleText}>촬영일</Text>
               <Text style={styles.middleDescText}>
@@ -281,7 +314,7 @@ class SendOutScreen extends PureComponent {
                 {_.get(data, 'shooting_date') != _.get(data, 'shooting_end_date') && "~"+mUtils.getShowDate(_.get(data, 'shooting_end_date'))}
               </Text>
             </View>
-            <View style={styles.middleSubWrapper(3)}>
+            <View style={styles.middleSubWrapper(2)}>
               <Text style={styles.middleText}>반납일</Text>
               <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'returning_date'))}</Text>
             </View>
@@ -332,22 +365,25 @@ class SendOutScreen extends PureComponent {
                   <Col style={styles.col(rowSize * 2)} size={6}>
                     {_.map(samples, (subItem, subIndex) => {
                       //console.log('subItem',subItem)
-                      const newfromName = subItem?.use_user_info[0].user_nm;
-                      const newfromPhone = mUtils.phoneFormat(subItem?.use_user_info[0].phone_no);
+                      const newfromName = subItem?.send_user_info[0].user_nm;
+                      const newfromPhone = mUtils.phoneFormat(subItem?.send_user_info[0].phone_no);
                         return (
                           <LinkSheetBrandUnit
                             key={`${subItem.sample_no}${subIndex}`}                            
-                            checked={checkedList.includes(subItem.sample_no) || subItem.sendout_yn || allChecked}
+                            checked={checkedList.includes(subItem.sample_no) || subItem.sendout_yn || allChecked }                            
                             name={fromName}
                             phone={fromPhone}
                             unitType={'from'}
                             viewType={'sendout'}
+                            loaningDate={srcLoaning_date}
+                            subData={subItem}
                             sendUser={subItem?.send_user_info[0]}
                             returnUser={subItem?.use_user_info[0]}
                             onPress={() => null}
                             onPressPhone={() => this.handlePressPhone(newfromName, newfromPhone)}
                             onSwipeCheck={() => this.handleCheckItem(subItem,roomName,newfromName)}
                             color={'#e1c668'}
+                            isMagazineTarget={isMagazineTarget.includes(subItem.sample_no)}
                           />
                         )
                     })}
@@ -360,11 +396,13 @@ class SendOutScreen extends PureComponent {
                           <LinkSheetBrandUnit
                             key={`${subItem.sample_no}${subIndex}`}
                             //readOnly={mConst.getUserType() === 'B'}
-                            checked={checkedList.includes(subItem.sample_no) || subItem.sendout_yn || allChecked}
+                            checked={checkedList.includes(subItem.sample_no) || subItem.pickup_yn || allChecked }
                             name={toName}
                             phone={toPhone}
                             unitType={'to'}
                             viewType={'sendout'}
+                            loaningDate={srcLoaning_date}
+                            subData={subItem}
                             sendUser={subItem?.use_user_info[0]}
                             returnUser={subItem?.use_user_info[0]}
                             onPress={() => null}
@@ -372,6 +410,7 @@ class SendOutScreen extends PureComponent {
                             onSwipeCheck={() => null}
                             //onSwipeCheck={() => this.handleCheckItem(subItem,roomName,newtoName)}
                             color={'#7ea1b2'}
+                            isMagazineTarget={isMagazineTarget.includes(subItem.sample_no)}
                           />
                         )                      
                     })}
@@ -387,9 +426,11 @@ class SendOutScreen extends PureComponent {
             <Text style={styles.bottomText}>All Sent Out(Completed)</Text>
           </View>
           :
+          this.state.isMagazineTarget.length == 0 ?
           <TouchableOpacity onPress={this.handleCheckItemAll} style={styles.bottom}>
             <Text style={styles.bottomText}>All Sent Out</Text>
           </TouchableOpacity>
+          :null
         }
         <Modal style={styles.modal} isVisible={this.state.isvisible.open} useNativeDriver={true}>
           <View style={styles.modalView}>

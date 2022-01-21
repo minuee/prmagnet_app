@@ -67,7 +67,7 @@ class HomeScreen extends PureComponent {
         //let dayjsDate2 = new Date(now.setDate(now.getDate() - 1)).getTime();
         try {
             const response = await API.getHome({date: date})
-            console.log('getHome111',_.get(response, 'today_sendout', []))
+            //console.log('getHome111',_.get(response, 'today_sendout', []))
             //console.log('getHome222each_list',_.get(response, 'today_request', [])[0].each_list)
             //console.log('getHome333showroom_list',_.get(response, 'today_request', [])[0].each_list[0].showroom_list)
             this.setState({data: response,loading:false,isSubScrbing:true})
@@ -83,14 +83,13 @@ class HomeScreen extends PureComponent {
         //let dayjsDate2 = new Date(now.setDate(now.getDate() - 1)).getTime();
             
         if ( mConst.getUserType() == 'B' ) {
-            let reqNoData = [];
             let newSdata = this.state.leftShowroomData.filter((item) => item.req_no == reqNo).map( item => {
                 return item.showroom_no
             });
+            ///console.log('newSdata',newSdata)
             const selectDate2 = [{date : date,showroom_list : newSdata,req_no_list : [reqNo]}]    
             this.pushTo('SendOutBScreen', {selectEachList:selectDate2})
         }else{            
-            let reqNoData = [];
             let newSdata = this.state.leftShowroomData.filter((item) => item.req_no == reqNo).map( item => {
                 return item.showroom_no
             });
@@ -106,7 +105,7 @@ class HomeScreen extends PureComponent {
         const userType = mConst.getUserType();
         const requestData =  _.get(data, userType !== 'B' ? 'cnfirm_request' : 'new_request', []);
         return (
-            <View style={{flex: requestData.length === 0 ? 0 : 1}}>
+            <View >
                 <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20)}}>
                     <Text style={styles.new}>
                     {userType !== 'B' ? 'Confirmed' : 'New'} <Text style={{fontFamily: 'Roboto-Medium'}}>Requests : </Text>
@@ -145,13 +144,14 @@ class HomeScreen extends PureComponent {
                             { userType === 'B' ? mUtils.getShowDate(item.req_dt, 'YYYY-MM-DD') : mUtils.getShowDate(item.photogrf_dt, 'YYYY-MM-DD')}
                             { (userType !== 'B' && item.photogrf_dt != item.photogrf_end_dt ) && "~"+mUtils.getShowDate(item.photogrf_end_dt, 'YYYY-MM-DD') }
                         </Text>
-                        {userType === 'B' ? (
+                       {/*  {userType === 'B' ? (
                             <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
                                 {item.mgzn_nm} • {item.celeb_list ? item.celeb_list[0] : item.model_list[0]}
                             </Text>
                         ) : (
                             <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>{item.brand_nm}</Text>
-                        )}
+                        )} */}
+                        <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>Sheet No:{item.req_no}</Text>
                     </TouchableOpacity>
                     )
                     }
@@ -169,7 +169,7 @@ class HomeScreen extends PureComponent {
         const userType = mConst.getUserType();
         const today_request = _.get(data, 'today_request', []);
         return (
-            <View style={{flex: today_request.length === 0 ? 0 : 1}}>
+            <View>
                 <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(40)}}>
                     <Text style={styles.new}>
                         Today's <Text style={{fontFamily: 'Roboto-Medium'}}>Pickups : </Text>
@@ -236,10 +236,12 @@ class HomeScreen extends PureComponent {
         const {data} = this.state;
         const userType = mConst.getUserType();
         const today_sendout = _.get(data, 'today_sendout', []);
+        //console.log('today_sendout',today_sendout)
         const targetData = mUtils.isEmpty(today_sendout[0]?.each_list) ? [] : today_sendout[0]?.each_list;
         let newLeftIdxArray = [];
         let newLeftShowroomIdxArray = [];
         let newLeftArray = [];
+        //console.log('targetData',targetData)
         targetData.forEach((element) => {
             let req_no = element.showroom_list[0].req_no;
             if ( !newLeftIdxArray.includes(req_no)) {
@@ -260,7 +262,7 @@ class HomeScreen extends PureComponent {
         }
         
         return (
-            <View style={{flex: today_sendout.length === 0 ? 0 : 1}}>
+            <View >
                 <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(40)}}>
                     <Text style={styles.new}>
                         Today's <Text style={{fontFamily: 'Roboto-Medium'}}>Send Outs : </Text>
@@ -291,10 +293,11 @@ class HomeScreen extends PureComponent {
                                     <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
                                     <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
                                         {subItem.target_user_nm}{subItem.target_user_position} →
-                                    </Text>
-                                    <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}>
+                                    {/* </Text>
+                                    <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}> */}
                                         {subItem.req_user_nm}{mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position}
-                                    </Text>                          
+                                    </Text>  
+                                    <Text style={{...styles.custom, marginTop: mUtils.wScale(2)}}> Sheet No:{subItem.req_no}</Text>                          
                                 </TouchableOpacity>
                                 
                             )
@@ -317,10 +320,12 @@ class HomeScreen extends PureComponent {
                                     }                            
                                     <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
                                         {subItem.req_user_nm}{mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position}  →
-                                    </Text>
-                                    <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}>
+                                    {/* </Text>
+                                    <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}> */}
                                         {subItem.target_user_nm}{mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}
-                                    </Text>                          
+                                    </Text>   
+                                    
+                                    <Text style={{...styles.custom, marginTop: mUtils.wScale(2)}}> Sheet No:{subItem.req_no}</Text>                       
                                 </TouchableOpacity>
                             )
                         }

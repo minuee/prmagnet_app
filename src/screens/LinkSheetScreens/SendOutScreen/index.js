@@ -32,6 +32,7 @@ class SendOutScreen extends PureComponent {
       checkedList: [],
       selectEachList : [],
       targetSampleList : [],
+      setChangeReturnDate : null,
       isvisible: {open: false, phone: '', name: ''},
       loading: true,
       moreLoading : false
@@ -40,7 +41,6 @@ class SendOutScreen extends PureComponent {
   
   async UNSAFE_componentWillMount () {
     const {reqNo, selectEachList = []} = this.params;
-    console.log('this.paramsselectEachList',selectEachList)
     if (reqNo) {
       this.modalOption('Send Out', false)
     } else {
@@ -82,11 +82,11 @@ class SendOutScreen extends PureComponent {
   }
 
   handleLoadDataArray = async(item,nextIndex) => {      
-    console.log('handleLoadDataArray222 Magazine', item,nextIndex)
+    //console.log('handleLoadDataArray222 Magazine', item,nextIndex)
     try {
       const response = await API.getSendoutArrayDetail(item.date,item.showroom_list,item.req_no_list);
       const dataTmp = await _.get(response, 'right');
-      console.log('픽업 스케쥴 상세 조회 성공', dataTmp)
+      //console.log('픽업 스케쥴 상세 조회 성공', dataTmp)
       await this.allSendOutCheck(dataTmp);
       this.setState({data: dataTmp[0], listIndex : nextIndex})
       
@@ -98,7 +98,7 @@ class SendOutScreen extends PureComponent {
   handleLoadData = async listIndex => {
     const {selectEachList, reqNo,showroom_no} = this.params
     const pReqNo = reqNo || _.get(selectEachList, `[${listIndex}].req_no`)
-    console.log('handleLoadDatapReqNo',pReqNo)
+    //console.log('handleLoadDatapReqNo',pReqNo)
     try {
       const response = await API.getSendoutDetail(pReqNo,showroom_no)
       this.setState({data: _.get(response, 'right'), listIndex})
@@ -111,9 +111,9 @@ class SendOutScreen extends PureComponent {
   }
   
   allSendOutCheck = async(data) => {
-    console.log('allSendOutCheck',data)
     let AllData = 0;
     let sendOutData = 0;
+    let changeReturnDate = null;
     let targetList = [];
     let targetSampleList = [];
     if ( data.length === undefined ) {
@@ -121,9 +121,10 @@ class SendOutScreen extends PureComponent {
     }else{
       targetList = data[0].showroom_list;
     }
+    const returning_date = mUtils.get(data.length === undefined ? data :data[0], 'returning_date');
     await targetList.forEach(function(element,index){
       if ( element.sample_list != null ) {
-        element.sample_list.forEach(function(element2,index2){            
+        element.sample_list.forEach(function(element2,index2){         
           if ( element2.sample_no ) {
             AllData++;
             if ( element2.return_yn ) {
@@ -131,17 +132,21 @@ class SendOutScreen extends PureComponent {
             }else{
               targetSampleList.push(element2.sample_no);
             }
+           
+           
+            if (element2.return_dt != null &&  mUtils.dateToDate(element2.return_dt) != mUtils.convertUnixToDate(returning_date) ) {
+              changeReturnDate = mUtils.convertDateToUnix(element2.return_dt);
+            }
           }
         })
       }
     }); 
-    //console.log('targetSampleList',targetSampleList)
-    //console.log('sendOutData',sendOutData)
     this.setState({
       allChecked : AllData === sendOutData ? true :false,
       targetSampleList,
       loading: false,
-      moreLoading: false
+      moreLoading: false,
+      setChangeReturnDate : changeReturnDate,
     })
   }
   handlePressPhone = (name, phone) => {
@@ -241,8 +246,6 @@ class SendOutScreen extends PureComponent {
     const toPhone = mUtils.phoneFormat(mUtils.get(data, 'to_user_phone'));
     if (loading) return <Loading />;
 
-    //console.log('AllDdatadataata',data,this.props.user.userType)
-
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={{paddingVertical: 10}}>
@@ -262,6 +265,12 @@ class SendOutScreen extends PureComponent {
                 <FastImage source={goRightImage} style={styles.goImage} />
               </TouchableOpacity>
             )}
+          </View>
+          <View style={styles.middleWrapper}>
+            <Text style={styles.middleText}>Sheet No</Text>
+            <Text style={styles.middleDescText}>
+              {data.req_no}
+            </Text>
           </View>
           <View style={styles.middleWrapper}>
             <Text style={styles.middleText}>매체명</Text>
@@ -297,6 +306,14 @@ class SendOutScreen extends PureComponent {
               </Text>
             </View>
           </View>
+          { !mUtils.isEmpty(this.state.setChangeReturnDate) &&
+            <View style={styles.middleWrapper}>
+              <Text style={styles.middleText}>반납일</Text>
+              <Text style={styles.middleDescRedText}>
+                {mUtils.getShowDate(this.state.setChangeReturnDate)} *일부반납일이 변경되었습니다.
+              </Text>              
+            </View>
+          }
           <View style={styles.middleWrapper}>
             <Text style={styles.middleText}>수령 주소</Text>
             <Text style={styles.middleDescText}>{mUtils.get(data, 'studio', '-')}</Text>

@@ -1,1 +1,1 @@
-appcenter codepush release-react -a prmagnetkr-gmail.com/prmagnet-iOS -d Staging -t 1.0.0
+appcenter codepush release-react -a prmagnetkr-gmail.com/prmagnet-iOS -d Staging -t 1.1.0

@@ -89,8 +89,8 @@ class LinkSheetScreen extends React.Component {
                 newLeftIdxArray.push(element.showroom_list[0].req_no);
                 newLeftArray.push(element)
               }
-              showroomData.push(element.showroom_list[0].showroom_no);
-            })
+              showroomData.push({reqNo : element.showroom_list[0].req_no , showroom_no : element.showroom_list[0].showroom_no});  
+              })
             newDataArray.push({
               date : topelement.date,
               day : topelement.day,
@@ -181,7 +181,18 @@ class LinkSheetScreen extends React.Component {
 
     handleLinkSheetDetailEach = async(req_no,showroomData,date) => {
         const {selectTitle} = this.state;
-        const selectDate2 = [{date,showroom_list : showroomData,req_no_list : [req_no]}]
+        console.log('selectTitle>>>>', selectTitle,date,Math.floor(new Date()/1000) )
+        if ( selectTitle === 'Pickups' && date > Math.floor(new Date()/1000)  ) {
+            this.alert('픽업일이후부터 조회가 가능합니다.');
+            return;
+        }
+        let newShowroomIdxArray = [];
+        await showroomData.forEach((element) => {
+          if ( req_no == element.reqNo) {
+            newShowroomIdxArray.push(element.showroom_no);
+          }
+        })     
+        const selectDate2 = [{date,showroom_list : newShowroomIdxArray,req_no_list : [req_no]}]
         if (selectTitle === 'Send Out') {
             if ( mConst.getUserType() == 'B' ) {
                 this.pushTo('SendOutBScreen', {selectEachList:selectDate2})
@@ -226,15 +237,16 @@ class LinkSheetScreen extends React.Component {
     }
 
     renderData = (subItem,idx,selectTitle) => {
+        //console.log('픽업 스케쥴 상세 조회 성공', subItem)
         if (  mConst.getUserType() === 'B'  ) {
             if ( selectTitle === 'Send Out' ) {
                 return (
                     <>
                         <Text style={{...styles.brand, marginTop: mUtils.wScale(5)}} >
                             {mUtils.isEmpty(subItem.target_user_nm) ? '-' : subItem.target_user_nm}
-                            { subItem.target_id_type === 'RUS001' ?  subItem.req_user_position + "("+subItem.mgzn_nm +")"
+                            { subItem.target_id_type === 'RUS001' ? " "+subItem.target_user_position + "("+subItem.target_company_nm +")"
                             :
-                            subItem.target_user_position
+                            " "+subItem.target_user_position
                             }
                         </Text>
                         <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
@@ -247,11 +259,11 @@ class LinkSheetScreen extends React.Component {
                 return (
                     <>
                         <Text style={{...styles.brand, marginTop: mUtils.wScale(5)}} >
-                            {subItem.req_user_nm} {subItem.req_user_position} → 
+                            {subItem.req_user_nm}{" "}{subItem.req_user_position} → 
                         </Text>
                         <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
-                            {mUtils.isEmpty(subItem.target_user_nm) ? '-' : subItem.target_user_nm}
-                            {subItem.target_id_type === 'RUS001' ? subItem.req_user_position + "("+subItem.mgzn_nm +")" :subItem.target_user_position}
+                            {mUtils.isEmpty(subItem.target_user_nm) ? '-' :  " "+subItem.target_user_nm}
+                            {subItem.target_id_type === 'RUS001' ? " "+subItem.target_user_position + "("+subItem.target_company_nm +")" :subItem.target_user_position}
                         </Text>
                         
                     </>
@@ -262,11 +274,11 @@ class LinkSheetScreen extends React.Component {
                 return (
                     <>
                         <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
-                            {subItem.req_user_nm}{mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position}  →
+                            {subItem.req_user_nm} {mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position}  →
                             
                         </Text>
                         <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
-                            {subItem.target_user_nm}{mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}
+                            {subItem.target_user_nm} {mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}
                         </Text>
                     </>
                 )
@@ -274,10 +286,10 @@ class LinkSheetScreen extends React.Component {
                 return (
                     <>
                         <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
-                            {subItem.target_user_nm}{mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position} →
+                            {subItem.target_user_nm} {mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position} →
                         </Text>
                         <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
-                            {subItem.req_user_nm}{mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position} {/* {subItem.req_user_position} */}
+                            {subItem.req_user_nm} {mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position} {/* {subItem.req_user_position} */}
                         </Text>
                     </>
                 )
@@ -437,7 +449,8 @@ class LinkSheetScreen extends React.Component {
                                     _.map(item.each_list, (subItem2, subIndex) => {
                                         
                                         if ( !mUtils.isEmpty(subItem2.showroom_list[0])) {
-                                            const subItem = subItem2.showroom_list[0];      
+                                            const subItem = subItem2.showroom_list[0];     
+                                            if ( subItem.req_no === '20220116000515' ) console.log('subItem',subIndex,subItem) 
                                             if ( selectTitle === "Send Out" || selectTitle === "sendout" )    {
                                                 return (
                                                     <TouchableOpacity
@@ -487,7 +500,7 @@ class LinkSheetScreen extends React.Component {
                                                         onPress={() =>this.handleLinkSheetDetailEach(subItem.req_no,item.showroomData,item.date)}
                                                         //onPress={() =>this.pushTo('ReturnScreen',{reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
                                                     >
-                                                        <View style={{...styles.box1, backgroundColor:  subItem.returncheck_yn ? mUtils.isEmpty(subItem.mgzn_color) ? '#ddd' :subItem.mgzn_color : '#ff0000'}}>
+                                                        <View style={{...styles.box1, backgroundColor:  subItem.return_yn ? mUtils.isEmpty(subItem.mgzn_color) ? '#ddd' :subItem.mgzn_color : '#ff0000'}}>
                                                             {this.renderLogo(subItem,subIndex,selectTitle)}
                                                         </View>
                                                         

@@ -46,6 +46,11 @@ export default StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  middleDescRedText: {
+    fontSize: 15,
+    color: mConst.red,
+    paddingTop: mUtils.wScale(16),
+  },
   unfoldImage: {
     width: mUtils.wScale(36 / 3),
     height: mUtils.wScale(20 / 3),

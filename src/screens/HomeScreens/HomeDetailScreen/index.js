@@ -170,7 +170,6 @@ class HomeDetailScreen extends PureComponent {
   goDetail =  async(reqNo,subItem) => {
     let newSdata = [];
     subItem.each_list.forEach((element) => {
-        let req_no = element.req_no;
         if (  reqNo == element.req_no) {
           newSdata.push(element.showroom_no);
         }
@@ -261,7 +260,7 @@ class HomeDetailScreen extends PureComponent {
               key={subItem.req_no+'_'+subItem.showroom_no}
               style={styles.layout3}
               //onPress={() => this.pushTo('SendOutBScreen', {reqNo: subItem.req_no})}
-              onPress={() =>  this.goDetail( subItem.req_no, subItem.showroom_no)}
+              onPress={() =>  this.goDetail( subItem.req_no, item)}
           >
               {
                   subItem.req_user_type === 'MAGAZINE' ?
@@ -290,16 +289,18 @@ class HomeDetailScreen extends PureComponent {
                   subItem.target_id_type === "RUS001" ?
                   <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres2}} />
                   :
-                  <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
+                  <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />
                   :                  
                   <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />
               }                            
               <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
                 {subItem.req_user_nm}{mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position} →
-              </Text>
-              <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}>
+              {/* </Text>
+              <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}> */}
                   {subItem.target_user_nm}{mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}
               </Text>
+            <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>{subItem.req_no}</Text>
+
           </TouchableOpacity>
         )
       }

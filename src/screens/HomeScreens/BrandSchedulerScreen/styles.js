@@ -17,6 +17,13 @@ export default StyleSheet.create({
     marginTop: mUtils.wScale(20),
     marginBottom: mUtils.wScale(20),
   },
+  shortTitle: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 9,
+    letterSpacing : -1,
+    textAlign: 'center',
+    color: '#070708',
+  },
   title: {
     fontFamily: 'Roboto-Medium',
     fontSize: 11,
@@ -229,13 +236,22 @@ export default StyleSheet.create({
     marginLeft: mUtils.wScale(5),
   },
   dollarImg1: {
-    width: mUtils.wScale(15),
-    height: mUtils.wScale(15),
+    width: mUtils.wScale(14),
+    height: mUtils.wScale(14),
+  },
+  dollarImg1Short: {
+    width: mUtils.wScale(12),
+    height: mUtils.wScale(12),
   },
   airplaneImg: {
-    width: mUtils.wScale(15),
-    height: mUtils.wScale(15),
-    marginLeft: mUtils.wScale(5),
+    width: mUtils.wScale(13),
+    height: mUtils.wScale(13),
+    marginLeft: mUtils.wScale(3),
+  },
+  airplaneImgShort: {
+    width: mUtils.wScale(12),
+    height: mUtils.wScale(12),
+    marginLeft: mUtils.wScale(2),
   },
   plusImg: {
     width: mUtils.wScale(35),

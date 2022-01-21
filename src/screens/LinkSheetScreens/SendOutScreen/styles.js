@@ -85,6 +85,11 @@ export default StyleSheet.create({
     color: mConst.black,
     paddingTop: mUtils.wScale(16),
   },
+  middleDescRedText: {
+    fontSize: 15,
+    color: mConst.red,
+    paddingTop: mUtils.wScale(16),
+  },
   middleDescTextBold: {
     fontSize: 15,
     fontWeight: 'bold',

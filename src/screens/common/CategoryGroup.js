@@ -11,22 +11,25 @@ import Text from './Text'
 const foldImage = require('../../images/common/fold.png')
 const unfoldImage = require('../../images/common/unfold.png')
 const selectedImage = require('../../images/common/selected.png')
-
+const clearUnisex = ['RTW','Bag','Shoes'];
+const clearNotUnisex = ['Accessory','Jewelry','Decor'];
 export default CategoryGroup = props => {
-  const {data, value, hide, setFilter} = props
+  const {data, value,genderList, hide, setFilter} = props
   return (
     <>
       {_.map(data, (item, index) => (
-        <CategoryItem key={index} data={item} value={value} hide={hide} setFilter={setFilter} />
+        <CategoryItem key={index} data={item} value={value} genderList={genderList} hide={hide} setFilter={setFilter} />
       ))}
     </>
   )
 }
-
+//selectGender.includes('SSS003')
 const CategoryItem = props => {
-  const {data, value, hide, setFilter} = props
-  const [fold, setFold] = useState(true)
-  if (hide) return null
+  const {data, value, genderList,hide, setFilter} = props;
+  const [fold, setFold] = useState(true);
+  if (hide) return null;
+  if ( genderList.includes('SSS003') && !genderList.includes('SSS001') && !genderList.includes('SSS002') && clearUnisex.includes(data.sample_catgry_lrge_cl_nm)) return null;
+  if ( (genderList.includes('SSS001') || genderList.includes('SSS002')) && !genderList.includes('SSS003') && clearNotUnisex.includes(data.sample_catgry_lrge_cl_nm)) return null;
   return (
     <>
       <TouchableOpacity onPress={() => setFold(!fold)}>

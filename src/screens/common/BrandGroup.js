@@ -16,7 +16,7 @@ const circleImg1 = require('../../images/navi/circle_1.png')
 const circleImg2 = require('../../images/navi/circle_2.png')
 const searchImg = require('../../images/common/search.png')
 const arr = [
-  {id: '1', name: 'A-Z 순'},
+  {id: '1', name: '등록 순'},
   {id: '2', name: '검색하기'},
 ]
 

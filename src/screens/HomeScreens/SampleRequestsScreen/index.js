@@ -125,6 +125,7 @@ class SampleRequestsScreen extends PureComponent {
       isvisible: false,
       year: dayjs().format('YYYY'),
       reservation_list : [],
+      limit_days : 7,
       holidays: [],
       holidays2: [],
       editableLoke : false,
@@ -350,7 +351,7 @@ class SampleRequestsScreen extends PureComponent {
   }
 
   onDaySelect = async(date) => {
-    const {drop,drop_end, drop1, drop2, holidays,holidays2,shDate,shEndDate} = this.state;
+    const {drop,drop_end, drop1, drop2, holidays,holidays2,shDate,shEndDate,defaultInfo} = this.state;
     /* console.log('onDaySelect',date,drop1,drop2)
     const dateFormat = date.dateString;
     const TodayFormat = moment().format("YYYY-MM-DD");
@@ -411,10 +412,7 @@ class SampleRequestsScreen extends PureComponent {
           );
         }else{
           let diffDays = moment(date.timestamp).diff(moment(shDate.timestamp),'days');
-          console.log('shDateshDate',shDate) 
-          console.log('datedatedate',date) 
-          console.log('diffDays',diffDays) 
-          if ( diffDays > mConst.sampleRequestLimitDays) {
+          if ( diffDays > defaultInfo.limit_days) {
             Alert.alert(
               mConst.appName,
               '최대 7일까지 가능합니다',
@@ -468,7 +466,7 @@ class SampleRequestsScreen extends PureComponent {
       const response = await API.postSRRequest({
         brand_id: brandId,
       })
-      console.log('postSRRequest>>>', response)
+      //console.log('postSRRequest>>>', response)
       this.setState({defaultInfo: response})
     } catch (error) {
       //console.log('postSRRequest>>>', error)
@@ -481,7 +479,7 @@ class SampleRequestsScreen extends PureComponent {
       const response = await API.getSampleRequests({
         req_no: no,
       })
-      console.log('getSampleRequests>>>>', response)
+      //console.log('getSampleRequests>>>>', response)
       this.setState({
         selected: response.showroom_list,
         selectContact: {
@@ -571,7 +569,7 @@ class SampleRequestsScreen extends PureComponent {
   }
 
   componentDidMount() {    
-   
+
   }
   componentWillUnmount() {
     //this.removeFocus()
@@ -652,8 +650,7 @@ class SampleRequestsScreen extends PureComponent {
 
   renderTooltip = () => {
     return (<View style={{width:'100%',padding:5,alignItems:'center',justifyContent:'center'}}>   
-        <Text style={{fontFamily: 'Roboto-Regular',fontSize: 14,color: '#ffffff',}}>수정불가한 사항(패션모델/셀럽, 페이지수, 촬영일, 픽업일, 반납일, 촬영컨셉, 메시지, 함께 들어가는 브랜드)의 수정을 원할 시 홀딩 취소 후 새로 요청해 주시기 바랍니다.</Text>
-        
+        <Text style={{fontFamily: 'Roboto-Regular',fontSize: 14,color: '#ffffff',}}>수정불가한 사항(패션모델/셀럽, 페이지수, 촬영일, 픽업일, 반납일, 유가여부,촬영컨셉, 메시지, 함께 들어가는 브랜드)의 수정을 원할 시 홀딩 취소 후 새로 요청해 주시기 바랍니다.</Text>
     </View>)
   }
 
@@ -1219,54 +1216,65 @@ class SampleRequestsScreen extends PureComponent {
                 }
               </View>
               <Text style={styles.smallTitle}>유가 여부 </Text>
-              <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
-                <TouchableOpacity 
-                  style={styles.layout2}
-                  onPress={() => this.setYuga('none',this.state.editableNone )}
-                >
-                  <FastImage resizeMode={'contain'} style={styles.checkImg} source={this.state.editableNone ? checkImg : noCheckImg} />
-                  <Text style={styles.text1}>유가없음</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
-                <TouchableOpacity 
-                  onPress={() => this.setYuga('own',this.state.editableOwn )}
-                  style={styles.layout2}
-                >
-                  <FastImage resizeMode={'contain'} style={styles.checkImg} source={this.state.editableOwn ? checkImg : noCheckImg} />
-                  <Text style={styles.text1}>자사유가</Text>
-                </TouchableOpacity>
+              { type ? 
+              <>
+                <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
+                  <TouchableOpacity 
+                    style={styles.layout2}
+                    onPress={() => this.setYuga('none',this.state.editableNone )}
+                  >
+                    <FastImage resizeMode={'contain'} style={styles.checkImg} source={this.state.editableNone ? checkImg : noCheckImg} />
+                    <Text style={styles.text1}>유가 없음</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
+                  <TouchableOpacity 
+                    onPress={() => this.setYuga('own',this.state.editableOwn )}
+                    style={styles.layout2}
+                  >
+                    <FastImage resizeMode={'contain'} style={styles.checkImg} source={this.state.editableOwn ? checkImg : noCheckImg} />
+                    <Text style={styles.text1}>자사유가</Text>
+                  </TouchableOpacity>
 
-                <TextInput
-                  editable={this.state.editableOwn}
-                  style={{...styles.inputBox, width: '65%'}}
-                  placeholder={'자사유가'}
-                  placeholderTextColor={mConst.borderGray}
-                  value={myPay}
-                  onChangeText={text => {
-                    this.setState({myPay: text, otherPay: '', editableNone:false})
-                  }}
-                />
-              </View>
-              <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
-                <TouchableOpacity 
-                  onPress={() => this.setYuga('etc',this.state.editableYukaEtc )}
-                  style={styles.layout2}
-                >
-                  <FastImage resizeMode={'contain'} style={styles.checkImg} source={this.state.editableYukaEtc ? checkImg : noCheckImg} />
-                  <Text style={styles.text1}>타사유가</Text>
-                </TouchableOpacity>
-                <TextInput
-                  editable={this.state.editableYukaEtc}
-                  style={{...styles.inputBox, width: '65%'}}
-                  placeholder={'타사유가'}
-                  placeholderTextColor={mConst.borderGray}
-                  value={otherPay}
-                  onChangeText={text => {
-                    this.setState({otherPay: text, myPay: '', editableNone:false})
-                  }}
-                />
-              </View>
+                  <TextInput
+                    editable={this.state.editableOwn}
+                    style={{...styles.inputBox, width: '65%'}}
+                    placeholder={'자사유가'}
+                    placeholderTextColor={mConst.borderGray}
+                    value={myPay}
+                    onChangeText={text => {
+                      this.setState({myPay: text, otherPay: '', editableNone:false})
+                    }}
+                  />
+                </View>
+                <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
+                  <TouchableOpacity 
+                    onPress={() => this.setYuga('etc',this.state.editableYukaEtc )}
+                    style={styles.layout2}
+                  >
+                    <FastImage resizeMode={'contain'} style={styles.checkImg} source={this.state.editableYukaEtc ? checkImg : noCheckImg} />
+                    <Text style={styles.text1}>타사유가</Text>
+                  </TouchableOpacity>
+                  <TextInput
+                    editable={this.state.editableYukaEtc}
+                    style={{...styles.inputBox, width: '65%'}}
+                    placeholder={'타사유가'}
+                    placeholderTextColor={mConst.borderGray}
+                    value={otherPay}
+                    onChangeText={text => {
+                      this.setState({otherPay: text, myPay: '', editableNone:false})
+                    }}
+                  />
+                </View>
+              </>
+              :
+                <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(25)}}>
+                  <Text style={styles.text1}>
+                    {this.state.editableOwn ? '자사유가' : this.state.editableYukaEtc ? '타사유가' : '유가 없음'}
+                  </Text>
+                </View>
+              }
+              
               <Text style={styles.smallTitle}>로케촬영</Text>
               <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
                 <TouchableOpacity 

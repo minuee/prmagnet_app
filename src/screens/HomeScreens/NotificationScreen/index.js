@@ -123,6 +123,7 @@ class NotificationScreen extends PureComponent {
     let return_date = null;
     let shoting_date = null;
     let selectEachList = null;
+    //console.log('date_info',date_info);   
     if ( !mUtils.isEmpty(date_info)) {
       await date_info.forEach((subItem,i) => {
           showroomData.push(subItem.showroom_no);
@@ -131,7 +132,7 @@ class NotificationScreen extends PureComponent {
           shoting_date = subItem.shoting_date;
         }
       )
-      console.log('showroomData',showroomData,pickup_date,shoting_date,return_date);    
+      //console.log('showroomData',showroomData,pickup_date,shoting_date,return_date);    
     }
 
     //return false;
@@ -139,22 +140,28 @@ class NotificationScreen extends PureComponent {
     if (mConst.getUserType() === 'B') {
       if (notice_type === 'cms') {
         this.pushTo('NoticeDetailScreen', {no: noticeId})
+      } else if (notice_type === 'subscribe') {
+        this.alert('해당내용은 상세페이지를 제공하지 않습니다.');
+        return;
       } else if (notice_type === 'req' || notice_type === 'confirm' || notice_type === 'confirmchange') {
         this.pushTo('SampleRequestsDetailScreen', {no:reqNo})
-      } else if (notice_type === 'pickup' ) {
+      } else if (notice_type === 'pickup' || notice_type === 'notpickup' ) {
         if ( !mUtils.isEmpty(date_info)) {
           this.pushTo('SendOutBScreen',{
             reqNo,
             selectEachList : [{date : pickup_date, showroom_list : showroomData,req_no_list : reqNoData}]
           })
         }
-      } else if (notice_type === 'recv' || notice_type === 'sendout' || notice_type === 'send') {      
+      } else if (notice_type === 'return' || notice_type === 'sendout' ) {      
         if ( !mUtils.isEmpty(date_info)) {  
           this.pushTo('ReturnScreen',{
             reqNo,
             selectEachList : [{date : return_date, showroom_list : showroomData,req_no_list : reqNoData}]
           })
         }
+      }else{
+        this.alert('해당내용은 상세페이지를 제공하지 않습니다.');
+        return;
       }
     } else {
       if (notice_type === 'brand') {
@@ -164,22 +171,35 @@ class NotificationScreen extends PureComponent {
         this.pushTo('SampleRequestsDetailScreen', {no:reqNo})
       } else if (notice_type === 'cms') {
         this.pushTo('NoticeDetailScreen', {no: noticeId});
+      } else if (notice_type === 'subscribe') {
+        this.alert('해당내용은 상세페이지를 제공하지 않습니다.');
+        return;
       } else if (notice_type === 'showroom') {        
         this.pushTo('DigitalSRDetailScreen', {no: noticeId, type: 'digital',title : 'toavmf'})
-      } else if (notice_type === 'send' || notice_type === 'recv' || notice_type === 'sendout' || notice_type === 'confirmchange') {        
+      } else if (notice_type === 'notpickup' || notice_type === 'recv' || notice_type === 'sendout' || notice_type === 'confirmchange') {        
         if ( !mUtils.isEmpty(date_info)) {
           this.pushTo('PickupsScreen', {
             reqNo,
             selectEachList : [{date : pickup_date, showroom_list : showroomData,req_no_list : reqNoData}]
           })      
         }
-      } else if (notice_type === 'returncheck' || notice_type === 'pickup' ) {
+      } else if (notice_type === 'returncheck'  ||  notice_type === 'return') {
         if ( !mUtils.isEmpty(date_info)) {
           this.pushTo('SendOutScreen', {
             reqNo,
             selectEachList : [{date : pickup_date, showroom_list : showroomData,req_no_list : reqNoData}]
           })
         }
+      } else if (notice_type === 'pickup' ) {
+        if ( !mUtils.isEmpty(date_info)) {
+          this.pushTo('SendOutMScreen', {
+            reqNo,
+            selectEachList : [{date : pickup_date, showroom_list : showroomData,req_no_list : reqNoData}]
+          })
+        }
+      }else{
+        this.alert('해당내용은 상세페이지를 제공하지 않습니다.');
+        return;
       }
     }
   }
@@ -193,26 +213,25 @@ class NotificationScreen extends PureComponent {
         >
           <View style={styles.items}>
             <FastImage resizeMode={'contain'} style={styles.listImg} source={userType !== 'B' ? notiSky : notiBlack} />
-            <View style={{marginTop: mUtils.wScale(5), width: '80%'}}>
-              <Text style={styles.title}>{item.subj}</Text>
-              <Text style={styles.desc}>{item.cntent}</Text>
+            <View style={{marginTop: mUtils.wScale(5), width: '80%'}}>             
+              <Text style={styles.title}>{item.cntent}</Text>
+              <Text style={styles.desc}>
+                {(item.notice_type == 'subscribe' && item.subscr_begin_de ) ?
+                "구독기간 : "+moment(item.subscr_begin_de*1000).format("YYYY년 MM월 DD일")+" ~ "+moment(item.subscr_end_de*1000).format("YYYY년 MM월 DD일")
+                :
+                item.subj}
+              </Text>
               <Text style={styles.dt}>
-                {moment(item.send_dt * 1000)
-                  .locale('ko')
-                  .format('MMM Do')}{' '}
+                {moment(item.send_dt * 1000).locale('ko').format('MMM Do')}{' '}
                 ·
-                {moment(item.send_dt * 1000)
-                  .locale('ko')
-                  .format('LT')}
+                {moment(item.send_dt * 1000).locale('ko').format('LT')}
               </Text>
             </View>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           hitSlop={{top: 35, bottom: 35, left: 40, right: 40}}
-          onPress={() => {
-            this.deleteAlarm(item.notice_id, index, item.notice_type)
-          }}
+          onPress={() => {this.deleteAlarm(item.notice_id, index, item.notice_type)}}
         >
           <FastImage resizeMode={'contain'} style={styles.closeImg} source={closeBtnImage} />
         </TouchableOpacity>

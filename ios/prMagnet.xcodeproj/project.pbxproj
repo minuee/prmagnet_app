@@ -12,8 +12,9 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		651A3FA425C2AA4E00EF4688 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = 651A3FA325C2AA4E00EF4688 /* Fonts */; };
-		B02B895725414CED00C725D4 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B02B895625414CED00C725D4 /* SplashScreen.storyboard */; };
 		B053BD8026004C6600B642E4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B053BD7F26004C6600B642E4 /* GoogleService-Info.plist */; };
+		B0CE20BB279AA476003771AB /* splash_20220121.png in Resources */ = {isa = PBXBuildFile; fileRef = B0CE20BA279AA476003771AB /* splash_20220121.png */; };
+		B0CE217C279AA738003771AB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B0CE217E279AA738003771AB /* LaunchScreen.storyboard */; };
 		D0936FB98FC9733CF87E065A /* libPods-prMagnet-prMagnetTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DF8E4B061B6F270251CC1DC /* libPods-prMagnet-prMagnetTests.a */; };
 		FB6991821FCE8BC1F9F9DDD7 /* libPods-prMagnet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A0EB0CAB418F5A3752A4145 /* libPods-prMagnet.a */; };
 /* End PBXBuildFile section */
@@ -45,10 +46,11 @@
 		7A0EB0CAB418F5A3752A4145 /* libPods-prMagnet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-prMagnet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B2CE2894681ADA6E51B8D9F /* Pods-prMagnet-prMagnetTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prMagnet-prMagnetTests.release.xcconfig"; path = "Target Support Files/Pods-prMagnet-prMagnetTests/Pods-prMagnet-prMagnetTests.release.xcconfig"; sourceTree = "<group>"; };
 		9B8FE91DD7FE22D9654CBA32 /* Pods-prMagnet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prMagnet.debug.xcconfig"; path = "Target Support Files/Pods-prMagnet/Pods-prMagnet.debug.xcconfig"; sourceTree = "<group>"; };
-		B02B895625414CED00C725D4 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
 		B053BD7F26004C6600B642E4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "prMagnet/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B053BD8326004F8700B642E4 /* prMagnet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = prMagnet.entitlements; path = prMagnet/prMagnet.entitlements; sourceTree = "<group>"; };
 		B096FDF42786E12C001839C3 /* prMagnet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "prMagnet-Bridging-Header.h"; sourceTree = "<group>"; };
+		B0CE20BA279AA476003771AB /* splash_20220121.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = splash_20220121.png; path = ../src/images/splash_20220121.png; sourceTree = "<group>"; };
+		B0CE217D279AA738003771AB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F32A23B2CFDA55116372CDED /* Pods-prMagnet.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prMagnet.staging.xcconfig"; path = "Target Support Files/Pods-prMagnet/Pods-prMagnet.staging.xcconfig"; sourceTree = "<group>"; };
 		F551D426C5C1D39CD1124A03 /* Pods-prMagnet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prMagnet.release.xcconfig"; path = "Target Support Files/Pods-prMagnet/Pods-prMagnet.release.xcconfig"; sourceTree = "<group>"; };
@@ -94,14 +96,15 @@
 		13B07FAE1A68108700A75B9A /* prMagnet */ = {
 			isa = PBXGroup;
 			children = (
+				B0CE20BA279AA476003771AB /* splash_20220121.png */,
 				B053BD8326004F8700B642E4 /* prMagnet.entitlements */,
-				B02B895625414CED00C725D4 /* SplashScreen.storyboard */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				B053BD7F26004C6600B642E4 /* GoogleService-Info.plist */,
+				B0CE217E279AA738003771AB /* LaunchScreen.storyboard */,
 			);
 			name = prMagnet;
 			sourceTree = "<group>";
@@ -260,8 +263,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				651A3FA425C2AA4E00EF4688 /* Fonts in Resources */,
+				B0CE20BB279AA476003771AB /* splash_20220121.png in Resources */,
+				B0CE217C279AA738003771AB /* LaunchScreen.storyboard in Resources */,
 				B053BD8026004C6600B642E4 /* GoogleService-Info.plist in Resources */,
-				B02B895725414CED00C725D4 /* SplashScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -537,15 +541,27 @@
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		B0CE217E279AA738003771AB /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B0CE217D279AA738003771AB /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9B8FE91DD7FE22D9654CBA32 /* Pods-prMagnet.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = prMagnet/prMagnet.entitlements;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = 7XFC7Z9T6W;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = prMagnet/Info.plist;
@@ -570,10 +586,11 @@
 			baseConfigurationReference = F551D426C5C1D39CD1124A03 /* Pods-prMagnet.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				CLANG_ENABLE_MODULES = YES;
 				CODEPUSH_KEY = Wln7psKf4xdmAtx5160kXn2_RXLNFhQr4lQfn;
 				CODE_SIGN_ENTITLEMENTS = prMagnet/prMagnet.entitlements;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = 7XFC7Z9T6W;
 				INFOPLIST_FILE = prMagnet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -771,10 +788,11 @@
 			baseConfigurationReference = F32A23B2CFDA55116372CDED /* Pods-prMagnet.staging.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				CLANG_ENABLE_MODULES = YES;
 				CODEPUSH_KEY = jzNtCIZpGNU5XgJ0AmLOb6SULM93ckyOxEXgP;
 				CODE_SIGN_ENTITLEMENTS = prMagnet/prMagnet.entitlements;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = 7XFC7Z9T6W;
 				INFOPLIST_FILE = prMagnet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

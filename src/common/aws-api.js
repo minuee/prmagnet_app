@@ -260,7 +260,7 @@ const API = {
         content: content,
       },
     }
-    console.log('postQna',myInit);
+    //console.log('postQna',myInit);
     return Api.post(apiName, path, myInit)
   },
   getQnaList: ({page, limit, search_text}) => {
@@ -305,7 +305,7 @@ const API = {
         notifi_type: notifi_type,
       },
     }
-    console.log('deleteAlarm>>>', init)
+    //console.log('deleteAlarm>>>', init)
     return Api.del(apiName, path, init)
   },
   getFavShowroom: ({
@@ -456,13 +456,13 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getSendoutArrayDetail: (date,showroom_no,reqnoList2) => {
-    console.log('getSendoutArrayDetail data',showroom_no,reqnoList2)
+    //console.log('getSendoutArrayDetail data',showroom_no,reqnoList2)
     const showroomList = JSON.stringify(showroom_no);
     const reqnoList = JSON.stringify(reqnoList2);
     const apiName = v1Api;        
     const path = `${mConst.getApiPath()}/sendout-detailed/${date}?date=${date}&showroomList=${showroomList}&reqnoList=${reqnoList}`;
     const init = {}
-    console.log('getSendoutArrayDetail path',path)
+    //console.log('getSendoutArrayDetail path',path)
     return Api.get(apiName, path, init)
   },
   getPickupDetail: (req_no,showroom_no) => {
@@ -476,7 +476,7 @@ const API = {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/return-detailed/req/${req_no}?showroom_no=` + showroom_no;
     const init = {}
-    console.log('apiName path2',path)
+    //console.log('apiName path2',path)
     return Api.get(apiName, path, init)
   },
   getReturnArrayDetail: (date,showroom_no,reqnoList2) => {
@@ -492,7 +492,7 @@ const API = {
     const reqnoList = JSON.stringify(reqnoList2);
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/pickup-detailed/${date}?date=${date}&showroomList=${showroomList}&reqnoList=${reqnoList}`;
-    console.log('path2',path)
+    //console.log('path2222',path)
     const init = {}
     return Api.get(apiName, path, init)
   },
@@ -502,7 +502,7 @@ const API = {
     const myInit = {
       body: {req_no, len: showroom_len,targetSampleList},
     }
-    console.log('myInit',myInit)
+    //console.log('myInit',myInit)
     return Api.post(apiName, path, myInit)
   },
   pushSendoutOne: (req_no, showroom_len, sample_no) => {
@@ -551,7 +551,7 @@ const API = {
     const myInit = {
       body: {req_no,targetSampleList},
     }
-    console.log('pushReturnSuccess',path,myInit)
+    //console.log('pushReturnSuccess',path,myInit)
     return Api.post(apiName, path, myInit)
   },
   pushReturnOneSuccess: (req_no, sample_no) => {
@@ -628,6 +628,7 @@ const API = {
         date: date,
       },
     }
+    //console.log('initinitinit',init)
     return Api.get(apiName, path, init)
   },
   getHomeNR: ({page, limit}) => {
@@ -663,7 +664,7 @@ const API = {
         limit: limit,
       },
     }
-    console.log('getHomeT222R',init,path)
+    //console.log('getHomeT222R',init,path)
     return Api.get(apiName, path, init)
   },
   postDigitalSR: ({
@@ -826,7 +827,7 @@ const API = {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/showroom/${showroom_no}`
     const init = {}
-    console.log('path',path)
+    //('path',path)
     return Api.get(apiName, path, init)
   },
   getLookBookSRDetail: (lookbook_no, showroom_no) => {
@@ -864,7 +865,7 @@ const API = {
       }
     }
     
-    console.log('putProfile path',path,myInit)
+    //('putProfile path',path,myInit)
     return Api.put(apiName, path, myInit)
   },
   getAllSearch: ({search_text}) => {
@@ -972,7 +973,7 @@ const API = {
         other_paid_pictorial_content: other_paid_pictorial_content,
       },
     }
-    console.log('postSRRequestSend>>>>>', path,myInit)
+    //console.log('postSRRequestSend>>>>>', path,myInit)
     return Api.post(apiName, path, myInit)
   },
   deleteMyRequests: ({req_no}) => {
@@ -987,7 +988,7 @@ const API = {
     return Api.del(apiName, path, init)
   },
   getSampleRequests: ({req_no}) => {
-    console.log('>>>>>', req_no)
+    //console.log('>>>>>', req_no)
     var apiName = v1Api
     var path = `${mConst.getApiPath()}/showroom-request/${req_no}`
     var init = {
@@ -995,7 +996,7 @@ const API = {
         req_no: req_no,
       },
     }
-    console.log('pathpathpath>>>>>', path)
+    //console.log('pathpathpath>>>>>', path)
     return Api.get(apiName, path, init)
   },
   editSRRequestSend: ({

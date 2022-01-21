@@ -29,7 +29,7 @@ export default StyleSheet.create({
     color: mConst.black,
   },
   desc: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: 'normal',
     fontStyle: 'normal',
     textAlign: 'left',

@@ -104,6 +104,9 @@ const utils = {
   convertUnixToDate(unix,reform) {
     return moment.unix(unix).format("YYYY-MM-DD");
   },
+  convertDateToUnix(date) {
+    return moment(date).unix();
+  },
   getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min
   },

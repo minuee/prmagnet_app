@@ -27,7 +27,7 @@ export default class LinkSheetUnit extends PureComponent {
     render() {
         const {swiped} = this.state;
         const {name, phone, unitType,viewType,onPress, onPressPhone, onSwipeCheck, color, checked, readOnly,sendUser,returnUser,subData,loaningDate} = this.props;
-        console.log('returnUser',returnUser)
+        //console.log('returnUser',returnUser)
         if ( viewType === 'sendout' ) {
             if (unitType === 'to') {
                 return (
@@ -36,7 +36,7 @@ export default class LinkSheetUnit extends PureComponent {
                             <Text style={styles.sText()} numberOfLines={1}>              
                                 {mUtils.isEmpty(returnUser.user_nm) ? name :  returnUser.user_nm} 
                                 {!mUtils.isEmpty(returnUser.position) && returnUser.position}
-                                {!mUtils.isEmpty(returnUser.mgzn_nm) && "("+returnUser.mgzn_nm+")"}
+                                {/* {!mUtils.isEmpty(returnUser.mgzn_nm) && "("+returnUser.mgzn_nm+")"} */}
                             </Text>
                         </Row>
                         <Pressable onPress={onPressPhone}>
@@ -65,7 +65,7 @@ export default class LinkSheetUnit extends PureComponent {
                                         <Text style={styles.sText()} numberOfLines={1}>
                                             {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm} 
                                             {!mUtils.isEmpty(sendUser.position) && sendUser.position}
-                                            {!mUtils.isEmpty(sendUser.mgzn_nm) && "("+sendUser.mgzn_nm+")"}
+                                            {/* {!mUtils.isEmpty(sendUser.mgzn_nm) && "("+sendUser.mgzn_nm+")"} */}
                                             
                                             { mUtils.convertUnixToDate(loaningDate) != mUtils.dateToDate(subData.return_dt) &&
                                                 <Text style={styles.sText()}>
@@ -89,7 +89,7 @@ export default class LinkSheetUnit extends PureComponent {
                                         <Text style={styles.sText()} numberOfLines={2}>
                                             {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm}
                                             {!mUtils.isEmpty(sendUser.position) && sendUser.position}
-                                            {!mUtils.isEmpty(sendUser.company_nm) && "("+sendUser.company_nm+")"}
+                                           {/*  {!mUtils.isEmpty(sendUser.company_nm) && "("+sendUser.company_nm+")"} */}
                                             { mUtils.convertUnixToDate(loaningDate) != mUtils.dateToDate(subData.return_dt) &&
                                                 <Text style={styles.sText()}>
                                                     {"\n"}발송일({mUtils.dateToDate(subData.return_dt)})
@@ -131,7 +131,7 @@ export default class LinkSheetUnit extends PureComponent {
                             <Text style={styles.sText()} numberOfLines={2}>              
                                 {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm}
                                 {mUtils.isEmpty(sendUser.position) ? name :  sendUser.position} 
-                                {!mUtils.isEmpty(sendUser.mgzn_nm) && "("+sendUser.mgzn_nm+")"} 
+                                {/* {!mUtils.isEmpty(sendUser.mgzn_nm) && "("+sendUser.mgzn_nm+")"}  */}
                                 { mUtils.convertUnixToDate(loaningDate) != mUtils.dateToDate(subData.sendout_dt) &&
                                     <Text style={styles.sText()}>
                                         {"\n"}픽업일({mUtils.dateToDate(subData.sendout_dt)})
@@ -142,7 +142,7 @@ export default class LinkSheetUnit extends PureComponent {
                             <Text style={styles.sText()} numberOfLines={1}>
                                 {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm} 
                                 {mUtils.isEmpty(sendUser.position) ? name :  sendUser.position} 
-                                {!mUtils.isEmpty(sendUser.mgzn_nm) && "("+sendUser.mgzn_nm+")"}
+                                {/* {!mUtils.isEmpty(sendUser.mgzn_nm) && "("+sendUser.mgzn_nm+")"} */}
                             </Text>
                             }
                         </Row>
@@ -172,7 +172,7 @@ export default class LinkSheetUnit extends PureComponent {
                                         <Text style={styles.sText()} numberOfLines={1}>                                        
                                             {mUtils.isEmpty(returnUser.user_nm) ? name :  returnUser.user_nm} 
                                             {!mUtils.isEmpty(returnUser.position) && returnUser.position}
-                                            {!mUtils.isEmpty(returnUser.company_nm) && "("+returnUser.company_nm+")"}
+                                            {/* {!mUtils.isEmpty(returnUser.company_nm) && "("+returnUser.company_nm+")"} */}
                                         </Text>
                                     </Col>
                                     <Col style={styles.col(1, true, checked ? color : mConst.white, checked)} size={1}>
@@ -188,7 +188,7 @@ export default class LinkSheetUnit extends PureComponent {
                                         <Text style={styles.sText()} numberOfLines={1}>
                                             {mUtils.isEmpty(returnUser.user_nm) ? name :  returnUser.user_nm} 
                                             {!mUtils.isEmpty(returnUser.position) && returnUser.position}
-                                            {!mUtils.isEmpty(returnUser.company_nm) && "("+returnUser.company_nm+")"}
+                                            {/* {!mUtils.isEmpty(returnUser.company_nm) && "("+returnUser.company_nm+")"} */}
                                         </Text>
                                     </Row>
                                 )

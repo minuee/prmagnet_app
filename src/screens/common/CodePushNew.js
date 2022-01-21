@@ -28,12 +28,12 @@ export default class CodePushComponent extends Component {
                     switch(syncStatus) {
                         case codePush.SyncStatus.CHECKING_FOR_UPDATE:
                             this.setState({
-                                syncMessage: "Checking for update."
+                                syncMessage: "업데이트를 체크중입니다."
                             });
                             break;
                         case codePush.SyncStatus.DOWNLOADING_PACKAGE:
                             this.setState({
-                                syncMessage: "Downloading package."
+                                syncMessage: "업데이트중입니다..."
                             });
                             break;
                         case codePush.SyncStatus.AWAITING_USER_ACTION:

@@ -305,13 +305,13 @@ class BrandSchedulerScreen extends PureComponent {
                                             if (rIndex > 2) return null
                                           }
                                           return (
-                                            <View key={rIndex}>
+                                            <View key={rIndex} style={{overflow:'hidden'}}>
                                               <View style={[styles.dayReqUnit, {marginBottom: mUtils.wScale(5)}]}>
                                                 <View style={{...styles.layout6, backgroundColor: rItem.mgzn_color}}>
-                                                  <Text style={styles.title}>{rItem.company_name}</Text>
+                                                  <Text style={rItem.company_name.length > 8 ? styles.shortTitle : styles.title}>{rItem.company_name}</Text>
                                                   <View style={styles.layout}>
-                                                    <FastImage resizeMode={'contain'} style={styles.dollarImg1} source={dollarImg1} />
-                                                    <FastImage resizeMode={'contain'} style={styles.airplaneImg} source={airplaneImg} />
+                                                    <FastImage resizeMode={'contain'} style={rItem.company_name.length > 8 ? styles.dollarImg1Short : styles.dollarImg1} source={dollarImg1} />
+                                                    <FastImage resizeMode={'contain'} style={rItem.company_name.length > 8 ? styles.airplaneImgShort : styles.airplaneImg} source={airplaneImg} />
                                                   </View>
                                                 </View>
                                                 <TouchableOpacity 

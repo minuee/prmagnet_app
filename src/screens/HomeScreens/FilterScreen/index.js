@@ -17,7 +17,7 @@ import MaterialGroup from '../../common/MaterialGroup'
 import BrandGroup from '../../common/BrandGroup'
 import styles from './styles'
 
-const genderSection = {여성: 'Women', 남성: 'Men', 유니섹스: 'Unisex'}
+const genderSection = {여성: 'Women', 남성: 'Men', 유니섹스: 'Acc & Decor'}
 //const sections = ['Brand', 'Category', 'Color', 'Size', 'Sample', 'Still Life Image', 'Material']
 const sections = ['Brand', 'Category', 'Color', 'Size', 'Material']
 
@@ -138,7 +138,7 @@ class FilterScreen extends PureComponent {
                 </Col>
                 <Col size={65}>
                   <BrandGroup data={brands} brandId={brandId} hide={section !== 'Brand'} setBrand={this.setBrand} />
-                  <CategoryGroup data={data.category} value={category} hide={section !== 'Category'} setFilter={this.toggleStateList('category')} />
+                  <CategoryGroup data={data.category} value={category} genderList={gender} hide={section !== 'Category'} setFilter={this.toggleStateList('category')} />
                   <ColorGroup data={data.color} value={color} hide={section !== 'Color'} setFilter={this.toggleStateList('color')} />
                   <SizeGroup
                     data={sizeData}
