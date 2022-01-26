@@ -17,7 +17,7 @@ import MaterialGroup from '../../common/MaterialGroup'
 import BrandGroup from '../../common/BrandGroup'
 import styles from './styles'
 
-const genderSection = {여성: 'Women', 남성: 'Men', 유니섹스: 'Acc & Decor'}
+const genderSection = {여성: 'Women', 남성: 'Men', 젠더리스: 'Acc & Decor'}
 //const sections = ['Brand', 'Category', 'Color', 'Size', 'Sample', 'Still Life Image', 'Material']
 const sections = ['Brand', 'Category', 'Color', 'Size', 'Material']
 

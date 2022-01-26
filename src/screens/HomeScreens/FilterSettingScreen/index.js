@@ -10,7 +10,7 @@ import Text from '../../common/Text'
 import styles from './styles'
 import API from '../../../common/aws-api'
 
-const topList = ['공지사항', '문의번호', '쇼룸문의']
+const topList = ['공지사항', '문의번호', '쇼룸문의', '기간설정']
 const reg = /(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/
 
 class FilterSettingScreen extends PureComponent {
@@ -23,11 +23,13 @@ class FilterSettingScreen extends PureComponent {
       inquiryNum: '',
       SRInquiryNum: '',
       email: '',
+      inquiry_charge : '',
+      limit_days : 1
     }
   }
 
   postNotice = async () => {
-    const {notice} = this.state
+    const {notice} = this.state;
     try {
       const response = await API.postNotice({
         notice: notice,
@@ -37,7 +39,7 @@ class FilterSettingScreen extends PureComponent {
         this.postInquiryNum()
       }
     } catch (error) {
-      //console.log('postNotice>>>', error)
+      console.log('postNotice>>>', error)
     }
   }
 
@@ -52,23 +54,39 @@ class FilterSettingScreen extends PureComponent {
         this.postSRInquiry()
       }
     } catch (error) {
-      //console.log('postInquiryNum>>>', error)
+      console.log('postInquiryNum>>>', error)
     }
   }
 
   postSRInquiry = async () => {
-    const {SRInquiryNum, email} = this.state
+    const {SRInquiryNum, email,inquiry_charge} = this.state
     try {
       const response = await API.postSRInquiry({
         SRInquiryNum: SRInquiryNum,
         email: email,
+        inquiry_charge : inquiry_charge
+      })
+      //console.log('postSRInquiry>>>', response)
+      if (response.success) {
+        this.postTerm();
+      }
+    } catch (error) {
+      console.log('postSRInquiry>>>', error)
+    }
+  }
+
+  postTerm = async () => {
+    const {limit_days} = this.state
+    try {
+      const response = await API.postlimitNumber({
+        inquiry_charge :  mUtils.isEmpty(limit_days) ? 30 : parseInt(limit_days)
       })
       //console.log('postSRInquiry>>>', response)
       if (response.success) {
         this.goBack()
       }
     } catch (error) {
-      //console.log('postSRInquiry>>>', error)
+      console.log('postTerm>>>', error)
     }
   }
 
@@ -87,9 +105,9 @@ class FilterSettingScreen extends PureComponent {
   getInquiryNum = async () => {
     try {
       const response = await API.getInquiryNum()
-      //console.log('getInquiryNum>>>', response)
+      console.log('getInquiryNum>>>', response)
       if (response.success) {
-        this.setState({inquiryNum: response.inquiry_number})
+        this.setState({inquiryNum: response.inquiry_number, limit_days : response.limit_days})
       }
     } catch (error) {
       //console.log('getInquiryNum>>>', error)
@@ -99,9 +117,9 @@ class FilterSettingScreen extends PureComponent {
   getSRInquiry = async () => {
     try {
       const response = await API.getSRInquiry()
-      //console.log('getSRInquiry>>>', response)
+      console.log('getSRInquiry>>>', response)
       if (response.success) {
-        this.setState({SRInquiryNum: response.showroom_inquiry_contact, email: response.showroom_inquiry_email})
+        this.setState({SRInquiryNum: response.showroom_inquiry_contact, email: response.showroom_inquiry_email,inquiry_charge: response.inquiry_charge})
       }
     } catch (error) {
       //console.log('getSRInquiry>>>', error)
@@ -126,7 +144,8 @@ class FilterSettingScreen extends PureComponent {
     this.setState({select: select})
   }
   selectView() {
-    const {notice, inquiryNum, SRInquiryNum, email} = this.state
+    const {notice, inquiryNum, SRInquiryNum, email,inquiry_charge,limit_days} = this.state;
+    console.log('limit_days',limit_days)
     switch (this.state.select) {
       case '공지사항':
         return (
@@ -148,7 +167,7 @@ class FilterSettingScreen extends PureComponent {
             <TextInput
               keyboardType={'number-pad'}
               style={styles.numberBox}
-              placeholder={'02-2222-2222'}
+              placeholder={'문의번호를 입력해 주세요.'}
               placeholderTextColor={mConst.gray}
               value={mUtils.isEmpty(inquiryNum) ? null : mUtils.allNumber(inquiryNum)}
               onChangeText={text => {
@@ -157,13 +176,37 @@ class FilterSettingScreen extends PureComponent {
             />
           </View>
         )
-      case '쇼룸문의':
+      case '기간설정':
         return (
           <View style={{flex: 1}}>
             <TextInput
               keyboardType={'number-pad'}
               style={styles.numberBox}
-              placeholder={'02-2222-2222'}
+              placeholder={'홀딩요청 최대기간 일수로 입력하세요(최대60일)'}
+              placeholderTextColor={mConst.gray}
+              value={limit_days.toString()}
+              onChangeText={text => {
+                this.setState({limit_days: text})
+              }}
+            />
+          </View>
+        )
+      case '쇼룸문의':
+        return (
+          <View style={{flex: 1}}>
+             <TextInput
+              style={styles.numberBox}
+              placeholder={'담당자명을 입력하세요'}
+              placeholderTextColor={mConst.gray}
+              value={inquiry_charge}
+              onChangeText={text => {
+                this.setState({inquiry_charge: text})
+              }}
+            />
+            <TextInput
+              keyboardType={'number-pad'}              
+              style={{...styles.numberBox, marginTop: mUtils.wScale(10)}}
+              placeholder={'연락처를 입력하세요'}
               placeholderTextColor={mConst.gray}              
               value={mUtils.isEmpty(SRInquiryNum) ? null : mUtils.allNumber(SRInquiryNum)}
               onChangeText={text => {
@@ -172,7 +215,7 @@ class FilterSettingScreen extends PureComponent {
             />
             <TextInput
               style={{...styles.numberBox, marginTop: mUtils.wScale(10)}}
-              placeholder={'ADQWFDA@naver.com'}
+              placeholder={'이메일을 입력하세요'}
               placeholderTextColor={mConst.gray}
               value={email}
               onChangeText={text => {
@@ -205,9 +248,7 @@ class FilterSettingScreen extends PureComponent {
           {this.selectView()}
           <TouchableOpacity
             style={styles.rightButton}
-            onPress={() => {
-              this.postNotice()
-            }}
+            onPress={() => {this.postNotice()}}
           >
             <Text style={styles.rightText}>Confirm</Text>
           </TouchableOpacity>

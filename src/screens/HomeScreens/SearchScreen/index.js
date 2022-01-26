@@ -73,6 +73,33 @@ class SearchScreen extends PureComponent {
     })
   }
 
+  requestMapList = (list,ismode) => {
+    return list.map((item, index) => {
+      return (
+        <TouchableOpacity 
+          key={index} style={styles.layoutWrap}
+          onPress={() => {this.pushTo('SampleRequestsDetailScreen', {no: item.req_no})}}
+        >
+          <View style={styles.layoutLeft}>
+            <FastImage resizeMode={'cover'} style={styles.modelImg} source={{uri: item.img_url_adres}} />
+          </View>          
+          <View style={styles.layoutRight}>
+            <Text style={styles.brand}>{item.showroom_nm}</Text>
+            <Text style={styles.brand}>{item.contact_user_nm}</Text>
+            <Text style={styles.dt}>{mUtils.phoneFormat(item?.contact_user_phone)}</Text>
+            <Text style={styles.dt}>{mUtils.getShowDate(item.req_dt,'YYYY-MM-DD')}</Text>
+            { ismode === 'brand' &&
+            <Text style={styles.dt}>
+            {!mUtils.isEmpty(item.celeb_list) && '셀러브리티 : '} 
+              {item.celeb_list.map((citem) => ( citem))}
+            </Text>
+            }
+          </View>
+        </TouchableOpacity>
+      )
+    })
+  }
+
   search = text => {
     if ( this.props.user.subScrbeStatus ) {
       this.setState({loading: true, keyword: text}, () => {
@@ -88,7 +115,7 @@ class SearchScreen extends PureComponent {
     const {keyword} = this.state
     try {
       const response = await API.getAllSearch({
-        search_text: keyword,
+        search_text: keyword.toString().trim(),
       })
       //console.log('getAllSearch>>>', response)
       if (response.success) {
@@ -159,6 +186,11 @@ class SearchScreen extends PureComponent {
                             Lookbook ({brand.lookbook.length})
                           </Text>
                           {this.lookbookMapList(brand.lookbook)}
+                          <Text numberOfLines={2} style={styles.subTitle}>
+                            Sample Request ({brand.request.length})
+                          </Text>
+                          {this.requestMapList(brand.request,'brand')}
+                          
                         </>
                       </ScrollView>
                     ) : (
@@ -173,6 +205,10 @@ class SearchScreen extends PureComponent {
                       <>
                         <Text style={styles.subTitle}>Digital Showroom ({magazine.showroom.length})</Text>
                         {this.mapList(magazine.showroom)}
+                        <Text numberOfLines={2} style={styles.subTitle}>
+                            Sample Request ({magazine.request.length})
+                          </Text>
+                          {this.requestMapList(magazine.request,'magazine')}
                       </>
                     </ScrollView>
                   ) : (

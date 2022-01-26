@@ -63,7 +63,7 @@ export default StyleSheet.create({
   },
   smallDesc: {
     fontFamily: 'NotoSansKR-Regular',
-    fontSize: 11,
+    fontSize: 10,
     textAlign: 'left',
     color: mConst.black,
   },
@@ -75,7 +75,7 @@ export default StyleSheet.create({
   },
   brandDate: {
     fontFamily: 'Roboto-Regular',
-    fontSize: 11,
+    fontSize: 10,
     textAlign: 'left',
     color: '#999999',
   },
@@ -153,7 +153,7 @@ export default StyleSheet.create({
     paddingHorizontal: mUtils.wScale(8),
     marginBottom: mUtils.wScale(5),
     justifyContent: 'space-between',
-    paddingVertical: mUtils.wScale(10),
+    paddingVertical: mUtils.wScale(5),
   },
   dayReqUnit: {
     width: mUtils.wScale(290)/3,
@@ -294,5 +294,16 @@ export default StyleSheet.create({
   menuOption: {
     paddingHorizontal: mUtils.wScale(15),
     paddingVertical: mUtils.wScale(8),
+  },
+  memoFixed : {
+    position:'absolute',
+    top:0,
+    left:0,
+    width:mUtils.wScale(30),
+    height:mUtils.wScale(30),
+  },
+  memoSmallImg: {
+    width: mUtils.wScale(30),
+    height: mUtils.wScale(30),
   },
 })

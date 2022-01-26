@@ -105,7 +105,7 @@ export default StyleSheet.create({
     alignItems: center ? 'center' : undefined,
     height: mUtils.wScale(30) * heightScale,
     borderWidth: StyleSheet.hairlineWidth,
-    borderBottomWidth: center ? StyleSheet.hairlineWidth : 0,
+    borderBottomWidth: center ? heightScale > 1 ? StyleSheet.hairlineWidth : 0 : 0,
     backgroundColor,
   }),
   row: (backgroundColor = mConst.white) => ({

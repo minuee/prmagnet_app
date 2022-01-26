@@ -151,7 +151,7 @@ class HomeScreen extends PureComponent {
                         ) : (
                             <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>{item.brand_nm}</Text>
                         )} */}
-                        <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>Sheet No:{item.req_no}</Text>
+                       {/*  <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>Sheet No:{item.req_no}</Text> */}
                     </TouchableOpacity>
                     )
                     }
@@ -297,7 +297,7 @@ class HomeScreen extends PureComponent {
                                     <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}> */}
                                         {subItem.req_user_nm}{mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position}
                                     </Text>  
-                                    <Text style={{...styles.custom, marginTop: mUtils.wScale(2)}}> Sheet No:{subItem.req_no}</Text>                          
+                                    {/* <Text style={{...styles.custom, marginTop: mUtils.wScale(2)}}> Sheet No:{subItem.req_no}</Text>  */}
                                 </TouchableOpacity>
                                 
                             )
@@ -325,7 +325,7 @@ class HomeScreen extends PureComponent {
                                         {subItem.target_user_nm}{mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}
                                     </Text>   
                                     
-                                    <Text style={{...styles.custom, marginTop: mUtils.wScale(2)}}> Sheet No:{subItem.req_no}</Text>                       
+                                    {/* <Text style={{...styles.custom, marginTop: mUtils.wScale(2)}}> Sheet No:{subItem.req_no}</Text>     */}                   
                                 </TouchableOpacity>
                             )
                         }

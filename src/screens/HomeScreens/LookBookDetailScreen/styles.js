@@ -63,7 +63,7 @@ export default StyleSheet.create({
   },
   desc3: {
     fontFamily: 'Roboto-Regular',
-    fontSize: 12,
+    fontSize: 11,
     textAlign: 'left',
     color: '#070708',
    

@@ -31,7 +31,7 @@ class DigitalSRDetailScreen extends PureComponent {
 
   copyToClipboard = () => {
     const {share_uuid,no} = this.state
-    Clipboard.setString(` https://www.prmagnet.co.kr/share-lookbook-detail/${share_uuid}/${no}`)
+    Clipboard.setString(` https://www.prmagnet.kr/share-lookbook-detail/${share_uuid}/${no}`)
     this.setState({link: false})
     setTimeout(() => {
       this.alert('', '복사 완료')
@@ -101,7 +101,7 @@ class DigitalSRDetailScreen extends PureComponent {
       const response = await KakaoShareLink.sendFeed({
         content: {
           title: '[PR MAGENT LookBook Share]' + screenTitle,
-          imageUrl: mUtils.isEmpty(data.sample_list[0].sample_image_list[0].full_url) ? 'https://www.prmagnet.co.kr/logo_meta2.png' : data.sample_list[0].sample_image_list[0].full_url,
+          imageUrl: mUtils.isEmpty(data.sample_list[0].sample_image_list[0].full_url) ? 'https://www.prmagnet.kr/logo_meta2.png' : data.sample_list[0].sample_image_list[0].full_url,
           link: {
             webUrl: domain + "share-lookbook-detail/" + share_uuid + "/" + no,
             mobileWebUrl: domain + "share-lookbook-detail/" + share_uuid+ "/" + no,
@@ -236,7 +236,7 @@ class DigitalSRDetailScreen extends PureComponent {
                     </View>
                     <View style={styles.layoutRight}> 
                       <Text style={{...styles.right}}>
-                        {item.color_text.map((d, i) =>
+                        {item.color_text?.map((d, i) =>
                           i === item.color_text.length - 1 ? d : d + ", "
                         )}
                        </Text>
@@ -311,7 +311,7 @@ class DigitalSRDetailScreen extends PureComponent {
             >
               <View style={styles.urlBox}>
                 <Text style={styles.urlText} numberOfLines={1}>
-                  https://www.prmagnet.co.kr/share-lookbook/{share_uuid}
+                  https://www.prmagnet.kr/share-lookbook/{share_uuid}
                 </Text>
               </View>
               <View style={styles.urlButton}>

@@ -34,7 +34,7 @@ const genderData = [
   {key: 'All Gender', value: null},
   {key: 'Women', value: 'SSS001'},
   {key: 'Men', value: 'SSS002'},
-  {key: 'Unisex', value: 'SSS003'},
+  {key: 'Genderless', value: 'SSS003'},
 ]
 
 class BrandSchedulerScreen extends PureComponent {
@@ -82,7 +82,6 @@ class BrandSchedulerScreen extends PureComponent {
         season_cd_id: this.state.season_year.season_cd_id || null,
         gender: this.state.gender.value || null,
       })
-      console.log('getSchedular>>>>', JSON.stringify(response))
       this.setState(prevState => ({
         data: response,
         start: params?.start || this.state.start,
@@ -109,7 +108,6 @@ class BrandSchedulerScreen extends PureComponent {
   }
 
   moveDetail = async(item,idx) => {
-    //console.log('moveDetail>>>>', item);
     this.pushTo('SampleRequestsDetailScreen', {no: item.req_no});
   }
 
@@ -117,8 +115,6 @@ class BrandSchedulerScreen extends PureComponent {
     const {data, toggle, start, end, season_year, gender} = this.state;
     const {user} = this.props;
     const dates = mUtils.getDayArray(this.state.start, this.state.end);
-
-    //console.log('dates',dates)
     if ( this.state.loading  ) {
       return (
           <Loading />
@@ -129,15 +125,10 @@ class BrandSchedulerScreen extends PureComponent {
           <Header pushTo={this.pushTo} alarmSet={user.alarm} />          
             <View style={styles.layout}>
               <Text style={styles.mainTitle}>Scheduler</Text>
-              {
-              data ?
+              
               <View style={styles.menuGroup}>
                 <Menu>
-                  <MenuTrigger
-                    customStyles={{
-                      TriggerTouchableComponent: TouchableOpacity,
-                    }}
-                  >
+                  <MenuTrigger customStyles={{ TriggerTouchableComponent: TouchableOpacity}}>
                     <View style={styles.layout0}>
                       <Text style={styles.season}>
                         {season_year.season_year} {season_year.season_simple_text}
@@ -146,7 +137,7 @@ class BrandSchedulerScreen extends PureComponent {
                     </View>
                   </MenuTrigger>
                   <MenuOptions optionsContainerStyle={styles.menuOptions}>
-                    {data.season_list.map((item, index) => {
+                    {data?.season_list?.map((item, index) => {
                       return (
                         <MenuOption
                           key={index}
@@ -166,11 +157,7 @@ class BrandSchedulerScreen extends PureComponent {
                   </MenuOptions>
                 </Menu>
                 <Menu>
-                  <MenuTrigger
-                    customStyles={{
-                      TriggerTouchableComponent: TouchableOpacity,
-                    }}
-                  >
+                  <MenuTrigger customStyles={{TriggerTouchableComponent: TouchableOpacity}} >
                     <View style={[styles.layout0, {marginLeft: mUtils.wScale(15)}]}>
                       <Text style={styles.season}>{gender.key}</Text>
                       <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
@@ -195,9 +182,7 @@ class BrandSchedulerScreen extends PureComponent {
                   </MenuOptions>
                 </Menu>
               </View>
-              :
-              null
-              }
+             
             </View>       
             { this.props.user.subScrbeStatus  &&
             <View style={{...styles.layout, backgroundColor: '#f6f6f6', paddingHorizontal: mUtils.wScale(20), paddingVertical: mUtils.wScale(10)}}>
@@ -245,6 +230,14 @@ class BrandSchedulerScreen extends PureComponent {
                             <View style={[{width: mUtils.wScale(80)}]}>
                               <FastImage resizeMode={'cover'} style={styles.modelImg} source={{uri: dItem.image_list}} />
                               <Text style={{...styles.title, marginVertical: mUtils.wScale(10)}}>{dItem.showroom_nm}</Text>
+                              <TouchableOpacity
+                                  style={{...styles.memoFixed}}
+                                  onPress={() => {
+                                    this.pushTo('ShowroomMemoScreen', {no: dItem.showroom_no, date: '', name: dItem.showroom_nm})
+                                  }}
+                                >
+                                  <FastImage resizeMode={'contain'} style={styles.memoSmallImg} source={memoImg} />
+                                </TouchableOpacity>
                             </View>
                             <View style={{width: mUtils.wScale(290),}}>
                               {//(memoList.length > 0 || reqList.length > 0) && (
@@ -261,7 +254,7 @@ class BrandSchedulerScreen extends PureComponent {
                                     const curMemos = memoList.filter(m => mUtils.isSameDay(item, m.memo_dt))
                                     const curReqs = reqList.filter(r => mUtils.isDayBetween(item, r.start_dt, r.end_dt))
                                     return (
-                                      <View style={{flexDirection: 'column'}}>
+                                      <View style={{flexDirection: 'column'}}>                                        
                                         <View style={styles.dayTextWrapper}>
                                           <Text style={styles.dayText}>{mUtils.getShowDate(Math.floor(item.valueOf() / 1000))}</Text>
                                         </View>
@@ -284,7 +277,7 @@ class BrandSchedulerScreen extends PureComponent {
                                                 })
                                               }}
                                             >
-                                              <Text style={{...styles.smallDesc}}>{mItem.content}</Text>
+                                              <Text style={{...styles.smallDesc}}  numberOfLines={2} ellipsizeMode={'tail'}>{mItem.content}</Text>
                                               <Text style={{...styles.brandDate}}>{mUtils.getShowDate(mItem.memo_dt, 'YYYY-MM-DD')}</Text>
                                             </TouchableOpacity>
                                           )

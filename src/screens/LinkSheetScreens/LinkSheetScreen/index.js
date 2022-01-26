@@ -22,7 +22,7 @@ const moreImg = require('../../../images/navi/more_4.png');
 const schedulerImg = require('../../../images/navi/scheduler_1.png');
 const checkImg = require('../../../images/navi/check_6.png');
 const noCheckImg = require('../../../images/navi/no_check_3.png');
-
+const settingImg = require('../../../images/navi/setting_1.png');
 class LinkSheetScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -379,7 +379,10 @@ class LinkSheetScreen extends React.Component {
                                         <Text style={{color:'#cccccc'}}>■ <Text style={{color:'#000'}}>발송완료</Text></Text>
                                     </View>
                                     <TouchableOpacity style={this.state.isNotClear == 'all' ? styles.defaultBox : styles.checkBox} onPress={()=>this.handleStateChange(this.state.isNotClear)}>
-                                        <Text style={{color:'#ff0000'}}>■ 미발송</Text>
+                                        <Text style={{color:'#ed6c59'}}>■ 미발송</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.defaultNoneBox} onPress={() => {this.pushTo('SheetSettingScreen') }} >
+                                        <FastImage resizeMode={'contain'} style={styles.settingImg} source={settingImg} />
                                     </TouchableOpacity>
                                 </>
                                 :
@@ -388,7 +391,7 @@ class LinkSheetScreen extends React.Component {
                                         <Text style={{color:'#cccccc'}}>■ <Text style={{color:'#000'}}>반납완료</Text></Text>
                                     </View>
                                     <TouchableOpacity style={this.state.isNotClear == 'all' ? styles.defaultBox : styles.checkBox} onPress={()=>this.handleStateChange(this.state.isNotClear)}>
-                                        <Text style={{color:'#ff0000'}}>■ 미반납</Text>
+                                        <Text style={{color:'#ed6c59'}}>■ 미반납</Text>
                                     </TouchableOpacity>
                                 </> 
                                 :
@@ -399,7 +402,7 @@ class LinkSheetScreen extends React.Component {
                                         <Text style={{color:'#cccccc'}}>■ <Text style={{color:'#000'}}>수령완료</Text></Text>
                                     </View>
                                     <TouchableOpacity style={this.state.isNotClear == 'all' ? styles.defaultBox : styles.checkBox} onPress={()=>this.handleStateChange(this.state.isNotClear)}>
-                                        <Text style={{color: this.state.isNotClear == 'all' ? '#ff0000' : '#ff0000'}}>■ 미수령</Text>
+                                        <Text style={{color: this.state.isNotClear == 'all' ? '#ed6c59' : '#ed6c59'}}>■ 미수령</Text>
                                     </TouchableOpacity>
                                 </>
                                 :
@@ -408,7 +411,7 @@ class LinkSheetScreen extends React.Component {
                                         <Text style={{color:'#cccccc'}}>■ <Text style={{color:'#000'}}>반납완료</Text></Text>
                                     </View>
                                     <TouchableOpacity style={this.state.isNotClear == 'all' ? styles.defaultBox : styles.checkBox} onPress={()=>this.handleStateChange(this.state.isNotClear)}>
-                                        <Text style={{color:'#ff0000'}}>■ 미반납</Text>
+                                        <Text style={{color:'#ed6c59'}}>■ 미반납</Text>
                                     </TouchableOpacity>
                                 </>
                                 }
@@ -460,11 +463,11 @@ class LinkSheetScreen extends React.Component {
                                                         //onPress={() =>this.pushTo(mConst.getUserType() == 'B' ? 'SendOutBScreen' : 'SendOutScreen',{reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
                                                     >     
                                                         { mConst.getUserType() == 'B' ?                                                   
-                                                            <View style={{...styles.box1, backgroundColor: subItem.sendout_yn ? mUtils.isEmpty(subItem.mgzn_color) ? '#ddd' : subItem.mgzn_color : '#ff0000'}}>
+                                                            <View style={{...styles.box1, backgroundColor: subItem.sendout_yn ? mUtils.isEmpty(subItem.mgzn_color) ? '#ddd' : subItem.mgzn_color : '#ed6c59'}}>
                                                                 {this.renderLogo(subItem,subIndex,selectTitle)}
                                                             </View>
                                                         :
-                                                            <View style={{...styles.box1, backgroundColor:  subItem.return_yn ? mUtils.isEmpty(subItem.brand_color) ? '#ddd' : subItem.brand_color : '#ff0000'}}>
+                                                            <View style={{...styles.box1, backgroundColor:  subItem.return_yn ? mUtils.isEmpty(subItem.brand_color) ? '#ddd' : subItem.brand_color : '#ed6c59'}}>
                                                             {this.renderLogo(subItem,subIndex,selectTitle)}
                                                         </View>
                                                         }
@@ -482,7 +485,7 @@ class LinkSheetScreen extends React.Component {
                                                         //onPress={() =>this.pushTo('PickupsScreen',{reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
                                                         onPress={() =>this.handleLinkSheetDetailEach(subItem.req_no,item.showroomData,item.date)}
                                                     >                                                        
-                                                        <View style={{...styles.box1, backgroundColor: ( subItem.pickup_yn ) ? mUtils.isEmpty(subItem.brand_color) ? '#ddd' :subItem.brand_color : '#ff0000'}}>
+                                                        <View style={{...styles.box1, backgroundColor: ( subItem.pickup_yn ) ? mUtils.isEmpty(subItem.brand_color) ? '#ddd' :subItem.brand_color : '#ed6c59'}}>
                                                             {this.renderLogo(subItem,subIndex,selectTitle)}
                                                         </View>
                                                         
@@ -500,7 +503,7 @@ class LinkSheetScreen extends React.Component {
                                                         onPress={() =>this.handleLinkSheetDetailEach(subItem.req_no,item.showroomData,item.date)}
                                                         //onPress={() =>this.pushTo('ReturnScreen',{reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
                                                     >
-                                                        <View style={{...styles.box1, backgroundColor:  subItem.return_yn ? mUtils.isEmpty(subItem.mgzn_color) ? '#ddd' :subItem.mgzn_color : '#ff0000'}}>
+                                                        <View style={{...styles.box1, backgroundColor:  subItem.return_yn ? mUtils.isEmpty(subItem.mgzn_color) ? '#ddd' :subItem.mgzn_color : '#ed6c59'}}>
                                                             {this.renderLogo(subItem,subIndex,selectTitle)}
                                                         </View>
                                                         

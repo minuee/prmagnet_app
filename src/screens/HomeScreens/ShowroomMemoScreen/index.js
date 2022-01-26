@@ -18,15 +18,6 @@ import API from '../../../common/aws-api';
 const moreImg = require('../../../images/navi/more_3.png');
 const checkImg = require('../../../images/navi/check_5.png');
 
-LocaleConfig.locales['en'] = {
-  monthNames: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
-  monthNamesShort: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-  dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-  dayNamesShort: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-  today: 'Today',
-}
-LocaleConfig.defaultLocale = 'en';
-
 class ScheduleMemoScreen extends PureComponent {
   constructor(props) {
     super(props)
@@ -55,41 +46,21 @@ class ScheduleMemoScreen extends PureComponent {
     this.removeFocus()
   }
   handleOnFocus = () => {
-    const {no, date, name} = this.params
-    if (no && date) {
-      this.setState({select: {showroom_no: no, showroom_nm: name}, selectedTimeStamp: date}, () => {
-        this.getMemo()
+    const {no, name} = this.params
+    if (no && name) {
+      this.setState({select: {showroom_no: no, showroom_nm: name}}, () => {
+        this.getShowroomMemo(no)
       })
-    } else {
-      this.getMemo()
     }
   }
 
-  getShowRoomList = async date => {
-    //console.log('?!?!!!!!', date)
-    try {
-      const response = await API.getShowRoomList({
-        date: date,
-      })
-      //console.log('getShowRoomList>>>', response)
-      if (response.success) {
-        this.setState({
-          look: response.list,
-        })
-      }
-    } catch (error) {
-      //console.log('getShowRoomList>>>', error)
-    }
-  }
 
-  getMemo = async () => {
-    const {showroom_no, selectedTimeStamp, select} = this.state
+  getShowroomMemo = async (no) => {
     try {
-      const response = await API.getMemo({
-        showroom_no: select ? select.showroom_no : '',
-        date: selectedTimeStamp,
+      const response = await API.getShowroomMemo({
+        showroom_no: no,
       })
-      //console.log('getMemo>>>>>>', response)
+      console.log('getMemo>>>>>>', response)
       if (response.memo) {
         this.setState({
           desc: response.memo.content,
@@ -106,7 +77,7 @@ class ScheduleMemoScreen extends PureComponent {
         })
       }
     } catch (error) {
-      //console.log('getMemo>>>>>>', error)
+      console.log('getMe222mo>>>>>>', error)
     }
   }
 
@@ -140,7 +111,7 @@ class ScheduleMemoScreen extends PureComponent {
       })
       console.log('postMemo>>>>', response)
       if (response.success) {
-        this.props.setIsMemoUpdate(true)
+        //this.props.setIsMemoUpdate(true)
         setTimeout(() => {
           this.alert('추가 완료', '메모를 추가 완료하였습니다.', [{onPress: () => this.goBack()}])
         }, 100)
@@ -160,15 +131,16 @@ class ScheduleMemoScreen extends PureComponent {
         color: selectedColor,
         content: desc,
       })
-      console.log('putMemo>>>>', response)
+      
       if (response.success) {
-        this.props.setIsMemoUpdate(true)
+        console.log('putMemo>>>>', response)
+        //this.props.setIsMemoUpdate(true)
         setTimeout(() => {
           this.alert('수정 완료', '메모를 수정 완료하였습니다.', [{onPress: () => this.goBack()}])
         }, 100)
       }
     } catch (error) {
-      //console.log('putMemo>>>>', error)
+      console.log('putMemo>>>>', error)
     }
   }
 
@@ -180,7 +152,7 @@ class ScheduleMemoScreen extends PureComponent {
       })
       //console.log('delMemo>>>>', response)
       if (response.success) {
-        this.props.setIsMemoUpdate(true)
+        //this.props.setIsMemoUpdate(true)
         setTimeout(() => {
           this.alert('삭제 완료', '메모를 삭제 완료하였습니다.', [{onPress: () => this.goBack()}])
         }, 100)
@@ -216,7 +188,7 @@ class ScheduleMemoScreen extends PureComponent {
   }
 
   render() {
-    const {color1, color2, select, look, selected, drop, desc, selectedColor, type, selectedTimeStamp} = this.state
+    const {color1, color2, select, look, selected, drop,memo_no, desc, selectedColor, type, selectedTimeStamp} = this.state
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
@@ -248,17 +220,11 @@ class ScheduleMemoScreen extends PureComponent {
               )
             })}
           </View>
-          <View style={{paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(20)}}>
-            <TouchableOpacity
-              style={{...styles.layout2}}
-              onPress={() => {this.setState({drop: !drop})}}
-            >
-              <Text style={styles.select}>{selectedTimeStamp ? mUtils.getShowDate(selectedTimeStamp, 'YYYY.MM.DD (ddd)') : '0000.00.00 (요일)'}</Text>
-              <FastImage resizeMode={'contain'} source={moreImg} style={styles.moreImg} />
-            </TouchableOpacity>
-          </View>
-          <View style={{paddingHorizontal: mUtils.wScale(20)}}>
-            <DropDown options={look} value={select} onSelect={this.onSelect} placeholder={'선택해주세요.'} />
+          
+          <View style={styles.nameWrap}>
+            <Text style={{...styles.title}}>
+              {this.state.select.showroom_nm}
+            </Text>
           </View>
 
           <View style={{paddingHorizontal: mUtils.wScale(20)}}>
@@ -291,30 +257,28 @@ class ScheduleMemoScreen extends PureComponent {
           ) : null}
         </ScrollView>
         <View style={styles.layout}>
-          {type && (
-            <TouchableOpacity
-              style={styles.leftButton}
-              onPress={() => {
-                this.alert('메모 삭제', '해당 메모를 삭제하시겠습니까?', [
-                  {
-                    onPress: () => {
-                      this.delMemo()
+            {!mUtils.isEmpty(memo_no) && (
+              <TouchableOpacity
+                style={styles.leftButton}
+                onPress={() => {
+                  this.alert('메모 삭제', '해당 메모를 삭제하시겠습니까?', [
+                    {
+                      onPress: () => {this.delMemo()},
                     },
-                  },
-                  {onPress: () => null},
-                ])
-              }}
-            >
-              <Text style={styles.leftText}>Delete</Text>
-            </TouchableOpacity>
-          )}
+                    {onPress: () => null},
+                  ])
+                }}
+              >
+                <Text style={styles.leftText}>Delete</Text>
+              </TouchableOpacity>
+            )}
 
-          <TouchableOpacity
-            style={{...styles.box, width: type ? '70%' : '100%'}}
-            onPress={() => {this.setupConfirm()}}
-          >
-            <Text style={styles.bottom}>Confirm</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={{...styles.box, width: type ? '70%' : '100%'}}
+              onPress={() => {this.setupConfirm()}}
+            >
+              <Text style={styles.bottom}>Confirm</Text>
+            </TouchableOpacity>
         </View>
       </SafeAreaView>
     )

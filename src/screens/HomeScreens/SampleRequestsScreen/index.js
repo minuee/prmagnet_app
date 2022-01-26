@@ -1215,7 +1215,7 @@ class SampleRequestsScreen extends PureComponent {
                 </View>
                 }
               </View>
-              <Text style={styles.smallTitle}>유가 여부 </Text>
+              <Text style={styles.smallTitle}>유가 여부 <Text style={{color: '#7eb2b2'}}>*</Text></Text>
               { type ? 
               <>
                 <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>

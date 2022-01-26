@@ -89,6 +89,15 @@ export default StyleSheet.create({
     borderRadius: mUtils.wScale(7),
     marginBottom: mUtils.wScale(12),
   },
+  settingImg: {
+    width: mUtils.wScale(18),
+    height: mUtils.wScale(18),
+    marginHorizontal: mUtils.wScale(7),
+  },
+  defaultNoneBox : {
+    padding:5,
+    marginLeft:10
+  },
   defaultBox : {
     borderWidth: 0.7,
     borderColor: '#f3f3f3',

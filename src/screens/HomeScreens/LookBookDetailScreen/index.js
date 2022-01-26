@@ -36,7 +36,7 @@ class LookBookDetailScreen extends PureComponent {
 
   copyToClipboard = () => {
     const {share_uuid} = this.state
-    Clipboard.setString(` https://www.prmagnet.co.kr/share-lookbook/${share_uuid}`)
+    Clipboard.setString(` https://www.prmagnet.kr/share-lookbook/${share_uuid}`)
     this.setState({link: false})
     setTimeout(() => {
       this.alert('', '복사 완료')
@@ -92,7 +92,7 @@ class LookBookDetailScreen extends PureComponent {
       const response = await KakaoShareLink.sendFeed({
         content: {
           title: '[PR MAGENT LookBook Share]' +brandTitle,
-          imageUrl: 'https://www.prmagnet.co.kr/logo_meta2.png',
+          imageUrl: 'https://www.prmagnet.kr/logo_meta2.png',
           link: {
             webUrl: domain + "share-lookbook/" + share_uuid,
             mobileWebUrl: domain + "share-lookbook/" + share_uuid,
@@ -154,9 +154,12 @@ class LookBookDetailScreen extends PureComponent {
         </View>
         <Text style={styles.title1}>{item.showroom_nm}</Text>
         <View style={styles.desc3Wrap}>
-          {item.category_list.map((item, index) => {
+          {/* {item.category_list.map((item, index) => {
             return <Text style={styles.desc3} key={index}>{item}</Text>
-          })}
+          })} */}
+          {item.new_category_list !== null &&
+            item.new_category_list.map((d,idx) => <Text key={d} style={styles.desc3}>{idx>0 && ","} {d.category_nm}{!d.is_input && '(미입고)'}</Text>)
+          }
           {item.all_in_yn ? <Text style={styles.desc3}>{"  "}ALL IN</Text> : null}
         </View>
       </View>
@@ -211,7 +214,7 @@ class LookBookDetailScreen extends PureComponent {
             >
               <View style={styles.urlBox}>
                 <Text style={styles.urlText} numberOfLines={1}>
-                  https://www.prmagnet.co.kr/share-lookbook/{share_uuid}
+                  https://www.prmagnet.kr/share-lookbook/{share_uuid}
                 </Text>
               </View>
               <View style={styles.urlButton}>

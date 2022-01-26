@@ -30,11 +30,13 @@ import AccountSettingScreen from './HomeScreens/AccountSettingScreen';
 import LookBookScreen from './HomeScreens/LookBookScreen';
 import LookBookDetailScreen from './HomeScreens/LookBookDetailScreen';
 import FilterSettingScreen from './HomeScreens/FilterSettingScreen';
+import SheetSettingScreen from './HomeScreens/SheetSettingScreen';
 import DigitalSRScreen from './HomeScreens/DigitalSRScreen';
 import DigitalSRDetailScreen from './HomeScreens/DigitalSRDetailScreen';
 import FavoritesScreen from './HomeScreens/FavoritesScreen';
 import BrandSchedulerScreen from './HomeScreens/BrandSchedulerScreen';
 import ScheduleMemoScreen from './HomeScreens/ScheduleMemoScreen';
+import ShowroomMemoScreen from './HomeScreens/ShowroomMemoScreen';
 import NoticeScreen from './HomeScreens/NoticeScreen';
 import SampleRequestsScreen from './HomeScreens/SampleRequestsScreen';
 import SampleRequestsListScreen from './HomeScreens/SampleRequestsListScreen';
@@ -142,11 +144,13 @@ class RootScreen extends PureComponent {
         <MemberStack.Screen name="SampleRequestsScreen" component={SampleRequestsScreen} />
         <MemberStack.Screen name="NoticeScreen" component={NoticeScreen} />
         <MemberStack.Screen name="ScheduleMemoScreen" component={ScheduleMemoScreen} />
+        <MemberStack.Screen name="ShowroomMemoScreen" component={ShowroomMemoScreen} />
         <MemberStack.Screen name="BrandSchedulerScreen" component={BrandSchedulerScreen} options={{headerShown: false}} />
         <MemberStack.Screen name="FavoritesScreen" component={FavoritesScreen} />
         <MemberStack.Screen name="DigitalSRDetailScreen" component={DigitalSRDetailScreen} />
         <MemberStack.Screen name="DigitalSRScreen" component={DigitalSRScreen} options={{headerShown: false}} />
         <MemberStack.Screen name="FilterSettingScreen" component={FilterSettingScreen} />
+        <MemberStack.Screen name="SheetSettingScreen" component={SheetSettingScreen} />
         <MemberStack.Screen name="LookBookDetailScreen" component={LookBookDetailScreen} />
         <MemberStack.Screen name="AccountSettingScreen" component={AccountSettingScreen} />
         <MemberStack.Screen name="NotiSettingScreen" component={NotiSettingScreen} />

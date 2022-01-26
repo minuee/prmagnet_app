@@ -702,6 +702,24 @@ const API = {
 
     return Api.post(apiName, path, init)
   },
+
+  getSheetNotice: () => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/send-out/notice`
+    const init = {}
+    return Api.get(apiName, path, init)
+  },
+  postSheetNotice: ({notice}) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/send-out/notice`
+    const myInit = {
+      body: {
+        content: notice,
+      },
+    }
+    return Api.post(apiName, path, myInit)
+  },
+
   getNotice: () => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/notice`
@@ -714,6 +732,8 @@ const API = {
     const init = {}
     return Api.get(apiName, path, init)
   },
+
+  
   getSRInquiry: () => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/showroom-inquiry`
@@ -740,16 +760,29 @@ const API = {
     }
     return Api.post(apiName, path, myInit)
   },
-  postSRInquiry: ({SRInquiryNum, email}) => {
+  postSRInquiry: ({SRInquiryNum, email,inquiry_charge}) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/showroom-inquiry`
     const myInit = {
       body: {
         showroom_inquiry_contact: SRInquiryNum,
         showroom_inquiry_email: email,
+        inquiry_charge : inquiry_charge
       },
     }
     return Api.post(apiName, path, myInit)
+  },
+
+  postlimitNumber: ({ limit_days }) => {
+    var apiName = v1Api;
+    var path = "/brand/limit-days";
+    var init = {
+      body: {
+        limit_days,
+      },
+    };
+
+    return Api.post(apiName, path, init);
   },
   putSampleRequests: ({recv_yn}) => {
     const apiName = v1Api
@@ -873,9 +906,11 @@ const API = {
     const path = `${mConst.getApiPath()}/search`
     const init = {
       queryStringParameters: {
-        search_text: search_text,
+        search_text: encodeURI(search_text),
+        ismobile:true
       },
     }
+    console.log('getAllSearch',init)
     return Api.get(apiName, path, init)
   },
   getMagazineNotice: ({search_text}) => {
@@ -1101,6 +1136,17 @@ const API = {
     }
     return Api.get(apiName, path, init)
   },
+  getShowroomMemo: ({showroom_no}) => {
+    console.log('?!?', mConst.getApiPath(),showroom_no)
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/showroom-memo`
+    var init = {
+      queryStringParameters: {
+        showroom_no: showroom_no
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
   getMemo: ({showroom_no, date}) => {
     //console.log('?!?', showroom_no, date)
     var apiName = v1Api
@@ -1114,7 +1160,7 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getShowRoomList: ({date}) => {
-    //console.log('>>>>', date)
+    console.log('>>>>', date)
     var apiName = v1Api
     var path = `${mConst.getApiPath()}/showroom-list/for-memo`
     var init = {
