@@ -1,23 +1,23 @@
-import React, {PureComponent} from 'react'
-import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity} from 'react-native'
-import {connect} from 'react-redux'
-import FastImage from 'react-native-fast-image'
-import Header from '../../common/Header'
-import _ from 'lodash'
+import React, {PureComponent} from 'react';
+import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity} from 'react-native';
+import {connect} from 'react-redux';
+import FastImage from 'react-native-fast-image';
+import Header from '../../common/Header';
+import _ from 'lodash';
 
-import mConst from '../../../common/constants'
-import mUtils from '../../../common/utils'
-import cBind, {callOnce} from '../../../common/navigation'
-import Text from '../../common/Text'
-import {Grid, Col, Row} from 'react-native-easy-grid'
-import styles from './styles'
-import API from '../../../common/aws-api'
-import Loading from '../../common/Loading'
-
-const calendarImg = require('../../../images/navi/scheduler_1.png')
-const airplaneImg = require('../../../images/navi/airplane_1.png')
-const dollarImg1 = require('../../../images/navi/dollar_1.png')
-const dollarImg2 = require('../../../images/navi/dollar_2.png')
+import mConst from '../../../common/constants';
+import mUtils from '../../../common/utils';
+import cBind, {callOnce} from '../../../common/navigation';
+import Text from '../../common/Text';
+import {Grid, Col, Row} from 'react-native-easy-grid';
+import styles from './styles';
+import API from '../../../common/aws-api';
+import Loading from '../../common/Loading';
+import Empty from '../../common/Empty';
+const calendarImg = require('../../../images/navi/scheduler_1.png');
+const airplaneImg = require('../../../images/navi/airplane_1.png');
+const dollarImg1 = require('../../../images/navi/dollar_1.png');
+const dollarImg2 = require('../../../images/navi/dollar_2.png');
 
 class MagazineSchedulerScreen extends PureComponent {
   constructor(props) {
@@ -158,7 +158,9 @@ class MagazineSchedulerScreen extends PureComponent {
               </TouchableOpacity>
             </View>
             <ScrollView style={{paddingLeft: mUtils.wScale(20), paddingTop: mUtils.wScale(25)}}>
-              {data.list.map((item, index) => {
+              {
+              data.list.length > 0 ?
+              data.list.map((item, index) => {
                 return (
                   <View key={index}>
                     <Text style={styles.text1}>
@@ -237,7 +239,10 @@ class MagazineSchedulerScreen extends PureComponent {
                       })}
                   </View>
                 )
-              })}
+              })
+              :
+              <Empty />
+            }
             </ScrollView>
           </>
         ) : (

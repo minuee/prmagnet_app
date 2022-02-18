@@ -3,10 +3,30 @@ import {StyleSheet} from 'react-native'
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 
+
 export default StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: mConst.white,
+  },
+  fixedUpButton : {
+    position:'absolute',bottom:150,right:20,width:30,height:30,borderColor:'#ccc',borderWidth:1,borderRadius:15,alignItems:'center',justifyContent:'center',zIndex:100
+  },
+  topLayout : {
+    flex:1,
+    alignItems:'center',
+    justifyContent:'flex-end',
+    minHeight:35,
+    flexDirection:'row'
+  },
+  bottomLayout : {
+    flex:1,
+    alignItems:'center',
+    justifyContent:'space-between',
+    minHeight:35,
+    flexDirection:'row',
+    paddingVertical: mUtils.wScale(10),
+    marginBottom:20
   },
   layout: {
     flex:1,
@@ -25,12 +45,12 @@ export default StyleSheet.create({
   layoutLeft : {
     flex:1,
     alignItems:'flex-start',
+    justifyContent:'center',
     minHeight:35
   },
   layoutRight : {
     flex:3,
     alignItems:'flex-end', 
-    
     justifyContent:'center',
     minHeight:35
   },

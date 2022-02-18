@@ -143,7 +143,7 @@ class NotificationScreen extends PureComponent {
       } else if (notice_type === 'subscribe') {
         this.alert('해당내용은 상세페이지를 제공하지 않습니다.');
         return;
-      } else if (notice_type === 'req' || notice_type === 'confirm' || notice_type === 'confirmchange') {
+      } else if (notice_type === 'req' || notice_type === 'confirm' || notice_type === 'confirmchange' || notice_type === 'cancel') {
         this.pushTo('SampleRequestsDetailScreen', {no:reqNo})
       } else if (notice_type === 'pickup' || notice_type === 'notpickup' ) {
         if ( !mUtils.isEmpty(date_info)) {
@@ -167,7 +167,7 @@ class NotificationScreen extends PureComponent {
       if (notice_type === 'brand') {
         this.pop();
         this.pushTo('ShowTab', {screen: 'ShowScreen', params: {brandId}});
-      } else if ( notice_type === 'req' || notice_type === 'confirm' ) {
+      } else if ( notice_type === 'req' || notice_type === 'confirm' || notice_type === 'cancel' ) {
         this.pushTo('SampleRequestsDetailScreen', {no:reqNo})
       } else if (notice_type === 'cms') {
         this.pushTo('NoticeDetailScreen', {no: noticeId});

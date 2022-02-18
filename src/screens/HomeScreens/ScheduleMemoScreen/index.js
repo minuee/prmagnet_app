@@ -258,7 +258,7 @@ class ScheduleMemoScreen extends PureComponent {
             </TouchableOpacity>
           </View>
           <View style={{paddingHorizontal: mUtils.wScale(20)}}>
-            <DropDown options={look} value={select} onSelect={this.onSelect} placeholder={'선택해주세요.'} />
+            <DropDown options={look} value={select} onSelect={this.onSelect} placeholder={'요일선택후 선택해주세요.'} />
           </View>
 
           <View style={{paddingHorizontal: mUtils.wScale(20)}}>

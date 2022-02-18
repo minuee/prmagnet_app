@@ -264,12 +264,12 @@ class SendOutScreen extends PureComponent {
               </TouchableOpacity>
             )}
           </View>
-          <View style={styles.middleWrapper}>
+          {/* <View style={styles.middleWrapper}>
             <Text style={styles.middleText}>Sheet No</Text>
             <Text style={styles.middleDescText}>
               {data.req_no}
             </Text>
-          </View>
+          </View> */}
           <View style={styles.middleWrapper}>
             <Text style={styles.middleText}>매체명</Text>
             <Text style={styles.middleDescText}>

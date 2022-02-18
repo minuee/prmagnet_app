@@ -15,17 +15,33 @@ export default StyleSheet.create({
     textAlign: 'left',
     color: mConst.black,
   },
+  magazinetitle: {
+    fontSize: 16,
+    fontFamily: 'Roboto-Medium',
+    textAlign: 'left',
+    color: '#000000',
+  },
   mainTitle1: {
     fontFamily: 'Roboto-Bold',
     fontSize: 22,
     textAlign: 'left',
     color: mConst.black,
   },
+  brandImg: {
+    width: mUtils.wScale(52.5),
+    height: mUtils.wScale(20),
+  },
   subTitle: {
     fontFamily: 'Roboto-Bold',
     fontSize: 18,
     textAlign: 'left',
     color: mConst.black,
+  },
+  subTitle2: {
+    fontFamily: 'Roboto-Light',
+    fontSize: 13,
+    textAlign: 'left',
+    color: mConst.red,
   },
   modelTitle: {
     fontFamily: 'Roboto-Medium',
@@ -223,4 +239,24 @@ export default StyleSheet.create({
     textAlign: 'left',
     color: '#000000',
   },
+  bottom: {
+    width: '100%',
+    height: mUtils.hScale(50),
+    backgroundColor: mConst.getBaseColor(),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bottom2: {
+    width: '100%',
+    height: mUtils.hScale(50),
+    backgroundColor: '#ccc',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bottomText: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: mConst.white,
+  },  
 })

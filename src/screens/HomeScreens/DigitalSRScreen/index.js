@@ -23,6 +23,7 @@ import NonSubscribe from '../../common/NonSubscribe';
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get('window');
 const newImg = require('../../../images/navi/new_1.png');
 const MainIcon = require('../../../images/navi/main_icon.png');
+const HideIcon = require('../../../images/navi/icon_hide.png');
 const notiImg = require('../../../images/navi/noti_1.png');
 const telImg = require('../../../images/navi/tel_1.png');
 const fixImg = require('../../../images/navi/fix_1.png');
@@ -182,7 +183,7 @@ class DigitalSRScreen extends PureComponent {
   }
 
   selected = item => {
-    console.log('itemitemitem>>>>>', item)
+    ///console.log('itemitemitem>>>>>', item)
     const {select} = this.state;
     if(select.includes(item)) {
       this.setState(state => {
@@ -320,10 +321,10 @@ class DigitalSRScreen extends PureComponent {
   getInquiryNum = async () => {
     try {
       const response = await API.getInquiryNum()
-      console.log('getInquiryNum>>>', response)
+      //console.log('getInquiryNum>>>', response)
       this.setState({inquiryNum: response.inquiry_number})
     } catch (error) {
-      console.log('getInquiryNum>>>', error)
+      //onsole.log('getInquiryNum>>>', error)
     }
   }
 
@@ -369,8 +370,10 @@ class DigitalSRScreen extends PureComponent {
             <FastImage resizeMode={'contain'} style={styles.mainImg} source={MainIcon} />
           )
           }
-
-
+          { (userType == 'B' &&  item.show_yn === 'N'  ) && (
+            <FastImage resizeMode={'contain'} style={styles.hideImg} source={HideIcon} />
+            )
+          }
           {userType !== 'B' &&
             (item?.is_fav ? (
               <TouchableOpacity

@@ -1,5 +1,5 @@
 import React from 'react'
-import {AppRegistry, LogBox} from 'react-native'
+import {AppRegistry, LogBox, Text} from 'react-native'
 import {Provider} from 'react-redux'
 import {persistStore} from 'redux-persist'
 import {PersistGate} from 'redux-persist/integration/react'
@@ -28,6 +28,10 @@ LogBox.ignoreAllLogs()
 
 const store = configureStore();
 const persistor = persistStore(store);
+
+Text.defaultProps = Text.defaultProps || {};
+Text.defaultProps.allowFontScaling = false;
+
 const App = () => {
   return (
     <MenuProvider>

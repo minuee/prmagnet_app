@@ -82,6 +82,15 @@ export default StyleSheet.create({
     right: 6,
     zIndex: 1,
   },
+
+  hideImg: {
+    width: mUtils.wScale(25),
+    height: mUtils.wScale(25),
+    position: 'absolute',
+    bottom: 50,
+    left: 6,
+    zIndex: 1,
+  },
   likeTouch: {
     position: 'absolute',
     top: 6,

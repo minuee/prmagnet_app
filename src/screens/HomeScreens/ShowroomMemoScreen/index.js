@@ -169,10 +169,7 @@ class ScheduleMemoScreen extends PureComponent {
         {onPress: () => null},
       ])
     }else{
-      if ( mUtils.isEmpty(this.state.selectedTimeStamp)) {
-        mUtils.fn_call_toast('날짜를 선택해주세요');
-        return;
-      }else if ( mUtils.isEmpty(this.state.select)) {
+      if ( mUtils.isEmpty(this.state.select)) {
         mUtils.fn_call_toast('대상룩을 선택해주세요');
         return;
       }else if ( mUtils.isEmpty(this.state.desc)) {

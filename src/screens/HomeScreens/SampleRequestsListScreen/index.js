@@ -1,25 +1,28 @@
 import React from 'react'
-import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity} from 'react-native'
+import {SafeAreaView, Dimensions,View, ScrollView, FlatList, TouchableOpacity} from 'react-native'
 import {connect} from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-menu'
 import Header from '../../common/Header'
 import _ from 'lodash'
+import dayjs from "dayjs";
 import API from '../../../common/aws-api'
 import Loading from '../../common/Loading'
 import Empty from '../../common/Empty'
-
+import Icon from 'react-native-vector-icons/AntDesign';
+Icon.loadFont();
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
 import Text from '../../common/Text'
 import styles from './styles'
 import { multicastChannel } from 'redux-saga'
-
+import { Tooltip } from 'react-native-elements';
 const moreImage1 = require('../../../images/navi/more_1.png')
 const moreImage3 = require('../../../images/navi/more_3.png')
 const todayTimeStamp = mUtils.getToday();
 const reqStatusEditList = ["pending","confirmed"];
+const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get('window');
 class SampleRequestsListScreen extends React.Component {
   constructor(props) {
     super(props)
@@ -31,23 +34,41 @@ class SampleRequestsListScreen extends React.Component {
       search_text: '',
       loading: false,
     }
-
   }
 
-  
   deleteMyRequests = async (no, index) => {
     try {
       const response = await API.deleteMyRequests({
         req_no: [no],
       })
-      //console.log('deleteMyRequests>>>>', response)
       setTimeout(() => {
-        this.alert('요청삭제 완료', '요청이 삭제되었습니다.', [
+        this.alert('홀드요청삭제 완료', '홀드요청이 삭제되었습니다.', [
+          {
+            onPress: () =>
+            this.setState(state => {
+              const result = state.list.filter((item, i) => i !== index)
+              return {
+                list: result,
+              }
+            }),
+          },
+        ])
+      }, 100)
+    } catch (error) {
+    }
+  }
+
+  cancleMyRequests = async (no, index) => {
+    try {
+      const response = await API.cancleMyRequests({
+        req_no: [no],
+      })
+      setTimeout(() => {
+        this.alert('홀드요청취소 완료', '홀드요청이 취소되었습니다.', [
           {
             onPress: () =>
               this.setState(state => {
                 const result = state.list.filter((item, i) => i !== index)
-                //console.log('>>>>>>>>>>>', result)
                 return {
                   list: result,
                 }
@@ -56,27 +77,23 @@ class SampleRequestsListScreen extends React.Component {
         ])
       }, 100)
     } catch (error) {
-      //console.log('deleteMyRequests>>>', error)
     }
   }
 
   getMagazineSample = async () => {
     const {list, page, limit, search_text} = this.state
-    //console.log('??>?>?', page)
     try {
       const response = await API.getMagazineSample({
         page: page,
         limit: limit,
         search_text: search_text,
       })
-      //console.log('getMagazineSample>>>', response)
       if (response.success) {
         if (response.list.length > 0) {
           this.setState({list: list.concat(response.list), page: page + 1})
         }
       }
     } catch (error) {
-      //console.log('getMagazineSample>>>', error)
     }
   }
 
@@ -89,7 +106,6 @@ class SampleRequestsListScreen extends React.Component {
         search_text: search_text,
         loading: false,
       })
-      //console.log('getMagazineSampleReset>>>', response)
       if (response.success) {
         if (response.list.length > 0) {
           this.setState({list: response.list, page: 2, loading: false})
@@ -99,7 +115,6 @@ class SampleRequestsListScreen extends React.Component {
       }
     } catch (error) {
       this.setState({loading: false})
-      //console.log('getMagazineSampleReset>>>', error)
     }
   }
 
@@ -119,18 +134,12 @@ class SampleRequestsListScreen extends React.Component {
       this.getMagazineSampleReset()
     })
   }
-
-
   renderItem = ({item, index}) => {
-    //console.log('itemitem>>>',index,todayTimeStamp,item.expected_photograph_date)
     return (
       <React.Fragment key={index}>
-
         <TouchableOpacity
           style={styles.layout3}
-          onPress={() => {
-            this.pushTo('SampleRequestsDetailScreen', {no: item.req_no})
-          }}
+          onPress={() => {this.pushTo('SampleRequestsDetailScreen', {no: item.req_no}) }}
         >
           <View style={styles.layout4}>
             <Text style={styles.title}>{item.brand_nm}</Text>
@@ -140,12 +149,7 @@ class SampleRequestsListScreen extends React.Component {
                 <MenuTrigger
                   customStyles={{
                     TriggerTouchableComponent: TouchableOpacity,
-                    triggerTouchable: {
-                      activeOpacity: 90,
-                      style: {
-                        flex: 1,
-                      },
-                    },
+                    triggerTouchable: {activeOpacity: 90,style: {flex: 1}},
                   }}
                   style={styles.layout5}
                 >
@@ -154,35 +158,51 @@ class SampleRequestsListScreen extends React.Component {
                 <MenuOptions optionsContainerStyle={{marginTop: mUtils.wScale(35)}}>
                   <MenuOption
                     style={{paddingTop: mUtils.wScale(17), paddingBottom: mUtils.wScale(12), paddingHorizontal: mUtils.wScale(15)}}
-                    onSelect={() => {
-                      this.pushTo('SampleRequestsScreen', {type: false, brandId: item.brand_id, no: item.req_no, brandName: item.brand_nm})
-                      
-                    }}
+                    onSelect={() => {this.pushTo('SampleRequestsScreen', {type: false, brandId: item.brand_id, no: item.req_no, brandName: item.brand_nm})}}
                   >
-                    <Text style={styles.delete}>Edit</Text>
+                    <Text style={styles.delete}>수정</Text>
                   </MenuOption>
-                  { item.req_status_nm === 'pending' &&
+                  { item.req_status_nm === 'pending' ?
                   <MenuOption
                     style={{paddingTop: mUtils.wScale(12), paddingBottom: mUtils.wScale(17), paddingHorizontal: mUtils.wScale(15)}}
                     onSelect={() => {
-                      this.alert('샘플요청 삭제', '선택하신 샘플을 삭제 하시겠습니까?', [
+                      this.alert('홀딩요청삭제', '선택하신 요청을 삭제 하시겠습니까?', [
+                        {
+                          onPress: () => {this.deleteMyRequests(item.req_no, index)},
+                        },
+                        {onPress: () => null},
+                      ])
+                    }}
+                  >
+                    <Text style={styles.delete}>삭제</Text>
+                  </MenuOption>
+                  :
+                  ( item.req_status_nm === 'confirmed' && !item.is_sendout && dayjs.unix(item.expected_photograph_date).format("YYYY-MM-DD") > dayjs(new Date()).format('YYYY-MM-DD') ) 
+                  ?
+                  <MenuOption
+                    style={{paddingTop: mUtils.wScale(12), paddingBottom: mUtils.wScale(17), paddingHorizontal: mUtils.wScale(15)}}
+                    onSelect={() => {
+                      this.alert('홀딩요청취소', '홀딩요청을 취소하시겠습니까?', [
                         {
                           onPress: () => {
-                            this.deleteMyRequests(item.req_no, index)
+                            this.cancleMyRequests(item.req_no, index)
                           },
                         },
                         {onPress: () => null},
                       ])
                     }}
                   >
-                    <Text style={styles.delete}>Delete</Text>
+                    <Text style={styles.delete}>홀딩요청취소</Text>
                   </MenuOption>
+                  :
+                  null
                   }
                 </MenuOptions>
               </Menu>
             )
             :
-            ( item.req_status_nm === 'pending' || item.req_status_nm === 'canceled' || item.req_status_nm === 'rejected' ) ? 
+            ( item.req_status_nm === 'pending' || item.req_status_nm === 'canceled' || item.req_status_nm === 'rejected' ) 
+            ? 
             (
               <Menu>
                 <MenuTrigger
@@ -203,7 +223,7 @@ class SampleRequestsListScreen extends React.Component {
                   <MenuOption
                     style={{paddingTop: mUtils.wScale(12), paddingBottom: mUtils.wScale(17), paddingHorizontal: mUtils.wScale(15)}}
                     onSelect={() => {
-                      this.alert('샘플요청 삭제', '선택하신 샘플을 삭제 하시겠습니까?', [
+                      this.alert('홀딩요청삭제', '선택하신 요청을 삭제 하시겠습니까?', [
                         {
                           onPress: () => {
                             this.deleteMyRequests(item.req_no, index)
@@ -213,7 +233,45 @@ class SampleRequestsListScreen extends React.Component {
                       ])
                     }}
                   >
-                    <Text style={styles.delete}>Delete</Text>
+                    <Text style={styles.delete}>삭제</Text>
+                  </MenuOption>
+                </MenuOptions>
+              </Menu>
+            )
+            :
+            ( item.req_status_nm === 'confirmed' && !item.is_sendout  && dayjs.unix(item.expected_photograph_date).format("YYYY-MM-DD") > dayjs(new Date()).format('YYYY-MM-DD')) 
+            ?
+            (
+              <Menu>
+                <MenuTrigger
+                  customStyles={{
+                    TriggerTouchableComponent: TouchableOpacity,
+                    triggerTouchable: {
+                      activeOpacity: 90,
+                      style: {
+                        flex: 1,
+                      },
+                    },
+                  }}
+                  style={styles.layout5}
+                >
+                  <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImage1} />
+                </MenuTrigger>
+                <MenuOptions optionsContainerStyle={{marginTop: mUtils.wScale(35)}}>                                   
+                  <MenuOption
+                    style={{paddingTop: mUtils.wScale(12), paddingBottom: mUtils.wScale(17), paddingHorizontal: mUtils.wScale(15)}}
+                    onSelect={() => {
+                      this.alert('홀딩요청취소', '홀딩요청을 취소하시겠습니까?', [
+                        {
+                          onPress: () => {
+                            this.cancleMyRequests(item.req_no, index)
+                          },
+                        },
+                        {onPress: () => null},
+                      ])
+                    }}
+                  >
+                    <Text style={styles.delete}>홀딩요청취소</Text>
                   </MenuOption>
                 </MenuOptions>
               </Menu>
@@ -246,6 +304,12 @@ class SampleRequestsListScreen extends React.Component {
     )
   }
 
+  renderTooltip = () => {
+    return (<View style={{width:'100%',padding:5,alignItems:'center',justifyContent:'center'}}>   
+        <Text style={{fontFamily: 'Roboto-Regular',fontSize: 14,color: '#ffffff',}}>취소가능 : 미발송중인 홀딩완료에 한해서만 가능</Text>
+    </View>)
+  }
+
   render() {
     const {user} = this.props
     const {list, loading} = this.state
@@ -254,12 +318,17 @@ class SampleRequestsListScreen extends React.Component {
         <Header pushTo={this.pushTo} userType={user.userType} alarmSet={user.alarm} />
         <View style={styles.layout1}>
           <Text style={styles.mainTitle}>My Requests</Text>
-          <TouchableOpacity
-              style={{...styles.selectBox, backgroundColor: mConst.black}}
+          <View style={styles.layout1_right}>
+            <Tooltip popover={this.renderTooltip('')} width={SCREEN_WIDTH*0.9} height={50} backgroundColor={'#7ea1b2'} skipAndroidStatusBar={true}>
+              <Icon name="infocirlceo" size={20} color="#000" />
+            </Tooltip>
+            <TouchableOpacity
+              style={{...styles.selectBox, backgroundColor: mConst.black,marginLeft:5}}
               onPress={() => {this.pushTo('ShowTab')}}
             >
               <Text style={{...styles.selectText, color: mConst.white}}>홀딩 요청</Text>
             </TouchableOpacity>
+          </View>
         </View>
         {loading ? (
           <Loading />

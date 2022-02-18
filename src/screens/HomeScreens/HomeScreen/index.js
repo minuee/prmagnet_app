@@ -293,8 +293,8 @@ class HomeScreen extends PureComponent {
                                     <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
                                     <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
                                         {subItem.target_user_nm}{subItem.target_user_position} →
-                                    {/* </Text>
-                                    <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}> */}
+                                    </Text>
+                                    <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}>
                                         {subItem.req_user_nm}{mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position}
                                     </Text>  
                                     {/* <Text style={{...styles.custom, marginTop: mUtils.wScale(2)}}> Sheet No:{subItem.req_no}</Text>  */}
@@ -320,8 +320,8 @@ class HomeScreen extends PureComponent {
                                     }                            
                                     <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
                                         {subItem.req_user_nm}{mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position}  →
-                                    {/* </Text>
-                                    <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}> */}
+                                    </Text>
+                                    <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}>
                                         {subItem.target_user_nm}{mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}
                                     </Text>   
                                     

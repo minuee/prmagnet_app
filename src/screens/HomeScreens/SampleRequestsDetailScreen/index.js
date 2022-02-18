@@ -1,32 +1,33 @@
-import React, {PureComponent} from 'react'
-import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity, TextInput, Alert} from 'react-native'
-import {connect} from 'react-redux'
-import FastImage from 'react-native-fast-image'
-import ModalDropdown from 'react-native-modal-dropdown'
-import _ from 'lodash'
+import React, {PureComponent} from 'react';
+import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity, TextInput, Alert} from 'react-native';
+import {connect} from 'react-redux';
+import FastImage from 'react-native-fast-image';
+import ModalDropdown from 'react-native-modal-dropdown';
+import _ from 'lodash';
+import dayjs from 'dayjs';
+import mConst from '../../../common/constants';
+import mUtils from '../../../common/utils';
+import cBind, {callOnce} from '../../../common/navigation';
+import Text from '../../common/Text';
+import styles from './styles';
+import API from '../../../common/aws-api';
+import Loading from '../../common/Loading';
+import { multicastChannel } from 'redux-saga';
 
-import mConst from '../../../common/constants'
-import mUtils from '../../../common/utils'
-import cBind, {callOnce} from '../../../common/navigation'
-import Text from '../../common/Text'
-import styles from './styles'
-import API from '../../../common/aws-api'
-import Loading from '../../common/Loading'
-
-const modelImg = require('../../../images/sample/model_1.png')
-const moreImg = require('../../../images/navi/more_2.png')
-const starImg = require('../../../images/navi/star_1.png')
-const checkImg = require('../../../images/navi/check_1.png')
-const noCheckImg = require('../../../images/navi/no_check_1.png')
-const plusImg = require('../../../images/navi/plus_2.png')
-const minusImg = require('../../../images/navi/minus_1.png')
-const checkImg2 = require('../../../images/navi/check_2.png')
-const checkImg3 = require('../../../images/navi/check_3.png')
-const selectImg2 = require('../../../images/navi/select_2.png')
-const delImg = require('../../../images/navi/del_1.png')
+const modelImg = require('../../../images/sample/model_1.png');
+const moreImg = require('../../../images/navi/more_2.png');
+const starImg = require('../../../images/navi/star_1.png');
+const checkImg = require('../../../images/navi/check_1.png');
+const noCheckImg = require('../../../images/navi/no_check_1.png');
+const plusImg = require('../../../images/navi/plus_2.png');
+const minusImg = require('../../../images/navi/minus_1.png');
+const checkImg2 = require('../../../images/navi/check_2.png');
+const checkImg3 = require('../../../images/navi/check_3.png');
+const selectImg2 = require('../../../images/navi/select_2.png');
+const delImg = require('../../../images/navi/del_1.png');
 const yesNo = [{boolean: true, text: 'Yes'},{boolean: false, text: 'No'},];
-const noCheckImg2 = require('../../../images/navi/disable.png')
-const time = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23']
+const noCheckImg2 = require('../../../images/navi/disable.png');
+const time = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23'];
 
 class SampleRequestsDetailScreen extends PureComponent {
   constructor(props) {
@@ -74,8 +75,8 @@ class SampleRequestsDetailScreen extends PureComponent {
     })
   }
 
-  getSampleRequests = async () => {
-    const {no} = this.props.route.params
+  getSampleRequests = async (req_no = null) => {
+    const {no} = this.props.route.params || req_no;
     try {
       const response = await API.getSampleRequests({
         req_no: no,
@@ -84,7 +85,8 @@ class SampleRequestsDetailScreen extends PureComponent {
       if (response.success) {
         this.setConfirmCount(response);
         this.setState({
-          data: response
+          data: response,
+          req_no : no
         })
       }
     } catch (error) {
@@ -102,6 +104,42 @@ class SampleRequestsDetailScreen extends PureComponent {
 
   handleOnFocus = () => {
     this.getSampleRequests()
+  }
+
+  handleOnDelete = async() => {
+    try {
+      const response = await API.deleteMyRequests({
+        req_no: [this.state.req_no],
+      })
+      //console.log('deleteMyRequests>>>>', response)
+      setTimeout(() => {
+        this.alert('홀드요청삭제 완료', '홀드요청이 삭제되었습니다.', [
+          {
+            onPress: () => this.getSampleRequests(this.state.req_no)
+          },
+        ])
+      }, 100)
+    } catch (error) {
+      //console.log('deleteMyRequests>>>', error)
+    }
+  }
+
+  handleOnCancle = async() => {
+    try {
+      const response = await API.cancleMyRequests({
+        req_no: [this.state.req_no],
+      })
+      //console.log('deleteMyRequests>>>>', response)
+      setTimeout(() => {
+        this.alert('홀드요청취소 완료', '홀드요청이 취소되었습니다.', [
+          {
+            onPress: () => this.getSampleRequests(this.state.req_no)
+          },
+        ])
+      }, 100)
+    } catch (error) {
+      //console.log('deleteMyRequests>>>', error)
+    }
   }
 
   render() {
@@ -130,7 +168,8 @@ class SampleRequestsDetailScreen extends PureComponent {
       drop1,
       drop2,
       acceptCount
-    } = this.state
+    } = this.state;
+
     return data ? (
       <SafeAreaView style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -138,6 +177,29 @@ class SampleRequestsDetailScreen extends PureComponent {
             <Text style={{...styles.mainTitle, marginTop: mUtils.wScale(25)}}>
               {mConst.getUserType() !== 'B' && "My " }
             <Text style={styles.mainTitle1}>Request Detail</Text></Text>
+            { 
+              mConst.getUserType() !== 'B' && data.brand_logo_url_adres !== null ? (
+              <View style={{height:mUtils.wScale(25),justifyContent:'flex-start',alignItems:'flex-start',marginTop:20,}}>
+                <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: data.brand_logo_url_adres}} />
+              </View>
+              )
+              :
+              mConst.getUserType() == 'B' && data.mgzn_logo_url_adres !== null ? (
+                <View style={{height:mUtils.wScale(25),justifyContent:'flex-start',alignItems:'flex-start',marginTop:20,}}>
+                    <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: data.mgzn_logo_url_adres}} />
+                </View>
+              )
+              :
+              null
+            }
+            {!mUtils.isEmpty(data.canc_dt) && 
+            <View style={{marginTop:5,}}>
+              <Text style={{...styles.subTitle2}}>
+                {mConst.getUserType() == 'B' ? '홀딩요청 취소된 문서입니다.' :' 홀딩요청 취소하신 문서입니다.'}{"\r"}
+                (취소일자 : {dayjs(data.canc_dt).format("YYYY-MM-DD")})
+              </Text>
+            </View>
+            }
             <Text style={{...styles.subTitle, marginTop: mUtils.wScale(30)}}>
               Request product : <Text style={{color: '#7ea1b2'}}>{data.showroom_list.length} {/* 승인 : {acceptCount} */}</Text>
             </Text>
@@ -520,6 +582,42 @@ class SampleRequestsDetailScreen extends PureComponent {
             />
           </View>
         </ScrollView>
+        {
+          ( data.req_status_cd == 'RS0001' || data.req_status_cd == 'RS0010' )  &&
+          <TouchableOpacity 
+            onPress={() => 
+              this.alert('홀딩요청삭제', '홀딩요청을 삭제하시겠습니까?', [
+              {
+                onPress: () => {
+                  this.handleOnDelete()
+                },
+              },
+              {onPress: () => null},
+              ])
+            } 
+            style={styles.bottom}
+          >
+            <Text style={styles.bottomText}>홀딩요청 삭제</Text>
+          </TouchableOpacity>
+        }
+        {
+          ( data.req_status_cd == 'RS0003' && !data.is_sendout  && dayjs.unix(data.shooting_date).format("YYYY-MM-DD") > dayjs(new Date()).format('YYYY-MM-DD'))  &&
+          <TouchableOpacity  
+            onPress={() => 
+              this.alert('홀딩요청취소', '홀딩요청을 취소하시겠습니까?', [
+              {
+                onPress: () => {
+                  this.handleOnCancle()
+                },
+              },
+              {onPress: () => null},
+              ])
+          } 
+            style={styles.bottom}
+          >
+            <Text style={styles.bottomText}>홀딩요청 취소</Text>
+          </TouchableOpacity>
+        }
       </SafeAreaView>
     ) : (
       <Loading />

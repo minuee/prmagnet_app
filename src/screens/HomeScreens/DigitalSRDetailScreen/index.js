@@ -1,32 +1,42 @@
-import React, {PureComponent} from 'react'
-import {SafeAreaView, View, ScrollView, FlatList, TouchableOpacity, Pressable, Image} from 'react-native'
-import {connect} from 'react-redux'
-import FastImage from 'react-native-fast-image'
-import Header from '../../common/Header'
-import _ from 'lodash'
-import Swiper from 'react-native-swiper'
-import Modal from 'react-native-modal'
-import Clipboard from '@react-native-clipboard/clipboard'
+import React, {PureComponent} from 'react';
+import {SafeAreaView, Dimensions,View, ScrollView, FlatList, TouchableOpacity, Pressable, Image} from 'react-native';
+import {connect} from 'react-redux';
+import FastImage from 'react-native-fast-image';
+import Header from '../../common/Header';
+import _ from 'lodash';
+import Swiper from 'react-native-swiper';
+import Modal from 'react-native-modal';
+import Clipboard from '@react-native-clipboard/clipboard';
 import KakaoShareLink from 'react-native-kakao-share-link';
+import Icon from 'react-native-vector-icons/AntDesign';
+Icon.loadFont();
+import mConst from '../../../common/constants';
+import mUtils from '../../../common/utils';
+import cBind, {callOnce} from '../../../common/navigation';
+import Text from '../../common/Text';
+import styles from './styles';
+import API from '../../../common/aws-api';
+import Loading from '../../common/Loading';
+import MoreLoading from '../../common/MoreLoading';
 
-import mConst from '../../../common/constants'
-import mUtils from '../../../common/utils'
-import cBind, {callOnce} from '../../../common/navigation'
-import Text from '../../common/Text'
-import styles from './styles'
-import API from '../../../common/aws-api'
-import Loading from '../../common/Loading'
-
-const noCheckImg = require('../../../images/navi/no_check_1.png')
-const checkImg = require('../../../images/navi/check_1.png')
-const shareImg = require('../../../images/navi/share_1.png')
-const closeImg = require('../../../images/navi/close_2.png')
-
+const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get('window');
+const noCheckImg = require('../../../images/navi/no_check_1.png');
+const checkImg = require('../../../images/navi/check_1.png');
+const shareImg = require('../../../images/navi/share_1.png');
+const closeImg = require('../../../images/navi/close_2.png');
+const LeftArrowImg = require('../../../images/navi/back.png');
+const RightArrowImg = require('../../../images/navi/go_1.png');
 class DigitalSRDetailScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
-    this.state = {data: '', link: false,screenTitle: ''}
+    this.state = {
+      data: '', 
+      link: false,
+      moreLoading : false,
+      screenTitle: '',
+      showTopButton :false
+    }
   }
 
   copyToClipboard = () => {
@@ -38,23 +48,33 @@ class DigitalSRDetailScreen extends PureComponent {
     }, 500)
   }
 
-  getSRDetail = async () => {
+  getSRDetail = async (sno = null) => {
     const {no} = this.props.route.params
     try {
-      const response = await API.getSRDetail(no)
-      //console.log('getSRDetail>>>', JSON.stringify(response))
-      this.setState({data: response})
+      const response = await API.getSRDetail(sno === null ? no : sno)
+      ///console.log('getSRDetail>>>', JSON.stringify(response))
+      this.setState({
+        data: response,
+        moreLoading : false,
+        screenTitle : response.showroom_nm
+      })
+      this.titleOption(response.showroom_nm || '')
     } catch (error) {
+      this.setState({moreLoading : false,})
       //console.log('getSRDetail>>>', error)
     }
   }
 
-  getLookBookSRDetail = async () => {
+  getLookBookSRDetail = async ( ) => {
     const {no, lookNo} = this.props.route.params
     try {
       const response = await API.getLookBookSRDetail(lookNo, no)
       //console.log('getSRDetail>>>', JSON.stringify(response))
-      this.setState({data: response,no, lookNo})
+      this.setState({
+          data: response,
+          no, lookNo,
+          screenTitle : response.showroom_nm
+      })
     } catch (error) {
       //console.log('getSRDetail>>>', error)
     }
@@ -94,6 +114,14 @@ class DigitalSRDetailScreen extends PureComponent {
     this.setState({link: true})
   }
 
+  moveNextShowroom = async(sno = null) => {
+    if ( sno != null ) {
+      await this.setState({moreLoading:true})
+      await this.getSRDetail(sno)
+      this.scrollView.scrollTo({ x: 0,  animated: true });
+    }
+  }
+
   kakaoshare = async() => {
     const {share_uuid,no,data,screenTitle} = this.state
     const domain = mConst.shareDomain;
@@ -131,13 +159,41 @@ class DigitalSRDetailScreen extends PureComponent {
     type !== 'digital' ? (this.getLookBookSRDetail(), this.getShare()) : this.getSRDetail()
   }
 
+  upButtonHandler = () => {        
+    this.scrollView.scrollTo({ x: 0,  animated: true });
+  };
+
+  handleOnScroll (event) {             
+    if ( event.nativeEvent.contentOffset.y >= SCREEN_HEIGHT*0.8 ) {
+        this.setState({showTopButton : true}) 
+    }else{
+        this.setState({showTopButton : false}) 
+    }
+  }
   render() {
     const {data, link, share_uuid} = this.state;
     const {type} = this.props.route.params
     return data ? (
       <SafeAreaView style={styles.container}>
         {/*  <Header pushTo={this.pushTo} userType={this.props.user.userType}  /> */}
-        <ScrollView>
+
+        { this.state.showTopButton &&
+          <TouchableOpacity 
+              style={styles.fixedUpButton}
+              onPress={e => this.upButtonHandler()}
+          >
+              <Icon name="up" size={mUtils.wScale(25)} color="#555" />
+          </TouchableOpacity>
+        }
+        <ScrollView
+          ref={(ref) => {this.scrollView = ref;}}
+          showsVerticalScrollIndicator={false}
+          indicatorStyle={'white'}
+          scrollEventThrottle={16}
+          keyboardDismissMode={'on-drag'}
+          onScroll={e => this.handleOnScroll(e)}
+        >
+         
           {/* {type !== 'digital' && (
             <TouchableOpacity
               style={styles.shareTouch}
@@ -149,9 +205,18 @@ class DigitalSRDetailScreen extends PureComponent {
             </TouchableOpacity>
           )}
         */}
+          { type == 'digital' && 
+          <View style={{paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(25)}}>
+            <View style={styles.topLayout}> 
+              <Text style={styles.left}>공개여부{" "}</Text><FastImage resizeMode={'contain'} style={styles.checkImg} source={data.show_yn == 'Y' ? checkImg : noCheckImg} />
+              <Text style={styles.left}>{"   "}주력상품{" "}</Text><FastImage resizeMode={'contain'} style={styles.checkImg} source={data.mfrc_sample_yn ? checkImg : noCheckImg} />
+            </View>
+          </View>
+          }
           {data.sample_list.map((item, index) => {
             return (
               <React.Fragment key={index}>
+                
                 <View>
                   <Swiper
                     loop={false}
@@ -291,6 +356,26 @@ class DigitalSRDetailScreen extends PureComponent {
               </React.Fragment>
             )
           })}
+          { type == 'digital' && 
+          <View style={{paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(25)}}>
+            <View style={styles.bottomLayout}> 
+              { !mUtils.isEmpty(data.prev_showroom_no) ? 
+                <TouchableOpacity style={styles.layoutLeft} onPress={()=> this.moveNextShowroom(data.prev_showroom_no)}>
+                  <FastImage style={styles.closeImg} resizeMode={'contain'} source={LeftArrowImg} />
+                </TouchableOpacity>
+                :
+                <View  style={styles.layoutLeft} />
+              }
+              { !mUtils.isEmpty(data.next_showroom_no) ? 
+                <TouchableOpacity  style={styles.layoutRight} onPress={()=> this.moveNextShowroom(data.next_showroom_no)}>
+                    <FastImage style={styles.closeImg} resizeMode={'contain'} source={RightArrowImg} />
+                </TouchableOpacity>
+                :
+                <View  style={styles.layoutRight}/>
+              }
+            </View>
+          </View>
+          }
         </ScrollView>
         <Modal isVisible={link} style={{margin: 0, padding: 0, alignItems: 'flex-end', justifyContent: 'flex-end'}}>
           <View style={styles.modalView}>
@@ -320,6 +405,9 @@ class DigitalSRDetailScreen extends PureComponent {
             </TouchableOpacity>
           </View>
         </Modal>
+        { this.state.moreLoading &&
+            <MoreLoading />
+        }
       </SafeAreaView>
     ) : (
       <Loading />

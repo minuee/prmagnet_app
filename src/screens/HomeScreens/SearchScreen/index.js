@@ -117,7 +117,7 @@ class SearchScreen extends PureComponent {
       const response = await API.getAllSearch({
         search_text: keyword.toString().trim(),
       })
-      //console.log('getAllSearch>>>', response)
+      console.log('getAllSearch>>>', response.request)
       if (response.success) {
         this.setState({loading: false})
         if (userType !== 'B') {
@@ -173,7 +173,7 @@ class SearchScreen extends PureComponent {
               {keyword ? (
                 <>
                   {userType === 'B' ? (
-                    _.size(brand.showroom) > 0 || _.size(brand.lookbook) > 0 ? (
+                    _.size(brand.showroom) > 0 || _.size(brand.lookbook) > 0 || _.size(brand.request) > 0 ? (
                       <ScrollView
                         style={styles.scroll}
                         contentContainerStyle={{flexGrow: 1, paddingBottom: mUtils.wScale(30)}}
@@ -200,7 +200,7 @@ class SearchScreen extends PureComponent {
                         </Text>
                       </View>
                     )
-                  ) : _.size(magazine.showroom) > 0 ? (
+                  ) : ( _.size(magazine.showroom) > 0 || _.size(magazine.request) > 0 )  ? (
                     <ScrollView style={styles.scroll} contentContainerStyle={{flexGrow: 1}} showsVerticalScrollIndicator={false}>
                       <>
                         <Text style={styles.subTitle}>Digital Showroom ({magazine.showroom.length})</Text>

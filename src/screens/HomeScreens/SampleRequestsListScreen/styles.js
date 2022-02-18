@@ -53,6 +53,11 @@ export default StyleSheet.create({
     paddingBottom: mUtils.wScale(10),
     backgroundColor: mConst.white,
   },
+  layout1_right: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   layout2: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -85,7 +90,7 @@ export default StyleSheet.create({
     height: mUtils.wScale(20),
   },
   smallBox: {
-    width: mUtils.wScale(80),
+    width: mUtils.wScale(85),
     height: mUtils.wScale(27),
     borderStyle: 'solid',
     borderWidth: 0.7,

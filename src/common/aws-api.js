@@ -1011,6 +1011,18 @@ const API = {
     //console.log('postSRRequestSend>>>>>', path,myInit)
     return Api.post(apiName, path, myInit)
   },
+  cancleMyRequests: ({req_no}) => {
+    //console.log('>>>>>', req_no)
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/showroom-request-cancel`
+    const init = {
+      body: {
+        req_list: req_no,
+        cancel_list :  req_no
+      },
+    }
+    return Api.put(apiName, path, init)
+  },
   deleteMyRequests: ({req_no}) => {
     //console.log('>>>>>', req_no)
     const apiName = v1Api
@@ -1018,6 +1030,7 @@ const API = {
     const init = {
       body: {
         req_list: req_no,
+        del_list : req_no
       },
     }
     return Api.del(apiName, path, init)
@@ -1160,9 +1173,9 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getShowRoomList: ({date}) => {
-    console.log('>>>>', date)
+    ///console.log('>>>>', date)
     var apiName = v1Api
-    var path = `${mConst.getApiPath()}/showroom-list/for-memo`
+    var path = `${mConst.getApiPath()}/showroom-list/for-memo-new`
     var init = {
       queryStringParameters: {
         date: date,
