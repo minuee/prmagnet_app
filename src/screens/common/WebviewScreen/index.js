@@ -62,7 +62,7 @@ class WebViewComp extends Component {
       return true;
     } else if (this.webViewRef && !this.state.readyToExit) {
       this.setState({readyToExit: true});
-      mUtils.fn_call_toast('한 번 더 누르시면 종료됩니다.');
+      mUtils.fn_call_toast('한 번 더 누르시면 이젠 페이지로 이동합니다.');
       setTimeout(() => {
         this.setState({readyToExit: false});
       }, 2000);
@@ -95,7 +95,7 @@ class WebViewComp extends Component {
       this.webViewRef.goBack();
     } else if (!this.state.readyToExit) {
       this.setState({readyToExit: true});
-      mUtils.fn_call_toast('한 번 더 누르시면 종료됩니다.');
+      mUtils.fn_call_toast('한 번 더 누르시면 이젠 페이지로 이동합니다.');
       setTimeout(() => {
         this.setState({readyToExit: false});
       }, 2000);

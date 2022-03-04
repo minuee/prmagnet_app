@@ -42,7 +42,7 @@ class SampleRequestsListScreen extends React.Component {
         req_no: [no],
       })
       setTimeout(() => {
-        this.alert('홀드요청삭제 완료', '홀드요청이 삭제되었습니다.', [
+        this.alert('홀딩 요청 삭제 완료', '홀딩 요청이 삭제되었습니다.', [
           {
             onPress: () =>
             this.setState(state => {
@@ -64,7 +64,7 @@ class SampleRequestsListScreen extends React.Component {
         req_no: [no],
       })
       setTimeout(() => {
-        this.alert('홀드요청취소 완료', '홀드요청이 취소되었습니다.', [
+        this.alert('홀딩 요청 취소 완료', '홀딩 요청이 취소되었습니다.', [
           {
             onPress: () =>
               this.setState(state => {
@@ -166,7 +166,7 @@ class SampleRequestsListScreen extends React.Component {
                   <MenuOption
                     style={{paddingTop: mUtils.wScale(12), paddingBottom: mUtils.wScale(17), paddingHorizontal: mUtils.wScale(15)}}
                     onSelect={() => {
-                      this.alert('홀딩요청삭제', '선택하신 요청을 삭제 하시겠습니까?', [
+                      this.alert('홀딩 요청 삭제', '선택하신 요청을 삭제하시겠습니까?', [
                         {
                           onPress: () => {this.deleteMyRequests(item.req_no, index)},
                         },
@@ -182,7 +182,7 @@ class SampleRequestsListScreen extends React.Component {
                   <MenuOption
                     style={{paddingTop: mUtils.wScale(12), paddingBottom: mUtils.wScale(17), paddingHorizontal: mUtils.wScale(15)}}
                     onSelect={() => {
-                      this.alert('홀딩요청취소', '홀딩요청을 취소하시겠습니까?', [
+                      this.alert('홀딩 요청 취소', '홀딩 요청을 취소하시겠습니까?', [
                         {
                           onPress: () => {
                             this.cancleMyRequests(item.req_no, index)
@@ -192,7 +192,7 @@ class SampleRequestsListScreen extends React.Component {
                       ])
                     }}
                   >
-                    <Text style={styles.delete}>홀딩요청취소</Text>
+                    <Text style={styles.delete}>홀딩 요청 취소</Text>
                   </MenuOption>
                   :
                   null
@@ -223,7 +223,7 @@ class SampleRequestsListScreen extends React.Component {
                   <MenuOption
                     style={{paddingTop: mUtils.wScale(12), paddingBottom: mUtils.wScale(17), paddingHorizontal: mUtils.wScale(15)}}
                     onSelect={() => {
-                      this.alert('홀딩요청삭제', '선택하신 요청을 삭제 하시겠습니까?', [
+                      this.alert('홀딩 요청 삭제', '선택하신 요청을 삭제하시겠습니까?', [
                         {
                           onPress: () => {
                             this.deleteMyRequests(item.req_no, index)
@@ -261,7 +261,7 @@ class SampleRequestsListScreen extends React.Component {
                   <MenuOption
                     style={{paddingTop: mUtils.wScale(12), paddingBottom: mUtils.wScale(17), paddingHorizontal: mUtils.wScale(15)}}
                     onSelect={() => {
-                      this.alert('홀딩요청취소', '홀딩요청을 취소하시겠습니까?', [
+                      this.alert('홀딩 요청 취소', '홀딩 요청을 취소하시겠습니까?', [
                         {
                           onPress: () => {
                             this.cancleMyRequests(item.req_no, index)
@@ -306,7 +306,7 @@ class SampleRequestsListScreen extends React.Component {
 
   renderTooltip = () => {
     return (<View style={{width:'100%',padding:5,alignItems:'center',justifyContent:'center'}}>   
-        <Text style={{fontFamily: 'Roboto-Regular',fontSize: 14,color: '#ffffff',}}>취소가능 : 미발송중인 홀딩완료에 한해서만 가능</Text>
+        <Text style={{fontFamily: 'Roboto-Regular',fontSize: 14,color: '#ffffff',}}>모든 피스가 미발송 상태인 홀딩완료 건만 홀딩 취소 가능</Text>
     </View>)
   }
 

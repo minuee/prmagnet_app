@@ -41,7 +41,7 @@ class DigitalSRDetailScreen extends PureComponent {
 
   copyToClipboard = () => {
     const {share_uuid,no} = this.state
-    Clipboard.setString(` https://www.prmagnet.kr/share-lookbook-detail/${share_uuid}/${no}`)
+    Clipboard.setString(` https://www.prmagnet.kr/#/share-lookbook-detail/${share_uuid}/${no}`)
     this.setState({link: false})
     setTimeout(() => {
       this.alert('', '복사 완료')
@@ -131,8 +131,8 @@ class DigitalSRDetailScreen extends PureComponent {
           title: '[PR MAGENT LookBook Share]' + screenTitle,
           imageUrl: mUtils.isEmpty(data.sample_list[0].sample_image_list[0].full_url) ? 'https://www.prmagnet.kr/logo_meta2.png' : data.sample_list[0].sample_image_list[0].full_url,
           link: {
-            webUrl: domain + "share-lookbook-detail/" + share_uuid + "/" + no,
-            mobileWebUrl: domain + "share-lookbook-detail/" + share_uuid+ "/" + no,
+            webUrl: domain + "#/share-lookbook-detail/" + share_uuid + "/" + no,
+            mobileWebUrl: domain + "#/share-lookbook-detail/" + share_uuid+ "/" + no,
           },
           description:  screenTitle,
         },
@@ -140,8 +140,8 @@ class DigitalSRDetailScreen extends PureComponent {
           {
             title: '웹에서 보기',
             link: {
-              webUrl: domain + "share-lookbook-detail/" + share_uuid+ "/" + no,
-              mobileWebUrl: domain + "share-lookbook-detail/" + share_uuid+ "/" + no,
+              webUrl: domain + "#/share-lookbook-detail/" + share_uuid+ "/" + no,
+              mobileWebUrl: domain + "#/share-lookbook-detail/" + share_uuid+ "/" + no,
             },
           }
         ],

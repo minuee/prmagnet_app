@@ -561,12 +561,12 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = prMagnet/prMagnet.entitlements;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_TEAM = 7XFC7Z9T6W;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = prMagnet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.2.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -590,11 +590,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODEPUSH_KEY = Wln7psKf4xdmAtx5160kXn2_RXLNFhQr4lQfn;
 				CODE_SIGN_ENTITLEMENTS = prMagnet/prMagnet.entitlements;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_TEAM = 7XFC7Z9T6W;
 				INFOPLIST_FILE = prMagnet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.2.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -792,11 +792,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODEPUSH_KEY = jzNtCIZpGNU5XgJ0AmLOb6SULM93ckyOxEXgP;
 				CODE_SIGN_ENTITLEMENTS = prMagnet/prMagnet.entitlements;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_TEAM = 7XFC7Z9T6W;
 				INFOPLIST_FILE = prMagnet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.2.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

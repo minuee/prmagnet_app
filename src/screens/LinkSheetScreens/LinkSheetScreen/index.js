@@ -503,7 +503,7 @@ class LinkSheetScreen extends React.Component {
                                                         onPress={() =>this.handleLinkSheetDetailEach(subItem.req_no,item.showroomData,item.date)}
                                                         //onPress={() =>this.pushTo('ReturnScreen',{reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
                                                     >
-                                                        <View style={{...styles.box1, backgroundColor:  subItem.return_yn ? mUtils.isEmpty(subItem.mgzn_color) ? '#ddd' :subItem.mgzn_color : '#ed6c59'}}>
+                                                        <View style={{...styles.box1, backgroundColor:  ( subItem.returncheck_yn || (subItem.return_yn && subItem.return_user_magazine )) ? mUtils.isEmpty(subItem.mgzn_color) ? '#ddd' :subItem.mgzn_color : '#ed6c59'}}>
                                                             {this.renderLogo(subItem,subIndex,selectTitle)}
                                                         </View>
                                                         

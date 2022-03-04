@@ -22,6 +22,12 @@ export default StyleSheet.create({
     fontSize: 15,
     color: mConst.gray,
   },
+  headerText2: {
+    fontFamily: 'NotoSansKR-Medium',
+    fontSize: 15,
+    color: mConst.gray,
+    padding: mUtils.wScale(10),
+  },
   headerTextOn: {
     fontFamily: 'NotoSansKR-Bold',
     fontSize: 15,

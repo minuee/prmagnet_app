@@ -68,8 +68,8 @@ class MyPageScreen extends PureComponent {
   })
 
   moveAppStore = async() => {
-    const appStoreId = DEFAULT_CONSTANTS.iosAppStoreID;
-    const playStoreId = DEFAULT_CONSTANTS.androidPackageName;
+    const appStoreId = mConst.iosAppStoreID;
+    const playStoreId = mConst.androidPackageName;
     if ( Platform.OS === 'ios') {
         AppLink.openInStore({ appStoreId}).then(() => {
             setTimeout(() => {

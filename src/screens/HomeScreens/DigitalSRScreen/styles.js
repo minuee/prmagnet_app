@@ -21,6 +21,12 @@ export default StyleSheet.create({
     color: '#070708',
     marginTop: mUtils.wScale(10),
   },
+  chargeTitle : {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 13,
+    color: '#070708',
+    paddingBottom:mUtils.wScale(5),
+  },
   mainTitle: {
     fontFamily: 'Roboto-Light',
     fontSize: 22,

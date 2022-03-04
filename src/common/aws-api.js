@@ -760,14 +760,20 @@ const API = {
     }
     return Api.post(apiName, path, myInit)
   },
-  postSRInquiry: ({SRInquiryNum, email,inquiry_charge}) => {
+  postSRInquiry: ({SRInquiryNum,SRInquiryNum2,SRInquiryNum3, email,email2,email3,inquiry_charge,inquiry_charge2,inquiry_charge3}) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/showroom-inquiry`
     const myInit = {
       body: {
         showroom_inquiry_contact: SRInquiryNum,
+        showroom_inquiry_contact2: SRInquiryNum2,
+        showroom_inquiry_contact3: SRInquiryNum3,
         showroom_inquiry_email: email,
-        inquiry_charge : inquiry_charge
+        showroom_inquiry_email2: email2,
+        showroom_inquiry_email3: email3,
+        inquiry_charge : inquiry_charge,
+        inquiry_charge2 : inquiry_charge2,
+        inquiry_charge3 : inquiry_charge3
       },
     }
     return Api.post(apiName, path, myInit)

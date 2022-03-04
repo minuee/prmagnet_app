@@ -51,8 +51,14 @@ class DigitalSRScreen extends PureComponent {
       notice: '',
       inquiryNum: '',
       inquiryCharge: '',
+      inquiryCharge2: '',
+      inquiryCharge3: '',
       inquiryContact: '',
+      inquiryContact2: '',
+      inquiryContact3: '',
       inquiryEmail: '',
+      inquiryEmail2: '',
+      inquiryEmail3: '',
       brand_id: 'all',
       loading: true,
       moreLoading : false,
@@ -280,15 +286,21 @@ class DigitalSRScreen extends PureComponent {
             })
           } else {
             this.setState({
-              data: response,
-              page: 2,
-              loading: true,
-              season_year: response.season_list.length > 0 ? response.season_list[0] : {season_year: '', season_cd_id: ''},
-              notice: response.brand_notice.notice,
-              inquiryNum: response.brand_notice.inquiry_number,
-              inquiryCharge: response.brand_notice.inquiry_charge,
-              inquiryContact: response.brand_notice.showroom_inquiry_contact,
-              inquiryEmail: response.brand_notice.showroom_inquiry_email,
+              data : response,
+              page : 2,
+              loading : true,
+              season_year : response.season_list.length > 0 ? response.season_list[0] : {season_year: '', season_cd_id: ''},
+              notice : response.brand_notice.notice,
+              inquiryNum : response.brand_notice.inquiry_number,
+              inquiryCharge : response.brand_notice.inquiry_charge,
+              inquiryCharge2 : response.brand_notice.inquiry_charge2,
+              inquiryCharge3 : response.brand_notice.inquiry_charge3,
+              inquiryContact : response.brand_notice.showroom_inquiry_contact,
+              inquiryContact2 : response.brand_notice.showroom_inquiry_contact2,
+              inquiryContact3 : response.brand_notice.showroom_inquiry_contact3,
+              inquiryEmail : response.brand_notice.showroom_inquiry_email,
+              inquiryEmail2 : response.brand_notice.showroom_inquiry_email2,
+              inquiryEmail3 : response.brand_notice.showroom_inquiry_email3
             })
           }
         }else{
@@ -446,7 +458,7 @@ class DigitalSRScreen extends PureComponent {
 
   render() {
     const {data, brand_id} = this.state;    
-    const {notice, inquiryNum,inquiryCharge,inquiryContact,inquiryEmail, season_year, selectOnOff, isvisible, loading, select, filterData, filterInfo} = this.state;
+    const {notice, inquiryNum,inquiryCharge,inquiryCharge2,inquiryCharge3,inquiryContact,inquiryContact2,inquiryContact3,inquiryEmail,inquiryEmail2,inquiryEmail3, season_year, selectOnOff, isvisible, loading, select, filterData, filterInfo} = this.state;
     const {user} = this.props;
     const userType = mConst.getUserType();
     return (
@@ -496,7 +508,7 @@ class DigitalSRScreen extends PureComponent {
                         <Text style={styles.season}>
                           {season_year.season_year} {season_year.season_simple_text}
                         </Text>
-                        <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />                        
+                        <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
                       </View>
                     </MenuTrigger>
                     :
@@ -605,6 +617,30 @@ class DigitalSRScreen extends PureComponent {
                         <Text style={styles.tel}>{inquiryEmail}</Text>
                       </TouchableOpacity>
                       )
+                    }
+                    {!mUtils.isEmpty(inquiryCharge2) &&
+                    <Menu>
+                      <MenuTrigger customStyles={{TriggerTouchableComponent: TouchableOpacity}}>
+                        <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                      </MenuTrigger>
+                      <MenuOptions optionsContainerStyle={{marginTop: mUtils.wScale(15), width:mUtils.wScale(260)}}>
+                        <MenuOption
+                          style={{paddingTop: mUtils.wScale(7), paddingBottom: mUtils.wScale(7), paddingHorizontal: mUtils.wScale(5)}}
+                        >
+                          <Text style={styles.chargeTitle}>
+                            추가 쇼룸담당자
+                          </Text>
+                          <Text style={styles.tel}>
+                            {inquiryCharge2} {mUtils.phoneFormat(inquiryContact2)} {mUtils.phoneFormat(inquiryEmail2)}
+                          </Text>
+                          { !mUtils.isEmpty(inquiryCharge3) &&
+                            <Text style={styles.tel}>
+                              {inquiryCharge3} {mUtils.phoneFormat(inquiryContact3)} {mUtils.phoneFormat(inquiryEmail3)}
+                            </Text>
+                          }
+                        </MenuOption>
+                      </MenuOptions>
+                    </Menu>
                     }
                   </View>   
                   }               

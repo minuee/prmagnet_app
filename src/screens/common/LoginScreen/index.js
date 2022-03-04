@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {KeyboardAvoidingView, SafeAreaView, View, TouchableWithoutFeedback, TouchableOpacity, TextInput, Linking} from 'react-native'
+import {KeyboardAvoidingView, SafeAreaView, View, Platform,TouchableWithoutFeedback, TouchableOpacity, TextInput, Linking} from 'react-native'
 import {connect} from 'react-redux'
 import {sha256} from 'react-native-sha256'
 import _ from 'lodash'
@@ -90,24 +90,47 @@ class LoginScreen extends PureComponent {
           //console.log('###로그인 성공:', response)
           //console.log('로그인 시 props 확인 : ', this.props)
       },
-      cbFailure: e => {
-        loginFailure(e)
-        console.log('###로그인 실패', e)
-        // this.showErrorMsg(e)
+      cbFailure: error => {
+        loginFailure(error)
+        console.log('###로그인 실패', error)
+        if( error.code === 'NotAuthorizedException') {
+          if ( error.message.includes('exceeded')) {
+              this.alert('PR Magnet관리자', '인증시도가 초과되었습니다. 3시간이후에 시도해주세요.');
+              return false;
+          }else{
+              this.alert('PR Magnet관리자', '없는 계정이거나 비밀번호가 맞지 않습니다.');
+              return false;
+          }
+        }else if( error.code === 'UserNotFoundException') {
+            this.alert('PR Magnet관리자', '없는 계정이거나 사용중인 계정이 아닙니다.');
+            return false;
+        }else if( error.code === 'LimitExceededException') {
+            this.alert('PR Magnet관리자', '인증시도가 초과되었습니다. 3시간이후에 시도해주세요.');
+            return false;
+        }else if( error.code === 'PasswordResetRequiredException') {
+            this.alert('PR Magnet관리자', '비밀번호가 만료되었습니다.. 관리자에게 문의하세요.');
+            return false;
+        }else{
+          this.showErrorMsg(error)
+        }
+       
       },
     })
   })
   handleJoin = callOnce(async () => {
-    this.pushTo('WebviewScreen', {url: 'https://www.prmagnet.kr/join', title:'회원가입'})
-    //await Linking.openURL('https://www.prmagnet.kr/join')
+    //const moveUrl =  Platform.OS === 'ios' ? 'https://www.prmagnet.kr/#/join' : 'https://www.prmagnet.co.kr/#/join';
+    //this.pushTo('WebviewScreen', {url: moveUrl, title:'회원가입'})
+    await Linking.openURL('https://www.prmagnet.kr/#/join')
   })
   handleFindId = callOnce(async () => {
-    this.pushTo('WebviewScreen', {url: 'https://www.prmagnet.kr/find-id', title:'아이디 찾기'})
-    //await Linking.openURL('https://www.prmagnet.kr/find-id')
+    //const moveUrl =  Platform.OS === 'ios' ? 'https://www.prmagnet.kr/#/find-id' : 'https://www.prmagnet.kr/find-id';
+    //this.pushTo('WebviewScreen', {url:moveUrl , title:'아이디 찾기'})
+    await Linking.openURL('https://www.prmagnet.kr/#/find-id')
   })
   handleFindPw = callOnce(async () => {
-    this.pushTo('WebviewScreen', {url: 'https://www.prmagnet.kr/find-pw', title:'비밀번호 찾기'})
-    //await Linking.openURL('https://www.prmagnet.kr/find-pw')
+    //const moveUrl =  Platform.OS === 'ios' ? 'https://www.prmagnet.kr/#/find-pw' : 'https://www.prmagnet.kr/find-pw';
+    //this.pushTo('WebviewScreen', {url: moveUrl, title:'비밀번호 찾기'})
+    await Linking.openURL('https://www.prmagnet.kr/#/find-pw')
   })
   render() {
     const {email, pw} = this.state
@@ -150,7 +173,7 @@ class LoginScreen extends PureComponent {
                   value={pw}
                   onChangeText={this.changeInputText('pw')}
                   returnKeyType={mConst.bAndroid ? 'default' : 'done'}
-                  placeholder="8자리 이상 숫자, 문자 조합"
+                  placeholder="영문 대소문자/숫자/특수문자 포함 8-16자리"
                   onSubmitEditing={this.handleLogin}
                   autoCompleteType="off"
                   autoCapitalize="none"

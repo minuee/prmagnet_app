@@ -113,7 +113,7 @@ class SampleRequestsDetailScreen extends PureComponent {
       })
       //console.log('deleteMyRequests>>>>', response)
       setTimeout(() => {
-        this.alert('홀드요청삭제 완료', '홀드요청이 삭제되었습니다.', [
+        this.alert('홀딩 요청 삭제 완료', '홀딩 요청이 삭제되었습니다.', [
           {
             onPress: () => this.getSampleRequests(this.state.req_no)
           },
@@ -131,7 +131,7 @@ class SampleRequestsDetailScreen extends PureComponent {
       })
       //console.log('deleteMyRequests>>>>', response)
       setTimeout(() => {
-        this.alert('홀드요청취소 완료', '홀드요청이 취소되었습니다.', [
+        this.alert('홀딩 요청 취소 완료', '홀딩 요청이 취소되었습니다.', [
           {
             onPress: () => this.getSampleRequests(this.state.req_no)
           },
@@ -195,7 +195,7 @@ class SampleRequestsDetailScreen extends PureComponent {
             {!mUtils.isEmpty(data.canc_dt) && 
             <View style={{marginTop:5,}}>
               <Text style={{...styles.subTitle2}}>
-                {mConst.getUserType() == 'B' ? '홀딩요청 취소된 문서입니다.' :' 홀딩요청 취소하신 문서입니다.'}{"\r"}
+                {mConst.getUserType() == 'B' ? '홀딩 요청 취소된 문서입니다.' :' 홀딩 요청 취소하신 문서입니다.'}{"\r"}
                 (취소일자 : {dayjs(data.canc_dt).format("YYYY-MM-DD")})
               </Text>
             </View>
@@ -586,7 +586,7 @@ class SampleRequestsDetailScreen extends PureComponent {
           ( data.req_status_cd == 'RS0001' || data.req_status_cd == 'RS0010' )  &&
           <TouchableOpacity 
             onPress={() => 
-              this.alert('홀딩요청삭제', '홀딩요청을 삭제하시겠습니까?', [
+              this.alert('홀딩 요청 삭제', '홀딩 요청을 삭제하시겠습니까?', [
               {
                 onPress: () => {
                   this.handleOnDelete()
@@ -604,7 +604,7 @@ class SampleRequestsDetailScreen extends PureComponent {
           ( data.req_status_cd == 'RS0003' && !data.is_sendout  && dayjs.unix(data.shooting_date).format("YYYY-MM-DD") > dayjs(new Date()).format('YYYY-MM-DD'))  &&
           <TouchableOpacity  
             onPress={() => 
-              this.alert('홀딩요청취소', '홀딩요청을 취소하시겠습니까?', [
+              this.alert('홀딩 요청 취소', '홀딩 요청을 취소하시겠습니까?', [
               {
                 onPress: () => {
                   this.handleOnCancle()

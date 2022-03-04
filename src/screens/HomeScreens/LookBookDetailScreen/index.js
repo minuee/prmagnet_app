@@ -36,7 +36,7 @@ class LookBookDetailScreen extends PureComponent {
 
   copyToClipboard = () => {
     const {share_uuid} = this.state
-    Clipboard.setString(` https://www.prmagnet.kr/share-lookbook/${share_uuid}`)
+    Clipboard.setString(` https://www.prmagnet.kr/#/share-lookbook/${share_uuid}`)
     this.setState({link: false})
     setTimeout(() => {
       this.alert('', '복사 완료')
@@ -94,8 +94,8 @@ class LookBookDetailScreen extends PureComponent {
           title: '[PR MAGENT LookBook Share]' +brandTitle,
           imageUrl: 'https://www.prmagnet.kr/logo_meta2.png',
           link: {
-            webUrl: domain + "share-lookbook/" + share_uuid,
-            mobileWebUrl: domain + "share-lookbook/" + share_uuid,
+            webUrl: domain + "#/share-lookbook/" + share_uuid,
+            mobileWebUrl: domain + "#/share-lookbook/" + share_uuid,
           },
           description:  brandTitle,
         },
@@ -103,8 +103,8 @@ class LookBookDetailScreen extends PureComponent {
           {
             title: '웹에서 보기',
             link: {
-              webUrl: domain + "share-lookbook/" + share_uuid,
-              mobileWebUrl: domain + "share-lookbook/" + share_uuid,
+              webUrl: domain + "#/share-lookbook/" + share_uuid,
+              mobileWebUrl: domain + "#/share-lookbook/" + share_uuid,
             },
           }
         ],

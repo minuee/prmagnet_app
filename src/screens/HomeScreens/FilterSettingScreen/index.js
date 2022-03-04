@@ -22,8 +22,14 @@ class FilterSettingScreen extends PureComponent {
       notice: '',
       inquiryNum: '',
       SRInquiryNum: '',
+      SRInquiryNum2: '',
+      SRInquiryNum3: '',
       email: '',
+      email2: '',
+      email3: '',
       inquiry_charge : '',
+      inquiry_charge2 : '',
+      inquiry_charge3 : '',
       limit_days : 1
     }
   }
@@ -59,12 +65,18 @@ class FilterSettingScreen extends PureComponent {
   }
 
   postSRInquiry = async () => {
-    const {SRInquiryNum, email,inquiry_charge} = this.state
+    const {SRInquiryNum,SRInquiryNum2,SRInquiryNum3, email,email2,email3,inquiry_charge,inquiry_charge2,inquiry_charge3} = this.state
     try {
       const response = await API.postSRInquiry({
         SRInquiryNum: SRInquiryNum,
+        SRInquiryNum2: SRInquiryNum2,
+        SRInquiryNum3: SRInquiryNum3,
         email: email,
-        inquiry_charge : inquiry_charge
+        email2: email2,
+        email3: email3,
+        inquiry_charge : inquiry_charge,
+        inquiry_charge2 : inquiry_charge2,
+        inquiry_charge3 : inquiry_charge3
       })
       //console.log('postSRInquiry>>>', response)
       if (response.success) {
@@ -119,7 +131,17 @@ class FilterSettingScreen extends PureComponent {
       const response = await API.getSRInquiry()
       console.log('getSRInquiry>>>', response)
       if (response.success) {
-        this.setState({SRInquiryNum: response.showroom_inquiry_contact, email: response.showroom_inquiry_email,inquiry_charge: response.inquiry_charge})
+        this.setState({
+          SRInquiryNum: response.showroom_inquiry_contact,
+          SRInquiryNum2: response.showroom_inquiry_contact2,
+          SRInquiryNum3: response.showroom_inquiry_contact3,
+          email: response.showroom_inquiry_email,
+          email2: response.showroom_inquiry_email2,
+          email3: response.showroom_inquiry_email3,
+          inquiry_charge: response.inquiry_charge,
+          inquiry_charge2: response.inquiry_charge2,
+          inquiry_charge3: response.inquiry_charge3
+        })
       }
     } catch (error) {
       //console.log('getSRInquiry>>>', error)
@@ -144,7 +166,7 @@ class FilterSettingScreen extends PureComponent {
     this.setState({select: select})
   }
   selectView() {
-    const {notice, inquiryNum, SRInquiryNum, email,inquiry_charge,limit_days} = this.state;
+    const {notice, inquiryNum, SRInquiryNum,SRInquiryNum2,SRInquiryNum3, email,email2,email3,inquiry_charge,inquiry_charge2,inquiry_charge3,limit_days} = this.state;
     console.log('limit_days',limit_days)
     switch (this.state.select) {
       case '공지사항':
@@ -194,7 +216,8 @@ class FilterSettingScreen extends PureComponent {
       case '쇼룸문의':
         return (
           <View style={{flex: 1}}>
-             <TextInput
+            <Text style={styles.headerText2}>담당자 1</Text>
+            <TextInput
               style={styles.numberBox}
               placeholder={'담당자명을 입력하세요'}
               placeholderTextColor={mConst.gray}
@@ -220,6 +243,64 @@ class FilterSettingScreen extends PureComponent {
               value={email}
               onChangeText={text => {
                 this.setState({email: text})
+              }}
+            />
+            <Text style={styles.headerText2}>담당자 2</Text>
+            <TextInput
+              style={styles.numberBox}
+              placeholder={'담당자명을 입력하세요'}
+              placeholderTextColor={mConst.gray}
+              value={inquiry_charge2}
+              onChangeText={text => {
+                this.setState({inquiry_charge2: text})
+              }}
+            />
+            <TextInput
+              keyboardType={'number-pad'}              
+              style={{...styles.numberBox, marginTop: mUtils.wScale(10)}}
+              placeholder={'연락처를 입력하세요'}
+              placeholderTextColor={mConst.gray}              
+              value={mUtils.isEmpty(SRInquiryNum2) ? null : mUtils.allNumber(SRInquiryNum2)}
+              onChangeText={text => {
+                this.setState({SRInquiryNum2: text})
+              }}
+            />
+            <TextInput
+              style={{...styles.numberBox, marginTop: mUtils.wScale(10)}}
+              placeholder={'이메일을 입력하세요'}
+              placeholderTextColor={mConst.gray}
+              value={email2}
+              onChangeText={text => {
+                this.setState({email2: text})
+              }}
+            />
+            <Text style={styles.headerText2}>담당자 3</Text>
+            <TextInput
+              style={styles.numberBox}
+              placeholder={'담당자명을 입력하세요'}
+              placeholderTextColor={mConst.gray}
+              value={inquiry_charge3}
+              onChangeText={text => {
+                this.setState({inquiry_charge3: text})
+              }}
+            />
+            <TextInput
+              keyboardType={'number-pad'}              
+              style={{...styles.numberBox, marginTop: mUtils.wScale(10)}}
+              placeholder={'연락처를 입력하세요'}
+              placeholderTextColor={mConst.gray}              
+              value={mUtils.isEmpty(SRInquiryNum3) ? null : mUtils.allNumber(SRInquiryNum3)}
+              onChangeText={text => {
+                this.setState({SRInquiryNum3: text})
+              }}
+            />
+            <TextInput
+              style={{...styles.numberBox, marginTop: mUtils.wScale(10)}}
+              placeholder={'이메일을 입력하세요'}
+              placeholderTextColor={mConst.gray}
+              value={email3}
+              onChangeText={text => {
+                this.setState({email3: text})
               }}
             />
           </View>
