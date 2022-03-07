@@ -21,8 +21,9 @@ class LoginScreen extends PureComponent {
     super(props)
     cBind(this)
     this.state = { 
+      pushKey : null,
       email : '',
-      pw : ''
+      pw : '',
       // email: 'test1000@ruu.kr',
       // pw: 'test1000@ruu.kr',
       // email: 'gucci@ruu.kr', // 브랜드 테스트
@@ -34,34 +35,42 @@ class LoginScreen extends PureComponent {
       //pw: '1234qwer',
     }
   }
-  componentDidMount() {
+  async componentDidMount() {
     this.emptyOption('');
+    const pushKey = await mUtils.getFcmToken();
     if ( __DEV__) {
       this.setState({
         email: 'elle@ruu.kr',
-        pw: '1234qwer'
+        pw: '1234qwer',
+        pushKey
       })
     }
   }
   handleLogin = callOnce(async () => {
-    const {email, pw} = this.state;
+    const {email, pw, pushKey} = this.state;
     const {loginSuccess, loginFailure, userTypeSuccess,userSubScrbeStatus} = this.props;
-    const hash = await sha256(pw.toString());
-    const pushKey = await mUtils.getFcmToken();
+    //const hash = await sha256(pw.toString());
+   
     const data = {
       email,
       pw, // : hash, //TODO 추후 암호화 적용
     }
+    
     if (email.trim() == '') {
-      return this.alert('', '이메일을 입력해주세요.');
+      this.alert('', '이메일을 입력해주세요.');
+      return;
     }
     if (!mUtils.isEmail(email)) {
-      return this.alert('', '이메일 형식이 아닙니다.');
+      this.alert('', '이메일 형식이 아닙니다.');
+      return;
     }
     if (pw.trim() == '' ) {
-      return this.alert('', '비밀번호를 입력해주세요.');
+      this.alert('', '비밀번호를 입력해주세요.');
+      return;
     }
     // if (!mUtils.isPassword(pw)) return this.alert('', '비밀번호 형식을 확인해주세요.') // TODO 임시 주석 처리  
+   
+    
     await mUtils.setFcmTopicClear();
     API.login(data, {
       cbSuccess: async response => {
@@ -80,7 +89,6 @@ class LoginScreen extends PureComponent {
               isSubscrYN = true;
               if ( resUserType.notice_notifi_recv_yn )  mUtils.setFcmTopic('M');
             }
-          
             AsyncStorage.setItem('myInformation', JSON.stringify(resUserType));
             userSubScrbeStatus(isSubscrYN);
             userTypeSuccess(resUserType)
@@ -113,7 +121,6 @@ class LoginScreen extends PureComponent {
         }else{
           this.showErrorMsg(error)
         }
-       
       },
     })
   })
@@ -143,14 +150,15 @@ class LoginScreen extends PureComponent {
           {/* <PushHeader onPress={this.pop} /> */}
           <View style={styles.upperWrapper}>
             <Text style={styles.inputTitleText}>이메일</Text>
-            <TouchableWithoutFeedback onPress={() => this.emailInput.focus()}>
-              <View style={styles.inputTextWrapper}>
+            <TouchableWithoutFeedback onPress={() => this.emailInput.focus()} style={{marginBottom:10}}>
+              <View style={[styles.inputTextWrapper,{marginBottom:15}]}>
                 <TextInput
                   ref={comp => (this.emailInput = comp)}
                   style={styles.input}
                   placeholderTextColor={mConst.textPhColor}
                   value={email}
-                  onChangeText={this.changeInputText('email')}
+                  //onChangeText={this.changeInputText('email')}
+                  onChangeText={(value)=> this.setState({email : value.trim()})}
                   placeholder="이메일을 입력해주세요."
                   returnKeyType={mConst.bAndroid ? 'default' : 'done'}
                   onSubmitEditing={() => this.passInput.focus()}
@@ -159,7 +167,7 @@ class LoginScreen extends PureComponent {
                   autoCapitalize="none"
                   maxLength={100}
                   textContentType={'username'}
-                  clearButtonMode={true}
+                  clearButtonMode={'always'}
                 />
               </View>
             </TouchableWithoutFeedback>
@@ -171,7 +179,8 @@ class LoginScreen extends PureComponent {
                   style={styles.input}
                   placeholderTextColor={mConst.textPhColor}
                   value={pw}
-                  onChangeText={this.changeInputText('pw')}
+                  //onChangeText={this.changeInputText('pw')}
+                  onChangeText={(value)=> this.setState({pw : value.trim()})}
                   returnKeyType={mConst.bAndroid ? 'default' : 'done'}
                   placeholder="영문 대소문자/숫자/특수문자 포함 8-16자리"
                   onSubmitEditing={this.handleLogin}
@@ -180,7 +189,7 @@ class LoginScreen extends PureComponent {
                   maxLength={16}
                   secureTextEntry={true}
                   textContentType={'password'}
-                  clearButtonMode={true}
+                  clearButtonMode={'always'}
                 />
               </View>
             </TouchableWithoutFeedback>

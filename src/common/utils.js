@@ -539,7 +539,7 @@ const utils = {
         fcmToken = 'DEFAULT_FCM_TOKEN'
       }
     }
-    //console.log('fcmToken:', fcmToken)
+    console.log('fcmToken:', fcmToken)
     return fcmToken
   },
   async getFcmEnabled() {
