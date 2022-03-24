@@ -31,6 +31,7 @@ class ReturnScreen extends PureComponent {
       checkedList: [],
       selectEachList : [],
       targetSampleList : [],
+      isMagazineTarget : [],
       isvisible: {open: false, phone: '', name: ''},
       loading: true,
       moreLoading : false
@@ -39,6 +40,7 @@ class ReturnScreen extends PureComponent {
 
   async UNSAFE_componentWillMount() {
     const {reqNo, selectEachList = []} = this.params;
+    console.log('reqNoreqNoreqNo',selectEachList);
     if (reqNo) {
       this.modalOption('Return', false)
     } else {
@@ -140,6 +142,7 @@ class ReturnScreen extends PureComponent {
     let AllData = 0;
     let sendOutData = 0;    
     let targetSampleList = [];
+    let isMagazineTarget = [];
     const data2 = data === undefined ? this.state.data : data
     if ( data2.length === undefined ) {
       targetList = data2.showroom_list;
@@ -157,13 +160,17 @@ class ReturnScreen extends PureComponent {
             }else{
               targetSampleList.push(element2.sample_no);
             }
+            if ( element2.return_user_info[0].return_userid_type === 'RUS001') {
+              isMagazineTarget.push(element2.sample_no);
+            }
           }
         })
       }
     }); 
-    console.log('targetSampleList',targetSampleList)
+    console.log('isMagazineTarget',isMagazineTarget)
     this.setState({
         allChecked : AllData === sendOutData ? true :false,
+        isMagazineTarget,
         loading:false,
         moreLoading:false,
         targetSampleList
@@ -239,7 +246,7 @@ class ReturnScreen extends PureComponent {
   }
   render() {
     const {reqNo} = this.params
-    const {data, checkedList, allChecked, loading} = this.state;
+    const {data, checkedList, allChecked, loading,isMagazineTarget} = this.state;
    
     const srcReturning_date = mUtils.get(data, 'returning_date');
     const returningDate = mUtils.getShowDate(srcReturning_date);
@@ -374,6 +381,7 @@ class ReturnScreen extends PureComponent {
                           returnUser={subItem?.return_user_info[0]}
                           onPressPhone={() => this.handlePressPhone(newfromName, newfromPhone)}
                           color={mConst.bgBlue}
+                          isMagazineTarget={isMagazineTarget.includes(subItem.sample_no)}
                         />
                       )
                     })}
@@ -399,6 +407,7 @@ class ReturnScreen extends PureComponent {
                           onPressPhone={() => this.handlePressPhone(newtoName, newtoPhone)}                          
                           onSwipeCheck={() => this.handleCheckItem(subItem,roomName,newSendName)}
                           color={mConst.bgKhaki}
+                          isMagazineTarget={isMagazineTarget.includes(subItem.sample_no)}
                         />
                       )
                     })}
@@ -414,9 +423,12 @@ class ReturnScreen extends PureComponent {
             <Text style={styles.bottomText}>All Returned(Completed)</Text>
           </View>
           :
+          this.state.isMagazineTarget.length == 0 ?
           <TouchableOpacity onPress={this.handleCheckItemAll} style={styles.bottom}>
             <Text style={styles.bottomText}>All Returned</Text>
           </TouchableOpacity>
+          :
+          null
         }
         <Modal style={styles.modal} isVisible={this.state.isvisible.open} useNativeDriver={true}>
           <View style={styles.modalView}>

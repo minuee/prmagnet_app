@@ -437,6 +437,7 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getReturnSchedule: ({start_date, fin_date,not_finished}) => {
+    console.log('getReturnSchedule',start_date, fin_date,not_finished);
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/return-schedule`
     const init = {

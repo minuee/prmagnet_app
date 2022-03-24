@@ -232,6 +232,7 @@ class LinkSheetScreen extends React.Component {
     }
 
     handleStateChange = async(bool) => {
+        console.log('handleStateChange', bool)
         this.setState({moreLoading:true, isNotClear:bool=='all'?'not':'all'})
         this.handleLoadData(this.state.start, this.state.end, this.state.brandId,bool=='all'?'not':'all')
     }
