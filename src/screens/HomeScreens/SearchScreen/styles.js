@@ -25,7 +25,8 @@ export default StyleSheet.create({
   layoutWrap : {
     flex:1,
     flexDirection: 'row',
-    alignItems: 'center',
+    //alignItems: 'center',
+    alignItems :'flex-start',
     marginTop: mUtils.wScale(15),    
   },
   layoutLeft : {

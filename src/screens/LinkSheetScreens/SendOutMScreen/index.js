@@ -33,7 +33,7 @@ class SendOutScreen extends PureComponent {
       selectEachList : [],
       targetSampleList : [],
       setChangeReturnDate : null,
-      isvisible: {open: false, phone: '', name: ''},
+      isvisible: {open: false, phone: '', name: '', address : ''},
       loading: true,
       moreLoading : false
     }
@@ -44,7 +44,7 @@ class SendOutScreen extends PureComponent {
     if (reqNo) {
       this.modalOption('Send Out', false)
     } else {
-      this.pushOption('Send Out', false)
+      this.pushOption('발송 시트', false)
     }
     if ( selectEachList.length > 0 )  {      
       this.setState({selectEachList:selectEachList})
@@ -149,8 +149,8 @@ class SendOutScreen extends PureComponent {
       setChangeReturnDate : changeReturnDate,
     })
   }
-  handlePressPhone = (name, phone) => {
-    this.setState({isvisible: {open: true, name, phone}})
+  handlePressPhone = (name, phone, address) => {
+    this.setState({isvisible: {open: true, name, phone, address}});
   }
 
   actionHandleCheckItem = async(item,len,name,sampleNo,sampleName,roomName) => {
@@ -256,7 +256,7 @@ class SendOutScreen extends PureComponent {
             </Text>
           </View> */}
           <View style={styles.middleWrapper}>
-            <Text style={styles.middleText}>매체명</Text>
+            <Text style={styles.middleText}>회사명</Text>
             <Text style={styles.middleDescText}>
               {mUtils.isEmpty(data.mgzn_nm) ? mUtils.get(data, 'stylist_compy_nm', '-') : mUtils.get(data, 'mgzn_nm', '-')}
             </Text>
@@ -316,11 +316,12 @@ class SendOutScreen extends PureComponent {
             {_.map(mUtils.get(data, 'showroom_list', []), (item, index) => {
               const samples = mUtils.get(item, 'sample_list', [])
               const roomName = mUtils.get(item, 'showroom_nm')
+              const roomNo = mUtils.get(item, 'showroom_no')
               const imageUrl = mUtils.get(samples, '[0].image_list[0]')
               const rowSize = _.size(samples)
               return (
                 <Row key={index}>
-                  <Col style={styles.col(rowSize * 2, true)} size={1}>
+                  <Col style={styles.col(rowSize * 2, true)} size={1} onPress={() => {this.pushTo('DigitalSRDetailScreen', {no: roomNo, type: 'digital',title : roomName})}}>
                     <Text style={styles.sText()}>{roomName}</Text>
                   </Col>
                   <Col style={styles.col(rowSize * 2)} size={2}>
@@ -337,7 +338,7 @@ class SendOutScreen extends PureComponent {
                       )
                     })}
                   </Col>
-                  <Col style={styles.col(rowSize * 2, true)} size={2}>
+                  <Col style={styles.col(rowSize * 2, true)} size={2} onPress={() => {this.pushTo('DigitalSRDetailScreen', {no: roomNo, type: 'digital',title : roomName})}}>
                     <FastImage source={{uri: imageUrl}} style={styles.modelImage} />
                   </Col>
                   <Col style={styles.col(rowSize * 2)} size={6}>
@@ -345,6 +346,7 @@ class SendOutScreen extends PureComponent {
                       //console.log('subItem',subItem)
                       const newfromName = subItem?.return_user_info[0].user_nm;
                       const newfromPhone = mUtils.phoneFormat(subItem?.return_user_info[0].phone_no);
+                      const newfromAddress = null;
                       return (
                         <LinkSheetUnit
                           key={`${subItem.sample_no}${subIndex}`}                            
@@ -358,7 +360,7 @@ class SendOutScreen extends PureComponent {
                           sendUser={subItem?.send_user_info[0] }
                           returnUser={subItem?.return_user_info[0]}
                           onPress={() => null}
-                          onPressPhone={() => this.handlePressPhone(newfromName, newfromPhone)}
+                          onPressPhone={() => this.handlePressPhone(newfromName, newfromPhone,newfromAddress)}
                           onSwipeCheck={() => this.handleCheckItem(subItem,roomName,newfromName)}
                           color={'#d78979'}
                         />
@@ -369,6 +371,7 @@ class SendOutScreen extends PureComponent {
                     {_.map(samples, (subItem, subIndex) => {
                       const newtoName = subItem?.use_user_info[0].user_nm;
                       const newtoPhone = mUtils.phoneFormat(subItem?.use_user_info[0].phone_no);
+                      const newfromAddress = subItem?.return_user_info[0].dlvy_adress;
                       return (
                         <LinkSheetUnit
                           key={`${subItem.sample_no}${subIndex}`}
@@ -383,7 +386,7 @@ class SendOutScreen extends PureComponent {
                           sendUser={subItem?.use_user_info[0]}
                           returnUser={subItem?.use_user_info[0]}
                           onPress={() => null}
-                          onPressPhone={() => this.handlePressPhone(newtoName, newtoPhone)}
+                          onPressPhone={() => this.handlePressPhone(newtoName, newtoPhone,newfromAddress)}
                           onSwipeCheck={() => this.handleCheckItem(subItem,roomName,newtoName)}
                           color={'#b8c18c'}
                         />
@@ -393,11 +396,15 @@ class SendOutScreen extends PureComponent {
                 </Row>
               )
             })}
+            <Row style={{padding:5}}>
+              <Text style={styles.sText(12)}>{data?.send_out_notice}</Text>
+            </Row>
           </Grid>
         </ScrollView>
         <Modal style={styles.modal} isVisible={this.state.isvisible.open} useNativeDriver={true}>
           <View style={styles.modalView}>
             <Text style={styles.modalName}>{this.state.isvisible.name}</Text>
+            <Text style={styles.modalAddress}>{this.state.isvisible.address}</Text>
             <Text style={styles.modalPhone}>{this.state.isvisible.phone}</Text>
           </View>
           <View style={styles.layout}>

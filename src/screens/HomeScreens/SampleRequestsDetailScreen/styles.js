@@ -1,6 +1,6 @@
-import {Platform} from 'react-native'
+import {Platform,Dimensions} from 'react-native'
 import {StyleSheet} from 'react-native'
-
+const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get('window');
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 
@@ -66,6 +66,54 @@ export default StyleSheet.create({
     color: mConst.black,
     marginBottom: mUtils.wScale(8),
   },
+  smallTitle2: {
+    fontSize: 14,
+    textAlign: 'left',
+    color: mConst.black,
+  },
+  smallTitle3: {
+    fontSize: 14,
+    textAlign: 'left',
+    color: '#7ea1b2',
+  },
+  buttonOuterWrap : {
+    flex:1,paddingHorizontal:mUtils.wScale(10),flexDirection:'row',
+    marginBottom:mUtils.wScale(20),flexWrap:'wrap'
+  },
+  nullButtonWrap : {
+    paddingVertical: mUtils.wScale(5),
+    alignItems: 'center',
+    justifyContent:'center',
+    paddingHorizontal: mUtils.wScale(10),
+  },
+  selectButtonWrap : {
+    display:'flex',
+    paddingVertical: mUtils.wScale(5),
+    borderRadius: mUtils.wScale(10),
+    borderStyle: 'solid',
+    borderColor : '#7ea1b2',
+    backgroundColor : '#7ea1b2',
+    borderWidth: 0.5,
+    alignItems: 'center',
+    justifyContent:'center',
+    paddingHorizontal: mUtils.wScale(10),
+    marginRight:mUtils.wScale(5),
+    marginBottom:mUtils.wScale(5),
+  },
+  defaultButtonWrap : {
+    display:'flex',
+    borderRadius: mUtils.wScale(10),
+    paddingVertical: mUtils.wScale(5),
+    borderStyle: 'solid',
+    borderColor : '#ccc',
+    borderWidth: 0.5,
+    alignItems: 'center',
+    justifyContent:'center',
+    paddingHorizontal: mUtils.wScale(10),
+    marginRight:mUtils.wScale(5),
+    marginBottom:mUtils.wScale(5),
+    maxWidth:SCREEN_WIDTH*0.9
+  },
   boxText: {
     fontFamily: 'Roboto-Regular',
     fontSize: 14,
@@ -98,6 +146,12 @@ export default StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: mUtils.wScale(10),
   },
+  twiceButtonWrap : {
+    display:'flex',
+    flexDirection:'row',
+    justifyContent:'space-between',
+    alignItems:'center'
+  },
   postBox: {
     backgroundColor: mConst.black,
     borderStyle: 'solid',
@@ -111,6 +165,12 @@ export default StyleSheet.create({
     height: mUtils.wScale(6),
     backgroundColor: '#f6f6f6',
     marginVertical: mUtils.wScale(30),
+  },
+  emptyBar2: {
+    width: '100%',
+    height: mUtils.wScale(6),
+    backgroundColor: '#f6f6f6',
+    marginVertical: mUtils.wScale(5),
   },
   bottomButton: {
     width: '100%',
@@ -160,6 +220,22 @@ export default StyleSheet.create({
     paddingHorizontal: mUtils.wScale(8),
     paddingVertical: Platform.OS === 'ios' ? mUtils.wScale(7) : mUtils.wScale(1.2),
   },
+  replaceWrap : {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  selectBox: {
+    borderRadius: mUtils.wScale(1),
+    paddingHorizontal: mUtils.wScale(5),
+    paddingVertical: mUtils.wScale(5),
+    borderWidth: 0.7,
+    borderColor: mConst.borderGray,
+  },
+  selectText: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 12,
+    textAlign: 'center',
+  },
   inputBox1: {
     fontFamily: 'Roboto-Regular',
     fontSize: 14,
@@ -207,6 +283,11 @@ export default StyleSheet.create({
     height: mUtils.wScale(45),
     marginBottom: mUtils.wScale(10),
   },
+  selectImg2: {
+    width: mUtils.wScale(220),
+    height: mUtils.wScale(245),
+    marginBottom: mUtils.wScale(10),
+  },
   delImg: {
     width: mUtils.wScale(20),
     height: mUtils.wScale(20),
@@ -250,6 +331,13 @@ export default StyleSheet.create({
     width: '100%',
     height: mUtils.hScale(50),
     backgroundColor: '#ccc',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  twiceBottom: {
+    width: '50%',
+    height: mUtils.hScale(50),
+    backgroundColor: mConst.getBaseColor(),
     alignItems: 'center',
     justifyContent: 'center',
   },

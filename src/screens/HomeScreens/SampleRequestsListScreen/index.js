@@ -10,7 +10,7 @@ import API from '../../../common/aws-api'
 import Loading from '../../common/Loading'
 import Empty from '../../common/Empty'
 import Icon from 'react-native-vector-icons/AntDesign';
-Icon.loadFont();
+
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
@@ -21,7 +21,7 @@ import { Tooltip } from 'react-native-elements';
 const moreImage1 = require('../../../images/navi/more_1.png')
 const moreImage3 = require('../../../images/navi/more_3.png')
 const todayTimeStamp = mUtils.getToday();
-const reqStatusEditList = ["pending","confirmed"];
+const reqStatusEditList = ["pending","confirmed","tempsave"];
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get('window');
 class SampleRequestsListScreen extends React.Component {
   constructor(props) {
@@ -144,7 +144,7 @@ class SampleRequestsListScreen extends React.Component {
           <View style={styles.layout4}>
             <Text style={styles.title}>{item.brand_nm}</Text>
             {//item.editable === true && (
-            ( item.expected_photograph_date > todayTimeStamp && reqStatusEditList.includes(item.req_status_nm) )? (
+            ( ( item.expected_photograph_date > todayTimeStamp && reqStatusEditList.includes(item.req_status_nm) ) || item.req_status_nm == 'tempsave' )? (
               <Menu>
                 <MenuTrigger
                   customStyles={{

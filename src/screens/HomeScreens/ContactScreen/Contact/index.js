@@ -29,7 +29,6 @@ class Contact extends PureComponent {
   }
 
   _keyboardDidShow = (e) => {
-    console.log('e.endCoordinates.height>>>>', e.endCoordinates.height)
     this.setState({
       keyboardHeight :e.endCoordinates.height,
     })
@@ -41,12 +40,25 @@ class Contact extends PureComponent {
     })
   }
 
-  postQna = async () => {
+  postQna = () => {
+    const {title, desc} = this.state;
+    if ( mUtils.isEmpty(title)){
+      mUtils.fn_call_toast('제목을 입력해주세요.');
+      return false;
+    }else if ( mUtils.isEmpty(desc)){
+      mUtils.fn_call_toast('내용을 입력해주세요.');
+      return false;
+    }else{
+      this.actionPostQna()
+    }
+
+  }
+
+  actionPostQna = async () => {
     const {title, desc} = this.state
     const userType = mConst.getUserType()
     try {
       const response = await API.postQna({subject: title, content: desc, userType: userType})
-      console.log('postQna>>>>', response)
       if (response.success) {
         this.setState({title: '', desc: ''})
         this.alert('문의하기 완료', '문의가 정상적으로 접수되었습니다.', [{onPress: () => null}])

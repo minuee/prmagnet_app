@@ -12,7 +12,14 @@ const foldImage = require('../../images/common/fold.png')
 const unfoldImage = require('../../images/common/unfold.png')
 const selectedImage = require('../../images/common/selected.png')
 
-const rtwData = ['XS', 'S', 'M', 'L', 'XL']
+//const rtwData = ['XS', 'S', 'M', 'L', 'XL'];
+const rtwData = [
+  { cd_id: "XS", cd_nm: "XS (여성 36/ 남성 44)" },
+  { cd_id: "S", cd_nm: "S (여성 38/ 남성 46)" },
+  { cd_id: "M", cd_nm: "M (여성 40/ 남성 48)" },
+  { cd_id: "L", cd_nm: "L (여성 42/ 남성 50)" },
+  { cd_id: "XL", cd_nm: "XL (여성 44/ 남성 52)" },
+];
 
 export default SizeGroup = props => {
   const {data, showRtw, showShoes, value, hide, setFilter} = props
@@ -52,10 +59,10 @@ const RtwSizeItem = props => {
       {_.map(rtwData, (item, index) => {
         if (!fold) {
           return (
-            <TouchableOpacity key={index} onPress={() => setFilter(item)}>
+            <TouchableOpacity key={index} onPress={() => setFilter(item.cd_id)}>
               <Row style={styles.itemWrapper}>
-                <Text style={styles.itemText}>{item}</Text>
-                {value.includes(item) && <FastImage source={selectedImage} style={styles.selectedImage} />}
+                <Text style={styles.itemText}>{item.cd_nm}</Text>
+                {value.includes(item.cd_id) && <FastImage source={selectedImage} style={styles.selectedImage} />}
               </Row>
             </TouchableOpacity>
           )

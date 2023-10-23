@@ -233,6 +233,7 @@ class RootScreen extends PureComponent {
             </TabLookStack.Navigator>
           )}
         />
+        { !two &&
         <TabNavi.Screen
           name="ScheduleTab"
           options={{
@@ -254,6 +255,7 @@ class RootScreen extends PureComponent {
             </TabScheduleStack.Navigator>
           )}
         />
+        }
         <TabNavi.Screen
           name="LinkTab"
           options={{

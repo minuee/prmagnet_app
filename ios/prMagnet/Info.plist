@@ -20,6 +20,8 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<string>No</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

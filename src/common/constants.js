@@ -66,7 +66,7 @@ export default {
   osVersion: parseInt(Platform.Version, 10),
   statusHeight: StatusBar.currentHeight,
   navigationBarHeight: Platform.OS === 'ios' ? 60 : 56,
-  AppStoreVersion : Platform.OS === 'ios' ? '1.2.0' : '1.0.0',
+  AppStoreVersion : Platform.OS === 'ios' ? '1.3.1' : '1.3.1',
 
   androidPackageName : 'com.svcorps.prmagnet',
   iosBundleId : 'com.svcorps.prmagnet',

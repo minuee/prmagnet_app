@@ -25,7 +25,6 @@ class WebViewComp extends Component {
 
   UNSAFE_componentWillMount () {
 	  const {url,title} = this.props.route.params;
-    console.log('UNSAFE_componentWillMount',url)
     this.pushOption(title);
     this.setState({
       loadUrl :  url
@@ -104,7 +103,7 @@ class WebViewComp extends Component {
     }
   };
 
-  handleNavigationStateChange = (event: NavState) => {    
+  handleNavigationStateChange = (event) => {    
     if (event.url ) {
         this.webViewRef.stopLoading();
         Linking.openURL(event.url);

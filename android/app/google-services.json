@@ -22,40 +22,11 @@
           }
         },
         {
-          "client_id": "479812450176-905tp0n1h4lqgeojau2mjll36ve4nlas.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBa5D76jhbJ5tkIHnISTUQlLtF8lUl4pjM"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "479812450176-905tp0n1h4lqgeojau2mjll36ve4nlas.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:479812450176:android:b78dc349d57d25df75f365",
-        "android_client_info": {
-          "package_name": "com.svcorps.prmagnet.debug"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "479812450176-66o7m9gqmdujnrhesq6d8pvem4cvtjjl.apps.googleusercontent.com",
+          "client_id": "479812450176-f6d1eb4utsd8qpeno3pq1icof8repfql.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.svcorps.prmagnet",
-            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+            "certificate_hash": "d1eaedf9676c401854359b98382305dcb4982f65"
           }
         },
         {
@@ -74,43 +45,14 @@
             {
               "client_id": "479812450176-905tp0n1h4lqgeojau2mjll36ve4nlas.apps.googleusercontent.com",
               "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:479812450176:android:b78dc349d57d25df75f365",
-        "android_client_info": {
-          "package_name": "com.svcorps.prmagnet.releaseStaging"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "479812450176-66o7m9gqmdujnrhesq6d8pvem4cvtjjl.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.svcorps.prmagnet",
-            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
-          }
-        },
-        {
-          "client_id": "479812450176-905tp0n1h4lqgeojau2mjll36ve4nlas.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBa5D76jhbJ5tkIHnISTUQlLtF8lUl4pjM"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
+            },
             {
-              "client_id": "479812450176-905tp0n1h4lqgeojau2mjll36ve4nlas.apps.googleusercontent.com",
-              "client_type": 3
+              "client_id": "479812450176-ngp62bisig16hrtkpsto9vpupjbk9dhg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.svcorps.prmagnet",
+                "app_store_id": "1564715391"
+              }
             }
           ]
         }

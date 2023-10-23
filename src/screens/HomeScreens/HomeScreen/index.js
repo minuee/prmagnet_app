@@ -61,13 +61,10 @@ class HomeScreen extends PureComponent {
     }
 
     getHome = async () => {
-        //const date = Math.floor(new Date().getTime() / 1000);
         const date = mUtils.getToday();
-        //let now = new Date();
-        //let dayjsDate2 = new Date(now.setDate(now.getDate() - 1)).getTime();
         try {
             const response = await API.getHome({date: date})
-            //console.log('getHome111',_.get(response, 'today_sendout', []))
+            console.log('getHome111',_.get(response, 'release_schedules', []))
             //console.log('getHome222each_list',_.get(response, 'today_request', [])[0].each_list)
             //console.log('getHome333showroom_list',_.get(response, 'today_request', [])[0].each_list[0].showroom_list)
             this.setState({data: response,loading:false,isSubScrbing:true})
@@ -116,6 +113,70 @@ class HomeScreen extends PureComponent {
                     <TouchableOpacity
                         style={styles.layout}
                         onPress={() => {this.pushTo('HomeDetailScreen', {type: 'request', title: userType !== 'B' ? 'Confirmed Requests' : 'New Sample Requests'})}}
+                    >
+                        <Text style={styles.more}>More</Text>
+                        <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                    </TouchableOpacity>
+                </View>
+            <View style={{...styles.layout2,backgroundColor: 'rgba(126, 161, 178, 0.2)',flex: requestData.length === 0 ? 0 : 1,flexDirection: requestData.length === 0 ? 'column' : 'row',justifyContent: requestData.length === 0 ? 'center' : 'space-between',flexWrap: requestData.length === 0 ? 'nowrap' : 'wrap'}}>
+                {requestData.length > 0 ? (
+                    requestData.map((item, index) => {
+                    if ( index < 4) {
+                    return (
+                    <TouchableOpacity
+                        onPress={() => {this.pushTo('SampleRequestsDetailScreen', {no: item.req_no})}}
+                        //disabled={userType !== 'B' ? false : true}
+                        key={index}
+                        style={styles.layout3}
+                    >
+                        <FastImage 
+                            resizeMode={'contain'} 
+                            style={styles.brandImg}
+                            source={{uri: userType === 'B' ? item.mgzn_logo_url_adres : item.brand_logo_url_adres}}
+                        />
+                        <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>
+                            {item.editor_nm}{item.editor_posi}
+                        </Text>
+                        <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>
+                            { userType === 'B' ? mUtils.getShowDate(item.req_dt, 'YYYY-MM-DD') : mUtils.getShowDate(item.photogrf_dt, 'YYYY-MM-DD')}
+                            { (userType !== 'B' && item.photogrf_dt != item.photogrf_end_dt ) && "~"+mUtils.getShowDate(item.photogrf_end_dt, 'YYYY-MM-DD') }
+                        </Text>
+                       {/*  {userType === 'B' ? (
+                            <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
+                                {item.mgzn_nm} • {item.celeb_list ? item.celeb_list[0] : item.model_list[0]}
+                            </Text>
+                        ) : (
+                            <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>{item.brand_nm}</Text>
+                        )} */}
+                       {/*  <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>Sheet No:{item.req_no}</Text> */}
+                    </TouchableOpacity>
+                    )
+                    }
+                })
+                ) : (
+                    <Empty />
+                )}
+            </View>
+        </View>
+        )
+    }
+
+    releaseSchedule = () => {
+        const {data} = this.state;
+        const userType = mConst.getUserType();
+        const requestData =  _.get(data, 'release_schedules', []);
+        return (
+            <View style={{ marginTop: mUtils.wScale(30)}}>
+                <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20)}}>
+                    <Text style={styles.new}>Today's 
+                     <Text style={{fontFamily: 'Roboto-Medium'}}> Release Schedules : </Text>
+                        <Text style={{fontFamily: 'Roboto-Bold', color: '#7ea1b2'}}>
+                            {requestData.length}
+                        </Text>
+                    </Text>
+                    <TouchableOpacity
+                        style={styles.layout}
+                        onPress={() => {this.pushTo('HomeDetailScreen', {type: 'release', title: 'Release Schedules'})}}
                     >
                         <Text style={styles.more}>More</Text>
                         <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
@@ -263,7 +324,7 @@ class HomeScreen extends PureComponent {
         
         return (
             <View >
-                <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(40)}}>
+                <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(30)}}>
                     <Text style={styles.new}>
                         Today's <Text style={{fontFamily: 'Roboto-Medium'}}>Send Outs : </Text>
                         <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}> {newLeftArray.length}</Text>
@@ -386,6 +447,7 @@ class HomeScreen extends PureComponent {
                                 {this.requests()}
                                 {mConst.getUserType() != 'B' && this.todayPickups()}
                                 {this.todaySendOuts()}
+                                {mConst.getUserType() == 'B' && this.releaseSchedule()}
                             </>
                             :
                             <Empty />

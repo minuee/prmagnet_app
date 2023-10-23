@@ -9,7 +9,6 @@ import Modal from 'react-native-modal';
 import Clipboard from '@react-native-clipboard/clipboard';
 import KakaoShareLink from 'react-native-kakao-share-link';
 import Icon from 'react-native-vector-icons/AntDesign';
-Icon.loadFont();
 import mConst from '../../../common/constants';
 import mUtils from '../../../common/utils';
 import cBind, {callOnce} from '../../../common/navigation';
@@ -52,7 +51,7 @@ class DigitalSRDetailScreen extends PureComponent {
     const {no} = this.props.route.params
     try {
       const response = await API.getSRDetail(sno === null ? no : sno)
-      ///console.log('getSRDetail>>>', JSON.stringify(response))
+      console.log('getSRDetail>>>', no, JSON.stringify(response))
       this.setState({
         data: response,
         moreLoading : false,
@@ -61,7 +60,7 @@ class DigitalSRDetailScreen extends PureComponent {
       this.titleOption(response.showroom_nm || '')
     } catch (error) {
       this.setState({moreLoading : false,})
-      //console.log('getSRDetail>>>', error)
+      console.log('getSRDetail>>111>', error)
     }
   }
 
@@ -76,7 +75,7 @@ class DigitalSRDetailScreen extends PureComponent {
           screenTitle : response.showroom_nm
       })
     } catch (error) {
-      //console.log('getSRDetail>>>', error)
+      console.log('getLookBookSRDetail>>>', error)
     }
   }
 
@@ -231,7 +230,9 @@ class DigitalSRDetailScreen extends PureComponent {
                     dotStyle={styles.swipeDot}
                     activeDotStyle={styles.swipeActiveDot}
                   >
-                    {item.sample_image_list.map((item, index) => {
+                    {
+                    Array.isArray(item.sample_image_list) &&
+                    item.sample_image_list.map((item, index) => {
                       return (
                         <FastImage
                           key={index}
@@ -312,7 +313,14 @@ class DigitalSRDetailScreen extends PureComponent {
                       <Text style={styles.left}>Price</Text>
                     </View>
                     <View style={styles.layoutRight}> 
-                      <Text style={{...styles.right}}>{mUtils.numberWithCommas(item.price)}원</Text>
+                      <Text style={{...styles.right}}>{
+                        ( item.price == 0 || item.price == null ) ?
+                        '가격미정'
+                        :
+                        item.price*1 > 0 ? mUtils.numberWithCommas(item.price)
+                        :
+                        item.price
+                      }</Text>
                     </View>
                   </View>
                   <View style={styles.layout}>

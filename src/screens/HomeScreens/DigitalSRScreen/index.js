@@ -5,7 +5,6 @@ import FastImage from 'react-native-fast-image';
 import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-menu';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/AntDesign';
-Icon.loadFont();
 import Modal from 'react-native-modal'
 import Clipboard from '@react-native-clipboard/clipboard'
 import { Tooltip } from 'react-native-elements';
@@ -89,6 +88,10 @@ class DigitalSRScreen extends PureComponent {
   }
   componentWillUnmount() {
     //this.removeFocus();
+  }
+
+  removeFocus = () => {
+    this.setState({selectOnOff: false, select: [],loading:false})
   }
   handleOnFocus = () => {
     const userType = mConst.getUserType()
@@ -189,21 +192,20 @@ class DigitalSRScreen extends PureComponent {
   }
 
   selected = item => {
-    ///console.log('itemitemitem>>>>>', item)
+
     const {select} = this.state;
-    if(select.includes(item)) {
-      this.setState(state => {
-        const list = state.select.filter((e, j) => select.indexOf(item) !== j)
-        return {select: list}
-      })
+    console.log('select>>>>>', select.findIndex((element) =>  element.showroom_no == item.showroom_no))
+    if(select.findIndex((element) =>  element.showroom_no == item.showroom_no) != -1) {
+      const newArr =  select.filter((element) => element.showroom_no != item.showroom_no)
+      this.setState({ select : newArr})
     }else{
       this.setState({select: select.concat(item)})
     }
   }
 
   postDigitalSR = async () => {
-    const {data, page, limit, season_year, brand_id} = this.state;
-    const userType = mConst.getUserType()
+    const {data, page, limit, season_year, brand_id, filterInfo} = this.state;
+    const userType = mConst.getUserType();
     try {
       const response = await API.postDigitalSR({
         page: page,
@@ -211,7 +213,15 @@ class DigitalSRScreen extends PureComponent {
         season_year: season_year.season_year,
         season_cd_id: season_year.season_cd_id,
         brand_id: brand_id,
+        gender_list: filterInfo.gender,
+        category_list: filterInfo.category,
+        color_list: filterInfo.color,
+        size_list: filterInfo.size,
+        wrhousng_yn: filterInfo.sample,
+        still_life_img_yn: filterInfo.stillLifeImg,
+        material_list: filterInfo.material,
       })      
+     
       if (response.success) {
         if ( brand_id != 'all') {
           if (page === 1) {
@@ -249,22 +259,20 @@ class DigitalSRScreen extends PureComponent {
       }
     } catch (error) {
       this.setState({loading: true})
-      console.log('postDigitalSR>>>', error)
     }
   }
 
   postDigitalSRReset = async () => {
     const {season_year, brand_id, filterInfo} = this.state;
 
-    //console.log('postDigitalSRReset',brand_id)
     const userType = mConst.getUserType()
     this.setState({loading: false})
     try {
       const response = await API.postDigitalSR({
         page: 1,
         limit: 10,
-        season_year: '',//season_year.season_year,
-        season_cd_id: '',//season_year.season_cd_id,
+        season_year: season_year.season_year,
+        season_cd_id: season_year.season_cd_id,
         brand_id: brand_id,
         gender_list: filterInfo.gender,
         category_list: filterInfo.category,
@@ -274,7 +282,7 @@ class DigitalSRScreen extends PureComponent {
         still_life_img_yn: filterInfo.stillLifeImg,
         material_list: filterInfo.material,
       })
-      //console.log('postDigitalSRReset>>>1111')
+
       if (response.success) {
         if ( brand_id != 'all') {
           if (userType === 'B') {
@@ -304,14 +312,25 @@ class DigitalSRScreen extends PureComponent {
             })
           }
         }else{
-          this.setState({
-            data: response,
-            page: 2,
-            loading: true,
-            season_year: response.season_list.length > 0 ? response.season_list[0] : {season_year: '', season_cd_id: ''},
-            notice: null,
-            inquiryNum:null,
-          })
+          if ( season_year.season_cd_id == "" ) {
+            this.setState({
+              data: response,
+              page: 2,
+              loading: true,
+              season_year: response.season_list.length > 0 ? response.season_list[0] : {season_year: '', season_cd_id: ''},
+              notice: null,
+              inquiryNum:null,
+            })
+          }else{
+            this.setState({
+              data: response,
+              page: 2,
+              loading: true,
+              notice: null,
+              inquiryNum:null,
+            })
+          }
+          
         }
       }
     } catch (error) {
@@ -359,6 +378,20 @@ class DigitalSRScreen extends PureComponent {
     }, 500)
   }
 
+  moveRequest = () => {
+    if ( this.state.select.length > 0 ) {
+        this.pushTo('SampleRequestsScreen', {
+          modelList: this.state.select,
+          delSelect: this.selected,
+          brandId: this.state.data?.current_brand_info?.brand_id,
+          type: true,
+          brandName: '',
+        })
+      
+    }else{
+      this.alert('알림', '최소한개 이상 선택해주세요', [{onPress: () => console.log('')}])
+    }
+  }
   
   renderItem = ({item}) => {
     const {selectOnOff, select} = this.state
@@ -409,7 +442,7 @@ class DigitalSRScreen extends PureComponent {
 
           {selectOnOff && (
             item.all_in_yn ?
-            (select.includes(item) ? (
+            (select.findIndex((element) =>  element.showroom_no == item.showroom_no) != -1 ? (
               <View style={{...styles.select, backgroundColor: 'rgba(126, 161, 178, 0.8)'}}>
                 <FastImage resizeMode={'contain'} style={styles.selectImg} source={selectImg2} />
               </View>
@@ -464,18 +497,20 @@ class DigitalSRScreen extends PureComponent {
     return (
       <SafeAreaView style={styles.container}>
         <Header pushTo={this.pushTo} userType={userType} alarmSet={user.alarm} />
-        <View style={{paddingHorizontal: mUtils.wScale(20), flex: 1}}>
+        <View style={{paddingHorizontal: mUtils.wScale(20), flex: 1,}}>
           <View style={{...styles.layout, justifyContent: 'space-between', marginTop: mUtils.wScale(25)}}>
             <View>
               <Text style={{...styles.mainTitle}}>Digital <Text style={styles.mainTitle1}>Showroom</Text></Text>
               
-            </View>              
-            {( userType !== 'B'  && this.state.brand_id !== 'all' ) && (
+            </View>       
+            {
+              userType !== 'B' &&       
               <View style={styles.layout2}>
                 <TouchableOpacity
                   style={{...styles.selectBox, backgroundColor: selectOnOff ? mConst.black : mConst.white, marginRight: mUtils.wScale(5)}}
                   onPress={() => {
-                    this.setState({selectOnOff: !selectOnOff, select: []})
+                    ( userType !== 'B'  && this.state.brand_id !== 'all' ) ? this.setState({selectOnOff: !selectOnOff, select: []}) :
+                    this.alert('알림', '브랜드 선택 후 홀딩 요청이 가능합니다.(브랜드 별)', [{onPress: () => console.log('')}])
                   }}
                 >
                   <Text style={{...styles.selectText, color: selectOnOff ? mConst.white : mConst.black}}>홀딩 요청</Text>
@@ -487,7 +522,7 @@ class DigitalSRScreen extends PureComponent {
                   <Text style={{...styles.selectText, color: mConst.white}}>Brands</Text>
                 </TouchableOpacity> */}
               </View>
-            )}
+            }
           </View>
           
           {
@@ -497,16 +532,15 @@ class DigitalSRScreen extends PureComponent {
               <View style={{...styles.layout, justifyContent: 'space-between', paddingTop: mUtils.wScale(20), paddingBottom: mUtils.wScale(10)}}>
                 <View>
                   {userType !== 'B' && <Text style={styles.brandText}>{data.current_brand_info?.brand_nm}</Text>}
+                  {/* ( this.state.brand_id !== 'all' || userType == 'B' ) && */}
                   <Menu>
                     {data.season_list.length > 0 ?
                     <MenuTrigger
-                      customStyles={{
-                        TriggerTouchableComponent: TouchableOpacity,
-                      }}
+                      customStyles={{TriggerTouchableComponent: TouchableOpacity}}
                     >
-                      <View style={{...styles.layout}}>
+                      <View style={[{...styles.layout},{backgroundColor:'#f7f7f7',paddingHorizontal:3}]}>
                         <Text style={styles.season}>
-                          {season_year.season_year} {season_year.season_simple_text}
+                        {season_year.season_year !== 'None' && season_year.season_year} {season_year.season_simple_text}
                         </Text>
                         <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
                       </View>
@@ -527,13 +561,14 @@ class DigitalSRScreen extends PureComponent {
                             }}
                           >
                             <Text style={styles.menuText}>
-                              {item.season_year} {item.season_simple_text}
+                              {item.season_year !== 'None' && item.season_year} {item.season_simple_text}
                             </Text>
                           </MenuOption>
                         )
                       })}
                     </MenuOptions>
                   </Menu>
+                  {/*}}*/}
                 </View>
                 <View style={{...styles.layout}}>
                   {userType !== 'B' ? (
@@ -547,7 +582,7 @@ class DigitalSRScreen extends PureComponent {
                         style={{...styles.selectBox, backgroundColor: mConst.black,marginRight:5,marginLeft:5}}
                         onPress={() => this.openBrandLayer(this.state.brand_id)}
                       >
-                        <Text style={{...styles.selectText, color: mConst.white}}>Brands</Text>
+                        <Text style={{...styles.selectText, color: mConst.white}}>브랜드 선택</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => {
@@ -556,7 +591,7 @@ class DigitalSRScreen extends PureComponent {
                         style={{...styles.selectBox, backgroundColor: selectOnOff ? mConst.black : mConst.white, marginRight: mUtils.wScale(5)}}
                       >
                         {/* <FastImage resizeMode={'contain'} style={styles.fixImg} source={fixImg} /> */}
-                        <Text style={styles.selectText}>Filter</Text>
+                        <Text style={selectOnOff ? styles.selectText2 : styles.selectText}>필터</Text>
                       </TouchableOpacity>
                     </>
                   ) : (
@@ -568,7 +603,7 @@ class DigitalSRScreen extends PureComponent {
                         style={{...styles.selectBox, backgroundColor: selectOnOff ? mConst.black : mConst.white, marginRight: mUtils.wScale(5)}}
                       >
                         {/* <FastImage resizeMode={'contain'} style={styles.fixImg} source={fixImg} /> */}
-                        <Text style={styles.menuTextSmall}>Filter</Text>
+                        <Text style={styles.menuTextSmall}>필터</Text>
                       </TouchableOpacity>
                       <View style={{...styles.emptyBar}} />
                       <TouchableOpacity
@@ -589,7 +624,7 @@ class DigitalSRScreen extends PureComponent {
                   !mUtils.isEmpty(notice) &&
                   <View style={{...styles.layout}}>
                     <FastImage resizeMode={'contain'} style={styles.notiImg} source={notiImg} />                  
-                      <Text style={styles.noti} numberOfLines={2} ellipsizeMode={'tail'}>
+                      <Text style={styles.noti} numberOfLines={3} ellipsizeMode={'tail'}>
                         {mUtils.replaceAll(notice,"\n","")}
                       </Text>
                   </View>
@@ -683,15 +718,7 @@ class DigitalSRScreen extends PureComponent {
             </View>
             <TouchableOpacity
               style={styles.bottomButton}
-              onPress={() => {
-                this.pushTo('SampleRequestsScreen', {
-                  modelList: select,
-                  delSelect: this.selected,
-                  brandId: data?.current_brand_info?.brand_id,
-                  type: true,
-                  brandName: '',
-                })
-              }}
+              onPress={() => this.moveRequest()}
             >
               <Text style={{...styles.bottomText3}}>Request Samples</Text>
             </TouchableOpacity>
@@ -701,6 +728,7 @@ class DigitalSRScreen extends PureComponent {
           this.state.moreLoading &&
           <MoreLoading />
         }
+       
       </SafeAreaView>
     )
   }

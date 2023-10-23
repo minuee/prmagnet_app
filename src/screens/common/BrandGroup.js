@@ -38,10 +38,10 @@ export default class BrandGroup extends PureComponent {
     if (search) {
       try {
         const response = await API.getBrandSearch(search)
-        //console.log('getBrandSearch>>>', response)
+
         this.setState({searchResult: response.list})
       } catch (error) {
-        //console.log('getBrandSearch>>>', JSON.stringify(error))
+
         await API.postErrLog({error: error, desc: 'getBrandSearch'})
       }
     } else {
@@ -63,7 +63,7 @@ export default class BrandGroup extends PureComponent {
   render() {
     const {favoriteItems, select} = this.state;
     const {data, brandId, hide} = this.props;
-    console.log('getBrandSearch>>>', brandId)
+
     if (hide) return null
     return (
       <View style={styles.layout}>

@@ -30,11 +30,13 @@ class SendOutScreen extends PureComponent {
       checked: false,
       allChecked: false,
       data: {},
+      leftData: {},
       checkedList: [],
       selectEachList : [],
       targetSampleList : [],
       isMagazineTarget : [],
-      isvisible: {open: false, phone: '', name: ''},
+      reqMessage : [],
+      isvisible: {open: false, phone: '', name: '', address : ''},
       loading: true,
       moreLoading : false,
       setchangeSendoutDate : null,
@@ -43,11 +45,10 @@ class SendOutScreen extends PureComponent {
   
   async UNSAFE_componentWillMount () {
     const {reqNo, selectEachList = []} = this.params;
-    //console.log('this.paramsselectEachList',selectEachList)
     if (reqNo) {
       this.modalOption('Send Out', false)
     } else {
-      this.pushOption('Send Out', false)
+      this.pushOption('발송 시트', false)
     }
     if ( selectEachList.length > 0 )  {      
       this.setState({selectEachList:selectEachList})
@@ -85,13 +86,12 @@ class SendOutScreen extends PureComponent {
   }
 
   handleLoadDataArray = async(item,nextIndex) => {      
-    console.log('handleLoadDataArrayy', item)
     try {
       const response = await API.getSendoutArrayDetail(item.date,item.showroom_list,item.req_no_list);
       const dataTmp = await _.get(response, 'right');
-      console.log('handleLoadDataArray픽업 스케쥴 상세 조회 성공', dataTmp)
+      const leftDataTmp = await _.get(response, 'left');
       await this.allSendOutCheck(dataTmp);
-      this.setState({data: dataTmp[0], listIndex : nextIndex})
+      this.setState({data: dataTmp[0],leftData : leftDataTmp, listIndex : nextIndex,reqMessage:response.req_message})
       
     } catch (error) {      
       console.log('센드아웃 스케쥴 상세 조회 실패', error)
@@ -101,12 +101,10 @@ class SendOutScreen extends PureComponent {
   handleLoadData = async listIndex => {
     const {selectEachList, reqNo,showroom_no} = this.params
     const pReqNo = reqNo || _.get(selectEachList, `[${listIndex}].req_no`)
-    //console.log('handleLoadDatapReqNo',pReqNo)
     try {
       const response = await API.getSendoutDetail(pReqNo,showroom_no)
       this.setState({data: _.get(response, 'right'), listIndex})
       await this.allSendOutCheck(_.get(response, 'right'))
-      //console.log('Send Out 스케쥴 상세 조회 성공', JSON.stringify(response))
     } catch (error) {
       // this.setState({loading: false})
       console.log('Send Out 스케쥴 상세 조회 실패33', error)
@@ -114,7 +112,6 @@ class SendOutScreen extends PureComponent {
   }
   
   allSendOutCheck = async(data) => {
-    //console.log('allSendOutCheck',data)
     let AllData = 0;
     let sendOutData = 0;
     let targetList = [];
@@ -131,7 +128,7 @@ class SendOutScreen extends PureComponent {
       
       if ( element.sample_list != null ) {
         element.sample_list.forEach(function(element2,index2){            
-          //console.log('data.element2',element2)
+
           if ( element2.sample_no ) {      
             AllData++;
             if ( element2.sendout_yn  ) {
@@ -150,8 +147,6 @@ class SendOutScreen extends PureComponent {
       }
     }); 
     
-    console.log('isMagazineTarget',isMagazineTarget)
-    //console.log('sendOutData',sendOutData)
     this.setState({
       allChecked : AllData === sendOutData ? true :false,
       isMagazineTarget,
@@ -161,8 +156,8 @@ class SendOutScreen extends PureComponent {
       setchangeSendoutDate : changeSendoutDate,
     })
   }
-  handlePressPhone = (name, phone) => {
-    this.setState({isvisible: {open: true, name, phone}})
+  handlePressPhone = (name, phone, address) => {
+    this.setState({isvisible: {open: true, name, phone, address}});
   }
 
   actionHandleCheckItem = async(item,len,name,sampleNo,sampleName,roomName) => {
@@ -198,7 +193,6 @@ class SendOutScreen extends PureComponent {
   handleCheckItem = async(item,roomName,name) => {    
     const sampleNo = item.sample_no;
     const sampleName = item.category;    
-    //console.log('sampleNo',item.req_no,sampleNo);
     if (!this.state.checkedList.includes(sampleNo)) {
       Alert.alert(
         mConst.appName,
@@ -229,12 +223,14 @@ class SendOutScreen extends PureComponent {
   }
   render() {
     const {reqNo} = this.params;
-    const {data, checkedList, allChecked,isMagazineTarget, loading} = this.state;
+    const {data, leftData, checkedList, allChecked,isMagazineTarget, loading,reqMessage} = this.state;
  
     const srcReturning_date = mUtils.get(data, 'returning_date');
     const returning_date = mUtils.getShowDate(srcReturning_date);
     const srcLoaning_date = mUtils.get(data, 'loaning_date');
-    const loaning_date = mUtils.getShowDate(srcReturning_date);
+  
+    const srcTitledate = mUtils.get(leftData, 'date');
+    const titledate = mUtils.getShowDate(srcTitledate);
 
     const fromName = mUtils.get(data, 'from_user_nm');
     const fromPhone = mUtils.phoneFormat(mUtils.get(data, 'from_user_phone'));
@@ -242,8 +238,7 @@ class SendOutScreen extends PureComponent {
     const toPhone = mUtils.phoneFormat(mUtils.get(data, 'to_user_phone'));
     if (loading) return <Loading />;
 
-    console.log('AllDdatadataata',data,this.props.user.userType)
-
+   
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={{paddingVertical: 10}}>
@@ -255,7 +250,7 @@ class SendOutScreen extends PureComponent {
             )}
             <View style={styles.titleSubWrapper}>
               <Text style={styles.titleSubText}>                
-                {this.props.user.userType === 'B' ? loaning_date : returning_date}
+                {this.props.user.userType === 'B' ? titledate : returning_date}
               </Text>
             </View>
             {_.isEmpty(reqNo) && (
@@ -271,7 +266,7 @@ class SendOutScreen extends PureComponent {
             </Text>
           </View> */}
           <View style={styles.middleWrapper}>
-            <Text style={styles.middleText}>매체명</Text>
+            <Text style={styles.middleText}>회사명</Text>
             <Text style={styles.middleDescText}>
               {mUtils.isEmpty(data.mgzn_nm) ? mUtils.get(data, 'stylist_compy_nm', '-') : mUtils.get(data, 'mgzn_nm', '-')}
             </Text>
@@ -323,6 +318,10 @@ class SendOutScreen extends PureComponent {
             <Text style={styles.middleText}>수령 주소</Text>
             <Text style={styles.middleDescText}>{mUtils.get(data, 'studio', '-')}</Text>
           </View>
+          <View style={styles.middleWrapper}>
+            <Text style={styles.middleText}>배송 관련 메모</Text>
+            <Text style={styles.middleDescText}>{mUtils.get(data, 'dlvy_atent_matter', '-')}</Text>
+          </View>
           <Grid style={styles.grid}>
             <Row>
               <Col style={styles.col()} size={1}></Col>
@@ -338,11 +337,13 @@ class SendOutScreen extends PureComponent {
             {_.map(mUtils.get(data, 'showroom_list', []), (item, index) => {
               const samples = mUtils.get(item, 'sample_list', [])
               const roomName = mUtils.get(item, 'showroom_nm')
+              const roomNo = mUtils.get(item, 'showroom_no')
               const imageUrl = mUtils.get(samples, '[0].image_list[0]')
-              const rowSize = _.size(samples)
+              const rowSize = _.size(samples);
+              if ( rowSize > 0 ) 
               return (
                 <Row key={index}>
-                  <Col style={styles.col(rowSize * 2, true)} size={1}>
+                  <Col style={styles.col(rowSize * 2, true)} size={1} onPress={() => {this.pushTo('DigitalSRDetailScreen', {no: roomNo, type: 'digital',title : roomName})}}>
                     <Text style={styles.sText()}>{roomName}</Text>
                   </Col>
                   <Col style={styles.col(rowSize * 2)} size={2}>
@@ -359,7 +360,7 @@ class SendOutScreen extends PureComponent {
                       )
                     })}
                   </Col>
-                  <Col style={styles.col(rowSize * 2, true)} size={2}>
+                  <Col style={styles.col(rowSize * 2, true)} size={2} onPress={() => {this.pushTo('DigitalSRDetailScreen', {no: roomNo, type: 'digital',title : roomName})}}>
                     <FastImage source={{uri: imageUrl}} style={styles.modelImage} />
                   </Col>
                   <Col style={styles.col(rowSize * 2)} size={6}>
@@ -367,6 +368,7 @@ class SendOutScreen extends PureComponent {
                       //console.log('subItem',subItem)
                       const newfromName = subItem?.send_user_info[0].user_nm;
                       const newfromPhone = mUtils.phoneFormat(subItem?.send_user_info[0].phone_no);
+                      const newfromAddress = null;
                         return (
                           <LinkSheetBrandUnit
                             key={`${subItem.sample_no}${subIndex}`}                            
@@ -380,10 +382,11 @@ class SendOutScreen extends PureComponent {
                             sendUser={subItem?.send_user_info[0]}
                             returnUser={subItem?.use_user_info[0]}
                             onPress={() => null}
-                            onPressPhone={() => this.handlePressPhone(newfromName, newfromPhone)}
+                            onPressPhone={() => this.handlePressPhone(newfromName, newfromPhone,newfromAddress)}
                             onSwipeCheck={() => this.handleCheckItem(subItem,roomName,newfromName)}
                             color={'#e1c668'}
                             isMagazineTarget={isMagazineTarget.includes(subItem.sample_no)}
+                            phoneinfo={item}
                           />
                         )
                     })}
@@ -392,6 +395,7 @@ class SendOutScreen extends PureComponent {
                     {_.map(samples, (subItem, subIndex) => {
                         const newtoName = subItem?.use_user_info[0].user_nm;
                         const newtoPhone = mUtils.phoneFormat(subItem?.use_user_info[0].phone_no);
+                        const newfromAddress = subItem?.use_user_info[0].dlvy_adress;
                         return (
                           <LinkSheetBrandUnit
                             key={`${subItem.sample_no}${subIndex}`}
@@ -406,11 +410,12 @@ class SendOutScreen extends PureComponent {
                             sendUser={subItem?.use_user_info[0]}
                             returnUser={subItem?.use_user_info[0]}
                             onPress={() => null}
-                            onPressPhone={() => this.handlePressPhone(toName, toPhone)}
+                            onPressPhone={() => this.handlePressPhone(toName, newtoPhone,newfromAddress)}     
                             onSwipeCheck={() => null}
                             //onSwipeCheck={() => this.handleCheckItem(subItem,roomName,newtoName)}
                             color={'#7ea1b2'}
                             isMagazineTarget={isMagazineTarget.includes(subItem.sample_no)}
+                            phoneinfo={item}
                           />
                         )                      
                     })}
@@ -418,23 +423,39 @@ class SendOutScreen extends PureComponent {
                 </Row>
               )
             })}
+          
+            <Row style={{padding:5}}>
+              <Text style={styles.sText(12)}>{data?.send_out_notice}</Text>
+            </Row>
+            <View style={{paddingHorizontal: mUtils.wScale(10)}} pointerEvents={'none'}>
+              { reqMessage.length > 0 && (<View><Text style={{...styles.subTitle,marginBottom:5}}>알림 메시지 이력</Text></View>)}
+              { reqMessage.length > 0 && (
+                reqMessage.map((d, i) => (
+                  <View key={`${d}_${i}`}>
+                    <Text style={styles.sText(12)}>{mUtils.dateToDateTime(d.req_hist_dt)} 발신자:{d.send_man_user_type == 'brand' ? d.send_brand_user : d.send_magazine_user} {d.notifi_subj} {d.notifi_cntent}</Text>
+                  </View>
+                ))
+              ) }
+            </View>
           </Grid>
         </ScrollView>
         {
           allChecked ?
           <View style={styles.bottom2}>
-            <Text style={styles.bottomText}>All Sent Out(Completed)</Text>
+            <Text style={styles.bottomText}>전체 발송 완료(처리완료)</Text>
           </View>
           :
           this.state.isMagazineTarget.length == 0 ?
           <TouchableOpacity onPress={this.handleCheckItemAll} style={styles.bottom}>
-            <Text style={styles.bottomText}>All Sent Out</Text>
+            <Text style={styles.bottomText}>전체 발송 완료 버튼</Text>
+            <Text style={styles.sbottomText}>*피스별 발송 완료는 본인 이름 우측에서 좌측으로 스와이프 후 나타나는 체크버튼 클릭 </Text>
           </TouchableOpacity>
           :null
         }
         <Modal style={styles.modal} isVisible={this.state.isvisible.open} useNativeDriver={true}>
           <View style={styles.modalView}>
             <Text style={styles.modalName}>{this.state.isvisible.name}</Text>
+            <Text style={styles.modalAddress}>{this.state.isvisible.address}</Text>
             <Text style={styles.modalPhone}>{this.state.isvisible.phone}</Text>
           </View>
           <View style={styles.layout}>

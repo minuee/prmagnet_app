@@ -138,15 +138,14 @@ class ScheduleMemoScreen extends PureComponent {
         color: selectedColor,
         content: desc,
       })
-      console.log('postMemo>>>>', response)
       if (response.success) {
-        this.props.setIsMemoUpdate(true)
+        ///this.props.setIsMemoUpdate(true)
         setTimeout(() => {
           this.alert('추가 완료', '메모를 추가 완료하였습니다.', [{onPress: () => this.goBack()}])
         }, 100)
       }
     } catch (error) {
-      //console.log('postMemo>>>>', error)
+      console.log('postMemo>>>>', error)
     }
   }
 
@@ -160,15 +159,14 @@ class ScheduleMemoScreen extends PureComponent {
         color: selectedColor,
         content: desc,
       })
-      console.log('putMemo>>>>', response)
       if (response.success) {
-        this.props.setIsMemoUpdate(true)
+        //this.props.setIsMemoUpdate(true)
         setTimeout(() => {
           this.alert('수정 완료', '메모를 수정 완료하였습니다.', [{onPress: () => this.goBack()}])
         }, 100)
       }
     } catch (error) {
-      //console.log('putMemo>>>>', error)
+      console.log('putMemo>>>>', error)
     }
   }
 
@@ -178,15 +176,14 @@ class ScheduleMemoScreen extends PureComponent {
       const response = await API.delMemo({
         memo_no: memo_no,
       })
-      //console.log('delMemo>>>>', response)
       if (response.success) {
-        this.props.setIsMemoUpdate(true)
+        //this.props.setIsMemoUpdate(true)
         setTimeout(() => {
           this.alert('삭제 완료', '메모를 삭제 완료하였습니다.', [{onPress: () => this.goBack()}])
         }, 100)
       }
     } catch (error) {
-      //console.log('delMemo>>>>', error)
+      console.log('delMemo>>>>', error)
     }
   }
 

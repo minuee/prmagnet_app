@@ -117,7 +117,6 @@ class SearchScreen extends PureComponent {
       const response = await API.getAllSearch({
         search_text: keyword.toString().trim(),
       })
-      console.log('getAllSearch>>>', response.request)
       if (response.success) {
         this.setState({loading: false})
         if (userType !== 'B') {
@@ -182,14 +181,14 @@ class SearchScreen extends PureComponent {
                         <>
                           <Text style={styles.subTitle}>Digital Showroom ({brand.showroom.length})</Text>
                           {this.mapList(brand.showroom)}
-                          <Text numberOfLines={2} style={styles.subTitle}>
+                          {/* <Text numberOfLines={2} style={styles.subTitle}>
                             Lookbook ({brand.lookbook.length})
                           </Text>
-                          {this.lookbookMapList(brand.lookbook)}
-                          <Text numberOfLines={2} style={styles.subTitle}>
+                          {this.lookbookMapList(brand.lookbook)} */}
+                          {/* <Text numberOfLines={2} style={styles.subTitle}>
                             Sample Request ({brand.request.length})
                           </Text>
-                          {this.requestMapList(brand.request,'brand')}
+                          {this.requestMapList(brand.request,'brand')} */}
                           
                         </>
                       </ScrollView>

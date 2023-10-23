@@ -113,11 +113,11 @@ class ScheduleMemoScreen extends PureComponent {
       if (response.success) {
         //this.props.setIsMemoUpdate(true)
         setTimeout(() => {
-          this.alert('추가 완료', '메모를 추가 완료하였습니다.', [{onPress: () => this.goBack()}])
+          this.alert('추가 완료', '메모를 추가 완료하였습니다!', [{onPress: () => this.goBack()}])
         }, 100)
       }
     } catch (error) {
-      //console.log('postMemo>>>>', error)
+      console.log('postMemo>>>>', error)
     }
   }
 
@@ -133,8 +133,8 @@ class ScheduleMemoScreen extends PureComponent {
       })
       
       if (response.success) {
-        console.log('putMemo>>>>', response)
-        //this.props.setIsMemoUpdate(true)
+        console.log('putMemo2222>>>>', response)
+        this.props.setIsMemoUpdate(true)
         setTimeout(() => {
           this.alert('수정 완료', '메모를 수정 완료하였습니다.', [{onPress: () => this.goBack()}])
         }, 100)

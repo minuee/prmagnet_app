@@ -162,7 +162,6 @@ class NotiSettingScreen extends PureComponent {
   UNSAFE_componentWillMount() {
     this.pushOption('알림 설정');
     const {info} = this.props.route.params;
-    console.log('info',info)
     const arr = userType !== 'B' ? [false, false, false, false, false] : [info.notice_notifi_recv_yn, info.req_notifi_recv_yn, info.sample_not_recv_notifi_yn, info.not_disturb_mode_yn]
     this.setState({
       isEnabled: arr,

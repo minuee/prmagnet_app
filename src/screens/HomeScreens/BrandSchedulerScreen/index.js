@@ -17,6 +17,7 @@ import API from '../../../common/aws-api';
 import Loading from '../../common/Loading';
 import Empty from '../../common/Empty';
 import NonSubscribe from '../../common/NonSubscribe';
+import MoreLoading from '../../common/MoreLoading';
 
 const moreImg = require('../../../images/navi/more_4.png');
 const fixImg = require('../../../images/navi/fix_1.png');
@@ -37,6 +38,7 @@ const genderData = [
   {key: 'Genderless', value: 'SSS003'},
 ]
 
+const DefaultLimit =  50;
 class BrandSchedulerScreen extends PureComponent {
   constructor(props) {
     super(props)
@@ -49,18 +51,22 @@ class BrandSchedulerScreen extends PureComponent {
       // start: mUtils.getDayValue(2021, 7, 25),
       // end: mUtils.getDayValue(2021, 7, 28),
       season_year: {season_year: '', season_simple_text: '', season_cd_id: ''},
+      season_data : [],
       gender: genderData[0],
+      search_word : '',
       toggle: [],
+      currentPage : 1,
+      moreLoading : false,
+      isMore : false
     }
   }
   
   async UNSAFE_componentWillMount() {    
-    this.props.navigation.addListener('focus', () => {   
-        console.log('focusfocusfocusfocussimples',this.props.simples.isMemoUpdate);        
-        if ( this.props.simples.isMemoUpdate ) {
+    this.props.navigation.addListener('focus', () => {        
+        //if ( this.props.simples.isMemoUpdate ) {
           this.getSchedular();
-          this.props.setIsMemoUpdate(false)
-        }
+          //this.props.setIsMemoUpdate(false)
+        //}
         
     })
   }
@@ -68,7 +74,7 @@ class BrandSchedulerScreen extends PureComponent {
   componentDidMount() {
     
     if ( this.props.user.subScrbeStatus ) {
-      this.getSchedular();
+      this.getSchedular({ currentPage:1});
     }else{
         this.setState({data: null,loading:false})
     }    
@@ -80,17 +86,38 @@ class BrandSchedulerScreen extends PureComponent {
         max_date: params?.end || this.state.end,
         season_year: this.state.season_year.season_year || null,
         season_cd_id: this.state.season_year.season_cd_id || null,
+        search_word : this.state.search_word,
         gender: this.state.gender.value || null,
+        limit : DefaultLimit,
+        page : params?.currentPage || 1 
       })
-      this.setState(prevState => ({
-        data: response,
-        start: params?.start || this.state.start,
-        end: params?.end || this.state.end,
-        season_year: prevState.season_year.season_year ? prevState.season_year : response.season_list[0],
-        loading : false
-      }))
+      if ( params?.currentPage > 1 ) {
+        let newArray = {list:this.state.data.list.concat(response.list)};
+        this.setState(prevState => ({
+          data: newArray,
+          start: params?.start || this.state.start,
+          end: params?.end || this.state.end,
+          season_year: prevState.season_year.season_year ? prevState.season_year : response.season_list[0],
+          loading : false,
+          moreLoading:false,
+          isMore : response.total_count > ( response.limit * response.current_page ) ? true : false,
+          currentPage : response.current_page
+        }))
+      }else{
+        this.setState(prevState => ({
+          data: response,
+          start: params?.start || this.state.start,
+          end: params?.end || this.state.end,
+          season_year: prevState.season_year.season_year ? prevState.season_year : response.season_list[0],
+          season_data: response.season_list,
+          loading : false,
+          moreLoading:false,
+          isMore : response.total_count > ( response.limit * response.current_page ) ? true : false,
+          currentPage : response.current_page
+        }))
+      }
     } catch (error) {
-      this.setState({data: null,loading:false})
+      this.setState({data: null,loading:false, moreLoading:false})
       //console.log('getSchedular>>>>', error)
     }
   }
@@ -112,7 +139,7 @@ class BrandSchedulerScreen extends PureComponent {
   }
 
   render() {
-    const {data, toggle, start, end, season_year, gender} = this.state;
+    const {data, toggle, season_data, season_year, gender} = this.state;
     const {user} = this.props;
     const dates = mUtils.getDayArray(this.state.start, this.state.end);
     if ( this.state.loading  ) {
@@ -131,13 +158,13 @@ class BrandSchedulerScreen extends PureComponent {
                   <MenuTrigger customStyles={{ TriggerTouchableComponent: TouchableOpacity}}>
                     <View style={styles.layout0}>
                       <Text style={styles.season}>
-                        {season_year.season_year} {season_year.season_simple_text}
+                      {season_year.season_year !== 'None' && season_year.season_year}{season_year.season_simple_text}
                       </Text>
                       <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
                     </View>
                   </MenuTrigger>
                   <MenuOptions optionsContainerStyle={styles.menuOptions}>
-                    {data?.season_list?.map((item, index) => {
+                    {season_data.map((item, index) => {
                       return (
                         <MenuOption
                           key={index}
@@ -149,7 +176,7 @@ class BrandSchedulerScreen extends PureComponent {
                           }}
                         >
                           <Text style={styles.menuText}>
-                            {item.season_year} {item.season_simple_text}
+                            {item.season_year !== 'None' && item.season_year} {item.season_simple_text}
                           </Text>
                         </MenuOption>
                       )
@@ -201,6 +228,29 @@ class BrandSchedulerScreen extends PureComponent {
               </TouchableOpacity>
             </View>
             }
+            { this.props.user.subScrbeStatus  &&
+            <View style={{...styles.layout, backgroundColor: '#ffffff', paddingHorizontal: mUtils.wScale(20), paddingVertical: mUtils.wScale(10)}}>
+              <View style={styles.layout1}>
+                <TextInput
+                  style={{...styles.inputBox}}
+                  placeholder={'쇼룸명,요청자,연락담당자명 검색'}
+                  placeholderTextColor={mConst.borderGray}
+                  onChangeText={text => {
+                    this.setState({search_word: text.trim()})
+                  }}
+                  value={data.photogrf_concept}
+                />
+              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  this.getSchedular({currentPage : 1});
+                  this.setState({moreLoading:true})
+                }}
+              >
+                <Text style={styles.change}>검색</Text>
+              </TouchableOpacity>
+            </View>
+            }
             <>
            {/*  {
               data.map((mItem, mIndex) => {
@@ -228,7 +278,7 @@ class BrandSchedulerScreen extends PureComponent {
                           <>
                           <View key={dIndex} style={{...styles.layout4}}>
                             <View style={[{width: mUtils.wScale(80)}]}>
-                              <FastImage resizeMode={'cover'} style={styles.modelImg} source={{uri: dItem.image_list}} />
+                              <FastImage resizeMode={'contain'} style={styles.modelImg} source={{uri: dItem.image_list}} />
                               <Text style={{...styles.title, marginVertical: mUtils.wScale(10)}}>{dItem.showroom_nm}</Text>
                               <TouchableOpacity
                                   style={{...styles.memoFixed}}
@@ -303,8 +353,12 @@ class BrandSchedulerScreen extends PureComponent {
                                                 <View style={{...styles.layout6, backgroundColor: rItem.mgzn_color}}>
                                                   <Text style={rItem.company_name.length > 8 ? styles.shortTitle : styles.title}>{rItem.company_name}</Text>
                                                   <View style={styles.layout}>
+                                                    { ( rItem.other_paid_pictorial_content ||  rItem.own_paid_pictorial_content ) && ( 
                                                     <FastImage resizeMode={'contain'} style={rItem.company_name.length > 8 ? styles.dollarImg1Short : styles.dollarImg1} source={dollarImg1} />
+                                                    )}
+                                                    {rItem.loc_value &&  (
                                                     <FastImage resizeMode={'contain'} style={rItem.company_name.length > 8 ? styles.airplaneImgShort : styles.airplaneImg} source={airplaneImg} />
+                                                    )}
                                                   </View>
                                                 </View>
                                                 <TouchableOpacity 
@@ -350,6 +404,19 @@ class BrandSchedulerScreen extends PureComponent {
                         )
                       })
                       }
+                      {
+                        this.state.isMore && (
+                          <TouchableOpacity 
+                            style={styles.urlButton}
+                            onPress={() => {
+                              this.getSchedular({currentPage : parseInt(this.state.currentPage + 1)});
+                              this.setState({moreLoading:true})
+                            }}
+                          >
+                            <Text style={styles.buttonText}>더보기</Text>
+                          </TouchableOpacity>
+                        )
+                      }
                     </ScrollView>
                     <TouchableOpacity
                       style={{...styles.layout8}}
@@ -366,6 +433,9 @@ class BrandSchedulerScreen extends PureComponent {
             }
             
           </>
+          { this.state.moreLoading &&
+            <MoreLoading />
+          }
         </SafeAreaView>
       )
     }

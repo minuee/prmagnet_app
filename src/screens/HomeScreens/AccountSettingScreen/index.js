@@ -71,18 +71,14 @@ class AccountSettingScreen extends PureComponent {
       }
 
     }
-    console.log('sendParams>>>', sendParams)
+
     try {
       const response = await API.putProfile(sendParams)
-      console.log('putProfile>>>', response)
-      //this.goBack()
-      console.log('????', uri)
       mUtils.fn_call_toast('정상적으로 수정되었습니다..');
       this.setState({moreLoading:false})
     } catch (error) {
       this.setState({moreLoading: false})
       mUtils.fn_call_toast('에러가 발생되어 등록에 실패하였습니다.');
-      //console.log('putProfile>>>', error)
     }
   }
 

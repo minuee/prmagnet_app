@@ -22,6 +22,11 @@ export default StyleSheet.create({
     marginHorizontal: mUtils.wScale(20),
     borderBottomWidth: 1,
   },
+  sbottomText: {
+    fontSize: 11,
+    textAlign: 'center',
+    color: mConst.white,
+  },  
   titleCenterWrapper: {
     width: mConst.wWidth - mUtils.wScale(20) * 2,
     height: mUtils.wScale(60),

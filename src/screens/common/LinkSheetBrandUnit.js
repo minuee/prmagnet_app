@@ -26,9 +26,8 @@ export default class LinkSheetBrandUnit extends PureComponent {
 
     render() {
         const {swiped} = this.state;
-        const {name, phone, onPress, unitType,viewType,onPressPhone, onSwipeCheck, color, checked, readOnly,sendUser,returnUser,isMagazineTarget,subData,loaningDate} = this.props;
-        //console.log('loaningDate',mUtils.convertUnixToDate(loaningDate))
-        //console.log('subData',mUtils.dateToDate(subData.sendout_dt))
+        const {name, phone, onPress, unitType,viewType,onPressPhone, onSwipeCheck, color, checked, readOnly,sendUser,returnUser,isMagazineTarget,subData,loaningDate,phoneinfo} = this.props;
+    
         if ( viewType === 'sendout' ) {
             if (unitType === 'to') {
                 return (
@@ -36,8 +35,9 @@ export default class LinkSheetBrandUnit extends PureComponent {
                         { checked ? 
                          <Row style={styles.row(color)}>
                             <Col style={styles.col(1, true, color, checked)} size={3}>
-                                <Text style={styles.sText()} numberOfLines={1}>
+                                <Text style={styles.sText()} numberOfLines={2}>
                                     {mUtils.isEmpty(returnUser.user_nm) ? name :  returnUser.user_nm} {!mUtils.isEmpty(returnUser.position) && " "+returnUser.position}
+                                    
                                 </Text>
                             </Col>
                             <Col style={styles.col(1, true, checked ? color : mConst.white, checked)} size={1}>
@@ -46,9 +46,8 @@ export default class LinkSheetBrandUnit extends PureComponent {
                         </Row>
                         :
                         <Row style={styles.row(color)}>
-                            <Text style={styles.sText()} numberOfLines={1}>              
+                            <Text style={styles.sText()} numberOfLines={2}>              
                                 {mUtils.isEmpty(returnUser.user_nm) ? name :  returnUser.user_nm} {!mUtils.isEmpty(returnUser.position) && " "+returnUser.position}
-                                
                             </Text>
                         </Row>
                        }
@@ -76,11 +75,11 @@ export default class LinkSheetBrandUnit extends PureComponent {
                                         <Text style={styles.sText()} numberOfLines={2}>
                                             {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm} {!mUtils.isEmpty(sendUser.position) && sendUser.position}
                                             <Text style={styles.sText2()}>
-                                                {"\n"}픽업일({mUtils.dateToDate(subData.sendout_dt)})
+                                                {"\n"}발송일({mUtils.dateToDate(subData.sendout_dt)})
                                             </Text>
                                         </Text>
                                         :
-                                        <Text style={styles.sText()} numberOfLines={1}>
+                                        <Text style={styles.sText()} numberOfLines={2}>
                                             {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm} {!mUtils.isEmpty(sendUser.position) && sendUser.position}
                                         </Text>
                                     }
@@ -90,8 +89,13 @@ export default class LinkSheetBrandUnit extends PureComponent {
                                 <TouchableWithoutFeedback onPress={swiped ? onSwipeCheck : null}>
                                     <Row style={styles.row(color)}>
                                         <Col style={styles.col(1, true, color, checked)} size={3}>
-                                            <Text style={styles.sText()} numberOfLines={1}>
+                                            <Text style={styles.sText()} numberOfLines={2}>
                                                 {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm} {!mUtils.isEmpty(sendUser.position) && sendUser.position}
+                                                { mUtils.convertUnixToDate(loaningDate) != mUtils.dateToDate(subData.sendout_dt) &&
+                                                <Text style={styles.sText()}>
+                                                    {"\n"}발송일({mUtils.dateToDate(subData.sendout_dt)})
+                                                </Text>
+                                                }
                                             </Text>
                                         </Col>
                                         <Col style={styles.col(1, true, checked ? color : mConst.white, checked)} size={1}>
@@ -104,11 +108,15 @@ export default class LinkSheetBrandUnit extends PureComponent {
                                 {
                                     ({pressed}) => (
                                         <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : color)}>
-                                            <Text style={styles.sText()} numberOfLines={1}>
+                                            <Text style={styles.sText()} numberOfLines={2}>
                                                 {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm} {!mUtils.isEmpty(sendUser.position) && sendUser.position}
                                                 <Text style={styles.sText()}>
-                                            {"\n"}발송일({mUtils.dateToDate(sendUser.return_dt)})
-                                        </Text>
+                                                { mUtils.convertUnixToDate(loaningDate) != mUtils.dateToDate(subData.sendout_dt) &&
+                                                <Text style={styles.sText()}>
+                                                    {"\n"}발송일({mUtils.dateToDate(subData.sendout_dt)})
+                                                </Text>
+                                                }
+                                                ß</Text>
                                             </Text>
                                         </Row>
                                     )
@@ -122,7 +130,7 @@ export default class LinkSheetBrandUnit extends PureComponent {
                                 ({pressed}) => (
                                 <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : mConst.white)}>
                                     <Text style={styles.sText(mConst.darkGray)}>
-                                        {mUtils.isEmpty(sendUser.phone_no) ? phone : mUtils.phoneFormat(sendUser.phone_no)}
+                                        {!mUtils.isEmpty(phoneinfo.send_user_phoneno) ? mUtils.phoneFormat(phoneinfo.send_user_phoneno) : mUtils.isEmpty(sendUser.phone_no) ? phone : mUtils.phoneFormat(sendUser.phone_no)}
                                     </Text>
                                 </Row>
                                 )
@@ -137,7 +145,7 @@ export default class LinkSheetBrandUnit extends PureComponent {
                 return (
                     <>
                         { 
-                        !checked ?
+                        checked ?
                         <Row style={styles.row(color)}>
                             <Col style={{justifyContent:'center',alignItems:'center',borderLeftWidth:0}} size={3}>
                                 { mUtils.convertUnixToDate(loaningDate) != mUtils.dateToDate(subData.return_dt) ?
@@ -148,7 +156,7 @@ export default class LinkSheetBrandUnit extends PureComponent {
                                         </Text>
                                     </Text>
                                     :
-                                    <Text style={styles.sText()} numberOfLines={1}>
+                                    <Text style={styles.sText()} numberOfLines={2}>
                                     {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm} {!mUtils.isEmpty(sendUser.position) && sendUser.position} 
                                 </Text>
                                 }
@@ -159,9 +167,9 @@ export default class LinkSheetBrandUnit extends PureComponent {
                         </Row>
                         :
                         <Row style={styles.row(color)}>
-                            <Text style={styles.sText()} numberOfLines={1}>              
+                            <Text style={styles.sText()} numberOfLines={2}>              
                                 {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm} {!mUtils.isEmpty(sendUser.position) && sendUser.position} 
-                                { mUtils.convertUnixToDate(loaningDate) != mUtils.dateToDate(subData.pickup_dt) &&
+                                { mUtils.convertUnixToDate(loaningDate) != mUtils.dateToDate(subData.return_dt) &&
                                     <Text style={styles.sText()}>
                                         {"\n"}발송일({mUtils.dateToDate(subData.return_dt)})
                                     </Text>
@@ -183,58 +191,102 @@ export default class LinkSheetBrandUnit extends PureComponent {
                     </>
                 )
             }else{
-                return (
-                    <>
-                        <SwiperUnit onSwipeLeft={() => this.onSwipe('left')} onSwipeRight={() => this.onSwipe('right')}>
-                            {
-                                isMagazineTarget ?
-                                <Row style={styles.row(color)}>
-                                    <Text style={styles.sText()} numberOfLines={1}>
-                                        {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm} {!mUtils.isEmpty(sendUser.position) && sendUser.position}
-                                    </Text>
-                                </Row>
-                                :
-                                swiped || checked ? (
-                                <TouchableWithoutFeedback onPress={swiped ? onSwipeCheck : null}>
-                                    <Row style={styles.row(color)}>
-                                        <Col style={styles.col(1, true, color, checked)} size={3}>
-                                            <Text style={styles.sText()} numberOfLines={1}>                                        
-                                                {mUtils.isEmpty(returnUser.user_nm) ? name :  returnUser.user_nm} {!mUtils.isEmpty(returnUser.position) && returnUser.position}
-                                            </Text>
-                                        </Col>
-                                        <Col style={styles.col(1, true, checked ? color : mConst.white, checked)} size={1}>
-                                            <FastImage source={checked ? circleCheckOnImage : circleCheckImage} style={styles.checkImage} />
-                                        </Col>
-                                    </Row>
-                                </TouchableWithoutFeedback>
-                                ) : (
-                                <Pressable onPress={onPress}>
+                if ( isMagazineTarget ) {
+                    return (
+                        <>
+                            <SwiperUnit onSwipeLeft={() => this.onSwipe('left')} onSwipeRight={() => this.onSwipe('right')}>
                                 {
-                                    ({pressed}) => (
-                                        <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : color)}>
-                                            <Text style={styles.sText()} numberOfLines={1}>
-                                                {mUtils.isEmpty(returnUser.user_nm) ? name :  returnUser.user_nm} {!mUtils.isEmpty(returnUser.position) && returnUser.position}
-                                            </Text>
+                                    swiped || checked ? (
+                                    <TouchableWithoutFeedback onPress={swiped ? onSwipeCheck : null}>
+                                        <Row style={styles.row(color)}>
+                                            <Col style={styles.col(1, true, color, checked)} size={3}>
+                                                <Text style={styles.sText()} numberOfLines={2}>                                        
+                                                    {mUtils.isEmpty(returnUser.user_nm) ? name :  returnUser.user_nm} {!mUtils.isEmpty(returnUser.position) && returnUser.position}
+                                                </Text>
+                                            </Col>
+                                            <Col style={styles.col(1, true, checked ? color : mConst.white, checked)} size={1}>
+                                                <FastImage source={checked ? circleCheckOnImage : circleCheckImage} style={styles.checkImage} />
+                                            </Col>
                                         </Row>
+                                    </TouchableWithoutFeedback>
+                                    ) : (
+                                    <Pressable onPress={onPress}>
+                                    {
+                                        ({pressed}) => (
+                                            <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : color)}>
+                                                <Text style={styles.sText()} numberOfLines={2}>
+                                                    {mUtils.isEmpty(returnUser.user_nm) ? name :  returnUser.user_nm} {!mUtils.isEmpty(returnUser.position) && returnUser.position}
+                                                </Text>
+                                            </Row>
+                                        )
+                                    }
+                                    </Pressable>
                                     )
                                 }
-                                </Pressable>
-                                )
-                            }
-                        </SwiperUnit>
-                        <Pressable onPress={onPressPhone}>
-                            {
-                                ({pressed}) => (
-                                <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : mConst.white)}>
-                                    <Text style={styles.sText(mConst.darkGray)}>
-                                        {mUtils.isEmpty(returnUser.phone_no) ? phone : mUtils.phoneFormat(returnUser.phone_no)}
-                                    </Text>
-                                </Row>
-                                )
-                            }
-                        </Pressable>
-                    </>
-                )
+                            </SwiperUnit>
+                            <Pressable onPress={onPressPhone}>
+                                {
+                                    ({pressed}) => (
+                                    <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : mConst.white)}>
+                                        <Text style={styles.sText(mConst.darkGray)}>
+                                            {mUtils.isEmpty(returnUser.phone_no) ? phone : mUtils.phoneFormat(returnUser.phone_no)}
+                                        </Text>
+                                    </Row>
+                                    )
+                                }
+                            </Pressable>
+                        </>
+                    )
+
+                }else{
+                    return (
+                        <>
+                            <SwiperUnit onSwipeLeft={() => this.onSwipe('left')} onSwipeRight={() => this.onSwipe('right')}>
+                                {
+                                    swiped || checked ? (
+                                    <TouchableWithoutFeedback onPress={swiped ? onSwipeCheck : null}>
+                                        <Row style={styles.row(color)}>
+                                            <Col style={styles.col(1, true, color, checked)} size={3}>
+                                                <Text style={styles.sText()} numberOfLines={2}>                                        
+                                                    {mUtils.isEmpty(returnUser.user_nm) ? name :  returnUser.user_nm} {!mUtils.isEmpty(returnUser.position) && returnUser.position}
+                                                </Text>
+                                            </Col>
+                                            <Col style={styles.col(1, true, checked ? color : mConst.white, checked)} size={1}>
+                                                <FastImage source={checked ? circleCheckOnImage : circleCheckImage} style={styles.checkImage} />
+                                            </Col>
+                                        </Row>
+                                    </TouchableWithoutFeedback>
+                                    ) : (
+                                    <Pressable onPress={onPress}>
+                                    {
+                                        ({pressed}) => (
+                                            <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : color)}>
+                                                <Text style={styles.sText()} numberOfLines={2}>
+                                                    {mUtils.isEmpty(returnUser.user_nm) ? name :  returnUser.user_nm} {!mUtils.isEmpty(returnUser.position) && returnUser.position}
+                                                </Text>
+                                            </Row>
+                                        )
+                                    }
+                                    </Pressable>
+                                    )
+                                }
+                            </SwiperUnit>
+                            <Pressable onPress={onPressPhone}>
+                                {
+                                    ({pressed}) => (
+                                    <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : mConst.white)}>
+                                        <Text style={styles.sText(mConst.darkGray)}>
+                                            { !mUtils.isEmpty(phoneinfo.return_user_phoneno) ? mUtils.phoneFormat(phoneinfo.return_user_phoneno) : mUtils.isEmpty(returnUser.phone_no) ? phone : mUtils.phoneFormat(returnUser.phone_no)}
+                                        </Text>
+                                    </Row>
+                                    )
+                                }
+                            </Pressable>
+                        </>
+                    )
+
+                }
+                    
             }
 
         }

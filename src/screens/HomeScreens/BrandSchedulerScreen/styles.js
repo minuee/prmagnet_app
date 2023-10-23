@@ -177,7 +177,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: mUtils.wScale(10.5),
     paddingHorizontal: mUtils.wScale(20), 
-    
+    backgroundColor:'#fff',  
   },
   layout5: {
     width: '100%',
@@ -305,5 +305,33 @@ export default StyleSheet.create({
   memoSmallImg: {
     width: mUtils.wScale(30),
     height: mUtils.wScale(30),
+  },
+  urlButton: {
+    borderRadius: 1.3,
+    backgroundColor: '#7ea1b2',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: mUtils.wScale(15),
+    marginBottom : mUtils.wScale(50),
+    paddingHorizontal: mUtils.wScale(10),
+    paddingVertical: mUtils.wScale(5),
+  },
+  buttonText: {
+    fontFamily: 'NotoSansKR-Bold',
+    fontSize: mUtils.wScale(12),
+    textAlign: 'center',
+    color: '#ffffff',
+  },
+  inputBox: {
+    borderStyle: 'solid',
+    borderWidth: 0.5,
+    borderColor: mConst.borderGray,
+    fontFamily: 'Roboto-Regular',
+    fontSize: 12,
+    width:'90%',
+    textAlign: 'left',
+    color: '#555555',
+    paddingHorizontal: mUtils.wScale(8),
+    paddingVertical: Platform.OS === 'ios' ? mUtils.wScale(7) : mUtils.wScale(1.2),
   },
 })

@@ -26,7 +26,6 @@ class MyPageScreen extends PureComponent {
   getUserInfo = async () => {
     try {
       const response = await API.getUserInfo()
-      console.log('response>>>', response)
       this.setState({info: response})
     } catch (error) {
       console.log('getUserInfo>>>', error)

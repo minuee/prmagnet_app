@@ -45,7 +45,7 @@ class FilterSettingScreen extends PureComponent {
         this.postInquiryNum()
       }
     } catch (error) {
-      console.log('postNotice>>>', error)
+
     }
   }
 
@@ -55,12 +55,12 @@ class FilterSettingScreen extends PureComponent {
       const response = await API.postInquiryNum({
         inquiryNum: inquiryNum,
       })
-      //console.log('postInquiryNum>>>', response)
+
       if (response.success) {
         this.postSRInquiry()
       }
     } catch (error) {
-      console.log('postInquiryNum>>>', error)
+
     }
   }
 
@@ -93,12 +93,12 @@ class FilterSettingScreen extends PureComponent {
       const response = await API.postlimitNumber({
         inquiry_charge :  mUtils.isEmpty(limit_days) ? 30 : parseInt(limit_days)
       })
-      //console.log('postSRInquiry>>>', response)
+
       if (response.success) {
         this.goBack()
       }
     } catch (error) {
-      console.log('postTerm>>>', error)
+
     }
   }
 

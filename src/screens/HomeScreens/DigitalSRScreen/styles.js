@@ -19,7 +19,7 @@ export default StyleSheet.create({
     fontSize: 15,
     textAlign: 'center',
     color: '#070708',
-    marginTop: mUtils.wScale(10),
+    //marginTop: mUtils.wScale(5),
   },
   chargeTitle : {
     fontFamily: 'Roboto-Medium',
@@ -71,6 +71,7 @@ export default StyleSheet.create({
   modelImg: {
     width: '100%',
     height: '100%',
+    maxHeight : mUtils.wScale(245)
   },
   newImg: {
     width: mUtils.wScale(25),
@@ -167,6 +168,18 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: mConst.white,
   },
+  bottomSheetFixed: {
+    width: '100%',
+    paddingHorizontal: mUtils.wScale(20),
+    paddingVertical: mUtils.wScale(10),
+    position: 'absolute',
+    top: 35,
+    left:0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: mConst.white,
+  },
   bottomText1: {
     fontFamily: 'Roboto-Light',
     fontSize: 14,
@@ -189,6 +202,12 @@ export default StyleSheet.create({
     fontFamily: 'Roboto-Medium',
     fontSize: 12,
     textAlign: 'center',
+  },
+  selectText2: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 12,
+    textAlign: 'center',
+    color:'#fff'
   },
   menuText: {
     fontFamily: 'Roboto-Regular',

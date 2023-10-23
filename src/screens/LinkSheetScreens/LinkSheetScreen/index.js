@@ -5,7 +5,7 @@ import FastImage from 'react-native-fast-image';
 import moment from 'moment';
 import _ from 'lodash';
 import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-menu';
-
+import dayjs from 'dayjs';
 import mConst from '../../../common/constants';
 import mUtils from '../../../common/utils';
 import cBind, {callOnce} from '../../../common/navigation';
@@ -29,8 +29,8 @@ class LinkSheetScreen extends React.Component {
         cBind(this);
         const titles = mConst.getUserType() === 'B' ? ['Send Out', 'Return'] : ['Pickups', 'Send Out'] // TODO 임시 주석처리
         this.state = {
-            start: mUtils.getToday(),
-            end: mUtils.getNextWeek(),
+            start: mUtils.getThreePrevDay(),////mUtils.getToday(),
+            end: mUtils.getThreeNextDay(),
             // start: mUtils.getDayValue(2021, 7, 25), // TODO 테스트 데이타 관계로 일단 임시 값으로 설정
             // end: mUtils.getDayValue(2021, 8, 7),
             brandId: '',
@@ -47,8 +47,8 @@ class LinkSheetScreen extends React.Component {
     }
 
     async UNSAFE_componentWillMount() {
-        //this.handleOnFocus();
-        this.onFocus(this.handleOnFocus);
+        this.handleOnFocus();
+        //this.onFocus(this.handleOnFocus);
     }
     componentDidMount() {
         
@@ -108,36 +108,36 @@ class LinkSheetScreen extends React.Component {
         const {selectTitle} = this.state;
         if (selectTitle === 'Return') {
             try {
-                // console.log('###Return 스케쥴 조회 params:', {start_date: start, fin_date: end, brand_id: brandId})
+
                 const response = await API.getReturnSchedule({start_date: start, fin_date: end,not_finished})
                 const newData =  await this.dataReset(_.get(response, 'list', []));
                 this.setState({dataList: newData, loading: false,moreLoading:false})
                 //this.setState({dataList: _.get(response, 'list', []), loading: false,moreLoading:false})
-                //console.log('Return 스케쥴 조회 성공', JSON.stringify(response))
+  
             } catch (error) {
                 this.setState({loading: false,moreLoading:false})
-                //console.log('Return 스케쥴 조회 실패', JSON.stringify(error))
+  
             }
         } else if (selectTitle === 'Pickups') {
             try {
-                 //console.log('###Pickup 스케쥴 조회 params:', {start_date: start, fin_date: end, brand_id: brandId})
+
                 const response = await API.getPickupSchedule({start_date: start, fin_date: end, brand_id: brandId,not_finished})
                 const newData =  await this.dataReset(_.get(response, 'list', []));
                 this.setState({dataList: newData, loading: false,moreLoading:false})
                 //this.setState({dataList: _.get(response, 'list', []), loading: false,moreLoading:false})
-                //console.log('Pickup 스케쥴 조회 성공', JSON.stringify(response))
+
             } catch (error) {
                 this.setState({loading: false,moreLoading:false})
-                //console.log('Pickup 스케쥴 조회 실패', JSON.stringify(error))
+
             }
         } else if (selectTitle === 'Send Out') {
             try {
-                // console.log('###Sendout 스케쥴 조회 params:', {start_date: start, fin_date: end, brand_id: brandId})
+    
                 const response = await API.getSendoutSchedule({start_date: start, fin_date: end, brand_id: brandId,not_finished})
                 const newData =  await this.dataReset(_.get(response, 'list', []));
                 this.setState({dataList: newData, loading: false,moreLoading:false})
                 //this.setState({dataList: _.get(response, 'list', []), loading: false,moreLoading:false})
-                //console.log('Sendout 스케쥴 조회 성공22', JSON.stringify(response))
+
             } catch (error) {
                 this.setState({loading: false,moreLoading:false})
                 console.log('Sendout 스케쥴 조회 실패', error)
@@ -148,12 +148,12 @@ class LinkSheetScreen extends React.Component {
     handleSetDates = ({start, end}) => {
         if (start && end) {
             this.setState({start, end})
+            this.handleLoadData(start,end,this.state.brandId)
         }
     }
 
     handleChangeSchedule = () => {
         const {start, end} = this.state;
-        //console.log('>>>>>>', start, end)
         this.pushTo('SelectScheduleScreen', {setDate: this.handleSetDates, start, end, caller: 'LinkSheetScreen'})
     }
 
@@ -179,12 +179,77 @@ class LinkSheetScreen extends React.Component {
         }
     }
 
-    handleLinkSheetDetailEach = async(req_no,showroomData,date) => {
+    
+   /*  const {selectTitle} = this.state;
+    let openDatetime = Math.floor(new Date()/1000);// + (60*60*9);
+    const koreaSdata = date - (60*60*9);
+    const itemWeeklyNo = dayjs.unix(koreaSdata).format("d");
+    const nowWeeklyNo = dayjs.unix(openDatetime).format("d");
+    console.log('nohhandleEachDetail itemWeeklyNo',itemWeeklyNo )
+    console.log('nohhandleEachDetail nowWeeklyNo',nowWeeklyNo )
+    if ( itemWeeklyNo == 6  ) { //토요앨
+    openDatetime = Math.floor(new Date()/1000) + (60*60*33);
+    }else if ( itemWeeklyNo == 0) { //일요일
+    openDatetime = Math.floor(new Date()/1000) + (60*60*57);
+    }else{
+    openDatetime = Math.floor(new Date()/1000) + (60*60*9);
+    }
+    console.log('nohhandleEachDetail',mUtils.convertDateToUnix(date),openDatetime )
+    if ( selectTitle === 'Pickups' && date >  openDatetime ) {
+        this.alert('픽업일이후부터 조회가 가능합니다.');
+        return;
+    }
+    if ( selectTitle === 'Send Out' && mUtils.convertDateToUnix(date) > Math.floor(new Date()/1000) && mConst.getUserType()  != 'B' ) {
+        this.alert('촬영일이후부터 조회가 가능합니다.');
+        return;
+    }
+ */
+   
+    handleLinkSheetDetailEach = async(req_no,showroomData,date, sdate = null) => {
         const {selectTitle} = this.state;
-        console.log('selectTitle>>>>', selectTitle,date,Math.floor(new Date()/1000) )
-        if ( selectTitle === 'Pickups' && date > Math.floor(new Date()/1000)  ) {
-            this.alert('픽업일이후부터 조회가 가능합니다.');
-            return;
+        
+        if ( selectTitle === 'Pickups' ) {
+            let openDatetime = Math.floor(new Date()/1000) - (60*60*9);
+            const koreaSdata = date + (60*60*9);
+            const itemWeeklyNo = dayjs.unix(koreaSdata).format("d");
+            const nowWeeklyNo = dayjs.unix(openDatetime).format("d");
+            if ( itemWeeklyNo == 6  ) { //토요앨
+                openDatetime = Math.floor(new Date()/1000) + (60*60*33);
+            }else if ( itemWeeklyNo == 0) { //일요일
+                openDatetime = Math.floor(new Date()/1000) + (60*60*57);
+            }else if ( itemWeeklyNo == 1) { //월요일
+                openDatetime = Math.floor(new Date()/1000) + (60*60*81);
+            }else{
+                openDatetime = Math.floor(new Date()/1000) + (60*60*9);
+            }
+            console.log('date > openDatetime ',date ,openDatetime  )
+            if (  date > openDatetime ) {
+                this.alert('픽업일이후부터 조회가 가능합니다.');
+                return;
+            }
+        }
+        if ( selectTitle === 'Send Out' ) {
+            console.log('nohhandleEachDetail d22te',selectTitle,mUtils.convertDateToUnix(sdate))
+            console.log('nohhandleEachDetail d22te',selectTitle,Math.floor(new Date()/1000))
+
+            let openDatetime = Math.floor(new Date()/1000) - (60*60*9);
+            const koreaSdata = mUtils.convertDateToUnix(sdate) + (60*60*9);
+            const itemWeeklyNo = dayjs.unix(koreaSdata).format("d");
+            console.log('nohhandleEachDetail itemWeeklyNo',itemWeeklyNo)
+            if ( itemWeeklyNo == 6  ) { //토요앨
+                openDatetime = Math.floor(new Date()/1000) + (60*60*33);
+            }else if ( itemWeeklyNo == 0) { //일요일
+                openDatetime = Math.floor(new Date()/1000) + (60*60*57);
+            }else if ( itemWeeklyNo == 1) { //월요일
+                openDatetime = Math.floor(new Date()/1000) + (60*60*81);
+            }else{
+                openDatetime = Math.floor(new Date()/1000) + (60*60*9);
+            }
+            console.log('ddddd', mUtils.convertDateToUnix(sdate),openDatetime)
+            if ( mUtils.convertDateToUnix(sdate) > openDatetime && mConst.getUserType()  != 'B' ) {
+                this.alert('촬영일이후부터 조회가 가능합니다.');
+                return;
+            }
         }
         let newShowroomIdxArray = [];
         await showroomData.forEach((element) => {
@@ -232,13 +297,13 @@ class LinkSheetScreen extends React.Component {
     }
 
     handleStateChange = async(bool) => {
-        console.log('handleStateChange', bool)
+
         this.setState({moreLoading:true, isNotClear:bool=='all'?'not':'all'})
         this.handleLoadData(this.state.start, this.state.end, this.state.brandId,bool=='all'?'not':'all')
     }
 
     renderData = (subItem,idx,selectTitle) => {
-        //console.log('픽업 스케쥴 상세 조회 성공', subItem)
+
         if (  mConst.getUserType() === 'B'  ) {
             if ( selectTitle === 'Send Out' ) {
                 return (
@@ -259,10 +324,11 @@ class LinkSheetScreen extends React.Component {
             }else{
                 return (
                     <>
-                        <Text style={{...styles.brand, marginTop: mUtils.wScale(5)}} >
+                        <Text style={{...styles.name, fontFamily: 'NotoSansKR-Bold'}}>
+                        
                             {subItem.req_user_nm}{" "}{subItem.req_user_position} → 
                         </Text>
-                        <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
+                        <Text style={{...styles.brand, marginTop: mUtils.wScale(5)}} >
                             {mUtils.isEmpty(subItem.target_user_nm) ? '-' :  " "+subItem.target_user_nm}
                             {subItem.target_id_type === 'RUS001' ? " "+subItem.target_user_position + "("+subItem.target_company_nm +")" :subItem.target_user_position}
                         </Text>
@@ -274,11 +340,11 @@ class LinkSheetScreen extends React.Component {
             if ( selectTitle === 'Send Out' ) {
                 return (
                     <>
-                        <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
+                        <Text style={{...styles.name}}>
                             {subItem.req_user_nm} {mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position}  →
                             
                         </Text>
-                        <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
+                        <Text style={{...styles.name, fontFamily:  'NotoSansKR-Bold'}}>
                             {subItem.target_user_nm} {mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}
                         </Text>
                     </>
@@ -286,10 +352,10 @@ class LinkSheetScreen extends React.Component {
             }else{
                 return (
                     <>
-                        <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
+                        <Text style={{...styles.name, fontFamily:  'NotoSansKR-Bold'}}>
                             {subItem.target_user_nm} {mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position} →
                         </Text>
-                        <Text style={{...styles.name, fontFamily: mConst.getUserType() === 'B' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular'}}>
+                        <Text style={{...styles.name}}>
                             {subItem.req_user_nm} {mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position} {/* {subItem.req_user_position} */}
                         </Text>
                     </>
@@ -323,7 +389,34 @@ class LinkSheetScreen extends React.Component {
 
         }
     }
-
+    /* <Menu>
+    <MenuTrigger
+        customStyles={{
+            TriggerTouchableComponent: TouchableOpacity,
+            triggerTouchable: {activeOpacity: 90,style: {width: '45%',},},
+        }}
+    >
+        <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(20), marginBottom: mUtils.wScale(30)}}>
+            <Text style={styles.mainTitle}>{selectTitle}</Text>
+            <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+        </View>
+    </MenuTrigger>
+    <MenuOptions optionsContainerStyle={styles.menuOptions}>
+        {
+            this.state.titles.map((item, index) => {
+            return (
+                <MenuOption 
+                    key={index} 
+                    style={styles.menuOption} 
+                    onSelect={() => this.handleChangeTitle(item)}
+                >
+                    <Text style={styles.menuText}>{item}</Text>
+                </MenuOption>
+            )
+            })
+        }
+    </MenuOptions>
+</Menu> */
     render() {
         const {start, end, brandId, dataList, brands, selectTitle, loading, selectDate, totalCount} = this.state;
         const {user} = this.props;        
@@ -337,34 +430,24 @@ class LinkSheetScreen extends React.Component {
                     <Header pushTo={this.pushTo} userType={user.userType} alarmSet={user.alarm} />
                     { 
                         this.props.user.subScrbeStatus ?
-                        <Menu>
-                            <MenuTrigger
-                                customStyles={{
-                                    TriggerTouchableComponent: TouchableOpacity,
-                                    triggerTouchable: {activeOpacity: 90,style: {width: '45%',},},
-                                }}
-                            >
-                                <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(20), marginBottom: mUtils.wScale(30)}}>
-                                    <Text style={styles.mainTitle}>{selectTitle}</Text>
-                                    <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
-                                </View>
-                            </MenuTrigger>
-                            <MenuOptions optionsContainerStyle={styles.menuOptions}>
-                                {
-                                    this.state.titles.map((item, index) => {
-                                    return (
-                                        <MenuOption 
-                                            key={index} 
-                                            style={styles.menuOption} 
-                                            onSelect={() => this.handleChangeTitle(item)}
-                                        >
-                                            <Text style={styles.menuText}>{item}</Text>
-                                        </MenuOption>
-                                    )
-                                    })
-                                }
-                            </MenuOptions>
-                        </Menu>
+                        
+                        (
+                        <View style={styles.menuDefaultWrap}>
+                            {
+                                this.state.titles.map((item, index) => {
+                                return (
+                                    <TouchableOpacity 
+                                        style={selectTitle == item ? styles.menuSelectBox :styles.menuDefaultBox} 
+                                        onPress={()=>this.handleChangeTitle(item)}
+                                        key={index}
+                                    >
+                                        <Text style={{color:'#fff'}}>{item == 'Pickups' ? "픽업시트" : item == 'Send Out' ? "발송시트" : "반납시트"} </Text>
+                                    </TouchableOpacity>
+                                )
+                                })
+                            }
+                        </View>
+                        )
                         :
                         <NonSubscribe />
                     }
@@ -454,13 +537,13 @@ class LinkSheetScreen extends React.Component {
                                         
                                         if ( !mUtils.isEmpty(subItem2.showroom_list[0])) {
                                             const subItem = subItem2.showroom_list[0];     
-                                            if ( subItem.req_no === '20220116000515' ) console.log('subItem',subIndex,subItem) 
+                                        
                                             if ( selectTitle === "Send Out" || selectTitle === "sendout" )    {
                                                 return (
                                                     <TouchableOpacity
                                                         key={subIndex}
                                                         style={styles.brandBox}
-                                                        onPress={() =>this.handleLinkSheetDetailEach(subItem.req_no,item.showroomData,item.date)}
+                                                        onPress={() =>this.handleLinkSheetDetailEach(subItem.req_no,item.showroomData,item.date, subItem.photo_sdate)}
                                                         //onPress={() =>this.pushTo(mConst.getUserType() == 'B' ? 'SendOutBScreen' : 'SendOutScreen',{reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
                                                     >     
                                                         { mConst.getUserType() == 'B' ?                                                   

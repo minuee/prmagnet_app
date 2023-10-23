@@ -29,6 +29,6 @@ export default function configureStore(initialState) {
  
   sagaMiddleware.run(rootSaga);
   store.close = () => store.dispatch(END);
-  //console.log('store.getStatestore.getStatestore.222',store.getState())
+
   return store
 }

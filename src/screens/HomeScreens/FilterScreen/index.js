@@ -12,7 +12,7 @@ import API from '../../../common/aws-api'
 import CategoryGroup from '../../common/CategoryGroup'
 import ColorGroup from '../../common/ColorGroup'
 import SizeGroup from '../../common/SizeGroup'
-import FlagGroup from '../../common/FlagGroup'
+import SeasonsGroup from '../../common/SeasonsGroup'
 import MaterialGroup from '../../common/MaterialGroup'
 import BrandGroup from '../../common/BrandGroup'
 import styles from './styles'
@@ -36,6 +36,8 @@ class FilterScreen extends PureComponent {
       sample: null,
       stillLifeImg: null,
       material: [],
+      seasons: [],
+      dataSeason : null
     }
   }
   componentDidMount() {
@@ -43,6 +45,14 @@ class FilterScreen extends PureComponent {
     const {info} = this.params
     this.setState(info)
     this.getBrandSearchCompanyAZ()
+    //this.getBrandSeason()
+  }
+  getBrandSeason = async () => {
+    try {
+      const response = await API.getBrandSeason()
+      this.setState({dataSeason: response.list})
+    } catch (error) {
+    }
   }
   goFilter = () => {
     const {setFilter} = this.params
@@ -60,12 +70,15 @@ class FilterScreen extends PureComponent {
       sample: null,
       stillLifeImg: null,
       material: [],
+      seasons: [],
     })
   }
   toggleStateList = property => value => {
+    //console.log('toggleStateList>>>', property, value)
     if (value) {
       this.setState(prevstate => {
         const list = prevstate[property]?.includes(value) ? prevstate[property]?.filter(item => item !== value) : prevstate[property]?.concat(value)
+        //console.log('toggleStalisteList>>>', list)
         if (property === 'gender' && list.length === 3) return {gender: []}
         return {[property]: list}
       })
@@ -90,7 +103,7 @@ class FilterScreen extends PureComponent {
     }
   }
   render() {
-    const {gender, section, brands, brandId, category, color, size, sample, stillLifeImg, material} = this.state
+    const {gender, section, brands, brandId, category, color, size, seasons, dataSeason, material} = this.state
     const {data} = this.params
     const sizeData = data?.category?.filter(item => item.sample_catgry_lrge_cl_nm === 'Shoes')[0]?.gender_size_list
     const cRtwData = data?.category
@@ -138,7 +151,13 @@ class FilterScreen extends PureComponent {
                 </Col>
                 <Col size={65}>
                   <BrandGroup data={brands} brandId={brandId} hide={section !== 'Brand'} setBrand={this.setBrand} />
-                  <CategoryGroup data={data.category} value={category} genderList={gender} hide={section !== 'Category'} setFilter={this.toggleStateList('category')} />
+                  <CategoryGroup 
+                    data={data.category} 
+                    value={category} 
+                    genderList={gender} 
+                    hide={section !== 'Category'} 
+                    setFilter={this.toggleStateList('category')} 
+                  />
                   <ColorGroup data={data.color} value={color} hide={section !== 'Color'} setFilter={this.toggleStateList('color')} />
                   <SizeGroup
                     data={sizeData}
@@ -156,6 +175,7 @@ class FilterScreen extends PureComponent {
                     setFilter={this.handleSetState('stillLifeImg')}
                   /> */}
                   <MaterialGroup data={data.material} value={material} hide={section !== 'Material'} setFilter={this.toggleStateList('material')} />
+                  <SeasonsGroup data={dataSeason} value={seasons} hide={section !== 'Seasons'} setFilter={this.toggleStateList('seasons')} />
                 </Col>
               </Row>
             </Grid>

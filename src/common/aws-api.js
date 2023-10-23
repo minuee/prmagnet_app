@@ -10,7 +10,6 @@ const projectEnv = 'prod' // 각 프로젝트 환경 // dev, test, prod
 const v1Noneauth = `${projectName}-${projectEnv}-noneauth-v1`
 const v1Api = `${projectName}-${projectEnv}-api-v1`
 const v1Cdn = `${projectName}-${projectEnv}-cdn-v1`
-
 const API = {
   //------------------------------------------
   // 인증 없는 api
@@ -109,13 +108,19 @@ const API = {
   setPushToken: ({token_value}) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/push-token`
-    //console.log('>>>>>0000', path)
     const myInit = {
       body: {
         token_value,
       },
     }
     return Api.post(apiName, path, myInit)
+  },
+  setUserActive : () => {
+    const apiName = v1Cdn
+    const path = '/batch/active-update'
+    const init = {}
+
+    return Api.get(apiName, path, init)
   },
   getBrandPosition: () => {
     const apiName = v1Cdn
@@ -134,6 +139,14 @@ const API = {
   getBrandSearchCompanyAZ: () => {
     var apiName = v1Cdn
     var path = '/cdn/brand/search-company/a-z'
+    var init = {}
+
+    return Api.get(apiName, path, init)
+  },
+
+  getBrandSeason: () => {
+    var apiName = v1Cdn
+    var path = '/cdn/brand/search-season'
     var init = {}
 
     return Api.get(apiName, path, init)
@@ -260,7 +273,7 @@ const API = {
         content: content,
       },
     }
-    //console.log('postQna',myInit);
+
     return Api.post(apiName, path, myInit)
   },
   getQnaList: ({page, limit, search_text}) => {
@@ -305,7 +318,6 @@ const API = {
         notifi_type: notifi_type,
       },
     }
-    //console.log('deleteAlarm>>>', init)
     return Api.del(apiName, path, init)
   },
   getFavShowroom: ({
@@ -372,7 +384,6 @@ const API = {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/fav-show/${showroom_no}` // TODO 임시 주석처리
     //const path = '/stylist/fav-show' // TODO 테스트용
-    //console.log('>>>>>>>', path)
     const myInit = {
       body: {
         showroom_no,
@@ -395,7 +406,6 @@ const API = {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/fav-show/${showroom_no}` // TODO 임시 주석처리
     //const path = '/stylist/fav-show' // TODO 테스트용
-    //console.log('>>>>>>>', path)
     const myInit = {
       body: {
         showroom_no: showroom_no,
@@ -437,7 +447,6 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getReturnSchedule: ({start_date, fin_date,not_finished}) => {
-    console.log('getReturnSchedule',start_date, fin_date,not_finished);
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/return-schedule`
     const init = {
@@ -457,13 +466,13 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getSendoutArrayDetail: (date,showroom_no,reqnoList2) => {
-    //console.log('getSendoutArrayDetail data',showroom_no,reqnoList2)
+
     const showroomList = JSON.stringify(showroom_no);
     const reqnoList = JSON.stringify(reqnoList2);
     const apiName = v1Api;        
     const path = `${mConst.getApiPath()}/sendout-detailed/${date}?date=${date}&showroomList=${showroomList}&reqnoList=${reqnoList}`;
     const init = {}
-    //console.log('getSendoutArrayDetail path',path)
+
     return Api.get(apiName, path, init)
   },
   getPickupDetail: (req_no,showroom_no) => {
@@ -477,7 +486,7 @@ const API = {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/return-detailed/req/${req_no}?showroom_no=` + showroom_no;
     const init = {}
-    //console.log('apiName path2',path)
+
     return Api.get(apiName, path, init)
   },
   getReturnArrayDetail: (date,showroom_no,reqnoList2) => {
@@ -493,7 +502,6 @@ const API = {
     const reqnoList = JSON.stringify(reqnoList2);
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/pickup-detailed/${date}?date=${date}&showroomList=${showroomList}&reqnoList=${reqnoList}`;
-    //console.log('path2222',path)
     const init = {}
     return Api.get(apiName, path, init)
   },
@@ -503,7 +511,6 @@ const API = {
     const myInit = {
       body: {req_no, len: showroom_len,targetSampleList},
     }
-    //console.log('myInit',myInit)
     return Api.post(apiName, path, myInit)
   },
   pushSendoutOne: (req_no, showroom_len, sample_no) => {
@@ -552,7 +559,6 @@ const API = {
     const myInit = {
       body: {req_no,targetSampleList},
     }
-    //console.log('pushReturnSuccess',path,myInit)
     return Api.post(apiName, path, myInit)
   },
   pushReturnOneSuccess: (req_no, sample_no) => {
@@ -602,10 +608,8 @@ const API = {
     return Api.put(apiName, path, myInit)
   },
   getShare: ({lookbook_no}) => {
-    //console.log('>>>', lookbook_no)
     const apiName = v1Api
     const path = `/brand/lookbook/${lookbook_no}/share-uuid`
-    //console.log('???', path)
     const init = {}
     return Api.get(apiName, path, init)
   },
@@ -629,12 +633,36 @@ const API = {
         date: date,
       },
     }
-    //console.log('initinitinit',init)
+
     return Api.get(apiName, path, init)
   },
+  getNewHome: ({date}) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/newhome`
+    const init = {
+      queryStringParameters: {
+        date: date,
+      },
+    }
+
+    return Api.get(apiName, path, init)
+  },
+  
   getHomeNR: ({page, limit}) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/home/new-request`
+    const init = {
+      queryStringParameters: {
+        page: page,
+        limit: limit,
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
+
+  getHomeRelease: ({page, limit}) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/home/new-release`
     const init = {
       queryStringParameters: {
         page: page,
@@ -665,7 +693,7 @@ const API = {
         limit: limit,
       },
     }
-    //console.log('getHomeT222R',init,path)
+
     return Api.get(apiName, path, init)
   },
   postDigitalSR: ({
@@ -674,7 +702,7 @@ const API = {
     brand_id,
     season_year,
     season_cd_id,
-    gender_cd_id,
+    gender_list,
     available_start_dt,
     available_end_dt,
     category_list,
@@ -691,7 +719,7 @@ const API = {
         brand_id,
         season_year,
         season_cd_id,
-        gender_cd_id,
+        gender_list,
         available_start_dt,
         available_end_dt,
         category_list,
@@ -865,7 +893,8 @@ const API = {
   },
   getSRDetail: showroom_no => {
     const apiName = v1Api
-    const path = `${mConst.getApiPath()}/showroom/${showroom_no}`
+    const path = `${mConst.getApiPath()}/showroom-mobile/${showroom_no}`
+    console.log('getSRDetail>>path>', path)
     const init = {}
     //('path',path)
     return Api.get(apiName, path, init)
@@ -917,7 +946,7 @@ const API = {
         ismobile:true
       },
     }
-    console.log('getAllSearch',init)
+
     return Api.get(apiName, path, init)
   },
   getMagazineNotice: ({search_text}) => {
@@ -955,7 +984,7 @@ const API = {
   postSRRequest: ({brand_id}) => {
     const apiName = v1Api;
     const path = `${mConst.getApiPath()}/showroom-request`;
-    //console.log('ewww',mConst.getApiPath())
+
     const myInit = {
       body: {
         brand_id: brand_id,
@@ -967,12 +996,16 @@ const API = {
     brand_id,
     duty_recpt_dt,
     photogrf_dt,
+    photogrf_end_dt,
+    release_dt,
+    release_end_dt,
     begin_dt,
     end_dt,
     return_prearnge_dt,
     photogrf_concept,
     model_list,
     celeb_list,
+    item_model_list,
     page_cnt,
     etc_brand,
     today_connect,
@@ -986,6 +1019,15 @@ const API = {
     loc_value,
     own_paid_pictorial_content,
     other_paid_pictorial_content,
+    is_media ,
+    media_nm ,
+    nonmedia_content ,
+    nonmedia_release ,
+    with_brand_list,
+    with_brand_direct,
+    with_wait_brand_list,
+    with_wait_brand_direct,
+    is_copy = false
   }) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/showroom-request-send`
@@ -994,12 +1036,16 @@ const API = {
         brand_id: brand_id,
         duty_recpt_dt: duty_recpt_dt,
         photogrf_dt: photogrf_dt,
+        photogrf_end_dt : photogrf_end_dt,
+        release_dt  : release_dt,
+        release_end_dt : release_end_dt,
         begin_dt: begin_dt,
         end_dt: end_dt,
         return_prearnge_dt: return_prearnge_dt,
         photogrf_concept: photogrf_concept,
         model_list: model_list,
         celeb_list: celeb_list,
+        item_model_list : item_model_list,
         page_cnt: page_cnt,
         etc_brand: etc_brand,
         today_connect: today_connect,
@@ -1013,13 +1059,45 @@ const API = {
         loc_value: loc_value,
         own_paid_pictorial_content: own_paid_pictorial_content,
         other_paid_pictorial_content: other_paid_pictorial_content,
+        is_media ,
+        media_nm ,
+        nonmedia_content ,
+        nonmedia_release ,
+        confirm_withBrand : with_brand_list,
+        confirm_withBrandDirect : with_brand_direct,
+        wait_withBrand  : with_wait_brand_list,
+        wait_withBrandDirect : with_wait_brand_direct,
+        is_copy
       },
     }
-    //console.log('postSRRequestSend>>>>>', path,myInit)
+    console.log('postSRRequestSend>>>> add', myInit);
+    return Api.post(apiName, path, myInit)
+  },
+  postSRCopyRequestSend: ({
+    req_no,
+    brand_id,
+    req_user_id,
+    photogrf_dt,
+    photogrf_end_dt,
+    showroom_list,
+   }) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/showroom-copy-request-send`
+    const myInit = {
+      body: {
+        req_no,
+        brand_id,
+        req_user_id,
+        photogrf_dt,
+        photogrf_end_dt,
+        showroom_list,
+      },
+    }
+    //console.log("myInit",myInit)
     return Api.post(apiName, path, myInit)
   },
   cancleMyRequests: ({req_no}) => {
-    //console.log('>>>>>', req_no)
+
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/showroom-request-cancel`
     const init = {
@@ -1031,7 +1109,7 @@ const API = {
     return Api.put(apiName, path, init)
   },
   deleteMyRequests: ({req_no}) => {
-    //console.log('>>>>>', req_no)
+
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/showroom-request-delete`
     const init = {
@@ -1043,7 +1121,7 @@ const API = {
     return Api.del(apiName, path, init)
   },
   getSampleRequests: ({req_no}) => {
-    //console.log('>>>>>', req_no)
+
     var apiName = v1Api
     var path = `${mConst.getApiPath()}/showroom-request/${req_no}`
     var init = {
@@ -1051,19 +1129,23 @@ const API = {
         req_no: req_no,
       },
     }
-    //console.log('pathpathpath>>>>>', path)
+
     return Api.get(apiName, path, init)
   },
   editSRRequestSend: ({
     req_no,
     duty_recpt_dt,
     photogrf_dt,
+    photogrf_end_dt,
+    release_dt,
+    release_end_dt,
     begin_dt,
     end_dt,
     return_prearnge_dt,
     photogrf_concept,
     model_list,
     celeb_list,
+    item_model_list,
     page_cnt,
     etc_brand,
     today_connect,
@@ -1077,39 +1159,66 @@ const API = {
     loc_value,
     own_paid_pictorial_content,
     other_paid_pictorial_content,
+    is_media ,
+    media_nm ,
+    nonmedia_content ,
+    nonmedia_release ,
+    with_brand_list,
+    with_brand_direct,
+    with_wait_brand_list,
+    with_wait_brand_direct,
+    is_tempsave
   }) => {
-    const apiName = v1Api
-    const path = `${mConst.getApiPath()}/showroom-request-update`
+    const apiName = v1Api;
+    const path = `${mConst.getApiPath()}/showroom-request-update`;
+ /*    if( with_brand_list?.length > 0 ) {
+      with_brand_list.reverse();
+    } */
+  
     const myInit = {
       body: {
-        req_no: req_no,
-        duty_recpt_dt: duty_recpt_dt,
-        photogrf_dt: photogrf_dt,
-        begin_dt: begin_dt,
-        end_dt: end_dt,
-        return_prearnge_dt: return_prearnge_dt,
-        photogrf_concept: photogrf_concept,
-        model_list: model_list,
-        celeb_list: celeb_list,
-        page_cnt: page_cnt,
-        etc_brand: etc_brand,
-        today_connect: today_connect,
-        add_req_cntent: add_req_cntent,
-        dlvy_adres_no : dlvy_adres_no,
-        dlvy_adres_nm: dlvy_adres_nm,
-        adres_detail: adres_detail,
-        dlvy_atent_matter: dlvy_atent_matter,
-        showroom_list: showroom_list,
-        contact_user_id: contact_user_id,
-        loc_value: loc_value,
-        own_paid_pictorial_content: own_paid_pictorial_content,
-        other_paid_pictorial_content: other_paid_pictorial_content,
+        req_no,
+        duty_recpt_dt,
+        photogrf_dt,
+        photogrf_end_dt,
+        release_dt,
+        release_end_dt,
+        begin_dt,
+        end_dt,
+        return_prearnge_dt,
+        photogrf_concept,
+        model_list,
+        celeb_list,
+        item_model_list,
+        page_cnt,
+        etc_brand,
+        today_connect,
+        add_req_cntent,
+        dlvy_adres_no,
+        dlvy_adres_nm,
+        adres_detail,
+        dlvy_atent_matter,
+        showroom_list,
+        contact_user_id,
+        loc_value,
+        own_paid_pictorial_content,
+        other_paid_pictorial_content,
+        is_media ,
+        media_nm ,
+        nonmedia_content ,
+        nonmedia_release ,
+        confirm_withBrand : with_brand_list,
+        confirm_withBrandDirect : with_brand_direct,
+        wait_withBrand  : with_wait_brand_list,
+        wait_withBrandDirect : with_wait_brand_direct,
+        is_tempsave
       },
     }
+    console.log('editSRRequestSend>>>> modify', myInit);
     return Api.post(apiName, path, myInit)
   },
-  getSchedular: ({min_date, max_date, season_year, season_cd_id, gender}) => {
-    //console.log('>>>>>>>>>', min_date, max_date)
+  getSchedular: ({min_date, max_date, season_year, season_cd_id, gender,limit, page, search_word = ""}) => {
+    
     var apiName = v1Api
     var path = `${mConst.getApiPath()}/my-schedule`
     var init = {
@@ -1119,8 +1228,12 @@ const API = {
         season_year,
         season_cd_id,
         gender,
+        search_word,
+        limit,
+        page
       },
     }
+
     return Api.get(apiName, path, init)
   },
   getBrandHoliday: ({year, brand_id}) => {
@@ -1130,6 +1243,16 @@ const API = {
       queryStringParameters: {
         year,
         brand_id,
+      },
+    }
+    return Api.get(apiName, path, init)
+  },
+
+  getWidthBrandList: () => {
+    var apiName = v1Api
+    var path = `${mConst.getApiPath()}/with-brandlist`
+    var init = {
+      queryStringParameters: {
       },
     }
     return Api.get(apiName, path, init)
@@ -1157,7 +1280,6 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getShowroomMemo: ({showroom_no}) => {
-    console.log('?!?', mConst.getApiPath(),showroom_no)
     var apiName = v1Api
     var path = `${mConst.getApiPath()}/showroom-memo`
     var init = {
@@ -1168,7 +1290,7 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getMemo: ({showroom_no, date}) => {
-    //console.log('?!?', showroom_no, date)
+
     var apiName = v1Api
     var path = `${mConst.getApiPath()}/memo`
     var init = {
@@ -1180,7 +1302,7 @@ const API = {
     return Api.get(apiName, path, init)
   },
   getShowRoomList: ({date}) => {
-    ///console.log('>>>>', date)
+
     var apiName = v1Api
     var path = `${mConst.getApiPath()}/showroom-list/for-memo-new`
     var init = {

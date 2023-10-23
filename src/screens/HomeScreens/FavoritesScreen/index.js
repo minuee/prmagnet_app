@@ -129,7 +129,7 @@ class FavoritesScreen extends PureComponent {
                           activeOpacity={0.5}
                           style={{width: '100%', height: mUtils.wScale(275)}}
                         >
-                          <FastImage resizeMode={'cover'} style={styles.modelImg} source={{uri: item.img_url_adres}} />
+                          <FastImage resizeMode={'contain'} style={styles.modelImg} source={{uri: item.img_url_adres}} />
                           <TouchableOpacity
                             style={styles.likeTouch}
                             onPress={() => {

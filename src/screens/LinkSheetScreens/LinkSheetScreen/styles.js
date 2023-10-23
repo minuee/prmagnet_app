@@ -98,6 +98,31 @@ export default StyleSheet.create({
     padding:5,
     marginLeft:10
   },
+  menuDefaultWrap : {
+    display:'flex',
+    flexDirection:'row',
+    marginHorizontal:10,
+    marginVertical:5,
+  },
+  menuDefaultBox : {
+    borderWidth: 0.7,
+    borderColor: '#f3f3f3',
+    paddingVertical:8,
+    paddingHorizontal:5,
+    marginRight:10,
+    borderRadius : 5,
+    backgroundColor:'#ccc',
+  },
+  menuSelectBox : {
+    borderWidth: 0.7,
+    borderColor: '#f3f3f3',
+    paddingVertical:8,
+    paddingHorizontal:5,
+    marginRight:10,
+    borderRadius : 5,
+    backgroundColor:'#7ea1b2',
+    
+  },
   defaultBox : {
     borderWidth: 0.7,
     borderColor: '#f3f3f3',

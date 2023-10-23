@@ -44,45 +44,99 @@ class HomeDetailScreen extends PureComponent {
     const {type} = this.props.route.params;
     this.setState({loading: true}, () => {
       if (type === 'request') {
-        this.getHomeNR(1);//M :confirm B : New Request
+        if (  mConst.getUserType() == 'M') {
+          this.getHomeCR(1);//M :confirm B : New Request
+        }else{
+          this.getHomeNR(1);//M :confirm B : New Request
+        }
+        
+      }else  if (type === 'release') {
+        this.getHomeRelease(1)
       } else {
         this.getHomeTR(1,type);//Pickup
       }
     })
   }
 
-  getHomeNR = async (nextpage = 0) => {
+  getHomeCR = async (nextpage = 0) => {
     const {page, limit, total_count,data} = this.state;
-    //console.log('page, limit,>>>', page, limit,)
     if ( page * limit <= total_count ) {
       try {
-        const response = mConst.getUserType() === 'B' ? await API.getHomeNR({page: nextpage, limit}) : await API.getHomeCR({page: nextpage, limit})
-        //console.log('getHomeNR>>>', response)
+        const response =  await API.getHomeCR({page: nextpage, limit});
         if (response.success) {
           this.setState({loading: false}, () => {
-            if (mConst.getUserType() === 'B') {
-              if (response.new_request.length > 0) {
-                this.setState({
-                  data: data.concat(response.new_request),
-                  page: nextpage + 1,
-                  total_count: response.total_count,
-                  loading: false,
-                })
-              }
-            } else {
-              if (response.list.length > 0) {
-                this.setState({
-                  data: data.concat(response.list),
-                  page: nextpage + 1,
-                  total_count: response.total_count,
-                  loading: false,
-                })
-              }
+            if (response.list.length > 0) {
+              this.setState({
+                data: data.concat(response.list),
+                page: nextpage + 1,
+                total_count: response.total_count,
+                loading: false,
+              })
             }
           })
         }
       } catch (error) {
-        console.log('getHomeNR>>>1', JSON.stringify(error))
+        this.setState({loading:false})
+        console.log('getHomeCR>>>333', JSON.stringify(error))
+      }
+    }else{
+      this.setState({loading:false})
+    }
+  }
+
+  getHomeNR = async (nextpage = 0) => {
+    const {page, limit, total_count,data} = this.state;
+    if ( page * limit <= total_count ) {
+      try {
+        const response =  await API.getHomeNR({page: nextpage, limit});
+        if (response.success) {
+          this.setState({loading: false}, () => {
+            if (response.new_request.length > 0) {
+              this.setState({
+                data: data.concat(response.new_request),
+                page: nextpage + 1,
+                total_count: response.total_count,
+                loading: false,
+              })
+            }
+          })
+        }
+      } catch (error) {
+        this.setState({loading:false})
+        console.log('getHomeNR>>>333', JSON.stringify(error))
+      }
+    }else{
+      this.setState({loading:false})
+    }
+  }
+
+  getHomeRelease = async (nextpage = 0) => {
+    const {page, limit, total_count,data} = this.state;
+    if ( page * limit <= total_count ) {
+      try {
+        const response =  await API.getHomeRelease({page: nextpage, limit});
+        console.log('getHomeRelease>>>1', response)
+        if (response.success) {
+          this.setState({loading: false}, () => {
+            if (response.new_release.length > 0) {
+              this.setState({
+                data: data.concat(response.new_release),
+                page: nextpage + 1,
+                total_count: response.total_count,
+                loading: false,
+              })
+            }
+          })
+        }else{
+          this.setState({
+            loading: false,
+          })
+        }
+      } catch (error) {
+        this.setState({
+          loading: false,
+        })
+        console.log('getHomeRelease>>>1', JSON.stringify(error))
       }
     }else{
       this.setState({loading:false})
@@ -101,7 +155,6 @@ class HomeDetailScreen extends PureComponent {
     if ( page * limit <= total_count ) {
       try {
         const response = await API.getHomeTR({date: date, type : strType,page: nextpage, limit: limit})
-        //console.log('getHomeTR>>>', response)
         if (response.success) {
           this.setState({loading: false}, () => {
             /* if (mConst.getUserType() === 'B') {
@@ -115,27 +168,6 @@ class HomeDetailScreen extends PureComponent {
             } else { */
               if (response.list.length > 0) {
                 const data2 = data.concat(response.list);
-                /* let newLeftIdxArray = [];
-                let newLeftShowroomIdxArray = [];
-                let newLeftArray = [];
-                data2.forEach((element) => {
-                let req_no = element.showroom_list[0].req_no;
-                if ( !newLeftIdxArray.includes(req_no)) {
-                    newLeftIdxArray.push(req_no);
-                    newLeftArray.push(element)
-                }
-                if ( !newLeftShowroomIdxArray.includes(req_no)) {
-                    newLeftShowroomIdxArray.push({req_no :req_no, showroom_no: element.showroom_list[0].showroom_no});
-                }
-                })          
-                //console.log('newLeftShowroomIdxArray',newLeftShowroomIdxArray);
-                if ( this.state.justonce ) {
-                    this.setState({
-                        leftData : newLeftArray,
-                        justonce : false,
-                        leftShowroomData :newLeftShowroomIdxArray
-                    }) 
-                } */
                 this.setState({
                   data: data2,
                   page: nextpage + 1,
@@ -161,6 +193,8 @@ class HomeDetailScreen extends PureComponent {
       const nextpage = page + 1;
       if (type === 'request') {
         this.getHomeNR(nextpage);
+      }else if (type === 'release') {
+        this.getHomeRelease(nextpage)
       } else {
         this.getHomeTR(nextpage,type);
       }
@@ -219,6 +253,37 @@ class HomeDetailScreen extends PureComponent {
         ) : (
           <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>{item.brand_nm}</Text>
         )}
+      </TouchableOpacity>
+    )
+  }
+
+  renderItem2 = ({item}) => {
+    const {type, title} = this.props.route.params
+    const userType = mConst.getUserType()
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          this.pushTo('SampleRequestsDetailScreen', {no: item.req_no})
+        }}
+        style={styles.layout3}
+      >
+        <FastImage
+          resizeMode={'contain'}
+          style={styles.brandImg}
+          source={{uri:  item.mgzn_logo_url_adres}}
+        />
+        <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>
+          {item.editor_nm}{item.editor_posi}
+        </Text>
+        <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>
+          {item.mgzn_nm} 
+        </Text>
+        <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
+          {mUtils.getShowDate(item.release_dt, 'YYYY-MM-DD')}
+          {item?.release_dt != item?.release_end_dt && (
+            "~" + mUtils.getShowDate(item.release_end_dt, 'YYYY-MM-DD')
+          )}
+        </Text>
       </TouchableOpacity>
     )
   }
@@ -313,7 +378,16 @@ class HomeDetailScreen extends PureComponent {
     return (
       <>
         <SafeAreaView style={styles.container}>
-          {type === 'request' ? (
+          {
+          type === 'release' ? (
+            <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(30)}}>
+              <Text style={styles.new}>
+                Today's <Text style={{fontFamily: 'Roboto-Medium'}}>Release Schedules</Text>
+                <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}> {data.length }</Text>
+              </Text>
+            </View>
+          ) : 
+          type === 'request' ? (
             <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(30)}}>
               <Text style={styles.new}>
                 {mConst.getUserType() !== 'B' ? 'Confirmed' : 'New'} <Text style={{fontFamily: 'Roboto-Medium'}}>Sample Requests : </Text>
@@ -343,7 +417,7 @@ class HomeDetailScreen extends PureComponent {
           <View
             style={{
               ...styles.layout2,
-              backgroundColor: type === 'request' ? 'rgba(126, 161, 178, 0.2)' : 'rgba(178, 126, 126, 0.2)',
+              backgroundColor: type !== 'request' ? 'rgba(178, 126, 126, 0.2)' : 'rgba(126, 161, 178, 0.2)',
               marginBottom: mUtils.wScale(50),
               flex: data.length === 0 ? 1 : 0,
             }}
@@ -359,7 +433,7 @@ class HomeDetailScreen extends PureComponent {
                 showsVerticalScrollIndicator={false}
                 numColumns={2}
                 data={data}
-                renderItem={type === 'request' ? this.renderItem : this.renderPickupItem}
+                renderItem={type == 'request' ? this.renderItem : type == 'release' ? this.renderItem2 : this.renderPickupItem}
                 keyExtractor={item => `_${item.req_no}_${Math.random()}`}
                 //onEndReached={this.handleLoadMore}
                 onEndReachedThreshold={1}

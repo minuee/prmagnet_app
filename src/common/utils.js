@@ -265,6 +265,10 @@ const utils = {
     val = String(val).replace(/-/g, '')
     if (val.length <= 7) {
       return val.replace(/([0-9]{3})([0-9]{1})/, '$1-$2')
+    }else if (val.length == 10) {
+      return val.replace(/([0-9]{2})([0-9]{4})([0-9]{4})/, '$1-$2-$3')
+    }else if (val.length == 11) {
+      return val.replace(/([0-9]{3})([0-9]{4})([0-9]{4})/, '$1-$2-$3')
     } else {
       return val.replace(/([0-9]{4})([0-9]{4})/, '$1-$2')
     }
@@ -320,6 +324,18 @@ const utils = {
       return years + '-' + Month + '-' + days + ' ' + hour + ':' + min
     }
   },
+  dateToDateTime(val) {
+    const happyNewYear = new Date(val);
+    const year = happyNewYear.getFullYear(); 
+    const month = happyNewYear.getMonth() + 1; 
+    const date = happyNewYear.getDate();
+    const hours = happyNewYear.getHours();
+    const minutes = happyNewYear.getMinutes();
+    const seconds = happyNewYear.getSeconds();
+
+    const result = `${year}-${month >= 10 ? month : '0' + month}-${date >= 10 ? date : '0' + date} ${hours}:${minutes}:${seconds}`
+    return result;
+  } ,
   floorText(val) {
     let text = ''
     if (val === 'A') {
@@ -410,6 +426,18 @@ const utils = {
     now.setHours(0, 0, 0)
     return Math.floor(now.getTime() / 1000)
   },
+  getThreePrevDay() {
+    const now = new Date()
+    const threeday =  new Date(now.setDate(now.getDate() - 3));
+    threeday.setHours(0, 0, 0)
+    return Math.floor(threeday.getTime() / 1000)
+  },
+  getThreeNextDay() {
+    const now = new Date()
+    const threeday =  new Date(now.setDate(now.getDate() + 3));
+    threeday.setHours(0, 0, 0)
+    return Math.floor(threeday.getTime() / 1000)
+  },
   getThisWeekStart() {
     const start = moment().startOf('week')
     start.set('hour', 0).set('minute', 0).set('second', 0)
@@ -426,6 +454,7 @@ const utils = {
     nextWeek.setHours(23, 59, 59)
     return Math.floor(nextWeek.getTime() / 1000)
   },
+ 
   getDayValue(year, month, date, isEnd = false) {
     const day = new Date(year, month - 1, date)
     isEnd ? day.setHours(23, 59, 59) : day.setHours(0, 0, 0)
@@ -514,7 +543,49 @@ const utils = {
     }
     return true;
   },
+
   async getFcmToken() {
+    const authStatus = await messaging().requestPermission();
+    console.log('fcmToken authStatus',authStatus);
+    const enabled = authStatus === messaging.AuthorizationStatus.AUTHORIZED || authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    console.log('fcmToken enabled',enabled);
+    let fcmToken = null;
+    try {
+        if (enabled) {
+            fcmToken = await messaging().getToken();  
+            console.log('fcmToken',fcmToken);
+            return fcmToken
+        } else {
+            console.log('fcm auth fail');
+            return null
+        }
+    }catch(e){
+        console.log('fcmToken fail2',e);
+        return null;
+    }
+  },
+  async getFcmToken22() {
+    if (mConst.bIos) {
+        // On iOS, if your app wants to receive remote messages from FCM (via APNs)
+        await messaging().registerDeviceForRemoteMessages()
+      }
+    const authStatus = await messaging().requestPermission();
+    console.log('fcmToken authStatus',authStatus);
+    const enabled = authStatus === messaging.AuthorizationStatus.AUTHORIZED || authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    console.log('fcmToken enabled',enabled);
+    let fcmToken = null;
+    try {
+      if (enabled) {
+          fcmToken = await messaging().getToken();  
+          return fcmToken;
+      } else {
+          console.log('fcm auth fail');
+      }
+    }catch(e){
+        return null;
+    }
+  },
+  async getFcmToken_okd() {
     const getToken = async () => {
       if (mConst.bIos) {
         // On iOS, if your app wants to receive remote messages from FCM (via APNs)
@@ -548,8 +619,9 @@ const utils = {
   convertReqStatus(str) {
     let returnStr = "홀딩 대기";
     switch(str) {
+      case 'tempsave' : returnStr = "신청 대기";break;
       case 'confirmed' : returnStr = "홀딩 완료"; break;
-      case 'rejected' : returnStr = "홀딩 거절";break;
+      case 'rejected' : returnStr = "홀딩 불가";break;
       case 'returned' : returnStr = "홀딩 완료(종료)";break;
       case 'canceled' : returnStr = "홀딩 취소";break;
       default : returnStr = "홀딩 대기";break;

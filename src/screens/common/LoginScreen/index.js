@@ -33,6 +33,9 @@ class LoginScreen extends PureComponent {
       // email: 'dazed@ruu.kr', // 매거진 테스트
       // email: 'elle@ruu.kr', // 매거진 테스트
       //pw: '1234qwer',
+      // email: minuee@nate.com, pw: lenapark47##,
+      // email: Katie.choi@gucci.com pw : Reww0208!
+      //  kimkim979797@naver.com/ Khjkhj413**
     }
   }
   async componentDidMount() {
@@ -40,17 +43,28 @@ class LoginScreen extends PureComponent {
     const pushKey = await mUtils.getFcmToken();
     if ( __DEV__) {
       this.setState({
-        email: 'elle@ruu.kr',
-        pw: '1234qwer',
+        email: 'Katie.choi@gucci.com',
+        pw: 'Reww0208!',
         pushKey
       })
+    }else{
+      this.setState({pushKey})
     }
+   
   }
+  handleLogin2 = callOnce(async () => {
+    try{
+      API.setUserActive();
+      console.log('###setUserActive :')
+    }catch(e){
+      console.log('###setUsereeeeee :',e)
+    }
+    
+  })
   handleLogin = callOnce(async () => {
     const {email, pw, pushKey} = this.state;
     const {loginSuccess, loginFailure, userTypeSuccess,userSubScrbeStatus} = this.props;
-    //const hash = await sha256(pw.toString());
-   
+  
     const data = {
       email,
       pw, // : hash, //TODO 추후 암호화 적용
@@ -68,15 +82,13 @@ class LoginScreen extends PureComponent {
       this.alert('', '비밀번호를 입력해주세요.');
       return;
     }
-    // if (!mUtils.isPassword(pw)) return this.alert('', '비밀번호 형식을 확인해주세요.') // TODO 임시 주석 처리  
-   
     
     await mUtils.setFcmTopicClear();
     API.login(data, {
       cbSuccess: async response => {
         API.getUserType()
           .then(resUserType => {
-            console.log('###UserType:', resUserType)
+
             let isSubscrYN = false;
             if ( resUserType.is_brand_user ) {
               if ( resUserType.subscr_yn){
@@ -93,9 +105,12 @@ class LoginScreen extends PureComponent {
             userSubScrbeStatus(isSubscrYN);
             userTypeSuccess(resUserType)
             loginSuccess(response)
+              if ( pushKey ) {
+                API.setPushToken({token_value: pushKey})
+                console.log('###로그인 성공:', pushKey)
+              }
           })
-          .then(() => API.setPushToken({token_value: pushKey}))
-          //console.log('###로그인 성공:', response)
+          .then(async() =>  console.log('###로그인 성공222:', pushKey))
           //console.log('로그인 시 props 확인 : ', this.props)
       },
       cbFailure: error => {
@@ -204,9 +219,6 @@ class LoginScreen extends PureComponent {
           </View>
           <View style={styles.lowerWrapper}>
             <View style={styles.lowerSubWrapper}>
-              {/* <TouchableOpacity style={styles.itemTextWrapper} onPress={this.handleJoin}>
-                <Text style={styles.itemText}>회원가입</Text>
-              </TouchableOpacity> */}
               <TouchableOpacity style={styles.itemTextWrapper} onPress={this.handleFindId}>
                 <Text style={styles.itemText}>아이디 찾기</Text>
               </TouchableOpacity>

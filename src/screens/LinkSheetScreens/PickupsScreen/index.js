@@ -30,6 +30,7 @@ class PickupsScreen extends PureComponent {
       checkedList: [],
       selectEachList : [],
       targetSampleList : [],
+      reqMessage : [],
       setchangePickupDate : '',
       isvisible: {open: false, phone: '', name: ''},
       loading: true,
@@ -42,7 +43,7 @@ class PickupsScreen extends PureComponent {
     if (reqNo) {
       this.modalOption('Pickups', false)
     } else {
-      this.pushOption('Pickups', false)
+      this.pushOption('픽업 시트', false)
     }
     if ( selectEachList.length > 0 )  {      
       this.setState({selectEachList:selectEachList})
@@ -83,7 +84,7 @@ class PickupsScreen extends PureComponent {
       const response = await API.getPickupArrayDetail(item.date,item.showroom_list,item.req_no_list);
       const dataTmp = await _.get(response, 'right');
       await this.allSendOutCheck(dataTmp)
-      this.setState({data: dataTmp[0], listIndex : nextIndex})
+      this.setState({data: dataTmp[0], listIndex : nextIndex,reqMessage:response.req_message})
       //console.log('픽업 스케쥴 상세 조회 성공', JSON.stringify(_.get(response, 'right')))
     } catch (error) {      
       console.log('픽업 스케쥴 상세 조회 실패 Ma', error)
@@ -254,7 +255,7 @@ class PickupsScreen extends PureComponent {
       return <Loading />
     }else{
       const {reqNo} = this.params;
-      const {data, checkedList, allChecked, loading} = this.state;
+      const {data, checkedList, allChecked, reqMessage} = this.state;
       const srcLoaningDate = mUtils.get(data, 'loaning_date');
       const loaningDate = mUtils.getShowDate(srcLoaningDate);
       const fromName = mUtils.get(data, 'contact_user_nm');
@@ -287,7 +288,7 @@ class PickupsScreen extends PureComponent {
               </Text>
             </View> */}
             <View style={styles.middleWrapper}>
-              <Text style={styles.middleText}>매체명</Text>
+              <Text style={styles.middleText}>회사명</Text>
               <Text style={styles.middleDescText}>{mUtils.get(data, 'mgzn_nm', '-')}</Text>
             </View>
             <View style={styles.middleGroupWrapper}>
@@ -345,11 +346,12 @@ class PickupsScreen extends PureComponent {
               {_.map(mUtils.get(data, 'showroom_list', []), (item, index) => {
                 const samples = mUtils.get(item, 'sample_list', [])
                 const roomName = mUtils.get(item, 'showroom_nm')
+                const roomNo = mUtils.get(item, 'showroom_no')
                 const imageUrl = mUtils.get(samples, '[0].image_list[0]')
                 const rowSize = _.size(samples)
                 return (
                   <Row key={index}>
-                    <Col style={styles.col(rowSize * 2, true)} size={1}>
+                    <Col style={styles.col(rowSize * 2, true)} size={1} onPress={() => {this.pushTo('DigitalSRDetailScreen', {no: roomNo, type: 'digital',title : roomName})}}>
                       <Text style={styles.sText()}>{roomName}</Text>
                     </Col>
                     <Col style={styles.col(rowSize * 2)} size={2}>
@@ -366,7 +368,7 @@ class PickupsScreen extends PureComponent {
                         )
                       })}
                     </Col>
-                    <Col style={styles.col(rowSize * 2, true)} size={2}>
+                    <Col style={styles.col(rowSize * 2, true)} size={2} onPress={() => {this.pushTo('DigitalSRDetailScreen', {no: roomNo, type: 'digital',title : roomName})}}>
                       <FastImage source={{uri: imageUrl}} style={styles.modelImage} />
                     </Col>
                     <Col style={styles.col(rowSize * 2)} size={6}>
@@ -423,16 +425,30 @@ class PickupsScreen extends PureComponent {
                   </Row>
                 )
               })}
+               <Row style={{padding:5}}>
+                <Text style={styles.sText(12)}>{data?.send_out_notice}</Text>
+              </Row>
+              <View style={{paddingHorizontal: mUtils.wScale(10)}} pointerEvents={'none'}>
+                { reqMessage.length > 0 && (<View><Text style={{...styles.subTitle,marginBottom:5}}>알림 메시지 이력</Text></View>)}
+                { reqMessage.length > 0 && (
+                  reqMessage.map((d, i) => (
+                    <View key={`${d}_${i}`}>
+                      <Text style={styles.sText(12)}>{mUtils.dateToDateTime(d.req_hist_dt)} 발신자:{d.send_man_user_type == 'brand' ? d.send_brand_user : d.send_magazine_user} {d.notifi_subj} {d.notifi_cntent}</Text>
+                    </View>
+                  ))
+                ) }
+              </View>
             </Grid>
           </ScrollView>
           {
             allChecked ?
             <View style={styles.bottom2}>
-              <Text style={styles.bottomText}>All Picked Up(Completed)</Text>
+              <Text style={styles.bottomText}>전체 수령 완료</Text>
             </View>
             :
             <TouchableOpacity onPress={this.handleCheckItemAll} style={styles.bottom}>
-              <Text style={styles.bottomText}>All Picked Up</Text>
+              <Text style={styles.bottomText}>전체 수령 완료 버튼</Text>
+              <Text style={styles.sbottomText}>피스별 수령 완료는 본인 이름 우측에서 좌측 스와이프 후 나타나는 체크버튼 클릭 </Text>
             </TouchableOpacity>
           }
           <Modal style={styles.modal} isVisible={this.state.isvisible.open} useNativeDriver={true}>

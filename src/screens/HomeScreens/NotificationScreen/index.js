@@ -49,7 +49,7 @@ class NotificationScreen extends PureComponent {
   
     try {
       const response = await API.deleteAlarm({notice_id: notice_id, notifi_type: notifi_type})
-      console.log('deleteAlarm>>>', response)
+
       if (response.success) {
         this.setState(state => {
           const resetList = state.list.filter((item, j) => i !== j)
@@ -60,7 +60,7 @@ class NotificationScreen extends PureComponent {
         mUtils.fn_call_toast('삭제되었습니다.');
       }
     } catch (error) {
-      console.log('deleteAlarm>>>', error)
+
       mUtils.fn_call_toast('오류가 발생하였습니다.');
     }
   }
@@ -115,8 +115,6 @@ class NotificationScreen extends PureComponent {
     const brandId = item.brand_id;
     const date_info = item.date_info;
 
-    console.log('reqNoreqNoreqNo',date_info);
-    console.log('notice_type',notice_type);
     //console.log('handleMove22',date_info[0]);
     let showroomData = [];
     let pickup_date = null;

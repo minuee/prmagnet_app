@@ -12,7 +12,6 @@ import Text from '../../common/Text';
 import styles from './styles';
 import API from '../../../common/aws-api';
 import Loading from '../../common/Loading';
-import { multicastChannel } from 'redux-saga';
 
 const modelImg = require('../../../images/sample/model_1.png');
 const moreImg = require('../../../images/navi/more_2.png');
@@ -26,15 +25,18 @@ const checkImg3 = require('../../../images/navi/check_3.png');
 const selectImg2 = require('../../../images/navi/select_2.png');
 const delImg = require('../../../images/navi/del_1.png');
 const yesNo = [{boolean: true, text: 'Yes'},{boolean: false, text: 'No'},];
-const noCheckImg2 = require('../../../images/navi/disable.png');
+//const noCheckImg2 = require('../../../images/navi/disable.png');
+const noCheckImg2 = require('../../../images/navi/red.png');
 const time = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23'];
-
+const todayTimeStamp = mUtils.getToday();
+const reqStatusEditList = ["RS0000","RS0001","RS0002"];
 class SampleRequestsDetailScreen extends PureComponent {
   constructor(props) {
     super(props)
     cBind(this)
     this.state = {
       data: '',
+      select: [],
       selected: [],
       defaultInfo: '',
       selectContact: '',
@@ -50,6 +52,16 @@ class SampleRequestsDetailScreen extends PureComponent {
       celebrity: [''],
       fashionModel: [''],
       payPictorialDesc: '',
+      is_media : true,
+      media_nm : '',
+      nonmedia_content : '',
+      nonmedia_release : '',
+      release_dt : '',
+      release_end_dt: '',
+      with_brand_list : '',
+      with_brand_direct : '',
+      with_wait_brand_list: '',
+      with_wait_brand_direct: '',
       locateShoot: '',
       todayConnect: 'No',
       numberPage: '',
@@ -77,20 +89,21 @@ class SampleRequestsDetailScreen extends PureComponent {
 
   getSampleRequests = async (req_no = null) => {
     const {no} = this.props.route.params || req_no;
+    console.log('getSampleRequest22s>>>', no)
     try {
       const response = await API.getSampleRequests({
         req_no: no,
       })
-      //console.log('getSampleRequests>>>', response)
       if (response.success) {
         this.setConfirmCount(response);
+        console.log('getSampleRequesresponse22s>>>', response)
         this.setState({
           data: response,
           req_no : no
         })
       }
     } catch (error) {
-      //console.log('getSampleRequests>>>', error)
+      console.log('getSampleRequests>>> weee', error)
     }
   }
 
@@ -115,12 +128,38 @@ class SampleRequestsDetailScreen extends PureComponent {
       setTimeout(() => {
         this.alert('홀딩 요청 삭제 완료', '홀딩 요청이 삭제되었습니다.', [
           {
-            onPress: () => this.getSampleRequests(this.state.req_no)
+            onPress: () => this.goBack()//this.getSampleRequests(this.state.req_no)
           },
         ])
       }, 100)
     } catch (error) {
       //console.log('deleteMyRequests>>>', error)
+    }
+  }
+
+  handleCopyRequest = async() => {
+    if ( mUtils.convertDateToUnix(this.state.data.shooting_date)*1000 < Math.floor(new Date()/1000)  ) {
+      this.alert('촬영일이후부터 조회가 가능합니다.');
+      return;
+    }
+    try {
+      const response = await API.postSRCopyRequestSend({
+        req_no :  this.state.req_no,
+        brand_id:  this.state.data.brand_id,
+        photogrf_dt: this.state.data.shooting_date,
+        photogrf_end_dt: this.state.data.shooting_end_date,
+        showroom_list: this.state.data.showroom_list,
+        req_user_id: this.state.data.req_user_id,
+       })
+      //console.log('postSRRequestSend>>>>', response)
+      if (response.success) {
+        mUtils.fn_call_toast('정상적으로 신청되었습니다.');
+          setTimeout(() => {
+            this.goBack()
+          }, 1500);
+      }
+    } catch (error) {
+      console.log('postSRRequestSend>>>>', error)
     }
   }
 
@@ -142,6 +181,89 @@ class SampleRequestsDetailScreen extends PureComponent {
     }
   }
 
+  selected = item => {
+    const {select} = this.state;
+    if(select.includes(item)) {
+      this.setState(state => {
+        const list = state.select.filter((e, j) => select.indexOf(item) !== j)
+        return {select: list}
+      })
+    }else{
+      this.setState({select: select.concat(item)})
+    }
+  }
+
+  handleCopyBtn = async() => {    
+    this.alert('홀딩요청 복사', '홀딩요청을 복사하시겠습니까?\n신청대기로 생성됩니다.', [
+      {
+        onPress: () => {
+          this.actionCopy(this.state.data)
+        },
+      },
+      {onPress: () => null},
+      ])
+
+  };
+
+  actionCopy = async(value) => {
+    console.log("actionCopy",value)
+    let newShowroomList = [];
+    await value.showroom_list.forEach((d, i) => {
+      newShowroomList.push(d.showroom_no)
+    });   
+    try {
+      const response = await API.postSRRequestSend({
+        brand_id: value.brand_id,
+        duty_recpt_dt: value.pickup_date,
+        photogrf_dt: value.shooting_date,
+        photogrf_end_dt: value.shooting_end_date,
+        release_dt : value.release_dt,
+        release_end_dt : value.release_end_dt,
+        begin_dt: value.shooting_start_time,
+        end_dt: value.shooting_end_time,
+        return_prearnge_dt: value.returning_date,
+        photogrf_concept: value.photogrf_concept,
+        model_list: value.model_list,
+        item_model_list: value.item_model_list,
+        celeb_list: value.celeb_list,
+        own_paid_pictorial_content: value.own_paid_pictorial_content,
+        other_paid_pictorial_content: value.other_paid_pictorial_content,
+        page_cnt: value.page_cnt,
+        etc_brand: value.etc_brand_info,
+        today_connect: value.today_connect,
+        add_req_cntent: value.message,
+        dlvy_adres_no : value.dlvy_adres_no,    
+        dlvy_adres_nm: value.dlvy_adres_nm,
+        adres_detail: value.adres_detail,
+        dlvy_atent_matter: value.dlvy_atent_matter,
+        showroom_list: newShowroomList,
+        contact_user_id: value.contact_user_id,
+        req_user_id: value.req_user_id,
+        loc_yn: value.loc_yn,
+        loc_value: value.loc_value,
+        picalbm_chk:value.picalbm_chk,
+        is_media:value.is_media,
+        media_nm:value.media_nm,
+        nonmedia_content:value.nonmedia_content,
+        nonmedia_release:value.nonmedia_release,
+        with_brand_list : value.with_brand_list,
+        with_brand_direct :value.with_brand_direct,
+        with_wait_brand_list :value.with_wait_brand_list,
+        with_wait_brand_direct:value.with_wait_brand_direct,
+        is_copy : true
+      })
+      if (response.success) {
+        mUtils.fn_call_toast('정상적으로 등록되었습니다.');
+        setTimeout(() => {
+          this.goBack()
+        }, 1500);
+      }
+    } catch (error) {
+      console.log('getSampleRequests>>>', error)
+    }
+  }
+
+  
   render() {
     const {
       data,
@@ -164,12 +286,23 @@ class SampleRequestsDetailScreen extends PureComponent {
       numberPage,
       togetherBrand,
       message,
+      is_media,
+      media_nm,
+      nonmedia_content,
+      nonmedia_release,
       drop,
       drop1,
       drop2,
+      release_dt ,
+      release_end_dt,
+      with_brand_list ,
+      with_brand_direct ,
+      with_wait_brand_list,
+      with_wait_brand_direct,
       acceptCount
     } = this.state;
 
+   
     return data ? (
       <SafeAreaView style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -177,6 +310,17 @@ class SampleRequestsDetailScreen extends PureComponent {
             <Text style={{...styles.mainTitle, marginTop: mUtils.wScale(25)}}>
               {mConst.getUserType() !== 'B' && "My " }
             <Text style={styles.mainTitle1}>Request Detail</Text></Text>
+            {
+            ( ( data.shooting_date > todayTimeStamp && reqStatusEditList.includes(data.req_status_cd) ) || data.req_status_nm == 'tempsave' ) &&  mConst.getUserType() != 'B' && 
+            <View style={{position:'absolute',right:20,top:mUtils.wScale(25),width:60,height:25}}>
+              <TouchableOpacity
+                style={{...styles.selectBox, backgroundColor: mConst.bgBlue,width:60,height:25,justifyContent:'center'}}
+                onPress={() => this.pushTo('SampleRequestsScreen', {type: false, brandId: data.brand_id, no: this.state.req_no, brandName: data.brand_nm})}
+              >
+                <Text style={{...styles.selectText, color: mConst.white}}>수정</Text>
+              </TouchableOpacity>
+            </View>
+            }
             { 
               mConst.getUserType() !== 'B' && data.brand_logo_url_adres !== null ? (
               <View style={{height:mUtils.wScale(25),justifyContent:'flex-start',alignItems:'flex-start',marginTop:20,}}>
@@ -200,9 +344,21 @@ class SampleRequestsDetailScreen extends PureComponent {
               </Text>
             </View>
             }
-            <Text style={{...styles.subTitle, marginTop: mUtils.wScale(30)}}>
-              Request product : <Text style={{color: '#7ea1b2'}}>{data.showroom_list.length} {/* 승인 : {acceptCount} */}</Text>
-            </Text>
+            <View style={{display:'flex',flexDirection:'row',alignItems:'center',height:30}}>
+              <Text style={{...styles.subTitle}}>
+                Request product : <Text style={{color: '#7ea1b2'}}>{data.showroom_list.length} {/* 승인 : {acceptCount} */}</Text>
+              </Text>
+              { 
+              ( data.req_status_cd != 'RS0000' && data.req_status_cd != 'RS0001' && data.req_status_cd != 'RS0002' ) &&
+              <TouchableOpacity
+                style={{...styles.selectBox, backgroundColor: mConst.bgBlue,width:60,height:20}}
+                onPress={() => this.handleCopyBtn()}
+              >
+                <Text style={{...styles.selectText, color: mConst.white}}>복사</Text>
+              </TouchableOpacity>
+              }
+            </View>
+            
           </View>
           <ScrollView
             horizontal={true}
@@ -212,18 +368,18 @@ class SampleRequestsDetailScreen extends PureComponent {
           >
             {data.showroom_list.map((item, index) => {
               return (
-                <View key={index} style={{marginRight: mUtils.wScale(5), alignItems: 'center'}}>
+                <View key={index} style={{marginRight: mUtils.wScale(5), alignItems: 'center', width:mUtils.wScale(160)}}>
                   <View>
                     <FastImage resizeMode={'contain'} style={styles.modelImg} source={{uri: item.image_url}} />
                     {
                       item.showroom_status === 'selected' ?
-                      <View style={{...styles.select, backgroundColor: 'rgba(126, 161, 178, 0.8)'}}>
+                      <View style={{...styles.select, backgroundColor: 'rgba(126, 161, 178, 0.8)', maxWidth:mUtils.wScale(200)}}>
                         <FastImage resizeMode={'contain'} style={styles.selectImg} source={selectImg2} />
                       </View> 
                       :
                       item.showroom_status === 'rejected' ?
-                      <View style={{...styles.select, backgroundColor: 'rgba(126, 161, 178, 0.8)'}}>
-                        <FastImage resizeMode={'contain'} style={styles.selectImg} source={noCheckImg2} />
+                      <View style={{...styles.select, maxWidth:mUtils.wScale(200)}}>
+                        <FastImage resizeMode={'contain'} style={styles.selectImg2} source={noCheckImg2} />
                       </View> 
                       :
                       null
@@ -231,15 +387,47 @@ class SampleRequestsDetailScreen extends PureComponent {
                   </View>
                   <Text style={{...styles.modelTitle, marginTop: mUtils.wScale(8)}}>
                     {item.showroom_nm}
-                    
                   </Text>
-                  {/* {item.showroom_status === 'rejected' &&
-                    <Text style={{...styles.modelTitle2, marginTop: mUtils.wScale(3)}}>(상태 : 거절)</Text>
-                  } */}
+                  { ( item.showroom_status === 'rejected'  && !mUtils.isEmpty(item.replacement_showroom_no) ) &&
+                    <View style={styles.replaceWrap}>
+                      <TouchableOpacity
+                        style={{...styles.selectBox, backgroundColor: mConst.bgBlue}}
+                        onPress={() => {this.pushTo('DigitalSRDetailScreen', {no: item.replacement_showroom_no, type: 'digital',title : item.replacement_showroom_nm})}}
+                      >
+                        <Text style={{...styles.selectText, color: mConst.white}}>대체제안</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={{...styles.selectBox, backgroundColor: mConst.bgBlue,marginLeft:1}}
+                        onPress={() => {
+                          this.pushTo('SampleRequestsScreen', {
+                            modelList: this.state.select.concat({...item,showroom_no : item.replacement_showroom_no,showroom_nm:item.replacement_showroom_nm,image_url:item.replacement_image_url}),
+                            delSelect: this.selected,
+                            brandId: data?.brand_id,
+                            type: true,
+                            copyData:data,
+                            brandName: '',
+                          })
+                        }}
+                      >
+                        <Text style={{...styles.selectText, color: mConst.white}}>대체홀딩신청</Text>
+                      </TouchableOpacity>
+                    </View>
+                  }
                 </View>
               )
             })}
           </ScrollView>
+          <View style={styles.emptyBar} />
+          <View style={{paddingHorizontal: mUtils.wScale(20)}} pointerEvents={'none'}>
+            { data?.req_message?.length > 0 && (<Text style={{...styles.subTitle,marginBottom:5}}>알림 메시지 이력</Text>)}
+            { data?.req_message?.length > 0 && (
+              data?.req_message.map((d, i) => (
+                <View key={`${d}_${i}`} style={{backgroundColor : d.send_man_user_type == 'brand' ? "#ffd966" : "#fff"}}>
+                  <Text style={{...styles.boxText}}>{mUtils.dateToDateTime(d.req_hist_dt)} 발신자:{d.send_man_user_type == 'brand' ? d.send_brand_user : d.send_magazine_user} {d.notifi_subj} {d.notifi_cntent}</Text>
+                </View>
+              ))
+            ) }
+          </View>
           <View style={styles.emptyBar} />
           <View style={{paddingHorizontal: mUtils.wScale(20)}} pointerEvents={'none'}>
             <Text style={{...styles.subTitle}}>Request Information</Text>
@@ -252,7 +440,7 @@ class SampleRequestsDetailScreen extends PureComponent {
               }}
             >
               <View style={{width: '49%'}}>
-                <Text style={styles.smallTitle}>매체명</Text>
+                <Text style={styles.smallTitle}>회사명</Text>
                 <View style={{...styles.box1}}>
                   <Text style={styles.boxText}>{data.mgzn_nm}</Text>
                 </View>
@@ -269,7 +457,7 @@ class SampleRequestsDetailScreen extends PureComponent {
               <ModalDropdown
                 style={{width: '49%'}}
                 dropdownStyle={{width: '44%'}}
-                onSelect={(i, v) => this.setState({selectContact: v})}                
+                onSelect={(i, v) => this.setState({selectContact: v})}
                 options={mUtils.isEmpty(defaultInfo.contact_info) ?[] :defaultInfo.contact_info}
                 renderRow={item => (
                   <View style={styles.contactList}>
@@ -366,7 +554,7 @@ class SampleRequestsDetailScreen extends PureComponent {
               }}
             >
               <View style={{width: '49%'}}>
-                <Text style={styles.smallTitle}>촬영 시작 시각</Text>
+                <Text style={styles.smallTitle}>촬영 시작 시간</Text>
                 <View style={styles.box1}>
                   <Text style={styles.contactText}>{data.shooting_start_time}:00</Text>
                 </View>
@@ -382,7 +570,6 @@ class SampleRequestsDetailScreen extends PureComponent {
             <Text style={styles.smallTitle}>수령 주소</Text>
             <TextInput style={{...styles.inputBox}} value={data.dlvy_adres_nm} />
             <TextInput style={{...styles.inputBox, marginBottom: mUtils.wScale(18)}} value={data.adres_detail} />
-
             <Text style={styles.smallTitle}>배송 관련 메모</Text>
             <TextInput
               style={{...styles.inputBox, height: mUtils.wScale(75), marginTop: mUtils.wScale(6)}}
@@ -393,11 +580,46 @@ class SampleRequestsDetailScreen extends PureComponent {
                 this.setState({shippingNote: text})
               }}
             />
+            <View style={{...styles.layout, justifyContent: 'space-between', width: '100%',marginTop: mUtils.wScale(20)}}>
+              <View style={{...styles.layout1}}>
+                
+                <Text style={{...styles.smallTitle, marginBottom: 0, marginRight:4}}>매체촬영</Text>
+                <FastImage resizeMode={'contain'} style={styles.checkImg} source={data.is_media ? checkImg : noCheckImg} />
+                <View style={{marginLeft:10}}></View>
+                
+                <Text style={{...styles.smallTitle, marginBottom: 0, marginRight:4}}>매체 외 촬영</Text>
+                <FastImage resizeMode={'contain'} style={styles.checkImg} source={!data.is_media ? checkImg : noCheckImg} />
+              </View>
+            </View>
+            { data.is_media && 
             <View
               style={{
                 ...styles.layout2,
                 justifyContent: 'space-between',
-                paddingTop: mUtils.wScale(20),
+                paddingTop: mUtils.wScale(5),
+                paddingBottom: mUtils.wScale(18),
+              }}
+            >
+              <View style={{width: '100%'}}>
+                <Text style={styles.smallTitle}>매체명</Text>
+                <TextInput
+                  style={{...styles.inputBox}}
+                  placeholder={'회사명과 화보 진행할 매체명이 상이할 경우 기재 부탁드립니다.'}
+                  placeholderTextColor={mConst.borderGray}
+                  onChangeText={text => {
+                    this.setState({media_nm: text})
+                  }}
+                  value={data.media_nm}
+                />
+              </View>
+            </View>
+            }
+            { data.is_media && 
+            <View
+              style={{
+                ...styles.layout2,
+                justifyContent: 'space-between',
+                paddingTop: mUtils.wScale(5),
                 paddingBottom: mUtils.wScale(18),
               }}
             >
@@ -414,6 +636,72 @@ class SampleRequestsDetailScreen extends PureComponent {
                 />
               </View>
             </View>
+            }
+            {
+              data.is_media && 
+              <>
+                <Text style={styles.smallTitle}>페이지 수</Text>
+                <TextInput
+                  style={{...styles.inputBox, marginTop: mUtils.wScale(3), marginBottom: mUtils.wScale(18)}}
+                  placeholder={'Number of pages'}
+                  placeholderTextColor={mConst.borderGray}
+                  value={data.page_cnt}
+                  onChangeText={text => {
+                    this.setState({numberPage: text})
+                  }}
+                />
+              </>
+            }
+            {
+              !data.is_media &&
+              <>
+                <Text style={styles.smallTitle}>행사/촬영 내용</Text>
+                <TextInput
+                  style={{...styles.inputBox, height: mUtils.wScale(75), marginTop: mUtils.wScale(3), marginBottom: mUtils.wScale(18)}}
+                  multiline={true}
+                  textAlignVertical={'top'}
+                  value={data.nonmedia_content}
+                  placeholder=""
+                  onChangeText={text => {
+                    this.setState({nonmedia_content: text})
+                  }}
+                />
+              </>
+            }
+            {
+              !data.is_media &&
+              <>
+                <Text style={styles.smallTitle}>릴리즈 일정</Text>
+                <TextInput
+                  style={{...styles.inputBox, height: mUtils.wScale(75), marginTop: mUtils.wScale(3), marginBottom: mUtils.wScale(18)}}
+                  multiline={true}
+                  textAlignVertical={'top'}
+                  value={data.nonmedia_release}
+                  placeholder=""
+                  onChangeText={text => {
+                    this.setState({nonmedia_release: text})
+                  }}
+                />
+              </>
+            }
+            {
+              !data.is_media &&
+              (
+                <View style={{width: '100%',marginBottom:20}}>
+                  <Text style={styles.smallTitle}>릴리즈 일정(기간)</Text>
+                  <TouchableOpacity
+                    style={{...styles.box1}}
+                  >
+                    <Text style={styles.boxText}>
+                      {`${mUtils.getShowDate(data.release_dt, 'MM/DD')}(${mUtils.getShowDate(data.release_dt, 'ddd')})`}
+                      { data.release_dt != data.release_end_dt && (
+                        `~${mUtils.getShowDate(data.release_end_dt, 'MM/DD')}(${mUtils.getShowDate(data.release_end_dt, 'ddd')})`
+                      )}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )
+            }
             <Text style={styles.smallTitle}>모델</Text>
             <View style={{...styles.layout, justifyContent: 'space-between', width: '100%'}}>
               <View style={{...styles.layout1}}>
@@ -444,9 +732,8 @@ class SampleRequestsDetailScreen extends PureComponent {
               style={{
                 ...styles.layout,
                 justifyContent: 'space-between',
-                width: '100%',
-                marginTop: mUtils.wScale(5),
-                marginBottom: mUtils.wScale(18),
+                width: '100%',                
+                marginBottom: mUtils.wScale(5),
               }}
             >
               <View style={{...styles.layout1}}>
@@ -473,7 +760,58 @@ class SampleRequestsDetailScreen extends PureComponent {
                 })}
               </View>
             </View>
+            <View
+              style={{
+                ...styles.layout,
+                justifyContent: 'space-between',
+                width: '100%',                
+                marginBottom: mUtils.wScale(18),
+              }}
+            >
+              <View style={{...styles.layout1}}>
+                <FastImage resizeMode={'contain'} style={styles.checkImg} source={data.item_model_list.length > 0 ? checkImg : noCheckImg} />
+                <Text style={{...styles.smallTitle, marginBottom: 0}}>아이템</Text>
+              </View>
+              <View style={{width: '65%'}}>
+                {data.item_model_list.map((item, index) => {
+                  return (
+                    <View key={index} style={{...styles.box2}}>
+                      <TextInput
+                        style={{...styles.inputBox1}}
+                        placeholder={'이름'}
+                        placeholderTextColor={mConst.borderGray}
+                        value={item}
+                        onChangeText={text => {
+                          let tmp = [...fashionModel]
+                          tmp[index] = text
+                          this.setState({fashionModel: tmp})
+                        }}
+                      />
+                    </View>
+                  )
+                })}
+              </View>
+            </View>
+            {/* <Text style={styles.smallTitle}>유가 여부</Text>
+            <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
+              <View style={styles.layout2}>
+                <FastImage 
+                  resizeMode={'contain'} 
+                  style={styles.checkImg} 
+                  source={ ( data.own_paid_pictorial_content || data.own_paid_pictorial_content ) ? noCheckImg : checkImg} />
+                <Text style={styles.text1}>유가없음</Text>
+              </View>
+            </View> */}
             <Text style={styles.smallTitle}>유가 여부</Text>
+            <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
+              <View style={styles.layout2}>
+                <FastImage 
+                  resizeMode={'contain'} 
+                  style={styles.checkImg} 
+                  source={ ( data.own_paid_pictorial_content || data.own_paid_pictorial_content ) ? noCheckImg : checkImg} />
+                <Text style={styles.text1}>유가없음</Text>
+              </View>
+            </View>
             <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
               <View style={styles.layout2}>
                 <FastImage resizeMode={'contain'} style={styles.checkImg} source={data.own_paid_pictorial_content ? checkImg : noCheckImg} />
@@ -481,7 +819,6 @@ class SampleRequestsDetailScreen extends PureComponent {
               </View>
               <TextInput
                 style={{...styles.inputBox, width: '65%'}}
-                placeholder={'Brand Name'}
                 placeholderTextColor={mConst.borderGray}
                 value={data.own_paid_pictorial_content}
                 onChangeText={text => {
@@ -496,7 +833,6 @@ class SampleRequestsDetailScreen extends PureComponent {
               </View>
               <TextInput
                 style={{...styles.inputBox, width: '65%'}}
-                placeholder={'Brand Name'}
                 placeholderTextColor={mConst.borderGray}
                 value={data.other_paid_pictorial_content}
                 onChangeText={text => {
@@ -504,7 +840,7 @@ class SampleRequestsDetailScreen extends PureComponent {
                 }}
               />
             </View>
-            <Text style={styles.smallTitle}>로케촬영</Text>
+            <Text style={styles.smallTitle}>로케촬영/해외일정</Text>
             <View style={{...styles.layout2, justifyContent: 'space-between', marginBottom: mUtils.wScale(18)}}>
               <FastImage resizeMode={'contain'} style={styles.checkImg} source={data.loc_value ? checkImg : noCheckImg} />
               <TextInput
@@ -517,65 +853,66 @@ class SampleRequestsDetailScreen extends PureComponent {
                 }}
               />
             </View>
-            {/* <Text style={styles.smallTitle}>당일연결 희망/ 가능 여부</Text>
-            <View
-              style={{
-                ...styles.layout2,
-                width: '100%',
-                justifyContent: 'space-between',
-                marginBottom: mUtils.wScale(18),
-                marginTop: mUtils.wScale(3),
-              }}
-            >
-              {yesNo.map((item, index) => {
-                return (
-                  <TouchableOpacity
-                    key={index}
-                    onPress={() => {
-                      this.setState({todayConnect: item})
-                    }}
-                    style={{...styles.yesNoBox, borderColor: data.today_connect === item.boolean ? mConst.black : mConst.borderGray}}
-                  >
-                    <FastImage resizeMode={'contain'} style={styles.checkImg2} source={data.today_connect === item.boolean ? checkImg2 : checkImg3} />
-                    <Text
-                      style={{
-                        ...styles.yesNo,
-                        marginLeft: mUtils.wScale(5),
-                        color: data.today_connect === item.boolean ? mConst.black : mConst.borderGray,
-                      }}
-                    >
-                      {item.text}
-                    </Text>
-                  </TouchableOpacity>
-                )
-              })}
-            </View> */}
-            <Text style={styles.smallTitle}>페이지 수</Text>
-            <TextInput
-              style={{...styles.inputBox, marginTop: mUtils.wScale(3), marginBottom: mUtils.wScale(18)}}
-              placeholder={'Number of pages'}
-              placeholderTextColor={mConst.borderGray}
-              value={data.page_cnt}
-              onChangeText={text => {
-                this.setState({numberPage: text})
-              }}
-            />
+            
             <Text style={styles.smallTitle}>함께 들어가는 브랜드</Text>
             <TextInput
-              style={{...styles.inputBox, marginTop: mUtils.wScale(3), marginBottom: mUtils.wScale(18)}}
-              placeholder={'Different brand'}
+              style={{...styles.inputBox, marginTop: mUtils.wScale(3), marginBottom: mUtils.wScale(8)}}
+              placeholder={'추가 설명이 필요시 입력해주세요.'}
               placeholderTextColor={mConst.borderGray}
               value={data.etc_brand_info}
               onChangeText={text => {
                 this.setState({togetherBrand: text})
               }}
             />
+            <View style={{padding:mUtils.wScale(10)}}>
+              <Text style={styles.smallTitle2}>컨펌 <Text style={styles.smallTitle3}>■(선택)</Text>□(직접입력)</Text>
+            </View>
+            <View style={styles.buttonOuterWrap}>
+                {data?.withbrand_text?.length > 0 ?
+                  data?.withbrand_text.reverse().map((d,idx3) => (
+                    <View key={idx3} style={styles.selectButtonWrap}>
+                      <Text style={[styles.smallTitle2,{color:'#fff'}]}>{d}</Text>
+                    </View>
+                  ))
+                  :
+                  <View style={styles.nullButtonWrap}>
+                    <Text style={styles.smallTitle2}>-</Text>
+                  </View>
+                }
+                { data?.with_brand_direct && (
+                  <View style={styles.defaultButtonWrap}>
+                    <Text style={styles.smallTitle2}>{data?.with_brand_direct}</Text>
+                  </View>
+                )}
+            </View>
+            <View style={{padding:mUtils.wScale(10)}}>
+              <Text style={styles.smallTitle2}>회신대기중 <Text style={styles.smallTitle3}>■(선택)</Text>□(직접입력)</Text>
+            </View>
+            <View style={styles.buttonOuterWrap}>
+              {data?.withwaitbrand_text?.length > 0 ?
+                data?.withwaitbrand_text.reverse().map((d,idx3) => (
+                  <View key={idx3} style={styles.selectButtonWrap}>
+                    <Text style={[styles.smallTitle2,{color:'#fff'}]}>{d}</Text>
+                  </View>
+                ))
+                :
+                <View style={styles.nullButtonWrap}>
+                  <Text style={styles.smallTitle2}>-</Text>
+                </View>
+              }
+              { data?.with_wait_brand_direct && (
+                <View style={styles.defaultButtonWrap}>
+                  <Text style={styles.smallTitle2}>{data?.with_wait_brand_direct}</Text>
+                </View>
+              )}
+              </View>
             <Text style={styles.smallTitle}>메세지</Text>
             <TextInput
-              style={{...styles.inputBox, height: mUtils.wScale(75), marginTop: mUtils.wScale(3), marginBottom: mUtils.wScale(18)}}
+              style={{...styles.inputBox, height: mUtils.wScale(75), marginTop: mUtils.wScale(13), marginBottom: mUtils.wScale(18)}}
               multiline={true}
               textAlignVertical={'top'}
               value={data.message}
+              placeholder="가입 전인 기자님/ 실장님 촬영의 경우 성함 기재 부탁드립니다."
               onChangeText={text => {
                 this.setState({message: text})
               }}
@@ -583,7 +920,45 @@ class SampleRequestsDetailScreen extends PureComponent {
           </View>
         </ScrollView>
         {
-          ( data.req_status_cd == 'RS0001' || data.req_status_cd == 'RS0010' )  &&
+          ( data.req_status_cd == 'RS0000' )  &&
+          (
+            <View style={styles.twiceButtonWrap}>
+              <TouchableOpacity 
+                onPress={() => 
+                  this.alert('홀딩 요청', '홀딩 요청하시겠습니까?', [
+                  {
+                    onPress: () => {
+                      this.handleCopyRequest()
+                    },
+                  },
+                  {onPress: () => null},
+                  ])
+                } 
+                style={styles.twiceBottom}
+              >
+                <Text style={styles.bottomText}>홀딩요청</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                onPress={() => 
+                  this.alert('홀딩 요청 삭제', '홀딩 요청을 삭제하시겠습니까?', [
+                  {
+                    onPress: () => {
+                      this.handleOnDelete()
+                    },
+                  },
+                  {onPress: () => null},
+                  ])
+                } 
+                style={[styles.twiceBottom,{backgroundColor:'#7ea1b2'}]}
+              >
+                <Text style={styles.bottomText}>홀딩요청 삭제</Text>
+              </TouchableOpacity>
+            </View>
+          )
+          
+        }
+        {
+           (( data.req_status_cd == 'RS0001' || data.req_status_cd == 'RS0010' ) && mConst.getUserType() != 'B'  ) &&
           <TouchableOpacity 
             onPress={() => 
               this.alert('홀딩 요청 삭제', '홀딩 요청을 삭제하시겠습니까?', [

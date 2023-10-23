@@ -27,7 +27,6 @@ export default class LinkSheetUnit extends PureComponent {
     render() {
         const {swiped} = this.state;
         const {name, phone, unitType,viewType,onPress, onPressPhone, onSwipeCheck, color, checked, readOnly,sendUser,returnUser,subData,loaningDate} = this.props;
-        //console.log('returnUser',returnUser)
         if ( viewType === 'sendout' ) {
             if (unitType === 'to') {
                 return (

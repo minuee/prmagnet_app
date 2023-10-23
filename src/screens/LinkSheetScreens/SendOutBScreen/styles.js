@@ -158,10 +158,16 @@ export default StyleSheet.create({
     margin: 0,
     marginBottom: Platform.OS === 'ios' ? mUtils.wScale(30) : 0,
   },
+  sbottomText: {
+    fontSize: 11,
+    textAlign: 'center',
+    color: mConst.white,
+  }, 
   modalView: {
     backgroundColor: mConst.white,
     width: '100%',
-    height: mUtils.wScale(130),
+    paddingHorizontal:'3%',
+    minHeight: mUtils.wScale(140),
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -198,5 +204,12 @@ export default StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     color: '#7ea1b2',
+  },
+  modalAddress: {
+    fontFamily: 'NotoSansKR-Regular',
+    fontSize: 14,
+    textAlign: 'center',
+    color: mConst.black,
+    marginTop: mUtils.wScale(5),
   },
 })

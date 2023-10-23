@@ -18,7 +18,14 @@ export default CategoryGroup = props => {
   return (
     <>
       {_.map(data, (item, index) => (
-        <CategoryItem key={index} data={item} value={value} genderList={genderList} hide={hide} setFilter={setFilter} />
+        <CategoryItem 
+          key={index} 
+          data={item} 
+          value={value} 
+          genderList={genderList} 
+          hide={hide} 
+          setFilter={setFilter} 
+        />
       ))}
     </>
   )
@@ -27,17 +34,43 @@ export default CategoryGroup = props => {
 const CategoryItem = props => {
   const {data, value, genderList,hide, setFilter} = props;
   const [fold, setFold] = useState(true);
+  const [toggleCategory, setToggleCategory] = useState([]);
   if (hide) return null;
   if ( genderList.includes('SSS003') && !genderList.includes('SSS001') && !genderList.includes('SSS002') && clearUnisex.includes(data.sample_catgry_lrge_cl_nm)) return null;
   if ( (genderList.includes('SSS001') || genderList.includes('SSS002')) && !genderList.includes('SSS003') && clearNotUnisex.includes(data.sample_catgry_lrge_cl_nm)) return null;
+
+
+  const setAllfilter = (cd) => {
+    console.log("setAllfilter",cd)
+    console.log("data.toggleCategory",toggleCategory)
+    
+    if ( toggleCategory?.findIndex((element) => element == cd) != -1 ) { //이미있다
+      setToggleCategory(toggleCategory.filter((element) => element != cd))
+      data.each_list.forEach((element,index) => {
+        setFilter(element.sample_catgry_middle_cl_cd)
+      })
+      setFold(false)
+    }else{
+      setFold(false)
+      data.each_list.forEach((element,index) => {
+        setFilter(element.sample_catgry_middle_cl_cd)
+      })
+      setToggleCategory([...toggleCategory,cd])
+    }
+
+  }
+
   return (
     <>
-      <TouchableOpacity onPress={() => setFold(!fold)}>
-        <Row style={styles.itemWrapper}>
+      
+      <Row style={styles.itemWrapper}>
+        <TouchableOpacity onPress={() => setAllfilter(data.sample_catgry_lrge_cl_cd)}>
           <Text style={styles.itemHeadText}>{data.sample_catgry_lrge_cl_nm}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setFold(!fold)}>
           <FastImage source={fold ? foldImage : unfoldImage} style={styles.foldImage} />
-        </Row>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </Row>
       {_.map(data.each_list, (item, index) => {
         if (!fold) {
           return (
