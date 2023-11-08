@@ -368,13 +368,23 @@ class LinkSheetScreen extends React.Component {
     renderLogo =(subItem,idx,selectTitle) => {
         if (  mConst.getUserType() === 'B'  ) {
             if ( subItem.target_id_type === 'RUS000' ) {
+                /* return (
+                    <Text style={{...styles.name,color:'#555'}} >
+                        {subItem.req_company_nm}
+                    </Text>
+                ) */
                 return (
                     <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
                 )
             }else{
                 return (
-                    <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
+                    <Text style={{...styles.name,color:'#555'}}>
+                        {subItem.req_company_nm}
+                    </Text>
                 )
+                /* return (
+                    <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
+                ) */
             }
         }else{
             if ( subItem.target_id_type === 'RUS000' ) {
@@ -383,8 +393,13 @@ class LinkSheetScreen extends React.Component {
                 )
             }else{
                 return (
-                    <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
+                    <Text style={{...styles.name, fontFamily:  'NotoSansKR-Bold'}}>
+                        {subItem.req_company_nm}
+                    </Text>
                 )
+                /* return (
+                    <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
+                ) */
             }
 
         }

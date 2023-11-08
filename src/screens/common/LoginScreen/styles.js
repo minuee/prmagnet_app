@@ -11,6 +11,13 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: mConst.white,
   },
+  idWrap : {
+    flexDirection:'row',
+    backgroundColor:'#ccc',
+    height:mUtils.wScale(50),
+    justifyContent: 'center',
+    alignItems:'center'
+  },
   logoImg: {
     width: mUtils.wScale(113.5),
     height: mUtils.wScale(77.5),
@@ -92,14 +99,23 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   itemTextWrapper: {
-    justifyContent: 'center',
-    height: mUtils.wScale(40),
+    alignItems: 'center',
+    justifyContent:'flex-end',
+    height: mUtils.wScale(50),
+    marginHorizontal : mUtils.wScale(10),
+    paddingBottom:mUtils.wScale(5),
     // backgroundColor: 'green',
   },
+  itemClose : {
+    position:'absolute',
+    right:0,
+    top:2,
+    height: mUtils.wScale(50),
+    width: mUtils.wScale(20),
+  },
   itemText: {
-    fontSize: 13,
-    color: '#494949',
-    padding: mUtils.wScale(12),
+    fontSize: 14,
+    color: '#555555',
   },
   fence: {
     fontSize: 10,

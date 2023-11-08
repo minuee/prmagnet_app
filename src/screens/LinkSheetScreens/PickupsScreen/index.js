@@ -40,8 +40,9 @@ class PickupsScreen extends PureComponent {
 
   async UNSAFE_componentWillMount () {
     const {reqNo, selectEachList = []} = this.params;
+    console.log("Pickup",selectEachList)
     if (reqNo) {
-      this.modalOption('Pickups', false)
+      this.modalOption('픽업 시트', false)
     } else {
       this.pushOption('픽업 시트', false)
     }

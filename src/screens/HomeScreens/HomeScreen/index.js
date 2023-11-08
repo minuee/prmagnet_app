@@ -101,6 +101,7 @@ class HomeScreen extends PureComponent {
         const {data} = this.state;
         const userType = mConst.getUserType();
         const requestData =  _.get(data, userType !== 'B' ? 'cnfirm_request' : 'new_request', []);
+        console.log("requestData",requestData[0])
         return (
             <View >
                 <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20)}}>
@@ -129,11 +130,14 @@ class HomeScreen extends PureComponent {
                         key={index}
                         style={styles.layout3}
                     >
-                        <FastImage 
+                        <Text style={{...styles.name,color:'rgba(126, 161, 178, 1)'}}>
+                            {item.mgzn_nm}
+                        </Text>
+                        {/* <FastImage 
                             resizeMode={'contain'} 
                             style={styles.brandImg}
                             source={{uri: userType === 'B' ? item.mgzn_logo_url_adres : item.brand_logo_url_adres}}
-                        />
+                        /> */}
                         <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>
                             {item.editor_nm}{item.editor_posi}
                         </Text>
@@ -193,11 +197,14 @@ class HomeScreen extends PureComponent {
                         key={index}
                         style={styles.layout3}
                     >
-                        <FastImage 
+                        {/* <FastImage 
                             resizeMode={'contain'} 
                             style={styles.brandImg}
                             source={{uri: userType === 'B' ? item.mgzn_logo_url_adres : item.brand_logo_url_adres}}
-                        />
+                        /> */}
+                        <Text style={{...styles.name,color:'rgba(126, 161, 178, 1)'}}>
+                            {item.mgzn_nm}
+                        </Text>
                         <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>
                             {item.editor_nm}{item.editor_posi}
                         </Text>
@@ -250,13 +257,29 @@ class HomeScreen extends PureComponent {
                 {today_request.length > 0 ? (
                     today_request[0].each_list.map((item, index) => {
                     const subItem = item.showroom_list[0];
-                   
+                    let showroomData = [];
+                    let reqNoData = [];
+                    item.showroom_list.forEach((item,i) => 
+                        {
+                            showroomData.push(item.showroom_no);
+                            reqNoData.push(item.req_no);;
+                        }
+                    )  
+                    const todayDate = mUtils.getToday();
                     if ( index < 4) {
                         return (
                             <TouchableOpacity
                                 key={index}
                                 style={styles.layout3}
-                                onPress={() => this.pushTo('PickupsScreen', {reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
+                                onPress={() => this.pushTo('PickupsScreen', {
+                                    //reqNo: subItem.req_no,
+                                    //showroom_no: subItem.showroom_no,
+                                    selectEachList:[{
+                                        date:todayDate,
+                                        showroom_list : showroomData,
+                                        req_no_list : reqNoData
+                                    }]
+                                })}
                             >
                                 {
                                     subItem.target_id_type === 'RUS000' ?
@@ -297,7 +320,7 @@ class HomeScreen extends PureComponent {
         const {data} = this.state;
         const userType = mConst.getUserType();
         const today_sendout = _.get(data, 'today_sendout', []);
-        //console.log('today_sendout',today_sendout)
+        ///console.log('today_sendout',today_sendout[0])
         const targetData = mUtils.isEmpty(today_sendout[0]?.each_list) ? [] : today_sendout[0]?.each_list;
         let newLeftIdxArray = [];
         let newLeftShowroomIdxArray = [];
@@ -351,7 +374,10 @@ class HomeScreen extends PureComponent {
                                     style={styles.layout3}
                                     onPress={() =>  this.goDetail( subItem.req_no, subItem.showroom_no)}
                                 >
-                                    <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
+                                   {/*  <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} /> */}
+                                    <Text style={{...styles.name,color:'rgba(178, 126, 126, 1)'}}>
+                                        {subItem.mgzn_nm}
+                                    </Text>
                                     <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
                                         {subItem.target_user_nm}{subItem.target_user_position} →
                                     </Text>

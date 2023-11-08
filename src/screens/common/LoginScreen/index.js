@@ -1,9 +1,8 @@
 import React, {PureComponent} from 'react'
 import {KeyboardAvoidingView, SafeAreaView, View, Platform,TouchableWithoutFeedback, TouchableOpacity, TextInput, Linking} from 'react-native'
 import {connect} from 'react-redux'
-import {sha256} from 'react-native-sha256'
 import _ from 'lodash'
-
+import Icon from 'react-native-vector-icons/AntDesign';
 import {actionLogin, actionUserType,actionSubScrbeStatus} from '../../../redux/actions'
 import CodePush from '../../common/CodePush'
 import API from '../../../common/aws-api'
@@ -14,6 +13,7 @@ import Text from '../../common/Text'
 import styles from './styles'
 import FastImage from 'react-native-fast-image'
 import AsyncStorage from '@react-native-community/async-storage';
+import { ScrollView } from 'react-native-gesture-handler'
 const logoImg = require('../../../images/logo_2.png')
 
 class LoginScreen extends PureComponent {
@@ -24,6 +24,7 @@ class LoginScreen extends PureComponent {
       pushKey : null,
       email : '',
       pw : '',
+      historyLogin : []
       // email: 'test1000@ruu.kr',
       // pw: 'test1000@ruu.kr',
       // email: 'gucci@ruu.kr', // 브랜드 테스트
@@ -38,13 +39,26 @@ class LoginScreen extends PureComponent {
       //  kimkim979797@naver.com/ Khjkhj413**
     }
   }
+
+  async UNSAFE_componentWillMount() {
+    //AsyncStorage.removeItem('historyLogin');
+    const historyLogin = await AsyncStorage.getItem('historyLogin'); 
+    console.log("historyLogin",historyLogin)
+    if ( historyLogin != undefined && historyLogin != null ) {
+      this.setState({
+        historyLogin: JSON.parse(historyLogin)
+      })
+    }
+  }
+
+
   async componentDidMount() {
     this.emptyOption('');
     const pushKey = await mUtils.getFcmToken();
     if ( __DEV__) {
       this.setState({
-        email: 'Katie.choi@gucci.com',
-        pw: 'Reww0208!',
+        email: 'minuee@nate.com',
+        pw: 'lenapark47##',
         pushKey
       })
     }else{
@@ -62,9 +76,10 @@ class LoginScreen extends PureComponent {
     
   })
   handleLogin = callOnce(async () => {
-    const {email, pw, pushKey} = this.state;
+    const {email, pw, pushKey,historyLogin} = this.state;
     const {loginSuccess, loginFailure, userTypeSuccess,userSubScrbeStatus} = this.props;
-  
+    const isExistEmail =  historyLogin.filter((element) =>  element.id != email) ;
+    const saveExistEmail = isExistEmail.concat({id:email, pw:pw})
     const data = {
       email,
       pw, // : hash, //TODO 추후 암호화 적용
@@ -102,6 +117,8 @@ class LoginScreen extends PureComponent {
               if ( resUserType.notice_notifi_recv_yn )  mUtils.setFcmTopic('M');
             }
             AsyncStorage.setItem('myInformation', JSON.stringify(resUserType));
+            
+            AsyncStorage.setItem('historyLogin', JSON.stringify(saveExistEmail));
             userSubScrbeStatus(isSubscrYN);
             userTypeSuccess(resUserType)
             loginSuccess(response)
@@ -154,8 +171,19 @@ class LoginScreen extends PureComponent {
     //this.pushTo('WebviewScreen', {url: moveUrl, title:'비밀번호 찾기'})
     await Linking.openURL('https://www.prmagnet.kr/#/find-pw')
   })
+
+  removeItems = callOnce(async (id) => {
+    console.log("removeItems",id)
+    const {historyLogin} = this.state;
+    console.log("historyLogin",historyLogin)
+    const isExistEmail =  await historyLogin.filter((element) =>  element.id != id) ;
+    console.log("isExistEmail",isExistEmail)
+    this.setState({historyLogin : isExistEmail})
+    AsyncStorage.setItem('historyLogin', JSON.stringify(isExistEmail));
+  })
+
   render() {
-    const {email, pw} = this.state
+    const {email, pw,historyLogin} = this.state
     return (
       <KeyboardAvoidingView behavior={mConst.bIos ? 'padding' : null} style={{flex: 1}}>
         <SafeAreaView style={styles.container}>
@@ -256,6 +284,35 @@ class LoginScreen extends PureComponent {
             </View>
           </View> */}
           {/* TODO 임시 테스트용 아이디 비번 설정 End--------------------------------------------------------- */}
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            style={{flex:1,marginTop:10}}
+          >
+            {historyLogin?.length > 1 && (
+            <View style={styles.idWrap}>
+              {
+                historyLogin.map((d, i) => {
+                  return (
+                    <View style={styles.itemTextWrapper} >
+                      <TouchableOpacity
+                        onPress={() => this.setState({email: d.id, pw: d.pw})}
+                      >
+                        <Text style={styles.itemText}>{d.id}</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={styles.itemClose}
+                        onPress={() => this.removeItems(d.id)}
+                      >
+                         <Icon name="close" size={mUtils.wScale(20)} color="#000" />
+                      </TouchableOpacity>
+                    </View>
+                  )
+                })
+              }
+            </View>
+            )}
+          </ScrollView>
         </SafeAreaView>
         <CodePush />
       </KeyboardAvoidingView>

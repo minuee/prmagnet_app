@@ -53,7 +53,7 @@ class HomeDetailScreen extends PureComponent {
       }else  if (type === 'release') {
         this.getHomeRelease(1)
       } else {
-        this.getHomeTR(1,type);//Pickup
+        this.getHomeTR(0,type);//Pickup
       }
     })
   }
@@ -152,9 +152,11 @@ class HomeDetailScreen extends PureComponent {
     }else{
       strType = type == 'pickups' ? 'SENDOUT' : 'RETURN';
     }
+    console.log('getHomeTR',page, limit, data,total_count)
     if ( page * limit <= total_count ) {
       try {
         const response = await API.getHomeTR({date: date, type : strType,page: nextpage, limit: limit})
+
         if (response.success) {
           this.setState({loading: false}, () => {
             /* if (mConst.getUserType() === 'B') {
@@ -166,8 +168,10 @@ class HomeDetailScreen extends PureComponent {
                 })
               }
             } else { */
+            console.log('getHomeTR',response.list)
               if (response.list.length > 0) {
                 const data2 = data.concat(response.list);
+                console.log('getHomeTR',data2.length)
                 this.setState({
                   data: data2,
                   page: nextpage + 1,
@@ -234,11 +238,14 @@ class HomeDetailScreen extends PureComponent {
         //disabled={title === 'Confirmed Requests' ? false : true}
         style={styles.layout3}
       >
-        <FastImage
+        {/* <FastImage
           resizeMode={'contain'}
           style={styles.brandImg}
           source={{uri: mConst.getUserType() === 'B' ? item.mgzn_logo_url_adres : item.brand_logo_url_adres}}
-        />
+        /> */}
+        <Text style={{...styles.name,color:'rgba(126, 161, 178, 1)'}}>
+            {item.mgzn_nm}
+        </Text>
         <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>
           {item.editor_nm}{item.editor_posi}
         </Text>
@@ -248,7 +255,7 @@ class HomeDetailScreen extends PureComponent {
         </Text>
         {mConst.getUserType() === 'B' ? (
           <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
-            {item.mgzn_nm} • {item.celeb_list ? item.celeb_list[0] : item.model_list[0]}
+            {/* {item.mgzn_nm} •  */}{item.celeb_list ? item.celeb_list[0] : item.model_list[0]}
           </Text>
         ) : (
           <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>{item.brand_nm}</Text>
@@ -267,17 +274,20 @@ class HomeDetailScreen extends PureComponent {
         }}
         style={styles.layout3}
       >
-        <FastImage
+        {/* <FastImage
           resizeMode={'contain'}
           style={styles.brandImg}
           source={{uri:  item.mgzn_logo_url_adres}}
-        />
+        /> */}
+        <Text style={{...styles.name,color:'rgba(126, 161, 178, 1)'}}>
+            {item.mgzn_nm}
+        </Text>
         <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>
           {item.editor_nm}{item.editor_posi}
         </Text>
-        <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>
+        {/* <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>
           {item.mgzn_nm} 
-        </Text>
+        </Text> */}
         <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
           {mUtils.getShowDate(item.release_dt, 'YYYY-MM-DD')}
           {item?.release_dt != item?.release_end_dt && (
@@ -293,13 +303,26 @@ class HomeDetailScreen extends PureComponent {
     const {type, title} = this.props.route.params;
     const userType = mConst.getUserType();
     const subItem = item.each_list[0];
-    //console.log('subItem',type,subItem)
+    console.log('subItem',type,subItem)
     if (  type === 'pickups' ) {
+      let showroomData = [];
+      let reqNoData = [];
+      showroomData.push(subItem.showroom_no);
+      reqNoData.push(subItem.req_no);
+      const todayDate = mUtils.getToday();
       return (
         <TouchableOpacity
             key={subItem.req_no+'_'+subItem.showroom_no}
             style={styles.layout3}
-            onPress={() => this.pushTo('PickupsScreen', {reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
+            onPress={() => this.pushTo('PickupsScreen', {
+              //reqNo: subItem.req_no,showroom_no: subItem.showroom_no
+              selectEachList:[{
+                date:todayDate,
+                showroom_list : showroomData,
+                req_no_list : reqNoData
+              }]
+            }
+            )}
         >
             {
                 subItem.req_user_type === 'MAGAZINE' ?
@@ -329,7 +352,9 @@ class HomeDetailScreen extends PureComponent {
           >
               {
                   subItem.req_user_type === 'MAGAZINE' ?
-                  <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />                
+                  <Text style={{...styles.name,color:'rgba(178, 126, 126, 1)'}}>
+                      {subItem.mgzn_nm}
+                  </Text>               
                   :
                   <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />
               }                            
