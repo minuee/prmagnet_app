@@ -37,7 +37,9 @@ export default StyleSheet.create({
     color: '#555555',
   },
   name: {
-    fontSize: 15,
+    fontFamily: 'NotoSansKR-Bold',
+    fontSize: 13,
+    fontWeight: 'bold',
     textAlign: 'left',
     color: mConst.black,
   },

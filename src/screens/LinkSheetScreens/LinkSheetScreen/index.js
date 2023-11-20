@@ -368,14 +368,14 @@ class LinkSheetScreen extends React.Component {
     renderLogo =(subItem,idx,selectTitle) => {
         if (  mConst.getUserType() === 'B'  ) {
             if ( subItem.target_id_type === 'RUS000' ) {
-                /* return (
+                return (
                     <Text style={{...styles.name,color:'#555'}} >
                         {subItem.req_company_nm}
                     </Text>
-                ) */
-                return (
-                    <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
                 )
+                /* return (
+                    <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
+                ) */
             }else{
                 return (
                     <Text style={{...styles.name,color:'#555'}}>

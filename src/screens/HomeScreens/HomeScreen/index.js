@@ -320,13 +320,14 @@ class HomeScreen extends PureComponent {
         const {data} = this.state;
         const userType = mConst.getUserType();
         const today_sendout = _.get(data, 'today_sendout', []);
-        ///console.log('today_sendout',today_sendout[0])
+        console.log('today_sendout',today_sendout[0])
         const targetData = mUtils.isEmpty(today_sendout[0]?.each_list) ? [] : today_sendout[0]?.each_list;
         let newLeftIdxArray = [];
         let newLeftShowroomIdxArray = [];
         let newLeftArray = [];
-        //console.log('targetData',targetData)
-        targetData.forEach((element) => {
+        
+        targetData.forEach((element,index) => {
+            console.log('targetData',index)
             let req_no = element.showroom_list[0].req_no;
             if ( !newLeftIdxArray.includes(req_no)) {
                 newLeftIdxArray.push(req_no);
@@ -350,7 +351,7 @@ class HomeScreen extends PureComponent {
                 <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(30)}}>
                     <Text style={styles.new}>
                         Today's <Text style={{fontFamily: 'Roboto-Medium'}}>Send Outs : </Text>
-                        <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}> {newLeftArray.length}</Text>
+                        <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}> {targetData.length}</Text>
                     </Text>
                     <TouchableOpacity
                         style={styles.layout}
@@ -361,10 +362,10 @@ class HomeScreen extends PureComponent {
                     </TouchableOpacity>
                 </View>
             <View
-                style={{...styles.layout2,backgroundColor: 'rgba(178, 126, 126, 0.2)',flex: today_sendout.length === 0 ? 0 : 1,flexDirection: today_sendout.length === 0 ? 'column' : 'row',justifyContent:today_sendout.length === 0 ? 'center' : 'space-between',flexWrap: today_sendout.length === 0 ? 'nowrap' : 'wrap',}}
+                style={{...styles.layout2,backgroundColor: 'rgba(178, 126, 126, 0.2)',flex: targetData.length === 0 ? 0 : 1,flexDirection: targetData.length === 0 ? 'column' : 'row',justifyContent:targetData.length === 0 ? 'center' : 'space-between',flexWrap: targetData.length === 0 ? 'nowrap' : 'wrap',}}
             >
-                {   newLeftArray.length > 0 ? (
-                    newLeftArray.map((item, index) => {
+                {   targetData.length > 0 ? (
+                    targetData.map((item, index) => {
                     if ( index < 4) {
                         const subItem = item.showroom_list[0];
                         if ( userType === 'B') {
@@ -376,7 +377,7 @@ class HomeScreen extends PureComponent {
                                 >
                                    {/*  <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} /> */}
                                     <Text style={{...styles.name,color:'rgba(178, 126, 126, 1)'}}>
-                                        {subItem.mgzn_nm}
+                                        {subItem?.req_company_nm}
                                     </Text>
                                     <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
                                         {subItem.target_user_nm}{subItem.target_user_position} →

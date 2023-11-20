@@ -353,7 +353,7 @@ class HomeDetailScreen extends PureComponent {
               {
                   subItem.req_user_type === 'MAGAZINE' ?
                   <Text style={{...styles.name,color:'rgba(178, 126, 126, 1)'}}>
-                      {subItem.mgzn_nm}
+                      {subItem.req_company_nm}
                   </Text>               
                   :
                   <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />

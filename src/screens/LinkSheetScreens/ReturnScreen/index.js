@@ -433,6 +433,16 @@ class ReturnScreen extends PureComponent {
             <Row style={{padding:5}}>
               <Text style={styles.sText(12)}>{data?.send_out_notice}</Text>
             </Row>
+            {reqMessage.length > 0 && (
+            <TouchableOpacity 
+              onPress={() => {
+                this.pushTo('SampleRequestsDetailScreen', {no: reqMessage[0].req_no})
+              }}
+              style={{paddingHorizontal: mUtils.wScale(10)}} pointerEvents={'none'}
+            >
+              <Text style={{...styles.subTitle,marginBottom:5}}>요청 이력</Text>
+            </TouchableOpacity>
+            )}
             <View style={{paddingHorizontal: mUtils.wScale(10)}} pointerEvents={'none'}>
               { reqMessage.length > 0 && (<View><Text style={{...styles.subTitle,marginBottom:5}}>알림 메시지 이력</Text></View>)}
               { reqMessage.length > 0 && (
