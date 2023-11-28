@@ -244,7 +244,7 @@ class HomeDetailScreen extends PureComponent {
           source={{uri: mConst.getUserType() === 'B' ? item.mgzn_logo_url_adres : item.brand_logo_url_adres}}
         /> */}
         <Text style={{...styles.name,color:'rgba(126, 161, 178, 1)'}}>
-            {item.mgzn_nm}
+            {mConst.getUserType() === 'B' ? item.mgzn_nm : item.brand_nm}
         </Text>
         <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>
           {item.editor_nm}{item.editor_posi}
@@ -257,9 +257,7 @@ class HomeDetailScreen extends PureComponent {
           <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>
             {/* {item.mgzn_nm} •  */}{item.celeb_list ? item.celeb_list[0] : item.model_list[0]}
           </Text>
-        ) : (
-          <Text style={{...styles.custom, marginTop: mUtils.wScale(5)}}>{item.brand_nm}</Text>
-        )}
+        ) : null}
       </TouchableOpacity>
     )
   }
@@ -327,11 +325,17 @@ class HomeDetailScreen extends PureComponent {
             {
                 subItem.req_user_type === 'MAGAZINE' ?
                 subItem.target_id_type === "RUS001" ?
-                <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres2}} />
+                <Text style={{...styles.name,color:'rgba(178, 126, 126, 1)'}}>
+                    {subItem.mgzn_nm}
+                </Text>
                 :
-                <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
+                <Text style={{...styles.name,color:'rgba(178, 126, 126, 1)'}}>
+                  {subItem.mgzn_nm}
+                </Text>
                 :
-                <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />                
+                <Text style={{...styles.name,color:'rgba(178, 126, 126, 1)'}}>
+                    {subItem.brand_nm}
+                </Text>               
             }                            
             <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>              
                 {subItem.target_user_nm}{mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position} → 
@@ -356,7 +360,9 @@ class HomeDetailScreen extends PureComponent {
                       {subItem.req_company_nm}
                   </Text>               
                   :
-                  <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />
+                  <Text style={{...styles.name,color:'rgba(178, 126, 126, 1)'}}>
+                      {subItem.brand_nm}
+                  </Text> 
               }                            
               <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
                 {subItem.target_id_type === "RUS001" && "["+subItem.mgzn_nm+"]"}{subItem.target_user_nm}{mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position} →
@@ -377,11 +383,17 @@ class HomeDetailScreen extends PureComponent {
               {
                   subItem.req_user_type === 'MAGAZINE' ?
                   subItem.target_id_type === "RUS001" ?
-                  <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres2}} />
+                  <Text style={{...styles.name,color:'rgba(178, 126, 126, 1)'}}>
+                      {subItem.mgzn_nm}
+                  </Text>
                   :
-                  <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />
+                  <Text style={{...styles.name,color:'rgba(178, 126, 126, 1)'}}>
+                      {subItem.brand_nm}
+                  </Text>
                   :                  
-                  <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />
+                  <Text style={{...styles.name,color:'rgba(178, 126, 126, 1)'}}>
+                      {subItem.brand_nm}
+                  </Text>
               }                            
               <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
                 {subItem.req_user_nm}{mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position} →

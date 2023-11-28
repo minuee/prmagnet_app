@@ -389,12 +389,14 @@ class LinkSheetScreen extends React.Component {
         }else{
             if ( subItem.target_id_type === 'RUS000' ) {
                 return (
-                    <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />
+                    <Text style={{...styles.name, fontFamily:  'NotoSansKR-Bold'}}>
+                        {subItem.brand_nm}
+                    </Text>
                 )
             }else{
                 return (
                     <Text style={{...styles.name, fontFamily:  'NotoSansKR-Bold'}}>
-                        {subItem.req_company_nm}
+                        {subItem.target_company_nm}
                     </Text>
                 )
                 /* return (

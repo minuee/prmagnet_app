@@ -85,6 +85,11 @@ export default StyleSheet.create({
     color: mConst.black,
     paddingTop: mUtils.wScale(16),
   },
+  middleDescTextRed: {
+    fontSize: 15,
+    color: mConst.red,
+    paddingTop: mUtils.wScale(10),
+  },
   middleDescTextBold: {
     fontSize: 15,
     fontWeight: 'bold',
@@ -158,6 +163,11 @@ export default StyleSheet.create({
     textAlign: 'center',
     color: mConst.white,
   }, 
+  middleDescRedText: {
+    fontSize: 15,
+    color: mConst.red,
+    paddingTop: mUtils.wScale(16),
+  },
   modalView: {
     backgroundColor: mConst.white,
     width: '100%',

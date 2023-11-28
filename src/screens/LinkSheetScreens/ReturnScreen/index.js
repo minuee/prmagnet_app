@@ -33,6 +33,7 @@ class ReturnScreen extends PureComponent {
       selectEachList : [],
       targetSampleList : [],
       isMagazineTarget : [],
+      setChangeReturnDate : null,
       reqMessage : [],
       isvisible: {open: false, phone: '', name: '', address : ''},
       loading: true,
@@ -149,6 +150,7 @@ class ReturnScreen extends PureComponent {
   allSendOutCheck = async(data) => {    
     let AllData = 0;
     let sendOutData = 0;    
+    let changeReturnDate = null;
     let targetSampleList = [];
     let isMagazineTarget = [];
     const data2 = data === undefined ? this.state.data : data
@@ -157,6 +159,8 @@ class ReturnScreen extends PureComponent {
     }else{
       targetList = data2[0].showroom_list;
     }
+
+    const returning_date = mUtils.get(data.length === undefined ? data :data[0], 'returning_date');
 
     await targetList.forEach(function(element,index){     
       if ( element.sample_list != null ) {
@@ -168,6 +172,10 @@ class ReturnScreen extends PureComponent {
             }else{
               targetSampleList.push(element2.sample_no);
             }
+            if (element2.return_dt != null &&  mUtils.dateToDate(element2.return_dt) != mUtils.convertUnixToDate(returning_date) ) {
+              changeReturnDate = mUtils.convertDateToUnix(element2.return_dt);
+            }
+
             if ( element2.return_user_info[0].return_userid_type === 'RUS001') {
               isMagazineTarget.push(element2.sample_no);
             }
@@ -180,6 +188,7 @@ class ReturnScreen extends PureComponent {
         isMagazineTarget,
         loading:false,
         moreLoading:false,
+        setChangeReturnDate : changeReturnDate,
         targetSampleList
       })
   }
@@ -312,10 +321,10 @@ class ReturnScreen extends PureComponent {
             </View>
           </View>
           <View style={styles.middleGroupWrapper}>
-            <View style={styles.middleSubWrapper(3)}>
+           {/*  <View style={styles.middleSubWrapper(3)}>
               <Text style={styles.middleText}>픽업일</Text>
               <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'loaning_date'))}</Text>
-            </View>
+            </View> */}
             <View style={styles.middleSubWrapper(3)}>
               <Text style={styles.middleText}>촬영일</Text>
               <Text style={styles.middleDescText}>
@@ -323,10 +332,34 @@ class ReturnScreen extends PureComponent {
                 {_.get(data, 'shooting_date') != _.get(data, 'shooting_end_date') && "~"+mUtils.getShowDate(_.get(data, 'shooting_end_date'))}
               </Text>
             </View>
-            <View style={styles.middleSubWrapper(3)}>
+            
+          </View>
+          <View style={styles.middleGroupWrapper}>
+           {/*  <View style={styles.middleSubWrapper(3)}>
+              <Text style={styles.middleText}>픽업일</Text>
+              <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'loaning_date'))}</Text>
+            </View> */}
+            <View style={styles.middleSubWrapper(2)}>
               <Text style={styles.middleText}>반납일</Text>
               <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'returning_date'))}</Text>
             </View>
+            
+            { 
+            !mUtils.isEmpty(this.state.setChangeReturnDate) ?
+            <View style={styles.middleSubWrapper(2)}>
+              {/* <Text style={styles.middleDescRedText}>
+                
+              </Text> 
+              <Text style={styles.middleDescRedText}>
+                 
+              </Text> */}   
+              <Text style={styles.middleDescTextRed}>{mUtils.getShowDate(this.state.setChangeReturnDate)}</Text>
+              <Text style={styles.middleDescTextRed}>*일부반납일이 변경되었습니다.</Text>           
+            </View>
+            :
+            <View style={styles.middleSubWrapper(2)}>
+            </View>
+          }
           </View>
           <View style={styles.middleWrapper}>
             <Text style={styles.middleText}>수령 주소</Text>

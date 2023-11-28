@@ -312,6 +312,19 @@ class PickupsScreen extends PureComponent {
                 <Text style={styles.middleText}>픽업일</Text>
                 <Text style={styles.middleDescText}>{loaningDate}</Text>
               </View>
+              { !mUtils.isEmpty(this.state.setchangePickupDate) ?
+                <View style={styles.middleSubWrapper(2)}>
+                  <Text style={styles.middleDescRedText}>
+                    {mUtils.getShowDate(this.state.setchangePickupDate)} *일부픽업일이 변경되었습니다.{}
+                  </Text>              
+                </View>
+                :
+                <View style={styles.middleSubWrapper(2)}>
+                </View>
+              }
+            </View>
+            
+            <View style={styles.middleGroupWrapper}>
               <View style={styles.middleSubWrapper(2)}>
                 <Text style={styles.middleText}>촬영일</Text>
                 <Text style={styles.middleDescText}>
@@ -320,14 +333,6 @@ class PickupsScreen extends PureComponent {
                 </Text>
               </View>
             </View>
-            { !mUtils.isEmpty(this.state.setchangePickupDate) &&
-              <View style={styles.middleWrapper}>
-                <Text style={styles.middleText}>픽업일</Text>
-                <Text style={styles.middleDescRedText}>
-                  {mUtils.getShowDate(this.state.setchangePickupDate)} *일부픽업일이 변경되었습니다.{}
-                </Text>              
-              </View>
-            }
             <View style={styles.middleWrapper}>
               <Text style={styles.middleText}>수령 주소</Text>
               <Text style={styles.middleDescText}>{mUtils.get(data, 'studio', '-')}</Text>

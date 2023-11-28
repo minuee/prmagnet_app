@@ -1029,6 +1029,9 @@ const API = {
     with_wait_brand_direct,
     is_copy = false
   }) => {
+
+    if ( release_dt == NaN ) release_dt = null;
+    if ( release_end_dt == NaN ) release_end_dt = null;
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/showroom-request-send`
     const myInit = {
@@ -1174,6 +1177,9 @@ const API = {
  /*    if( with_brand_list?.length > 0 ) {
       with_brand_list.reverse();
     } */
+
+    if ( release_dt == NaN ) release_dt = null;
+    if ( release_end_dt == NaN ) release_end_dt = null;
   
     const myInit = {
       body: {

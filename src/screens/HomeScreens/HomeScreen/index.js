@@ -130,8 +130,9 @@ class HomeScreen extends PureComponent {
                         key={index}
                         style={styles.layout3}
                     >
+                        
                         <Text style={{...styles.name,color:'rgba(126, 161, 178, 1)'}}>
-                            {item.mgzn_nm}
+                            {userType === 'B' ? item.mgzn_nm : item.brand_nm}
                         </Text>
                         {/* <FastImage 
                             resizeMode={'contain'} 
@@ -283,12 +284,18 @@ class HomeScreen extends PureComponent {
                             >
                                 {
                                     subItem.target_id_type === 'RUS000' ?
-                                    <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />
+                                    <Text style={{...styles.name,color:'rgba(178, 126, 126, 1)'}}>
+                                        {subItem?.brand_nm}
+                                    </Text>
                                     :
                                     subItem.target_id_type === 'RUS001' ?
-                                    <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres2}} />
+                                    <Text style={{...styles.name,color:'rgba(178, 126, 126, 1)'}}>
+                                        {subItem?.mgzn_nm}
+                                    </Text>
                                     :
-                                    <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
+                                    <Text style={{...styles.name,color:'rgba(178, 126, 126, 1)'}}>
+                                        {subItem?.mgzn_nm}
+                                    </Text>
                                 }                            
                                 <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>
                                     {/* {item.editor_nm} {item.editor_posi} */}
@@ -399,12 +406,18 @@ class HomeScreen extends PureComponent {
                                 >
                                     {
                                         subItem.target_id_type === 'RUS000' ?
-                                        <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.brand_logo_adres}} />
+                                        <Text style={{...styles.name,color:'rgba(178, 126, 126, 1)'}}>
+                                            {subItem?.brand_nm}
+                                        </Text>
                                         :
                                         subItem.target_id_type === 'RUS001' ?
-                                        <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres2}} />
+                                        <Text style={{...styles.name,color:'rgba(178, 126, 126, 1)'}}>
+                                            {subItem?.mgzn_nm}
+                                        </Text>
                                         :
-                                        <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} />
+                                        <Text style={{...styles.name,color:'rgba(178, 126, 126, 1)'}}>
+                                            {subItem?.mgzn_nm}
+                                        </Text>
                                     }                            
                                     <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
                                         {subItem.req_user_nm}{mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position}  →

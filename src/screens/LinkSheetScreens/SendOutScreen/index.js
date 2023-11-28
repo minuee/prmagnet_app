@@ -173,6 +173,7 @@ class SendOutScreen extends PureComponent {
     ]) */
 
     const {data,selectEachList} = this.state;    
+   
     try {
       const response = await API.pushSendoutOne(data.req_no, len, sampleNo);        
       if ( response.success ) {
@@ -245,7 +246,7 @@ class SendOutScreen extends PureComponent {
     const toName = mUtils.get(data, 'to_user_nm');
     const toPhone = mUtils.phoneFormat(mUtils.get(data, 'to_user_phone'));
     if (loading) return <Loading />;
-
+    console.log("data",data)
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={{paddingVertical: 10}}>
@@ -294,10 +295,10 @@ class SendOutScreen extends PureComponent {
             </View>
           </View>
           <View style={styles.middleGroupWrapper}>
-            <View style={styles.middleSubWrapper(2)}>
+            {/* <View style={styles.middleSubWrapper(2)}>
               <Text style={styles.middleText}>픽업일</Text>
               <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'loaning_date'))}</Text>
-            </View>
+            </View> */}
             <View style={styles.middleSubWrapper(2)}>
               <Text style={styles.middleText}>촬영일</Text>
               <Text style={styles.middleDescText}>
@@ -306,14 +307,27 @@ class SendOutScreen extends PureComponent {
               </Text>
             </View>
           </View>
-          { !mUtils.isEmpty(this.state.setChangeReturnDate) &&
-            <View style={styles.middleWrapper}>
+          <View style={styles.middleGroupWrapper}>
+          <View style={styles.middleSubWrapper(2)}>
               <Text style={styles.middleText}>반납일</Text>
-              <Text style={styles.middleDescRedText}>
-                {mUtils.getShowDate(this.state.setChangeReturnDate)} *일부반납일이 변경되었습니다.
+              <Text style={styles.middleDescText}>
+              {mUtils.getShowDate(_.get(data, 'returning_date'))}
               </Text>              
             </View>
+          { !mUtils.isEmpty(this.state.setChangeReturnDate) ?
+            <View style={styles.middleSubWrapper(2)}>
+              <Text style={styles.middleDescRedText}>
+                {mUtils.getShowDate(this.state.setChangeReturnDate)}
+              </Text> 
+              <Text style={styles.middleDescRedText}>
+                 *일부반납일이 변경되었습니다.
+              </Text>              
+            </View>
+            :
+            <View style={styles.middleSubWrapper(2)}>
+            </View>
           }
+          </View>
           <View style={styles.middleWrapper}>
             <Text style={styles.middleText}>수령 주소</Text>
             <Text style={styles.middleDescText}>{mUtils.get(data, 'studio', '-')}</Text>
