@@ -291,21 +291,27 @@ class SendOutScreen extends PureComponent {
               <Text style={styles.middleText}>픽업일</Text>
               <Text style={styles.middleDescText}>{mUtils.getShowDate(_.get(data, 'loaning_date'))}</Text>
             </View>
-            <View style={styles.middleSubWrapper(2)}>
-              <Text style={styles.middleText}>촬영일</Text>
-              <Text style={styles.middleDescText}>
-                {mUtils.getShowDate(_.get(data, 'shooting_date'))}
-                {_.get(data, 'shooting_date') != _.get(data, 'shooting_end_date') && "~"+mUtils.getShowDate(_.get(data, 'shooting_end_date'))}
-              </Text>
-            </View>
-            {/* { !mUtils.isEmpty(this.state.setchangeSendoutDate) &&
+            
+            { !mUtils.isEmpty(this.state.setchangeSendoutDate) ?
               <View style={styles.middleSubWrapper(2)}>
                 <Text style={styles.middleDescRedText}>
                   {mUtils.getShowDate(this.state.setchangeSendoutDate)} *일부픽업일이 변경되었습니다.
-                </Text>              
+                </Text> 
+                             
               </View>
-            } */}
-           
+              :
+              <View style={styles.middleSubWrapper(2)}>
+                </View>
+            }
+          </View>
+           <View style={styles.middleGroupWrapper}>
+            <View style={styles.middleSubWrapper(2)}>
+                <Text style={styles.middleText}>촬영일</Text>
+                <Text style={styles.middleDescText}>
+                  {mUtils.getShowDate(_.get(data, 'shooting_date'))}
+                  {_.get(data, 'shooting_date') != _.get(data, 'shooting_end_date') && "~"+mUtils.getShowDate(_.get(data, 'shooting_end_date'))}
+                </Text>
+              </View>
           </View>    
           {/* <View style={styles.middleGroupWrapper}>
           

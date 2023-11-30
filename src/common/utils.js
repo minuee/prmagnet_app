@@ -273,6 +273,32 @@ const utils = {
       return val.replace(/([0-9]{4})([0-9]{4})/, '$1-$2')
     }
   },
+  customPhoneFormat(val) {
+    if (val === undefined || val === null || val === "") return val;
+    val = String(val).replace(/-/g, "");
+
+    if ( val.startsWith("010") || val.startsWith("070") ) {
+      if (val.length <= 7) {
+        return val.replace(/([0-9]{3})([0-9]{1})/, "$1-$2");
+      } else {
+        return val.replace(/([0-9]{3})([0-9]{4})([0-9]{1})/, "$1-$2-$3");
+      }
+    }else if ( val.startsWith("02") ) {
+      if (val.length <= 7) {
+        return val.replace(/([0-9]{2})([0-9]{1})/, "$1-$2");
+      }else if (val.length == 9) {
+        return val.replace(/([0-9]{2})([0-9]{3})([0-9]{1})/, "$1-$2-$3");
+      } else {
+        return val.replace(/([0-9]{2})([0-9]{4})([0-9]{1})/, "$1-$2-$3");
+      }
+    }else{
+      if (val.length >= 9) {
+        return val.replace(/([0-9]{3})([0-9]{4})([0-9]{1})/, "$1-$2-$3");
+      } else {
+        return val;
+      }
+    }
+  },
   cardNumFormat(val) {
     if (val === undefined || val === null || val === '') return val
     val = String(val).replace(/-/g, '')

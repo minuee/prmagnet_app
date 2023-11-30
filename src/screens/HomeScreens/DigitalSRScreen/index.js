@@ -634,7 +634,7 @@ class DigitalSRScreen extends PureComponent {
                   <View style={{...styles.layout, marginTop: mUtils.wScale(3)}}>
                     <FastImage resizeMode={'contain'} style={styles.telImg} source={telImg} />
                     <TouchableOpacity  onPress={()=>this.callShop(inquiryNum)}>
-                      <Text style={styles.tel}>{mUtils.phoneFormat2(inquiryNum)}</Text>
+                      <Text style={styles.tel}>{mUtils.customPhoneFormat(inquiryNum)}</Text>
                     </TouchableOpacity>                    
                   </View>
                   }
@@ -644,7 +644,7 @@ class DigitalSRScreen extends PureComponent {
                     {!mUtils.isEmpty(inquiryCharge) && <Text style={styles.tel}>{inquiryCharge}</Text>}
                     {!mUtils.isEmpty(inquiryContact) && (
                       <TouchableOpacity  onPress={()=>this.callShop(inquiryContact)}>
-                        <Text style={styles.tel}>{mUtils.phoneFormat(inquiryContact)}</Text>
+                        <Text style={styles.tel}>{mUtils.customPhoneFormat(inquiryContact)}</Text>
                       </TouchableOpacity>                      
                     )}                    
                     {!mUtils.isEmpty(inquiryEmail) && (
@@ -666,11 +666,11 @@ class DigitalSRScreen extends PureComponent {
                             추가 쇼룸담당자
                           </Text>
                           <Text style={styles.tel}>
-                            {inquiryCharge2} {mUtils.phoneFormat(inquiryContact2)} {mUtils.phoneFormat(inquiryEmail2)}
+                            {inquiryCharge2} {mUtils.customPhoneFormat(inquiryContact2)} {inquiryEmail2}
                           </Text>
                           { !mUtils.isEmpty(inquiryCharge3) &&
                             <Text style={styles.tel}>
-                              {inquiryCharge3} {mUtils.phoneFormat(inquiryContact3)} {mUtils.phoneFormat(inquiryEmail3)}
+                              {inquiryCharge3} {mUtils.customPhoneFormat(inquiryContact3)} {inquiryEmail3}
                             </Text>
                           }
                         </MenuOption>
