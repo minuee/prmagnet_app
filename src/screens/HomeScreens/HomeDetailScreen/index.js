@@ -247,7 +247,7 @@ class HomeDetailScreen extends PureComponent {
             {mConst.getUserType() === 'B' ? item.mgzn_nm : item.brand_nm}
         </Text>
         <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>
-          {item.editor_nm}{item.editor_posi}
+          {item.request_nm}{item.request_posi}
         </Text>
         <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>
           {' '}
@@ -281,7 +281,7 @@ class HomeDetailScreen extends PureComponent {
             {item.mgzn_nm}
         </Text>
         <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>
-          {item.editor_nm}{item.editor_posi}
+          {item.request_nm}{item.request_posi}
         </Text>
         {/* <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>
           {item.mgzn_nm} 
@@ -397,11 +397,11 @@ class HomeDetailScreen extends PureComponent {
               }                            
               <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
                 {subItem.req_user_nm}{mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position} →
-              {/* </Text>
-              <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}> */}
+              </Text>
+              <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}>
                   {subItem.target_user_nm}{mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}
               </Text>
-            <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>{subItem.req_no}</Text>
+            
 
           </TouchableOpacity>
         )

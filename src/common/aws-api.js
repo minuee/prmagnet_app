@@ -819,6 +819,18 @@ const API = {
 
     return Api.post(apiName, path, init);
   },
+
+  postDisplayPrice: ({ isRealPrice }) => {
+    var apiName = v1Api;
+    var path = "/brand/display-price";
+    var init = {
+      body: {
+        displayReal:isRealPrice,
+      },
+    };
+
+    return Api.post(apiName, path, init);
+  },
   putSampleRequests: ({recv_yn}) => {
     const apiName = v1Api
     const path = `${mConst.getApiPath()}/notify-control/sample-request`

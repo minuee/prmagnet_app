@@ -313,14 +313,22 @@ class DigitalSRDetailScreen extends PureComponent {
                       <Text style={styles.left}>Price</Text>
                     </View>
                     <View style={styles.layoutRight}> 
-                      <Text style={{...styles.right}}>{
+                      <Text style={{...styles.right}}>
+                      {
                         ( item.price == 0 || item.price == null ) ?
                         '가격미정'
                         :
                         item.price*1 > 0 ? mUtils.numberWithCommas(item.price)
                         :
                         item.price
-                      }</Text>
+                      }
+                      {
+                        (item.price === null || item.price === 0 || item?.price_is_real )
+                        ? ""
+                        : 
+                        "만원대"
+                      }
+                      </Text>
                     </View>
                   </View>
                   <View style={styles.layout}>

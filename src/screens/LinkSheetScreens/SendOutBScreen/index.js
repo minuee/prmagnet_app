@@ -85,7 +85,8 @@ class SendOutScreen extends PureComponent {
     }
   }
 
-  handleLoadDataArray = async(item,nextIndex) => {      
+  handleLoadDataArray = async(item,nextIndex) => {  
+    console.log('센드아웃 스케쥴 상세 조회', item.date,item.showroom_list,item.req_no_list)    
     try {
       const response = await API.getSendoutArrayDetail(item.date,item.showroom_list,item.req_no_list);
       const dataTmp = await _.get(response, 'right');

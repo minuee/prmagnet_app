@@ -140,7 +140,7 @@ class HomeScreen extends PureComponent {
                             source={{uri: userType === 'B' ? item.mgzn_logo_url_adres : item.brand_logo_url_adres}}
                         /> */}
                         <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>
-                            {item.editor_nm}{item.editor_posi}
+                            {item.request_nm}{item.request_posi}
                         </Text>
                         <Text style={{...styles.dt, marginTop: mUtils.wScale(2)}}>
                             { userType === 'B' ? mUtils.getShowDate(item.req_dt, 'YYYY-MM-DD') : mUtils.getShowDate(item.photogrf_dt, 'YYYY-MM-DD')}
@@ -290,11 +290,11 @@ class HomeScreen extends PureComponent {
                                     :
                                     subItem.target_id_type === 'RUS001' ?
                                     <Text style={{...styles.name,color:'rgba(178, 126, 126, 1)'}}>
-                                        {subItem?.mgzn_nm}
+                                        {subItem?.mgzn_target_nm}
                                     </Text>
                                     :
                                     <Text style={{...styles.name,color:'rgba(178, 126, 126, 1)'}}>
-                                        {subItem?.mgzn_nm}
+                                        {subItem?.mgzn_target_nm}
                                     </Text>
                                 }                            
                                 <Text style={{...styles.name, marginTop: mUtils.wScale(6)}}>
@@ -412,18 +412,18 @@ class HomeScreen extends PureComponent {
                                         :
                                         subItem.target_id_type === 'RUS001' ?
                                         <Text style={{...styles.name,color:'rgba(178, 126, 126, 1)'}}>
-                                            {subItem?.mgzn_nm}
+                                            {subItem?.mgzn_target_nm}
                                         </Text>
                                         :
                                         <Text style={{...styles.name,color:'rgba(178, 126, 126, 1)'}}>
-                                            {subItem?.mgzn_nm}
+                                            {subItem?.mgzn_target_nm}
                                         </Text>
                                     }                            
                                     <Text style={{...styles.dt, marginTop: mUtils.wScale(6)}}>
                                         {subItem.req_user_nm}{mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position}  →
                                     </Text>
                                     <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}>
-                                        {subItem.target_user_nm}{mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}
+                                        {subItem.target_user_nm}{ mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}
                                     </Text>   
                                     
                                     {/* <Text style={{...styles.custom, marginTop: mUtils.wScale(2)}}> Sheet No:{subItem.req_no}</Text>     */}                   

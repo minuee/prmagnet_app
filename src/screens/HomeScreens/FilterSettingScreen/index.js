@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react'
 import {SafeAreaView, ScrollView, View, TouchableOpacity, TextInput} from 'react-native'
 import {connect} from 'react-redux'
 import _ from 'lodash'
-
+import { ButtonGroup} from 'react-native-elements'
 import mConst from '../../../common/constants'
 import mUtils from '../../../common/utils'
 import cBind, {callOnce} from '../../../common/navigation'
@@ -10,7 +10,7 @@ import Text from '../../common/Text'
 import styles from './styles'
 import API from '../../../common/aws-api'
 
-const topList = ['공지사항', '문의번호', '쇼룸문의', '기간설정']
+const topList = ['공지사항', '문의번호', '쇼룸문의', '기간설정','가격표시설정']
 const reg = /(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/
 
 class FilterSettingScreen extends PureComponent {
@@ -30,7 +30,8 @@ class FilterSettingScreen extends PureComponent {
       inquiry_charge : '',
       inquiry_charge2 : '',
       inquiry_charge3 : '',
-      limit_days : 1
+      limit_days : 1,
+      isRealPrice : true
     }
   }
 
@@ -95,6 +96,21 @@ class FilterSettingScreen extends PureComponent {
       })
 
       if (response.success) {
+        this.postDisplayPrice()
+      }
+    } catch (error) {
+
+    }
+  }
+
+  postDisplayPrice= async () => {
+    const {isRealPrice} = this.state
+    try {
+      const response = await API.postDisplayPrice({
+        isRealPrice :  isRealPrice
+      })
+
+      if (response.success) {
         this.goBack()
       }
     } catch (error) {
@@ -119,7 +135,11 @@ class FilterSettingScreen extends PureComponent {
       const response = await API.getInquiryNum()
       console.log('getInquiryNum>>>', response)
       if (response.success) {
-        this.setState({inquiryNum: response.inquiry_number, limit_days : response.limit_days})
+        this.setState({
+          inquiryNum: response.inquiry_number, 
+          limit_days : response.limit_days,
+          isRealPrice : response?.price_is_real
+        })
       }
     } catch (error) {
       //console.log('getInquiryNum>>>', error)
@@ -165,8 +185,16 @@ class FilterSettingScreen extends PureComponent {
   handleSelectTop = select => {
     this.setState({select: select})
   }
+
+  
+
+  onClickUpdateIndex =  (selectedIndex) => {
+    this.setState({isRealPrice: selectedIndex == 1 ? false : true })
+  }
+
+
   selectView() {
-    const {notice, inquiryNum, SRInquiryNum,SRInquiryNum2,SRInquiryNum3, email,email2,email3,inquiry_charge,inquiry_charge2,inquiry_charge3,limit_days} = this.state;
+    const {notice, isRealPrice,inquiryNum, SRInquiryNum,SRInquiryNum2,SRInquiryNum3, email,email2,email3,inquiry_charge,inquiry_charge2,inquiry_charge3,limit_days} = this.state;
     console.log('limit_days',limit_days)
     switch (this.state.select) {
       case '공지사항':
@@ -213,6 +241,19 @@ class FilterSettingScreen extends PureComponent {
             />
           </View>
         )
+        case '가격표시설정':
+          return (
+            <View style={{flex: 1}}>
+              <ButtonGroup
+                  onPress={this.onClickUpdateIndex}
+                  selectedIndex={isRealPrice ? 0 : 1 }
+                  buttons={TermTypeButtons}
+                  selectedTextStyle={{color:'#ffffff'}}
+                  selectedButtonStyle={{backgroundColor:mConst.bgBlue,color:'#fff'}}
+                  containerStyle={{height: mUtils.wScale(35),width:'95%'}} 
+              />
+            </View>
+          )
       case '쇼룸문의':
         return (
           <View style={{flex: 1}}>
@@ -308,11 +349,22 @@ class FilterSettingScreen extends PureComponent {
     }
   }
   render() {
-    const {select} = this.state
+    const {select,isRealPrice} = this.state;
+    const component1 = () => <Text style={[styles.headerText,{color: isRealPrice  ? '#fff' : '#555'}]}>원(Ex : 10,000,000)</Text>
+    const component2 = () => <Text style={[styles.headerText,{color: !isRealPrice ? '#fff' : '#555'}]}>만원대(Ex : 1,000만원대)</Text>
+    TermTypeButtons = [{ element: component1 }, { element: component2 }]
     return (
       <>
         <SafeAreaView style={styles.container}>
           <View style={styles.headerWrapper}>
+          <ScrollView
+            horizontal
+            showsVerticalScrollIndicator={false}
+            indicatorStyle={'white'}
+            scrollEventThrottle={16}
+            keyboardDismissMode={'on-drag'}
+
+            >
             {_.map(topList, (item, index) => {
               const selected = item === select
               return (
@@ -325,6 +377,7 @@ class FilterSettingScreen extends PureComponent {
                 </TouchableOpacity>
               )
             })}
+            </ScrollView>
           </View>
           {this.selectView()}
           <TouchableOpacity
