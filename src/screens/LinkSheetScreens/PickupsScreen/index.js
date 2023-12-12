@@ -368,7 +368,10 @@ class PickupsScreen extends PureComponent {
                               <Text style={styles.sText()}>{mUtils.get(subItem, 'category')}</Text>
                             </Row>
                             <Row style={styles.row()}>
-                              <Text style={styles.sText(9)}>{mUtils.moneyFormat(mUtils.get(subItem, 'price', 0))}</Text>
+                              <Text style={styles.sText(9)}>
+                                {mUtils.moneyFormat(mUtils.get(subItem, 'price', 0))}
+                                {( mUtils.get(subItem, 'price', 0) > 0 && !data.price_is_real ) &&  '만원대'}
+                              </Text>
                             </Row>
                           </React.Fragment>
                         )
