@@ -194,7 +194,7 @@ class DigitalSRScreen extends PureComponent {
   selected = item => {
 
     const {select} = this.state;
-    console.log('select>>>>>', select.findIndex((element) =>  element.showroom_no == item.showroom_no))
+    
     if(select.findIndex((element) =>  element.showroom_no == item.showroom_no) != -1) {
       const newArr =  select.filter((element) => element.showroom_no != item.showroom_no)
       this.setState({ select : newArr})
@@ -221,7 +221,7 @@ class DigitalSRScreen extends PureComponent {
         still_life_img_yn: filterInfo.stillLifeImg,
         material_list: filterInfo.material,
       })      
-     
+      
       if (response.success) {
         if ( brand_id != 'all') {
           if (page === 1) {
@@ -263,16 +263,20 @@ class DigitalSRScreen extends PureComponent {
   }
 
   postDigitalSRReset = async () => {
-    const {season_year, brand_id, filterInfo} = this.state;
+    const {limit,season_year, brand_id, filterInfo} = this.state;
 
     const userType = mConst.getUserType()
     this.setState({loading: false})
+    /*
+    {"category": [], "color": [], "gender": [], "material": [], "sample": null, "size": [], "stillLifeImg": null
+    {"category": [], "color": [], "gender": [], "material": [], "sample": null, "size": [], "stillLifeImg": null}
+    */
     try {
       const response = await API.postDigitalSR({
         page: 1,
-        limit: 10,
-        season_year: season_year.season_year,
-        season_cd_id: season_year.season_cd_id,
+        limit: limit,
+        //season_year: season_year.season_year,
+        //season_cd_id: season_year.season_cd_id,
         brand_id: brand_id,
         gender_list: filterInfo.gender,
         category_list: filterInfo.category,
@@ -282,8 +286,9 @@ class DigitalSRScreen extends PureComponent {
         still_life_img_yn: filterInfo.stillLifeImg,
         material_list: filterInfo.material,
       })
-
+      
       if (response.success) {
+        ///console.log('response.3333>>>>>',response?.total_count)
         if ( brand_id != 'all') {
           if (userType === 'B') {
             this.setState({
@@ -293,6 +298,7 @@ class DigitalSRScreen extends PureComponent {
               loading: true,
             })
           } else {
+            
             this.setState({
               data : response,
               page : 2,
