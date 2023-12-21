@@ -5,7 +5,7 @@ import messaging from '@react-native-firebase/messaging';
 import FastImage from 'react-native-fast-image';
 import 'moment/locale/ko';
 import _ from 'lodash';
-
+import AsyncStorage from '@react-native-community/async-storage';
 import {isLoggedIn} from '../../../common/aws-auth';
 import {actionLogout, actionSetAlarm} from '../../../redux/actions';
 import CodePush from '../../common/CodePushNew';
@@ -19,6 +19,9 @@ import styles from './styles';
 import Loading from '../../common/Loading';
 import Empty from '../../common/Empty';
 import NonSubscribe from '../../common/NonSubscribe';
+
+import PopupScreen from './Popup';
+
 const moreImg = require('../../../images/navi/more_5.png')
 
 class HomeScreen extends PureComponent {
@@ -27,6 +30,7 @@ class HomeScreen extends PureComponent {
         cBind(this);
         this.state = {
             loading : true,
+            showPopUp : false,
             isSubScrbing : false,
             data: '',
             justonce : true,
@@ -43,10 +47,41 @@ class HomeScreen extends PureComponent {
         // FCM 설정(PUSH 권한 요청)
         this.setupFcm()
         this.onFocus(this.handleOnFocus)
+
+        const userType = mConst.getUserType();
+        console.log("userType",userType)
+        if (  userType != 'B') {
+            this.onPopUpNotice();
+        }
     }
 
     componentWillUnmount() {
         this.removeFocus()
+    }
+
+
+    onPopUpNotice = async () => {
+        const today = new Date();
+        const limitDayTime = 1704067199000;
+        const todayTimeStamp = new Date().getTime();
+        const HOME_VISITED = await AsyncStorage.getItem('homeVisited'); 
+        console.log("historyLogin",todayTimeStamp,today,HOME_VISITED)
+        if ( limitDayTime > todayTimeStamp ) {
+            if (HOME_VISITED && HOME_VISITED > today) {
+                // 현재 date가 localStorage의 시간보다 크면 return
+                return;
+            }
+            if (!HOME_VISITED || HOME_VISITED < today) {
+                // 저장된 date가 없거나 today보다 작다면 popup 노출
+                this.setState({
+                    showPopUp: true
+                })
+            }
+        }else{
+            this.setState({
+                showPopUp: false
+            })
+        }
     }
 
     handleOnFocus = async () => {
@@ -466,7 +501,7 @@ class HomeScreen extends PureComponent {
 
     render() {
         const {user} = this.props;
-        const {data} = this.state;
+        const {data,showPopUp} = this.state;
         if ( this.state.loading  ) {
             return (
                 <Loading />
@@ -498,6 +533,14 @@ class HomeScreen extends PureComponent {
                         <View style={{height:50,width:'100%'}} />
                     </ScrollView>
                     <CodePush />
+                    {
+                        showPopUp && (
+                            <PopupScreen
+                                isModalVisible={showPopUp}
+                                setModalVisible={() => this.setState({showPopUp:false})}
+                            />
+                        )
+                    }
                 </SafeAreaView>
             )
         }
