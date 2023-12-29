@@ -49,7 +49,6 @@ class HomeScreen extends PureComponent {
         this.onFocus(this.handleOnFocus)
 
         const userType = mConst.getUserType();
-        console.log("userType",userType)
         if (  userType != 'B') {
             this.onPopUpNotice();
         }
@@ -62,10 +61,9 @@ class HomeScreen extends PureComponent {
 
     onPopUpNotice = async () => {
         const today = new Date();
-        const limitDayTime = 1704067199000;
+        const limitDayTime = 1704499142000;
         const todayTimeStamp = new Date().getTime();
         const HOME_VISITED = await AsyncStorage.getItem('homeVisited'); 
-        console.log("historyLogin",todayTimeStamp,today,HOME_VISITED)
         if ( limitDayTime > todayTimeStamp ) {
             if (HOME_VISITED && HOME_VISITED > today) {
                 // 현재 date가 localStorage의 시간보다 크면 return

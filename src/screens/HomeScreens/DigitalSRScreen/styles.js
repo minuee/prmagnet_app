@@ -11,8 +11,8 @@ export default StyleSheet.create({
   redTitle: {    
     fontSize: 13,
     textAlign: 'center',
-    color: '#ff0000',
-    marginTop: mUtils.wScale(5),
+    color: '#555',
+    marginTop: mUtils.wScale(3),
   },
   title: {
     fontFamily: 'Roboto-Medium',
