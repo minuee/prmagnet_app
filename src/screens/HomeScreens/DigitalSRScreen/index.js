@@ -477,14 +477,12 @@ class DigitalSRScreen extends PureComponent {
           item.now_req_status_nm === '대여중' &&           
             <Text style={styles.redTitle}>{item.now_req_status_nm}{"\n"}({mUtils.dateToDate(item.duty_recpt_dt)}~{mUtils.dateToDate(item.return_prearnge_dt)})</Text>
         } */}
-        <Text style={styles.redTitle}>
-          {item.all_in_yn && "ALL IN"}
-          
-        </Text>
+        <Text style={styles.redTitle} numberOfLines={2} ellipsizeMode="tail">
         {item.new_category_list !== null &&
           item.new_category_list.map((d) =>  <Text style={styles.redTitle} key={d}>{d.category_nm}{!d.is_input && '(미입고)'}</Text>)
         }
-        
+        {item.all_in_yn && " (ALL IN)"}
+        </Text>
       </View>
     )
   }

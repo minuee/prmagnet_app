@@ -49,6 +49,13 @@ export default StyleSheet.create({
     textAlign: 'center',
     color: '#070708',
   },
+  redTitle: {    
+    fontSize: 11,
+    lineHeight :15,
+    textAlign: 'center',
+    color: '#555',
+    marginTop: mUtils.wScale(1),
+  },
   modelTitle2: {    
     fontSize: 12,
     textAlign: 'center',
