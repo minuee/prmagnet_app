@@ -403,7 +403,7 @@ class DigitalSRScreen extends PureComponent {
     const {selectOnOff, select} = this.state
     const userType = mConst.getUserType()
     return (
-      <View style={{width: '49%', minHeight: mUtils.wScale(310), height:'auto'}}>
+      <View style={{width: '49%', minHeight: mUtils.wScale(310), height:'auto',marginBottom:mUtils.wScale(20)}}>
         <TouchableOpacity
           onPress={() => {
             selectOnOff ? item.all_in_yn ? this.selected(item) : console.log('ng'): this.pushTo('DigitalSRDetailScreen', {no: item.showroom_no, type: 'digital',title : item.showroom_nm})
@@ -479,7 +479,7 @@ class DigitalSRScreen extends PureComponent {
         } */}
         <Text style={styles.redTitle} numberOfLines={2} ellipsizeMode="tail">
         {item.new_category_list !== null &&
-          item.new_category_list.map((d) =>  <Text style={styles.redTitle} key={d}>{d.category_nm}{!d.is_input && '(미입고)'}</Text>)
+          item.new_category_list.map((d,idx) =>  <Text style={styles.redTitle} key={idx}>{idx>0 && ","} {d.category_nm}{!d.is_input && '(미입고)'}</Text>)
         }
         {item.all_in_yn && " (ALL IN)"}
         </Text>
