@@ -636,7 +636,7 @@ class DigitalSRScreen extends PureComponent {
                   !mUtils.isEmpty(notice) &&
                   <View style={{...styles.layout}}>
                     <FastImage resizeMode={'contain'} style={styles.notiImg} source={notiImg} />                  
-                      <Text style={styles.noti} numberOfLines={3} ellipsizeMode={'tail'}>
+                      <Text style={styles.noti} numberOfLines={5} ellipsizeMode={'tail'}>
                         {mUtils.replaceAll(notice,"\n","")}
                       </Text>
                   </View>
