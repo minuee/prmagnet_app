@@ -152,10 +152,22 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  select2: {
+    width: '100%',
+    height: '117%',
+    position: 'absolute',
+    zIndex: 1,
+    alignItems: 'flex-end',
+    paddingTop:2
+  },
   selectImg: {
     width: mUtils.wScale(45),
     height: mUtils.wScale(45),
     marginBottom: mUtils.wScale(10),
+  },
+  selectImg2: {
+    width: mUtils.wScale(35),
+    height: mUtils.wScale(35),
   },
   bottomSheet: {
     width: '100%',

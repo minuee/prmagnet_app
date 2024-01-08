@@ -35,6 +35,9 @@ const selectImg2 = require('../../../images/navi/select_2.png');
 const likeImg = require('../../../images/navi/like_2_1.png');
 const likeImgOn = require('../../../images/navi/like_2.png');
 const noCheckImg = require('../../../images/navi/disable.png')
+const newCheckImg = require('../../../images/common/checkblue.png')
+
+
 class DigitalSRScreen extends PureComponent {
   constructor(props) {
     super(props)
@@ -449,17 +452,17 @@ class DigitalSRScreen extends PureComponent {
           {selectOnOff && (
             item.all_in_yn ?
             (select.findIndex((element) =>  element.showroom_no == item.showroom_no) != -1 ? (
-              <View style={{...styles.select, backgroundColor: 'rgba(126, 161, 178, 0.8)'}}>
-                <FastImage resizeMode={'contain'} style={styles.selectImg} source={selectImg2} />
+              <View style={{...styles.select2, borderColor: '#558197',borderWidth:5}}>
+                <FastImage resizeMode={'contain'} style={styles.selectImg2} source={newCheckImg} />
               </View>
             ) : (
-              <View style={{...styles.select, backgroundColor: 'rgba(0, 0, 0, 0.5)'}}>
-                <FastImage resizeMode={'contain'} style={styles.selectImg} source={selectImg1} />
+              <View style={{...styles.select2, backgroundColor: '#818181',opacity:0.5}}>
+                {/* <FastImage resizeMode={'contain'} style={styles.selectImg} source={selectImg1} /> */}
               </View>
             ))
             :
             (
-              <View style={{...styles.select, backgroundColor: 'rgba(0, 0, 0, 0.5)'}}>
+              <View style={{...styles.select2, backgroundColor: '#818181',opacity:0.5}}>
                 <FastImage resizeMode={'contain'} style={styles.selectImg} source={noCheckImg} />
                 <Text style={{fontFamily: 'Roboto-Bold',fontSize: 20,color: '#ffffff',}}>미입고</Text>
               </View>

@@ -232,13 +232,13 @@ class DigitalSRDetailScreen extends PureComponent {
                   >
                     {
                     Array.isArray(item.sample_image_list) &&
-                    item.sample_image_list.map((item, index) => {
+                    item.sample_image_list.map((sitem, sindex) => {
                       return (
                         <FastImage
-                          key={index}
+                          key={sindex}
                           resizeMode={'contain'}
                           style={{width: '100%', height: mUtils.wScale(500)}}
-                          source={{uri: item.full_url}}
+                          source={{uri: sitem.full_url}}
                         />
                       )
                     })}
