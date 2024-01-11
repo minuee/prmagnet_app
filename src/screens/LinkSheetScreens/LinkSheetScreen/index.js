@@ -564,7 +564,7 @@ class LinkSheetScreen extends React.Component {
                                                         //onPress={() =>this.pushTo(mConst.getUserType() == 'B' ? 'SendOutBScreen' : 'SendOutScreen',{reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
                                                     >     
                                                         { mConst.getUserType() == 'B' ?                                                   
-                                                            <View style={{...styles.box1, backgroundColor: subItem.sendout_yn ? mUtils.isEmpty(subItem.mgzn_color) ? '#ddd' : subItem.mgzn_color : '#ed6c59'}}>
+                                                            <View style={{...styles.box1, backgroundColor: ( subItem.sendout_yn || subItem.target_id_type === 'RUS001' ) ? mUtils.isEmpty(subItem.mgzn_color) ? '#ddd' : subItem.mgzn_color : '#ed6c59'}}>
                                                                 {this.renderLogo(subItem,subIndex,selectTitle)}
                                                             </View>
                                                         :
@@ -586,7 +586,7 @@ class LinkSheetScreen extends React.Component {
                                                         //onPress={() =>this.pushTo('PickupsScreen',{reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
                                                         onPress={() =>this.handleLinkSheetDetailEach(subItem.req_no,item.showroomData,item.date)}
                                                     >                                                        
-                                                        <View style={{...styles.box1, backgroundColor: ( subItem.pickup_yn ) ? mUtils.isEmpty(subItem.brand_color) ? '#ddd' :subItem.brand_color : '#ed6c59'}}>
+                                                        <View style={{...styles.box1, backgroundColor: ( subItem.pickup_yn || subItem.target_id_type === 'RUS001' ) ? mUtils.isEmpty(subItem.brand_color) ? '#ddd' :subItem.brand_color : '#ed6c59'}}>
                                                             {this.renderLogo(subItem,subIndex,selectTitle)}
                                                         </View>
                                                         

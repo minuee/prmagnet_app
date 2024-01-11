@@ -96,7 +96,7 @@ class HomeScreen extends PureComponent {
     getHome = async () => {
         const date = mUtils.getToday();
         try {
-            const response = await API.getHome({date: date})
+            const response = await API.getNewHome({date: date})
             console.log('getHome111',_.get(response, 'release_schedules', []))
             //console.log('getHome222each_list',_.get(response, 'today_request', [])[0].each_list)
             //console.log('getHome333showroom_list',_.get(response, 'today_request', [])[0].each_list[0].showroom_list)
@@ -367,7 +367,6 @@ class HomeScreen extends PureComponent {
         let newLeftArray = [];
         
         targetData.forEach((element,index) => {
-            console.log('targetData',index)
             let req_no = element.showroom_list[0].req_no;
             if ( !newLeftIdxArray.includes(req_no)) {
                 newLeftIdxArray.push(req_no);
