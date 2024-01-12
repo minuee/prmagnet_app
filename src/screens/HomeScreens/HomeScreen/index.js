@@ -97,7 +97,7 @@ class HomeScreen extends PureComponent {
         const date = mUtils.getToday();
         try {
             const response = await API.getNewHome({date: date})
-            console.log('getHome111',_.get(response, 'release_schedules', []))
+            console.log('getHome111',_.get(response, 'today_sendout', []))
             //console.log('getHome222each_list',_.get(response, 'today_request', [])[0].each_list)
             //console.log('getHome333showroom_list',_.get(response, 'today_request', [])[0].each_list[0].showroom_list)
             this.setState({data: response,loading:false,isSubScrbing:true})

@@ -564,7 +564,7 @@ class LinkSheetScreen extends React.Component {
                                                         //onPress={() =>this.pushTo(mConst.getUserType() == 'B' ? 'SendOutBScreen' : 'SendOutScreen',{reqNo: subItem.req_no,showroom_no: subItem.showroom_no})}
                                                     >     
                                                         { mConst.getUserType() == 'B' ?                                                   
-                                                            <View style={{...styles.box1, backgroundColor: ( subItem.sendout_yn || subItem.target_id_type === 'RUS001' ) ? mUtils.isEmpty(subItem.mgzn_color) ? '#ddd' : subItem.mgzn_color : '#ed6c59'}}>
+                                                            <View style={{...styles.box1, backgroundColor: subItem.sendout_yn_brand ? subItem.mgzn_color || "#ddd" : ( subItem.sendout_yn && subItem.target_id_type === 'RUS001' ) ? mUtils.isEmpty(subItem.mgzn_color) ? '#ddd' : subItem.mgzn_color : '#ed6c59'}}>
                                                                 {this.renderLogo(subItem,subIndex,selectTitle)}
                                                             </View>
                                                         :
