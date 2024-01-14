@@ -361,12 +361,12 @@ class HomeScreen extends PureComponent {
         const userType = mConst.getUserType();
         const today_sendout = _.get(data, 'today_sendout', []);
         console.log('today_sendout',today_sendout[0])
-        const targetData = mUtils.isEmpty(today_sendout[0]?.each_list) ? [] : today_sendout[0]?.each_list;
+        const targetDataTmp = mUtils.isEmpty(today_sendout[0]?.each_list) ? [] : today_sendout[0]?.each_list;
         let newLeftIdxArray = [];
         let newLeftShowroomIdxArray = [];
         let newLeftArray = [];
         
-        targetData.forEach((element,index) => {
+        targetDataTmp.forEach((element,index) => {
             let req_no = element.showroom_list[0].req_no;
             if ( !newLeftIdxArray.includes(req_no)) {
                 newLeftIdxArray.push(req_no);
@@ -375,7 +375,9 @@ class HomeScreen extends PureComponent {
             if ( !newLeftShowroomIdxArray.includes(req_no)) {
                 newLeftShowroomIdxArray.push({req_no :req_no, showroom_no: element.showroom_list[0].showroom_no});
             }
-        })          
+        })   
+        
+        const targetData = newLeftArray;
         //console.log('newLeftShowroomIdxArray',newLeftShowroomIdxArray);
         if ( this.state.justonce ) {
             this.setState({
@@ -392,13 +394,27 @@ class HomeScreen extends PureComponent {
                         Today's <Text style={{fontFamily: 'Roboto-Medium'}}>Send Outs : </Text>
                         <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}> {targetData.length}</Text>
                     </Text>
-                    <TouchableOpacity
-                        style={styles.layout}
-                        onPress={() => {this.pushTo('HomeDetailScreen', {type: 'sendout', title: "Today's Send Outs"})}}
-                    >
-                        <Text style={styles.more}>More</Text>
-                        <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
-                    </TouchableOpacity>
+                    {
+                        userType == 'B'
+                        ?
+                        <TouchableOpacity
+                            style={styles.layout}
+                            onPress={() => {this.pushTo('HomeSendDetailScreen', {type: 'sendout', title: "Today's Send Outs", screenData :  targetDataTmp})}}
+                        >
+                            <Text style={styles.more}>More</Text>
+                            <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                        </TouchableOpacity>
+                        :
+                        <TouchableOpacity
+                            style={styles.layout}
+                            onPress={() => {this.pushTo('HomeDetailScreen', {type: 'sendout', title: "Today's Send Outs"})}}
+                        >
+                            <Text style={styles.more}>More</Text>
+                            <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                        </TouchableOpacity>
+                        
+                    }
+                    
                 </View>
             <View
                 style={{...styles.layout2,backgroundColor: 'rgba(178, 126, 126, 0.2)',flex: targetData.length === 0 ? 0 : 1,flexDirection: targetData.length === 0 ? 'column' : 'row',justifyContent:targetData.length === 0 ? 'center' : 'space-between',flexWrap: targetData.length === 0 ? 'nowrap' : 'wrap',}}

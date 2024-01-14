@@ -19,6 +19,7 @@ import WebviewScreen from './common/WebviewScreen';
 
 import HomeScreen from './HomeScreens/HomeScreen';
 import HomeDetailScreen from './HomeScreens/HomeDetailScreen';
+import HomeSendDetailScreen from './HomeScreens/HomeSendDetailScreen';
 import SelectScheduleScreen from './HomeScreens/SelectScheduleScreen';
 import SelectBrandScreen from './HomeScreens/SelectBrandScreen';
 import ContactScreen from './HomeScreens/ContactScreen';
@@ -121,6 +122,7 @@ class RootScreen extends PureComponent {
       <MemberStack.Navigator screenOptions={basicScreenOptions(true)} initialRouteName={'HomeScreen'}>
         <MemberStack.Screen name="HomeScreen" component={this.TabStack} options={{headerShown: false, gestureEnabled: false}} />
         <MemberStack.Screen name="HomeDetailScreen" component={HomeDetailScreen} />
+        <MemberStack.Screen name="HomeSendDetailScreen" component={HomeSendDetailScreen} />
         {/* 개발 편의를 위한 임시 화면 start --------- */}
         <MemberStack.Screen name="DevNavigationScreen" component={DevNavigationScreen} />
         <MemberStack.Screen name="LoginScreen" component={LoginScreen} />
