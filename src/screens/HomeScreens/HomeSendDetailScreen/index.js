@@ -52,12 +52,13 @@ class HomeDetailScreen extends PureComponent {
 
   setData = async(screenData,selectedIndex,selectedIndex2) => {
     let sendoutData = [];
-    console.log('screenData',selectedIndex,selectedIndex2, screenData)  
+    //console.log('screenData',selectedIndex,selectedIndex2, screenData)  
     let newLeftShowroomIdxArray = [];
     if ( !mUtils.isEmpty(screenData) ) {
-        let newLeftIdxArray = [];
-        let newLeftArray = [];
+        
         if ( selectedIndex == 0 ) {
+          let newLeftIdxArray = [];
+          let newLeftArray = [];
           screenData.forEach((element,index) => {
             let req_no = element.showroom_list[0].req_no;
             let isIncludesBrand = element.showroom_list.filter((element2) => element2.target_id_type == 'RUS000');
@@ -71,21 +72,36 @@ class HomeDetailScreen extends PureComponent {
                 newLeftShowroomIdxArray.push({req_no :req_no, showroom_no: element.showroom_list[0].showroom_no});
             }
           })  
-          console.log('newLeftArray',newLeftArray?.length)  
+          //console.log('newLeftArray',newLeftArray?.length)  
           sendoutData = newLeftArray;
         }else{
+          let newLeftArray2 = [];
           screenData.forEach((telement,tindex) => {
             let isIncludesBrand = telement.showroom_list.filter((element2) => element2.target_id_type == 'RUS000');
-            telement.showroom_list.forEach((element,index) => {
-              if ( selectedIndex2 == 0 || isIncludesBrand.length > 0) { 
-                newLeftArray.push(element)
-                newLeftShowroomIdxArray.push({req_no :element.req_no, showroom_no: element.showroom_no});
+            if ( selectedIndex2 == 0 ) { 
+              newLeftArray2.push(telement.showroom_list[0])
+              newLeftShowroomIdxArray.push({req_no :telement.showroom_list[0].req_no, showroom_no: telement.showroom_list[0].showroom_no});
+            }else{
+              if ( isIncludesBrand.length > 0 ){
+                newLeftArray2.push(telement.showroom_list[0])
+                newLeftShowroomIdxArray.push({req_no :telement.showroom_list[0].req_no, showroom_no: telement.showroom_list[0].showroom_no});
               }
-              
-            })
+            }
+            /* telement.showroom_list.forEach((element,index) => {
+              if ( selectedIndex2 == 0 ) { 
+                newLeftArray2.push(element)
+                newLeftShowroomIdxArray.push({req_no :element.req_no, showroom_no: element.showroom_no});
+              }else{
+                if ( isIncludesBrand.length > 0 ){
+                  newLeftArray2.push(element)
+                  newLeftShowroomIdxArray.push({req_no :element.req_no, showroom_no: element.showroom_no});
+                }
+              }
+               
+            })*/
           })  
-          console.log('newLeftArray2222',newLeftArray?.length)  
-          sendoutData = newLeftArray;
+          console.log('333333',newLeftArray2?.length)  
+          sendoutData = newLeftArray2;
 
         }
     }
