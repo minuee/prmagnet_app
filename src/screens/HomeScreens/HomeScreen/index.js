@@ -392,7 +392,8 @@ class HomeScreen extends PureComponent {
                 <View style={{...styles.layout1, paddingHorizontal: mUtils.wScale(20), marginTop: mUtils.wScale(30)}}>
                     <Text style={styles.new}>
                         Today's <Text style={{fontFamily: 'Roboto-Medium'}}>Send Outs : </Text>
-                        <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}> {targetData.length}</Text>
+                        <Text style={{fontFamily: 'Roboto-Bold', color: '#b27e7e'}}>
+                            {userType == 'B' ? targetData.length : targetDataTmp.length}</Text>
                     </Text>
                     {
                         userType == 'B'
@@ -414,23 +415,25 @@ class HomeScreen extends PureComponent {
                         </TouchableOpacity>
                         
                     }
-                    
                 </View>
-            <View
-                style={{...styles.layout2,backgroundColor: 'rgba(178, 126, 126, 0.2)',flex: targetData.length === 0 ? 0 : 1,flexDirection: targetData.length === 0 ? 'column' : 'row',justifyContent:targetData.length === 0 ? 'center' : 'space-between',flexWrap: targetData.length === 0 ? 'nowrap' : 'wrap',}}
-            >
-                {   targetData.length > 0 ? (
-                    targetData.map((item, index) => {
-                    if ( index < 4) {
-                        const subItem = item.showroom_list[0];
-                        if ( userType === 'B') {
+                {
+                userType === 'B'
+                ?
+                <View
+                    style={{...styles.layout2,backgroundColor: 'rgba(178, 126, 126, 0.2)',flex: targetData.length === 0 ? 0 : 1,flexDirection: targetData.length === 0 ? 'column' : 'row',justifyContent:targetData.length === 0 ? 'center' : 'space-between',flexWrap: targetData.length === 0 ? 'nowrap' : 'wrap',}}
+                >
+                    {   
+                        targetData.length > 0 ? (
+                        targetData.map((item, index) => {
+                        if ( index < 4) {
+                            const subItem = item.showroom_list[0];
                             return (
                                 <TouchableOpacity
                                     key={index}
                                     style={styles.layout3}
                                     onPress={() =>  this.goDetail( subItem.req_no, subItem.showroom_no)}
                                 >
-                                   {/*  <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} /> */}
+                                {/*  <FastImage resizeMode={'contain'} style={styles.brandImg} source={{uri: subItem.mgzn_logo_adres}} /> */}
                                     <Text style={{...styles.name,color:'rgba(178, 126, 126, 1)'}}>
                                         {subItem?.req_company_nm}
                                     </Text>
@@ -440,11 +443,24 @@ class HomeScreen extends PureComponent {
                                     <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}>
                                         {subItem.req_user_nm}{mUtils.isEmpty(subItem.req_user_position) ? subItem.brand_nm  : subItem.req_user_position}
                                     </Text>  
-                                    {/* <Text style={{...styles.custom, marginTop: mUtils.wScale(2)}}> Sheet No:{subItem.req_no}</Text>  */}
                                 </TouchableOpacity>
-                                
                             )
-                        }else{
+                        }
+                        })
+                    ) : (
+                    <Empty />
+                    )}
+                </View>
+                :
+                <View
+                    style={{...styles.layout2,backgroundColor: 'rgba(178, 126, 126, 0.2)',flex: targetDataTmp.length === 0 ? 0 : 1,flexDirection: targetDataTmp.length === 0 ? 'column' : 'row',justifyContent:targetDataTmp.length === 0 ? 'center' : 'space-between',flexWrap: targetDataTmp.length === 0 ? 'nowrap' : 'wrap',}}
+                >
+                    {   
+                        targetDataTmp.length > 0 ? (
+                            targetDataTmp.map((item, index) => {
+                        if ( index < 4) {
+                            const subItem = item.showroom_list[0];
+                           
                             return (
                                 <TouchableOpacity
                                     key={index}
@@ -472,19 +488,17 @@ class HomeScreen extends PureComponent {
                                     </Text>
                                     <Text style={{...styles.name, marginTop: mUtils.wScale(2)}}>
                                         {subItem.target_user_nm}{ mUtils.isEmpty(subItem.target_user_position) ? subItem.brand_nm  : subItem.target_user_position}
-                                    </Text>   
-                                    
-                                    {/* <Text style={{...styles.custom, marginTop: mUtils.wScale(2)}}> Sheet No:{subItem.req_no}</Text>     */}                   
+                                    </Text>                  
                                 </TouchableOpacity>
                             )
                         }
-                    }
-                    })
-                ) : (
-                <Empty />
-                )}
+                        })
+                    ) : (
+                    <Empty />
+                    )}
+                </View>
+                }
             </View>
-        </View>
         )
     }
 

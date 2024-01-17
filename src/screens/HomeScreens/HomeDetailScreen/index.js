@@ -152,7 +152,7 @@ class HomeDetailScreen extends PureComponent {
     }else{
       strType = type == 'pickups' ? 'SENDOUT' : 'RETURN';
     }
-    console.log('getHomeTR',page, limit, data,total_count)
+    console.log('getHomeTR',date)
     if ( page * limit <= total_count ) {
       try {
         const response = await API.getHomeTR({date: date, type : strType,page: nextpage, limit: limit})
@@ -330,7 +330,7 @@ class HomeDetailScreen extends PureComponent {
                 </Text>
                 :
                 <Text style={{...styles.name,color:'rgba(178, 126, 126, 1)'}}>
-                  {subItem.mgzn_nm}
+                  {subItem.brand_nm}
                 </Text>
                 :
                 <Text style={{...styles.name,color:'rgba(178, 126, 126, 1)'}}>
