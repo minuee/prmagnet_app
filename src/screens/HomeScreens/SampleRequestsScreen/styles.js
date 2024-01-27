@@ -116,6 +116,12 @@ export default StyleSheet.create({
     backgroundColor: '#f6f6f6',
     marginVertical: mUtils.wScale(30),
   },
+  emptyBar2: {
+    width: '100%',
+    height: mUtils.wScale(6),
+    backgroundColor: '#f6f6f6',
+    marginVertical: mUtils.wScale(10),
+  },
   bottomButton: {
     width: '100%',
     paddingVertical: mUtils.wScale(18),

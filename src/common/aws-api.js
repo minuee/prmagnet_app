@@ -320,6 +320,14 @@ const API = {
     }
     return Api.del(apiName, path, init)
   },
+  getRequestHistory : () => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/search/reqhistory`
+    const init = {
+    };
+
+    return Api.get(apiName, path, init);
+  },
   getFavShowroom: ({
     brand_id,
     season_year,

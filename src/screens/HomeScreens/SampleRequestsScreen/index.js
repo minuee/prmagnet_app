@@ -142,7 +142,8 @@ class SampleRequestsScreen extends PureComponent {
       selectWaitWithBrandDirect : "",
       withbrand_text : [],
       withwaitbrand_text : [],
-
+      optionReqHistory : [],
+      selectHistory : "최근 요청 문서 선택",
       isvisible: false,
       isToggleSelect : false,
       year: dayjs().format('YYYY'),
@@ -165,7 +166,15 @@ class SampleRequestsScreen extends PureComponent {
       isShowGotoBtn :false
     }
   }
-
+  getOldData = async() => {
+    try{
+        const historyData = await API.getRequestHistory();
+        console.log("historyData",historyData)
+        this.setState({optionReqHistory:[{req_no : null},...historyData?.history]});
+    }catch(e){
+        console.log('historyData e',e)
+    }
+  }
 
   getBrandHoliday = async (year, brand_id) => {
     let reservationArray =  [];
@@ -678,6 +687,7 @@ class SampleRequestsScreen extends PureComponent {
         nonmedia_content : response.nonmedia_content,
         nonmedia_release : response.nonmedia_release,
         fixedConfirmBrand : response.with_brand_list ?? [],
+        selectWaitWithBrand : response.with_wait_brand_list ?? [],
         selectConfirmWithBrandDirect : response.with_brand_direct,
         selectWaitWithBrandDirect : response.with_wait_brand_direct,
         withbrand_text : response.withbrand_text == null  ? []  : response.withbrand_text,
@@ -708,6 +718,133 @@ class SampleRequestsScreen extends PureComponent {
       } 
     } catch (error) {
       console.log('er222222r getSampleRequests>>>>', error)
+    }
+  }
+
+  onSelectOldData = async(response) => {
+    if ( response.req_no == null ) {
+      this.setState({
+        iscanEdit :  true,
+        selectContact:  null,
+        selectHistory: "신규입력",
+        shDate: null,
+        shEndDate:  null,
+        rshDate:  null,
+        rshEndDate:  null,
+        pkDate:  null,
+        rtDate:  null,
+        dlvy_adres_no:  null,
+        destination:  null,
+        destinationDetail:  null,
+        shippingNote:  null,
+        concept:  null,
+        celebrity:[''],
+        itemModel:[''],
+        fashionModel: [''],
+        locateShoot: null,
+        todayConnect: null,
+        numberPage: null,
+        message: null,
+        myPay: null,
+        otherPay: null,
+        reservation_list : null,
+        editableLoke :false,
+        editableOwn:false,
+        editableYukaEtc: false,
+        editableNone: false,
+        editableCele:false,
+        editableModel: false,
+        editableItem:  false,
+        is_media : false,
+        media_nm :  null,
+        nonmedia_content :  null,
+        nonmedia_release :  null,
+        fixedConfirmBrand : [],
+        selectWaitWithBrand :  [],
+        selectConfirmWithBrandDirect : null,
+        selectWaitWithBrandDirect : null,
+        withbrand_text : [] ,
+        withwaitbrand_text : [] 
+      })
+
+    }else{
+      try {
+        console.log('onSelectOldData>>>>', mUtils.convertDateToUnix(response.photogrf_dt))
+        this.setState({
+          iscanEdit :  true,
+          selectContact: {
+            user_id: response.contact_user_id,
+            mgzn_user_nm: response.contact_username,
+            phone_no: response.contact_phone_no,
+          },
+          selectHistory: `${response.req_user_nm}/${mUtils.dateToDateYYYYMMDD(response.photogrf_dt)}/${response.is_media ? response.photogrf_concept : response.nonmedia_content}`,
+          shDate: {
+            month: mUtils.getShowDate(mUtils.convertDateToUnix(response.photogrf_dt), 'M'),
+            day: mUtils.getShowDate(mUtils.convertDateToUnix(response.photogrf_dt), 'D'),
+            timestamp:mUtils.convertDateToUnix(response.photogrf_dt) * 1000,
+          },
+          shEndDate: {
+            month: mUtils.getShowDate(mUtils.convertDateToUnix(response.photogrf_end_dt), 'M'),
+            day: mUtils.getShowDate(mUtils.convertDateToUnix(response.photogrf_end_dt), 'D'),
+            timestamp: mUtils.convertDateToUnix(response.photogrf_end_dt) * 1000,
+          },
+          rshDate: {
+            month: mUtils.getShowDate(mUtils.convertDateToUnix(response.release_dt), 'M'),
+            day: mUtils.getShowDate(mUtils.convertDateToUnix(response.release_dt), 'D'),
+            timestamp: mUtils.convertDateToUnix(response.release_dt) * 1000,
+          },
+          rshEndDate: {
+            month: mUtils.getShowDate(mUtils.convertDateToUnix(response.release_end_dt), 'M'),
+            day: mUtils.getShowDate(mUtils.convertDateToUnix(response.release_end_dt), 'D'),
+            timestamp: mUtils.convertDateToUnix(response.release_end_dt) * 1000,
+          },
+          pkDate: {
+            month: mUtils.getShowDate(mUtils.convertDateToUnix(response.duty_recpt_dt), 'M'),
+            day: mUtils.getShowDate(mUtils.convertDateToUnix(response.duty_recpt_dt), 'D'),
+            timestamp: mUtils.convertDateToUnix(response.duty_recpt_dt) * 1000,
+          },
+          rtDate: {
+            month: mUtils.getShowDate(mUtils.convertDateToUnix(response.return_prearnge_dt), 'M'),
+            day: mUtils.getShowDate(mUtils.convertDateToUnix(response.return_prearnge_dt), 'D'),
+            timestamp: mUtils.convertDateToUnix(response.return_prearnge_dt) * 1000,
+          },
+          dlvy_adres_no: response.dlvy_adres_no,
+          destination: response.dlvy_adres_nm,
+          destinationDetail: response.adres_detail,
+          shippingNote: response.dlvy_atent_matter,
+          concept: response.photogrf_concept,
+          celebrity: _.size(response.celeb_list) === 0 ? [''] : response.celeb_list,
+          itemModel: _.size(response.item_model_list) === 0 ? [''] : response.item_model_list,
+          fashionModel: _.size(response.model_list) === 0 ? [''] : response.model_list,
+          locateShoot: response.loc_value,
+          todayConnect: response.today_connect,
+          numberPage: response.page_cnt,
+          togetherBrand: response.etc_brand_info,
+          message: response.message,
+          myPay: response.own_paid_pictorial_content,
+          otherPay: response.other_paid_pictorial_content,
+          reservation_list : response.reservation_list,
+          editableLoke : mUtils.isEmpty(response.loc_value) ? false : true,
+          editableOwn: mUtils.isEmpty(response.own_paid_pictorial_content) ? false : true,
+          editableYukaEtc: mUtils.isEmpty(response.other_paid_pictorial_content) ? false : true,
+          editableNone: mUtils.isEmpty(response.own_paid_pictorial_content) && mUtils.isEmpty(response.other_paid_pictorial_content)  ? true : false,
+          editableCele: _.size(response.celeb_list) === 0 ?  false : true,
+          editableModel: _.size(response.model_list) === 0 ? false : true,
+          editableItem: _.size(response.item_model_list) === 0 ? false : true,
+          is_media : response.is_media,
+          media_nm : response.media_nm,
+          nonmedia_content : response.nonmedia_content,
+          nonmedia_release : response.nonmedia_release,
+          fixedConfirmBrand : response.with_brand_list ?? [],
+          selectWaitWithBrand : response.with_wait_brand_list ?? [],
+          selectConfirmWithBrandDirect : response.with_brand_direct,
+          selectWaitWithBrandDirect : response.with_wait_brand_direct,
+          withbrand_text : response.withbrand_text == null  ? []  : response.withbrand_text,
+          withwaitbrand_text : response.withwaitbrand_text == null  ? []  : response.withwaitbrand_text,
+        })
+      } catch (error) {
+        console.log('er222222r getSampleRequests>>>>', error)
+      }
     }
   }
 
@@ -827,7 +964,6 @@ class SampleRequestsScreen extends PureComponent {
 
   async UNSAFE_componentWillMount () {
     const {modelList, type, brandName, brandId,copyData} = this.props.route.params;
-    console.log('UNSAFE_componentWillMount>>>>', type, brandName, copyData)
     this.pushOption(brandName ? brandName : 'Sample Request')
     if (type && modelList?.length > 0 ) {
       this.setState({selected: modelList})
@@ -867,7 +1003,8 @@ class SampleRequestsScreen extends PureComponent {
   }
 
   handleOnFocus = async() => {
-    const {modelList, type, brandName,no} = this.props.route.params
+    const {modelList, type, brandName,no} = this.props.route.params;
+    this.getOldData();
     await this.postSRRequest();
     //console.log('type>>>>',no, type)
     this.getWithBrandList(type)
@@ -1065,7 +1202,9 @@ class SampleRequestsScreen extends PureComponent {
       selectWaitWithBrandDirect,
       withbrand_text,
       withwaitbrand_text,
-      isToggleSelect
+      isToggleSelect,
+      optionReqHistory,
+      selectHistory
     } = this.state
     const {type,brandId} = this.props.route.params;
     return defaultInfo ? (
@@ -1149,9 +1288,35 @@ class SampleRequestsScreen extends PureComponent {
                 handleAddShowroom={this.handleAddShowroom.bind(this)}
               />
             }
-            <View style={styles.emptyBar} />
+            <View style={styles.emptyBar2} />
             <View style={{paddingHorizontal: mUtils.wScale(20)}}>
-              <Text style={{...styles.subTitle}}>Request Information</Text>
+              <Text style={{...styles.smallTitle}}>최근 요청 입력 사항 불러오기</Text>
+              <ModalDropdown
+                  style={{width: '100%'}}
+                  dropdownStyle={{width: '100%'}}
+                  onSelect={(i, v) => this.onSelectOldData(v)}                  
+                  options={optionReqHistory}
+                  renderRow={d => (
+                    d.req_no == null ?
+                    <View style={styles.contactList}>
+                      <Text style={styles.smallTitle}>신규입력</Text>
+                    </View>
+                    :
+                    <View style={styles.contactList}>
+                      <Text style={styles.smallTitle}>
+                      {d.req_user_nm}/{mUtils.dateToDateYYYYMMDD(d.photogrf_dt)}/{d.is_media ?  d.photogrf_concept : d.nonmedia_content}
+                      </Text>
+                    </View>
+                  )}
+                >
+                  <View style={{...styles.box1, justifyContent: 'space-between'}}>
+                    <Text style={styles.boxText}>{selectHistory}</Text>
+                    <FastImage resizeMode={'contain'} style={styles.moreImg} source={moreImg} />
+                  </View>
+                </ModalDropdown>
+            </View>
+            <View style={styles.emptyBar2} />
+            <View style={{paddingHorizontal: mUtils.wScale(20)}}>
               <View
                 style={{
                   ...styles.layout2,

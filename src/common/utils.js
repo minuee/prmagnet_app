@@ -107,6 +107,15 @@ const utils = {
   convertDateToUnix(date) {
     return moment(date).unix();
   },
+  dateToDateYYYYMMDD(val) {
+    const happyNewYear = new Date(val);
+    const year = happyNewYear.getFullYear(); 
+    const month = happyNewYear.getMonth() + 1; 
+    const date = happyNewYear.getDate();
+
+    const result = `${year}년${month >= 10 ? month : '0' + month}월${date >= 10 ? date : '0' + date}일`
+    return result;
+  } ,
   getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min
   },
