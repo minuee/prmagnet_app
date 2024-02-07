@@ -138,10 +138,10 @@ class SampleRequestsDetailScreen extends PureComponent {
   }
 
   handleCopyRequest = async() => {
-    if ( mUtils.convertDateToUnix(this.state.data.shooting_date)*1000 < Math.floor(new Date()/1000)  ) {
+    /* if ( mUtils.convertDateToUnix(this.state.data.shooting_date)*1000 < Math.floor(new Date()/1000)  ) {
       this.alert('촬영일이후부터 조회가 가능합니다.');
       return;
-    }
+    } */
     try {
       const response = await API.postSRCopyRequestSend({
         req_no :  this.state.req_no,

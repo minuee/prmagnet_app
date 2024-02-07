@@ -179,32 +179,7 @@ class LinkSheetScreen extends React.Component {
         }
     }
 
-    
-   /*  const {selectTitle} = this.state;
-    let openDatetime = Math.floor(new Date()/1000);// + (60*60*9);
-    const koreaSdata = date - (60*60*9);
-    const itemWeeklyNo = dayjs.unix(koreaSdata).format("d");
-    const nowWeeklyNo = dayjs.unix(openDatetime).format("d");
-    console.log('nohhandleEachDetail itemWeeklyNo',itemWeeklyNo )
-    console.log('nohhandleEachDetail nowWeeklyNo',nowWeeklyNo )
-    if ( itemWeeklyNo == 6  ) { //토요앨
-    openDatetime = Math.floor(new Date()/1000) + (60*60*33);
-    }else if ( itemWeeklyNo == 0) { //일요일
-    openDatetime = Math.floor(new Date()/1000) + (60*60*57);
-    }else{
-    openDatetime = Math.floor(new Date()/1000) + (60*60*9);
-    }
-    console.log('nohhandleEachDetail',mUtils.convertDateToUnix(date),openDatetime )
-    if ( selectTitle === 'Pickups' && date >  openDatetime ) {
-        this.alert('픽업일이후부터 조회가 가능합니다.');
-        return;
-    }
-    if ( selectTitle === 'Send Out' && mUtils.convertDateToUnix(date) > Math.floor(new Date()/1000) && mConst.getUserType()  != 'B' ) {
-        this.alert('촬영일이후부터 조회가 가능합니다.');
-        return;
-    }
- */
-   
+
     handleLinkSheetDetailEach = async(req_no,showroomData,date, sdate = null) => {
         const {selectTitle} = this.state;
         
@@ -222,20 +197,17 @@ class LinkSheetScreen extends React.Component {
             }else{
                 openDatetime = Math.floor(new Date()/1000) + (60*60*9);
             }
-            console.log('date > openDatetime ',date ,openDatetime  )
-            if (  date > openDatetime ) {
+            //console.log('date > openDatetime ',date ,openDatetime  )
+            /* if (  date > openDatetime ) {
                 this.alert('픽업일이후부터 조회가 가능합니다.');
                 return;
-            }
+            } */
         }
         if ( selectTitle === 'Send Out' ) {
-            console.log('nohhandleEachDetail d22te',selectTitle,mUtils.convertDateToUnix(sdate))
-            console.log('nohhandleEachDetail d22te',selectTitle,Math.floor(new Date()/1000))
-
+            
             let openDatetime = Math.floor(new Date()/1000) - (60*60*9);
             const koreaSdata = mUtils.convertDateToUnix(sdate) + (60*60*9);
             const itemWeeklyNo = dayjs.unix(koreaSdata).format("d");
-            console.log('nohhandleEachDetail itemWeeklyNo',itemWeeklyNo)
             if ( itemWeeklyNo == 6  ) { //토요앨
                 openDatetime = Math.floor(new Date()/1000) + (60*60*33);
             }else if ( itemWeeklyNo == 0) { //일요일
@@ -245,11 +217,11 @@ class LinkSheetScreen extends React.Component {
             }else{
                 openDatetime = Math.floor(new Date()/1000) + (60*60*9);
             }
-            console.log('ddddd', mUtils.convertDateToUnix(sdate),openDatetime)
-            if ( mUtils.convertDateToUnix(sdate) > openDatetime && mConst.getUserType()  != 'B' ) {
+            //console.log('ddddd', mUtils.convertDateToUnix(sdate),openDatetime)
+            /* if ( mUtils.convertDateToUnix(sdate) > openDatetime && mConst.getUserType()  != 'B' ) {
                 this.alert('촬영일이후부터 조회가 가능합니다.');
                 return;
-            }
+            } */
         }
         let newShowroomIdxArray = [];
         await showroomData.forEach((element) => {
