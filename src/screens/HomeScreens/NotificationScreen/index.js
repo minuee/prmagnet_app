@@ -115,7 +115,8 @@ class NotificationScreen extends PureComponent {
     const brandId = item.brand_id;
     const date_info = item.date_info;
 
-    //console.log('handleMove22',date_info[0]);
+    console.log('handleMove22',reqNo,notice_type);
+
     let showroomData = [];
     let pickup_date = null;
     let return_date = null;

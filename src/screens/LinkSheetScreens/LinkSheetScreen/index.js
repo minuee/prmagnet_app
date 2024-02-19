@@ -198,10 +198,10 @@ class LinkSheetScreen extends React.Component {
                 openDatetime = Math.floor(new Date()/1000) + (60*60*9);
             }
             //console.log('date > openDatetime ',date ,openDatetime  )
-            /* if (  date > openDatetime ) {
+            if (  date > openDatetime ) {
                 this.alert('픽업일이후부터 조회가 가능합니다.');
                 return;
-            } */
+            }
         }
         if ( selectTitle === 'Send Out' ) {
             

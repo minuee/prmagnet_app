@@ -25,8 +25,9 @@ const checkImg3 = require('../../../images/navi/check_3.png');
 const selectImg2 = require('../../../images/navi/select_2.png');
 const delImg = require('../../../images/navi/del_1.png');
 const yesNo = [{boolean: true, text: 'Yes'},{boolean: false, text: 'No'},];
-//const noCheckImg2 = require('../../../images/navi/disable.png');
+const newCheckImg = require('../../../images/common/checkblue.png')
 const noCheckImg2 = require('../../../images/navi/red.png');
+const newCheckImg2 = require('../../../images/navi/xred.png');
 const time = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23'];
 const todayTimeStamp = mUtils.getToday();
 const reqStatusEditList = ["RS0000","RS0001","RS0002"];
@@ -373,16 +374,16 @@ class SampleRequestsDetailScreen extends PureComponent {
                     <FastImage resizeMode={'contain'} style={styles.modelImg} source={{uri: item.image_url}} />
                     {
                       item.showroom_status === 'selected' ?
-                      <View style={{...styles.select, backgroundColor: 'rgba(126, 161, 178, 0.8)', maxWidth:mUtils.wScale(200)}}>
-                        <FastImage resizeMode={'contain'} style={styles.selectImg} source={selectImg2} />
+                      <View style={{...styles.select2, borderColor: '#558197',borderWidth:5, maxWidth:mUtils.wScale(200)}}>
+                        <FastImage resizeMode={'contain'} style={styles.selectImg} source={newCheckImg} />
                       </View> 
                       :
                       item.showroom_status === 'rejected' ?
-                      <View style={{...styles.select, maxWidth:mUtils.wScale(200)}}>
-                        <FastImage resizeMode={'contain'} style={styles.selectImg2} source={noCheckImg2} />
+                      <View style={{...styles.select2, borderColor: '#df8484',borderWidth:5, maxWidth:mUtils.wScale(200)}}>
+                        <FastImage resizeMode={'contain'} style={styles.selectImg} source={newCheckImg2} />
                       </View> 
                       :
-                      null
+                      <View style={{...styles.select2, borderColor: '#ccc',borderWidth:5, maxWidth:mUtils.wScale(200)}} />
                     }
                   </View>
                   <Text style={{...styles.modelTitle, marginTop: mUtils.wScale(8)}}>

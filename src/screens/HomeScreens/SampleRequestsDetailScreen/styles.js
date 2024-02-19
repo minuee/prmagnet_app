@@ -285,6 +285,13 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  select2: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    zIndex: 1,
+    alignItems: 'flex-end'
+  },
   selectImg: {
     width: mUtils.wScale(45),
     height: mUtils.wScale(45),
