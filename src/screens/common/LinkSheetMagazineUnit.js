@@ -27,7 +27,123 @@ export default class LinkSheetUnit extends PureComponent {
     render() {
         const {swiped} = this.state;
         const {name, phone, unitType,viewType,onPress, onPressPhone, onSwipeCheck, color, checked, readOnly,sendUser,returnUser,subData,loaningDate} = this.props;
-
+        if ( viewType == "pickup") {
+            if (unitType === 'to') {
+                return (
+                    <>
+                        <SwiperUnit onSwipeLeft={() => this.onSwipe('left')} onSwipeRight={() => this.onSwipe('right')}>
+                            {
+                                swiped || checked ? (
+                                <TouchableWithoutFeedback onPress={swiped ? onSwipeCheck : null}>
+                                    <Row style={styles.row(color)}>
+                                        <Col style={styles.col(1, true, color, checked)} size={3}>
+                                            <Text style={styles.sText()} numberOfLines={1}>                                        
+                                                {mUtils.isEmpty(returnUser.user_nm) ? name :  returnUser.user_nm} 
+                                                {!mUtils.isEmpty(returnUser.position) && returnUser.position}
+                                                {/* {!mUtils.isEmpty(returnUser.company_nm) && "("+returnUser.company_nm+")"} */}
+                                            </Text>
+                                        </Col>
+                                        <Col style={styles.col(1, true, checked ? color : mConst.white, checked)} size={1}>
+                                            <FastImage source={checked ? circleCheckOnImage : circleCheckImage} style={styles.checkImage} />
+                                        </Col>
+                                    </Row>
+                                </TouchableWithoutFeedback>
+                                ) : (
+                                <Pressable onPress={onPress}>
+                                {
+                                    ({pressed}) => (
+                                        <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : color)}>
+                                            <Text style={styles.sText()} numberOfLines={1}>
+                                                {mUtils.isEmpty(returnUser.user_nm) ? name :  returnUser.user_nm} 
+                                                {!mUtils.isEmpty(returnUser.position) && returnUser.position}
+                                                {/* {!mUtils.isEmpty(returnUser.company_nm) && "("+returnUser.company_nm+")"} */}
+                                            </Text>
+                                        </Row>
+                                    )
+                                }
+                                </Pressable>
+                                )
+                            }
+                        </SwiperUnit>
+                        <Pressable onPress={onPressPhone}>
+                            {
+                                ({pressed}) => (
+                                <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : mConst.white)}>
+                                    <Text style={styles.sText(mConst.darkGray)}>
+                                        {mUtils.isEmpty(sendUser.phone_no) ? phone : mUtils.phoneFormat(sendUser.phone_no)}
+                                    </Text>
+                                </Row>
+                                )
+                            }
+                        </Pressable>
+                    </>
+                )
+            }else{
+                return (
+                    <>
+                        {
+                            subData?.sendout_yn ? (
+                                <Row style={styles.row(color)}>
+                                    <Col style={styles.col(1, true, color, subData?.sendout_yn)} size={3}>
+                                        <Text style={styles.sText()} numberOfLines={1}>
+                                            {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm} 
+                                            {!mUtils.isEmpty(sendUser.position) && sendUser.position}
+                                            {/* {!mUtils.isEmpty(sendUser.mgzn_nm) && "("+sendUser.mgzn_nm+")"} */}
+                                            
+                                            { mUtils.convertUnixToDate(loaningDate) != mUtils.dateToDate(subData.sendout_dt) &&
+                                                <Text style={styles.sText()}>
+                                                    {"\n"}발송일({mUtils.dateToDate(subData.sendout_dt)})
+                                                </Text>
+                                            }
+                                        </Text>
+                                    </Col>
+                                    <Col style={styles.col(1, true, subData?.sendout_yn ? color : mConst.white, subData?.sendout_yn)} size={1}>
+                                        <FastImage source={subData?.sendout_yn ? circleCheckOnImage : circleCheckImage} style={styles.checkImage} />
+                                    </Col>
+                                </Row>
+                            ) : (
+                            <Pressable onPress={onPress}>
+                            {
+                                ({pressed}) => (
+                                    <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : color)}>
+                                        { 
+                                        mUtils.convertUnixToDate(loaningDate) != mUtils.dateToDate(subData.pickup_dt) ?
+                                        <Text style={styles.sText()} numberOfLines={2}>
+                                            {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm}
+                                            {!mUtils.isEmpty(sendUser.position) && sendUser.position}
+                                            
+                                            { mUtils.convertUnixToDate(loaningDate) != mUtils.dateToDate(subData.sendout_dt) &&
+                                                <Text style={styles.sText()}>
+                                                    {"\n"}발송일({mUtils.dateToDate(subData.sendout_dt)})
+                                                </Text>
+                                            }
+                                        </Text>
+                                        :
+                                        <Text style={styles.sText()} numberOfLines={1}>
+                                            {mUtils.isEmpty(sendUser.user_nm) ? name :  sendUser.user_nm} {!mUtils.isEmpty(sendUser.position) && sendUser.position}
+                                        </Text>
+                                        }
+                                    </Row>
+                                )
+                            }
+                            </Pressable>
+                            )
+                        }
+                        <Pressable onPress={onPressPhone}>
+                            {
+                                ({pressed}) => (
+                                <Row style={styles.row(pressed ? 'rgba(0, 0, 0, 0.2)' : mConst.white)}>
+                                    <Text style={styles.sText(mConst.darkGray)}>
+                                        {mUtils.isEmpty(sendUser.phone_no) ? phone : mUtils.phoneFormat(sendUser.phone_no)}
+                                    </Text>
+                                </Row>
+                                )
+                            }
+                        </Pressable>
+                    </>
+                )
+            }
+        }
         if (unitType === 'to') {
             return (
                 <>

@@ -345,11 +345,12 @@ class SendOutScreen extends PureComponent {
               </Col>
             </Row>
             {_.map(mUtils.get(data, 'showroom_list', []), (item, index) => {
-              const samples = mUtils.get(item, 'sample_list', [])
-              const roomName = mUtils.get(item, 'showroom_nm')
-              const roomNo = mUtils.get(item, 'showroom_no')
-              const imageUrl = mUtils.get(samples, '[0].image_list[0]')
-              const rowSize = _.size(samples)
+              const samples = mUtils.get(item, 'sample_list', []);
+              const roomName = mUtils.get(item, 'showroom_nm');
+              const roomNo = mUtils.get(item, 'showroom_no');
+              const imageUrl = mUtils.get(samples, '[0].image_list[0]');
+              const rowSize = _.size(samples);
+              if ( rowSize == 0 ) return null;
               return (
                 <Row key={index}>
                   <Col style={styles.col(rowSize * 2, true)} size={1} onPress={() => {this.pushTo('DigitalSRDetailScreen', {no: roomNo, type: 'digital',title : roomName})}}>

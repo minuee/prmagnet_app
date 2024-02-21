@@ -10,7 +10,7 @@ import mUtils from '../../../common/utils';
 import cBind, {callOnce} from '../../../common/navigation';
 import API from '../../../common/aws-api';
 import Text from '../../common/Text';
-import LinkSheetUnit from '../../common/LinkSheetUnit';
+import LinkSheetUnit from '../../common/LinkSheetMagazineUnit';
 import Loading from '../../common/Loading';
 import MoreLoading from '../../common/MoreLoading';
 import styles from './styles';

@@ -144,6 +144,7 @@ export default class LinkSheetUnit extends PureComponent {
                                 {/* {!mUtils.isEmpty(sendUser.mgzn_nm) && "("+sendUser.mgzn_nm+")"} */}
                             </Text>
                             }
+                            
                         </Row>
                         
                         <Pressable onPress={onPressPhone}>
