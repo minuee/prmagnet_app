@@ -32,11 +32,17 @@ export default class LinkSheetUnit extends PureComponent {
                 return (
                     <>
                         <Row style={styles.row(color)}>
-                            <Text style={styles.sText()} numberOfLines={1}>              
-                                {mUtils.isEmpty(returnUser.user_nm) ? name :  returnUser.user_nm} 
-                                {!mUtils.isEmpty(returnUser.position) && returnUser.position}
-                                {/* {!mUtils.isEmpty(returnUser.mgzn_nm) && "("+returnUser.mgzn_nm+")"} */}
-                            </Text>
+                            <Col style={styles.col(1, true, color, false)} size={3}>
+                                <Text style={styles.sText()} numberOfLines={1}>              
+                                    {mUtils.isEmpty(returnUser.user_nm) ? name :  returnUser.user_nm} 
+                                    {!mUtils.isEmpty(returnUser.position) && returnUser.position}
+                                </Text>
+                            </Col>
+                            { subData?.returncheck_yn && (
+                            <Col style={styles.col(1, true, subData?.returncheck_yn ? color : mConst.white, subData?.returncheck_yn)} size={1}>
+                                <FastImage source={subData?.returncheck_yn ? circleCheckOnImage : circleCheckImage} style={styles.checkImage} />
+                            </Col>
+                            )}
                         </Row>
                         <Pressable onPress={onPressPhone}>
                         {
