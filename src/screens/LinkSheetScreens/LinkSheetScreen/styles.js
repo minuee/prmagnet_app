@@ -122,7 +122,7 @@ export default StyleSheet.create({
     paddingHorizontal:5,
     marginRight:10,
     borderRadius : 5,
-    backgroundColor:'#7ea1b2',
+    backgroundColor:'#000000',
     
   },
   defaultBox : {
