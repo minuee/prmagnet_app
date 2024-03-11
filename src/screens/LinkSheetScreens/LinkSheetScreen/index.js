@@ -218,10 +218,10 @@ class LinkSheetScreen extends React.Component {
                 openDatetime = Math.floor(new Date()/1000) + (60*60*9);
             }
             //console.log('ddddd', mUtils.convertDateToUnix(sdate),openDatetime)
-            /* if ( mUtils.convertDateToUnix(sdate) > openDatetime && mConst.getUserType()  != 'B' ) {
+            if ( mUtils.convertDateToUnix(sdate) > openDatetime && mConst.getUserType()  != 'B' ) {
                 this.alert('촬영일이후부터 조회가 가능합니다.');
                 return;
-            } */
+            }
         }
         let newShowroomIdxArray = [];
         await showroomData.forEach((element) => {
