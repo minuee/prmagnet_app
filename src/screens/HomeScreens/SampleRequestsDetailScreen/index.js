@@ -90,14 +90,13 @@ class SampleRequestsDetailScreen extends PureComponent {
 
   getSampleRequests = async (req_no = null) => {
     const {no} = this.props.route.params || req_no;
-    console.log('getSampleRequest22s>>>', no)
     try {
       const response = await API.getSampleRequests({
         req_no: no,
       })
       if (response.success) {
         this.setConfirmCount(response);
-        console.log('getSampleRequesresponse22s>>>', response)
+        console.log("response",response.showroom_list)
         this.setState({
           data: response,
           req_no : no
@@ -207,7 +206,7 @@ class SampleRequestsDetailScreen extends PureComponent {
   };
 
   actionCopy = async(value) => {
-    console.log("actionCopy",value)
+    
     let newShowroomList = [];
     await value.showroom_list.forEach((d, i) => {
       newShowroomList.push(d.showroom_no)
@@ -424,20 +423,24 @@ class SampleRequestsDetailScreen extends PureComponent {
               )
             })}
           </ScrollView>
+          { data?.req_message?.length > 0 && (
           <View style={styles.emptyBar} />
+          )}
+          { data?.req_message?.length > 0 && (
           <View style={{paddingHorizontal: mUtils.wScale(20)}} pointerEvents={'none'}>
-            { data?.req_message?.length > 0 && (<Text style={{...styles.subTitle,marginBottom:5}}>알림 메시지 이력</Text>)}
-            { data?.req_message?.length > 0 && (
+            <Text style={{...styles.subTitle,marginBottom:5}}>알림 메시지 이력</Text>
+            { 
               data?.req_message.map((d, i) => (
                 <View key={`${d}_${i}`} style={{backgroundColor : d.send_man_user_type == 'brand' ? "#ffd966" : "#fff"}}>
                   <Text style={{...styles.boxText}}>{mUtils.dateToDateTime(d.req_hist_dt)} 발신자:{d.send_man_user_type == 'brand' ? d.send_brand_user : d.send_magazine_user} {d.notifi_subj} {d.notifi_cntent}</Text>
                 </View>
               ))
-            ) }
+            }
           </View>
+          )}
           <View style={styles.emptyBar} />
           <View style={{paddingHorizontal: mUtils.wScale(20)}} pointerEvents={'none'}>
-            <Text style={{...styles.subTitle}}>Request Information</Text>
+            <Text style={{...styles.subTitle}}>Request Information{data?.req_message?.length}</Text>
             <View
               style={{
                 ...styles.layout2,
@@ -925,6 +928,7 @@ class SampleRequestsDetailScreen extends PureComponent {
               }}
             />
           </View>
+          
         </ScrollView>
         {
           ( data.req_status_cd == 'RS0000' )  &&
