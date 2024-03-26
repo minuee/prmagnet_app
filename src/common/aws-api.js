@@ -1096,6 +1096,22 @@ const API = {
     console.log('postSRRequestSend>>>> add', myInit);
     return Api.post(apiName, path, myInit)
   },
+  postSendMessage: ({
+    req_no,
+    add_message
+   }) => {
+    const apiName = v1Api
+    const path = `${mConst.getApiPath()}/request/addmessage`
+    const myInit = {
+      body: {
+        req_no,
+        add_message
+      },
+    }
+    //console.log("myInit",myInit)
+    return Api.post(apiName, path, myInit)
+  },
+
   postSRCopyRequestSend: ({
     req_no,
     brand_id,

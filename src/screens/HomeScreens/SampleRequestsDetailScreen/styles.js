@@ -183,6 +183,12 @@ export default StyleSheet.create({
     width: '100%',
     paddingVertical: mUtils.wScale(18),
   },
+  bottomButton2: {
+    width: '100%',
+    justifyContent:'center',
+    alignItems:'center',
+    height: mUtils.wScale(60)
+  },
   layout: {
     flexDirection: 'row',
     alignItems: 'flex-start',

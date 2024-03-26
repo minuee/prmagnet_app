@@ -455,7 +455,7 @@ class SendOutScreen extends PureComponent {
             </TouchableOpacity>
             )}
             <View style={{paddingHorizontal: mUtils.wScale(10)}} pointerEvents={'none'}>
-              { reqMessage.length > 0 && (<View><Text style={{...styles.subTitle,marginBottom:5}}>알림 메시지 이력</Text></View>)}
+              { reqMessage.length > 0 && (<View><Text style={{...styles.subTitle,marginBottom:5}}>1ㅋ알림 메시지 이력</Text></View>)}
               { reqMessage.length > 0 && (
                 reqMessage.map((d, i) => (
                   <View key={`${d}_${i}`}>

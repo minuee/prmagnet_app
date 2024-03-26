@@ -71,7 +71,8 @@ class SampleRequestsDetailScreen extends PureComponent {
       drop: false,
       drop1: false,
       drop2: false,
-      acceptCount : 0
+      acceptCount : 0,
+      add_message: ""
     }
   }
 
@@ -162,6 +163,24 @@ class SampleRequestsDetailScreen extends PureComponent {
       console.log('postSRRequestSend>>>>', error)
     }
   }
+
+  handleSendMessage = async(msg) => {
+    try {
+      const response = await API.postSendMessage({
+        req_no :  this.state.req_no,
+        add_message:  msg
+       })
+      //console.log('postSRRequestSend>>>>', response)
+      if (response.success) {
+        mUtils.fn_call_toast('정상적으로 신청되었습니다.');
+        this.getSampleRequests(this.state.req_no)
+      }
+    } catch (error) {
+      console.log('postSRRequestSend>>>>', error)
+    }
+  }
+
+  
 
   handleOnCancle = async() => {
     try {
@@ -267,39 +286,13 @@ class SampleRequestsDetailScreen extends PureComponent {
   render() {
     const {
       data,
-      selected,
       defaultInfo,
-      selectContact,
-      shDate,
-      pkDate,
-      rtDate,
-      startTime,
-      endTime,
-      destination,
-      shippingNote,
-      concept,
       celebrity,
       fashionModel,
-      payPictorialDesc,
-      locateShoot,
-      todayConnect,
-      numberPage,
-      togetherBrand,
-      message,
-      is_media,
-      media_nm,
-      nonmedia_content,
-      nonmedia_release,
       drop,
       drop1,
       drop2,
-      release_dt ,
-      release_end_dt,
-      with_brand_list ,
-      with_brand_direct ,
-      with_wait_brand_list,
-      with_wait_brand_direct,
-      acceptCount
+      add_message
     } = this.state;
 
    
@@ -430,14 +423,62 @@ class SampleRequestsDetailScreen extends PureComponent {
           <View style={{paddingHorizontal: mUtils.wScale(20)}} pointerEvents={'none'}>
             <Text style={{...styles.subTitle,marginBottom:5}}>알림 메시지 이력</Text>
             { 
+              mConst.getUserType() == 'B' 
+              ?
               data?.req_message.map((d, i) => (
-                <View key={`${d}_${i}`} style={{backgroundColor : d.send_man_user_type == 'brand' ? "#ffd966" : "#fff"}}>
+                <View 
+                  key={`${d}_${i}`} 
+                  style={{backgroundColor : d.send_man_user_type != 'brand' ? "#ffd966" : "#fff"}}>
                   <Text style={{...styles.boxText}}>{mUtils.dateToDateTime(d.req_hist_dt)} 발신자:{d.send_man_user_type == 'brand' ? d.send_brand_user : d.send_magazine_user} {d.notifi_subj} {d.notifi_cntent}</Text>
+                </View>
+              ))
+              :
+              data?.req_message.map((d, i) => (
+                <View 
+                  key={`${d}_${i}`} 
+                  style={{backgroundColor : d.send_man_user_type == 'brand' ? "#ffd966" : "#fff"}}>
+                  <Text style={{...styles.boxText}}>{mUtils.dateToDateTime(d.req_hist_dt)} 발신자:{d.send_man_user_type != 'brand' ? d.send_brand_user : d.send_magazine_user} {d.notifi_subj} {d.notifi_cntent}</Text>
                 </View>
               ))
             }
           </View>
           )}
+          <View style={{paddingHorizontal: mUtils.wScale(20),marginTop: mUtils.wScale(10)}}>
+            <Text style={{...styles.subTitle,marginBottom:5}}>추가 메시지</Text>
+          </View>
+          <View style={{flexDirection:'row',paddingHorizontal: mUtils.wScale(20),marginTop: mUtils.wScale(5)}}>
+            <View style={{width: '80%'}}>
+              <TextInput
+                editable={true}
+                style={{...styles.inputBox, height: mUtils.wScale(60)}}
+                multiline={true}
+                textAlignVertical={'top'}
+                value={add_message}
+                onChangeText={text => {this.setState({add_message: text})}}
+                placeholder="추가 메시지를 입력해 주세요"
+              /> 
+            </View>
+            <View style={{width: '18%',justifyContent:'center',alignItems:'center'}}>
+            <TouchableOpacity
+              style={{...styles.bottomButton2, backgroundColor:  mConst.getUserType() == 'B' ? mConst.black : '#7ea1b2'}}
+              onPress={() => {
+                if ( add_message?.length == 0 ) return;
+                Alert.alert(
+                  mConst.appName,
+                  '메시지를 전송하시겠습니까?',
+                  [
+                    {text: '네', onPress: () => this.handleSendMessage(add_message)},
+                    {text: '아니오', onPress: () => console.log('no')},
+                  ],
+                  {cancelable: false},
+                );
+              }}
+            >
+              <Text style={{...styles.buttonText, color: mConst.white}}>전송</Text>
+            </TouchableOpacity>
+            </View>
+          </View>
+            
           <View style={styles.emptyBar} />
           <View style={{paddingHorizontal: mUtils.wScale(20)}} pointerEvents={'none'}>
             <Text style={{...styles.subTitle}}>Request Information{data?.req_message?.length}</Text>
